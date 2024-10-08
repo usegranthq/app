@@ -1,5 +1,5 @@
-import fs from 'node:fs/promises';
-import path from 'node:path';
+import fs from 'fs/promises';
+import path from 'path';
 import { notFound } from 'next/navigation';
 import Markdoc from '@markdoc/markdoc';
 import React from 'react';
