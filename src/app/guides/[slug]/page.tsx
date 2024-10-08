@@ -6,6 +6,8 @@ import React from 'react';
 import { Metadata } from 'next';
 import yaml from 'js-yaml';
 
+export const runtime = 'edge'; // for cloudflare
+
 const contentDir = path.join(process.cwd(), 'src/app/guides/_content');
 
 const readFile = async (file: string) => await fs.readFile(path.join(contentDir, file), 'utf-8');
