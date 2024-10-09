@@ -1,18 +1,9 @@
 import type { Metadata } from 'next';
-import localFont from 'next/font/local';
-import './globals.css';
-import { Toaster } from '@/components/ui/sonner';
+import { GeistSans } from 'geist/font/sans';
+import { GeistMono } from 'geist/font/mono';
 
-const geistSans = localFont({
-  src: './fonts/GeistVF.woff',
-  variable: '--font-geist-sans',
-  weight: '100 900',
-});
-const geistMono = localFont({
-  src: './fonts/GeistMonoVF.woff',
-  variable: '--font-geist-mono',
-  weight: '100 900',
-});
+import { Toaster } from '@/components/ui/sonner';
+import './globals.css';
 
 export const metadata: Metadata = {
   title: 'useGrant',
@@ -26,7 +17,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className="dark">
-      <body className={`${geistSans.variable} ${geistMono.variable} p-4`}>
+      <body className={`${GeistSans.variable} ${GeistMono.variable} font-sans p-4`}>
         {children}
         <Toaster richColors />
       </body>
