@@ -1,18 +1,19 @@
 'use client';
 
 import Link from 'next/link';
+import { toast } from 'sonner';
 
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 
 import SubmitButton from './SubmitButton';
+
 import { loginWithEmail } from './actions';
-import { toast } from 'sonner';
 
 export default function LoginForm() {
   const handleFormSubmit = async (formData: FormData) => {
     try {
-      const response = await loginWithEmail(formData);
+      await loginWithEmail(formData);
     } catch {
       toast.error('ooops');
     }

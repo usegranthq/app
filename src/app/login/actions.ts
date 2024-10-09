@@ -8,7 +8,7 @@ export async function loginWithEmail(formData: FormData) {
   const password = formData.get('password');
 
   try {
-    const res = await api('api/v1/login', {
+    await api('api/v1/login', {
       method: 'POST',
       body: JSON.stringify({ email, password }),
     });

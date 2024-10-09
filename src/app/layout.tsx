@@ -26,8 +26,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className="dark">
-      <body className={`${geistSans.variable} ${geistMono.variable} p-4`}>{children}</body>
-      <Toaster richColors />
+      <body className={`${geistSans.variable} ${geistMono.variable} p-4`}>
+        {children}
+        <Toaster richColors />
+      </body>
     </html>
   );
 }
