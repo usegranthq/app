@@ -1,9 +1,8 @@
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
 import { Card, CardHeader, CardTitle, CardContent, CardFooter } from '@/components/ui/card';
-import { Label } from '@/components/ui/label';
 import Link from 'next/link';
 import { SiGithub, SiGoogle } from '@icons-pack/react-simple-icons';
+import LoginForm from './LoginForm';
 
 export default function Login() {
   return (
@@ -31,28 +30,7 @@ export default function Login() {
               <span className="bg-background px-2 text-muted-foreground">Or continue with</span>
             </div>
           </div>
-          <form className="grid gap-4">
-            <div className="grid gap-2">
-              <Label htmlFor="email">Email address</Label>
-              <Input id="email" name="email" type="email" required placeholder="user@example.com" />
-            </div>
-            <div className="grid gap-2">
-              <Label htmlFor="password">Password</Label>
-              <Input id="password" name="password" type="password" required />
-            </div>
-            <div className="flex text-xs">
-              <div className="ml-auto">
-                <Link href="/forgot-password" className="font-medium hover:underline underline-offset-2">
-                  Forgot your password?
-                </Link>
-              </div>
-            </div>
-            <div className="mt-4">
-              <Button type="submit" className="w-full">
-                Sign in
-              </Button>
-            </div>
-          </form>
+          <LoginForm />
         </CardContent>
         <CardFooter className="text-sm justify-center">
           <Link href="/register" className="font-medium">

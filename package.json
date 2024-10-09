@@ -1,15 +1,15 @@
 {
   "name": "client",
-  "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "dev": "next dev --turbo",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
     "prepare": "husky"
   },
   "dependencies": {
+    "@edge-runtime/cookies": "^5.0.0",
     "@icons-pack/react-simple-icons": "^10.0.0",
     "@markdoc/markdoc": "^0.4.0",
     "@markdoc/next.js": "^0.3.7",
@@ -22,9 +22,11 @@
     "clsx": "^2.1.1",
     "js-yaml": "^4.1.0",
     "lucide-react": "^0.451.0",
-    "next": "14.2.14",
+    "next": "14.2.15",
+    "next-themes": "^0.3.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
+    "sonner": "^1.5.0",
     "tailwind-merge": "^2.5.3",
     "tailwindcss-animate": "^1.0.7"
   },
@@ -35,12 +37,12 @@
     "@types/react": "^18.3.11",
     "@types/react-dom": "^18.3.0",
     "eslint": "^8.57.1",
-    "eslint-config-next": "14.2.14",
+    "eslint-config-next": "14.2.15",
     "husky": "^9.1.6",
     "lint-staged": "^15.2.10",
     "postcss": "^8.4.47",
     "prettier": "^3.3.3",
     "tailwindcss": "^3.4.13",
-    "typescript": "^5.6.2"
+    "typescript": "^5.6.3"
   }
 }
