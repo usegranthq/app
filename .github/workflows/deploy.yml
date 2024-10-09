@@ -34,4 +34,4 @@ jobs:
         run: npm ci
 
       - name: Deploy to Vercel
-        run: vercel deploy --no-wait --token=${{ secrets.VERCEL_TOKEN }}
+        run: vercel deploy --no-wait --prod --token=${{ secrets.VERCEL_TOKEN }}
