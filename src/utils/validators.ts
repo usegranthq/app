@@ -1,7 +1,3 @@
-export const isNullOrUndefined = (value: any): value is null | undefined => {
-  return value === null || value === undefined;
-};
+export const isNullOrUndefined = (value: unknown): value is null | undefined => value === null || value === undefined;
 
-export const isNotNullOrUndefined = (value: any): value is NonNullable<any> => {
-  return !isNullOrUndefined(value);
-};
+export const isNotNullOrUndefined = <T>(value: T): value is NonNullable<T> => !isNullOrUndefined(value);

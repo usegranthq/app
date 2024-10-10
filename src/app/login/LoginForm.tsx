@@ -1,6 +1,5 @@
 'use client';
 
-import Link from 'next/link';
 import { toast } from 'sonner';
 
 import { Input } from '@/components/ui/input';
@@ -12,10 +11,9 @@ import { loginWithEmail } from './actions';
 
 export default function LoginForm() {
   const handleFormSubmit = async (formData: FormData) => {
-    try {
-      await loginWithEmail(formData);
-    } catch {
-      toast.error('ooops');
+    const errorMessage = await loginWithEmail(formData);
+    if (errorMessage) {
+      toast.error(errorMessage);
     }
   };
 
@@ -24,17 +22,6 @@ export default function LoginForm() {
       <div className="grid gap-2">
         <Label htmlFor="email">Email address</Label>
         <Input id="email" name="email" type="email" required placeholder="user@example.com" />
-      </div>
-      <div className="grid gap-2">
-        <Label htmlFor="password">Password</Label>
-        <Input id="password" name="password" type="password" required />
-      </div>
-      <div className="flex text-xs">
-        <div className="ml-auto">
-          <Link href="/forgot-password" className="font-medium hover:underline underline-offset-2">
-            Forgot your password?
-          </Link>
-        </div>
       </div>
       <div className="mt-4">
         <SubmitButton />

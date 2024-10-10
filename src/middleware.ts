@@ -1,16 +1,31 @@
 import type { NextRequest } from 'next/server';
 import { NextResponse } from 'next/server';
 
+const isProtectedPath = (pathname: string) => pathname.startsWith('/u');
+
+const redirectToLogin = (request: NextRequest) => {
+  return NextResponse.redirect(new URL('/login', request.url));
+};
+
 export function middleware(request: NextRequest) {
-  const currentUser = request.cookies.get('auth')?.value;
+  const authCookie = request.cookies.get('auth')?.value;
+  const verifyCookie = request.cookies.get('verify')?.value;
   const { pathname } = request.nextUrl;
 
-  if (currentUser && !pathname.startsWith('/u')) {
+  if (authCookie && !isProtectedPath(pathname)) {
     return NextResponse.redirect(new URL('/u', request.url));
   }
 
-  if (!currentUser && !pathname.startsWith('/login')) {
-    return NextResponse.redirect(new URL('/login', request.url));
+  if (pathname === '/verify') {
+    if (!verifyCookie) {
+      return redirectToLogin(request);
+    }
+
+    return NextResponse.next();
+  }
+
+  if (!authCookie && isProtectedPath(pathname)) {
+    return redirectToLogin(request);
   }
 
   return NextResponse.next();

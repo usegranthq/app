@@ -1,3 +1,4 @@
+import { ApiError } from '@/utils/error';
 import { isNotNullOrUndefined } from '@/utils/validators';
 import { parseSetCookie, ResponseCookie } from '@edge-runtime/cookies';
 import { cookies } from 'next/headers';
@@ -12,18 +13,6 @@ const getSetCookies = (response: Response): ResponseCookie[] => {
 
   return setCookies.map((cookie) => parseSetCookie(cookie)).filter(isNotNullOrUndefined);
 };
-
-//  can use as error instanceof ApiError
-export class ApiError extends Error {
-  status: number;
-  data: any;
-
-  constructor(status: number, data: any, message: string) {
-    super(message);
-    this.status = status;
-    this.data = data;
-  }
-}
 
 export async function api<T>(path: string, options: RequestInit = {}): Promise<T> {
   const url = new URL(path, backendURL);

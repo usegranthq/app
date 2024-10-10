@@ -9,7 +9,9 @@ export default function Login() {
     <div className="min-h-screen flex flex-col justify-center items-center">
       <Card className="w-full p-5 max-w-sm space-y-4 rounded-xl shadow-md">
         <CardHeader>
-          <CardTitle className="text-2xl font-bold text-center">ugeGrant login</CardTitle>
+          <CardTitle className="text-2xl font-bold text-center">
+            Hey there <span>👋</span>
+          </CardTitle>
         </CardHeader>
         <CardContent className="space-y-6">
           <div className="grid grid-cols-2 gap-4">
@@ -32,10 +34,18 @@ export default function Login() {
           </div>
           <LoginForm />
         </CardContent>
-        <CardFooter className="text-sm justify-center">
-          <Link href="/register" className="font-medium">
-            Don&apos;t have an account? <span className="hover:underline">Sign up</span>
-          </Link>
+        <CardFooter className="text-xs text-center">
+          <p>
+            By continuing, you agree to our{' '}
+            <Link href="/terms" className="hover:underline">
+              Terms of Service
+            </Link>{' '}
+            and{' '}
+            <Link href="/privacy" className="hover:underline">
+              Privacy Policy
+            </Link>
+            .
+          </p>
         </CardFooter>
       </Card>
     </div>
