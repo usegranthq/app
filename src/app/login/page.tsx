@@ -1,7 +1,8 @@
+import { SiGithub, SiGoogle } from '@icons-pack/react-simple-icons';
+import Link from 'next/link';
+
 import { Button } from '@/components/ui/button';
 import { Card, CardHeader, CardTitle, CardContent, CardFooter } from '@/components/ui/card';
-import Link from 'next/link';
-import { SiGithub, SiGoogle } from '@icons-pack/react-simple-icons';
 import LoginForm from './LoginForm';
 
 export default function Login() {

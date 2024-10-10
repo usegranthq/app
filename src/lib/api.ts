@@ -1,7 +1,9 @@
-import { ApiError } from '@/utils/error';
-import { isNotNullOrUndefined } from '@/utils/validators';
 import { parseSetCookie, ResponseCookie } from '@edge-runtime/cookies';
 import { cookies } from 'next/headers';
+
+import { ApiError } from '@/utils/error';
+import { isNotNullOrUndefined } from '@/utils/validators';
+import { isObject } from '@/utils/object';
 
 const backendURL = process.env.BACKEND_URL;
 
@@ -14,18 +16,38 @@ const getSetCookies = (response: Response): ResponseCookie[] => {
   return setCookies.map((cookie) => parseSetCookie(cookie)).filter(isNotNullOrUndefined);
 };
 
-export async function api<T>(path: string, options: RequestInit = {}): Promise<T> {
+const toRequestBody = <T>(body: T): BodyInit | null => {
+  if (isObject(body)) {
+    return JSON.stringify(body);
+  }
+
+  return body as BodyInit | null;
+};
+
+type BodyInitOrObject = BodyInit | null | Record<string, unknown>;
+interface ApiOptions<B extends BodyInitOrObject> extends Omit<RequestInit, 'body'> {
+  body?: B;
+}
+
+export async function api<T, B extends BodyInitOrObject>(path: string, options: ApiOptions<B> = {}): Promise<T> {
   const url = new URL(path, backendURL);
-  const response = await fetch(url, options);
+
+  const cookieString = cookies().toString();
+
+  const response = await fetch(url, {
+    ...options,
+    body: toRequestBody(options.body),
+    headers: {
+      ...options.headers,
+      Cookie: cookieString,
+    },
+  });
 
   if (!response.ok) {
     const errorBody = await response.json();
-    const error = new ApiError(
-      response.status,
-      errorBody,
-      errorBody.error_description || 'An error occured while while calling the backend API',
-    );
-    throw error;
+    const defaultErrorDescription = 'An error occured while while calling the backend API for path:' + path;
+    const error_description = errorBody.error_description ?? defaultErrorDescription;
+    throw new ApiError(response.status, errorBody, error_description);
   }
 
   const setCookies = getSetCookies(response);

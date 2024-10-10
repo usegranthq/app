@@ -11,6 +11,7 @@ import { verify } from './actions';
 export default function VerifyForm() {
   const handleFormSubmit = async (formData: FormData) => {
     const errorMessage = await verify(formData);
+
     if (errorMessage) {
       toast.error(errorMessage);
     }

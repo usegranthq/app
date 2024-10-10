@@ -1,31 +1,42 @@
+import { decodeJwt } from 'jose';
 import type { NextRequest } from 'next/server';
 import { NextResponse } from 'next/server';
+import { isNullOrUndefined } from './utils/validators';
 
-const isProtectedPath = (pathname: string) => pathname.startsWith('/u');
+const isProtectedRoute = (pathname: string) => pathname.startsWith('/u');
 
-const redirectToLogin = (request: NextRequest) => {
+const redirectToLoginPage = (request: NextRequest) => {
   return NextResponse.redirect(new URL('/login', request.url));
 };
 
-export function middleware(request: NextRequest) {
-  const authCookie = request.cookies.get('auth')?.value;
-  const verifyCookie = request.cookies.get('verify')?.value;
-  const { pathname } = request.nextUrl;
+const isTokenExpired = (expirationTime?: number) => {
+  if (isNullOrUndefined(expirationTime)) return true;
+  return new Date() > new Date(expirationTime * 1000);
+};
 
-  if (authCookie && !isProtectedPath(pathname)) {
+const hasValidCookie = (request: NextRequest, cookieName: string) => {
+  const cookie = request.cookies.get(cookieName);
+  if (!cookie) return false;
+
+  const claims = decodeJwt(cookie.value as string);
+  return !isTokenExpired(claims.exp);
+};
+
+export function middleware(request: NextRequest) {
+  const { pathname } = request.nextUrl;
+  const isAuthenticated = hasValidCookie(request, 'auth');
+  const isVerifyCookieValid = hasValidCookie(request, 'verify');
+
+  if (isAuthenticated && !isProtectedRoute(pathname)) {
     return NextResponse.redirect(new URL('/u', request.url));
   }
 
   if (pathname === '/verify') {
-    if (!verifyCookie) {
-      return redirectToLogin(request);
-    }
-
-    return NextResponse.next();
+    return isVerifyCookieValid ? NextResponse.next() : redirectToLoginPage(request);
   }
 
-  if (!authCookie && isProtectedPath(pathname)) {
-    return redirectToLogin(request);
+  if (!isAuthenticated && isProtectedRoute(pathname)) {
+    return redirectToLoginPage(request);
   }
 
   return NextResponse.next();
