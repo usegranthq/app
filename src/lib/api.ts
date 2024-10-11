@@ -58,7 +58,6 @@ export async function api<T, B extends BodyInitOrObject>(path: string, options: 
   }
 
   const setCookies = getSetCookies(response);
-  console.log(setCookies);
   setCookies.forEach((cookie) => {
     cookies().set(cookie.name, cookie.value, {
       path: cookie.path,
