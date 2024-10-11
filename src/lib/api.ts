@@ -1,7 +1,7 @@
 import { parseSetCookie, ResponseCookie } from '@edge-runtime/cookies';
 import { cookies } from 'next/headers';
 
-import { ApiError } from '@/utils/error';
+import { ApiError, ApiErrorData } from '@/utils/error';
 import { isNotNullOrUndefined } from '@/utils/validators';
 import { isObject } from '@/utils/object';
 
@@ -44,13 +44,21 @@ export async function api<T, B extends BodyInitOrObject>(path: string, options: 
   });
 
   if (!response.ok) {
-    const errorBody = await response.json();
-    const defaultErrorDescription = 'An error occured while while calling the backend API for path:' + path;
-    const error_description = errorBody.error_description ?? defaultErrorDescription;
-    throw new ApiError(response.status, errorBody, error_description);
+    let errorBody: ApiErrorData | null = null;
+    let errorDescription: string = `An error occurred while calling the backend API for path: ${path}`;
+
+    try {
+      errorBody = await response.json();
+      errorDescription = errorBody?.error_description ?? errorDescription;
+    } catch {
+      // JSON parsing failed, use default error description
+    }
+
+    throw new ApiError(response.status, errorBody, errorDescription);
   }
 
   const setCookies = getSetCookies(response);
+  console.log(setCookies);
   setCookies.forEach((cookie) => {
     cookies().set(cookie.name, cookie.value, {
       path: cookie.path,

@@ -1,14 +1,14 @@
 //  can use as error instanceof ApiError
-interface ApiErrorData {
+export interface ApiErrorData {
   error: string;
   error_description: string;
 }
 
 export class ApiError extends Error {
   status: number;
-  data: ApiErrorData;
+  data: ApiErrorData | null;
 
-  constructor(status: number, data: ApiErrorData, message: string) {
+  constructor(status: number, data: ApiErrorData | null, message: string) {
     super(message);
     this.status = status;
     this.data = data;
@@ -16,7 +16,7 @@ export class ApiError extends Error {
 }
 
 export const getErrorMessage = (error: unknown, defaultMessage: string) => {
-  if (error instanceof ApiError) {
+  if (error instanceof ApiError && error.data) {
     return error.data.error_description || defaultMessage;
   }
 

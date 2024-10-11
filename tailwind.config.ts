@@ -67,5 +67,6 @@ const config: Config = {
     typography(),
     require('tailwindcss-animate'), // eslint-disable-line @typescript-eslint/no-require-imports
   ],
+  safelist: ['lucide'],
 };
 export default config;

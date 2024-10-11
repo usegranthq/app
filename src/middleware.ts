@@ -1,7 +1,9 @@
 import { decodeJwt } from 'jose';
 import type { NextRequest } from 'next/server';
 import { NextResponse } from 'next/server';
-import { isNullOrUndefined } from './utils/validators';
+
+import { isNullOrUndefined } from '@/utils/validators';
+import { AUTH_COOKIE_NAME, VERIFY_COOKIE_NAME } from '@/constants/cookies';
 
 const isProtectedRoute = (pathname: string) => pathname.startsWith('/u');
 
@@ -24,8 +26,8 @@ const hasValidCookie = (request: NextRequest, cookieName: string) => {
 
 export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
-  const isAuthenticated = hasValidCookie(request, 'auth');
-  const isVerifyCookieValid = hasValidCookie(request, 'verify');
+  const isAuthenticated = hasValidCookie(request, AUTH_COOKIE_NAME);
+  const isVerifyCookieValid = hasValidCookie(request, VERIFY_COOKIE_NAME);
 
   if (isAuthenticated && !isProtectedRoute(pathname)) {
     return NextResponse.redirect(new URL('/u', request.url));

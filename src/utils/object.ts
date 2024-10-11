@@ -1,11 +1,9 @@
 export const formDataToObject = (formData: FormData) => {
-  const obj: { [key: string]: FormDataEntryValue } = {};
+  return Object.fromEntries(formData);
+};
 
-  formData.forEach((value, key) => {
-    obj[key] = value;
-  });
-
-  return obj;
+export const searchParamsToObject = (searchParams: URLSearchParams) => {
+  return Object.fromEntries(searchParams.entries());
 };
 
 export const isObject = <T extends Record<string, unknown>>(value: unknown): value is T => {

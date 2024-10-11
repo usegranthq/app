@@ -1,9 +1,12 @@
+import { Suspense } from 'react';
 import { SiGithub, SiGoogle } from '@icons-pack/react-simple-icons';
 import Link from 'next/link';
 
 import { Button } from '@/components/ui/button';
 import { Card, CardHeader, CardTitle, CardContent, CardFooter } from '@/components/ui/card';
+
 import LoginForm from './LoginForm';
+import RedirectErrorRenderer from './RedirectErrorRenderer';
 
 export default function Login() {
   return (
@@ -16,9 +19,11 @@ export default function Login() {
         </CardHeader>
         <CardContent className="space-y-6">
           <div className="grid grid-cols-2 gap-4">
-            <Button variant="outline">
-              <SiGithub className="mr-2 size-4" />
-              Github
+            <Button variant="outline" asChild>
+              <Link prefetch={false} href="/backend/v1/login/github">
+                <SiGithub className="mr-2 size-4" />
+                Github
+              </Link>
             </Button>
             <Button variant="outline">
               <SiGoogle className="mr-2 size-4" />
@@ -49,6 +54,9 @@ export default function Login() {
           </p>
         </CardFooter>
       </Card>
+      <Suspense>
+        <RedirectErrorRenderer />
+      </Suspense>
     </div>
   );
 }
