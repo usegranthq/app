@@ -25,9 +25,11 @@ export default function Login() {
                 Github
               </Link>
             </Button>
-            <Button variant="outline">
-              <SiGoogle className="mr-2 size-4" />
-              Google
+            <Button variant="outline" asChild>
+              <Link prefetch={false} href="/backend/v1/login/google">
+                <SiGoogle className="mr-2 size-4" />
+                Google
+              </Link>
             </Button>
           </div>
           <div className="relative">
