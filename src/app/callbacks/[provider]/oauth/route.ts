@@ -11,7 +11,7 @@ interface RouteParams {
   };
 }
 
-export const providers = ['github', 'google'];
+const providers = ['github', 'google'];
 
 export async function GET(request: NextRequest, { params }: RouteParams) {
   if (!providers.includes(params.provider)) {
