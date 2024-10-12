@@ -11,7 +11,7 @@ export async function login(formData: FormData): Promise<string | undefined> {
   };
 
   try {
-    await api('api/v1/login', {
+    await api('/v1/login', {
       method: 'POST',
       body: payload,
     });

@@ -18,7 +18,7 @@ const isTokenExpired = (expirationTime?: number) => {
 
 const hasValidCookie = (request: NextRequest, cookieName: string) => {
   const cookie = request.cookies.get(cookieName);
-  if (!cookie) return false;
+  if (!cookie?.value) return false;
 
   const claims = decodeJwt(cookie.value as string);
   return !isTokenExpired(claims.exp);

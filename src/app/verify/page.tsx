@@ -4,18 +4,17 @@ import { decodeJwt } from 'jose';
 
 import VerifyForm from './VerifyForm';
 import { isNullOrUndefined } from '@/utils/validators';
+import * as constants from '@/constants';
 
 const getEmailFromCookies = (): string | undefined => {
   const cookieStore = cookies();
-  const hasVerifyCookie = cookieStore.has('verify');
 
-  if (!hasVerifyCookie) {
+  const verifyCookie = cookieStore.get(constants.VERIFY_COOKIE);
+  if (!verifyCookie) {
     return;
   }
 
-  const verifyCookie = cookieStore.get('verify');
-  const claims = decodeJwt(verifyCookie?.value as string);
-
+  const claims = decodeJwt(verifyCookie.value);
   if (isNullOrUndefined(claims.email)) {
     return;
   }

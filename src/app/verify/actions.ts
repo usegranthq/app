@@ -12,7 +12,7 @@ export async function verify(formData: FormData): Promise<string | undefined> {
   };
 
   try {
-    await api('api/v1/verify', {
+    await api('/v1/verify', {
       method: 'POST',
       body: payload,
     });

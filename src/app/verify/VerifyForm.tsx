@@ -20,7 +20,7 @@ export default function VerifyForm() {
   return (
     <form className="grid gap-4" action={handleFormSubmit}>
       <div className="grid gap-2">
-        <Input id="code" name="code" type="text" required placeholder="123456" />
+        <Input id="code" name="code" type="text" required placeholder="e.g., dragon-slayer-quest" />
       </div>
       <div className="mt-4">
         <SubmitButton />

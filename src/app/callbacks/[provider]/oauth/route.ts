@@ -21,7 +21,7 @@ export async function GET(request: NextRequest, { params }: RouteParams) {
   const payload = searchParamsToObject(request.nextUrl.searchParams);
 
   try {
-    await api(`/api/v1/verify/${params.provider}`, {
+    await api(`/v1/verify/${params.provider}`, {
       method: 'POST',
       body: payload,
     });

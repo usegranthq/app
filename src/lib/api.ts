@@ -1,3 +1,4 @@
+import path from 'node:path';
 import { parseSetCookie, ResponseCookie } from '@edge-runtime/cookies';
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
@@ -31,8 +32,8 @@ interface ApiOptions<B extends BodyInitOrObject> extends Omit<RequestInit, 'body
   body?: B;
 }
 
-export async function api<T, B extends BodyInitOrObject>(path: string, options: ApiOptions<B> = {}): Promise<T> {
-  const url = new URL(path, backendURL);
+export async function api<T, B extends BodyInitOrObject>(apiPath: string, options: ApiOptions<B> = {}): Promise<T> {
+  const url = new URL(path.posix.join('/api', apiPath), backendURL);
 
   const cookieString = cookies().toString();
 
@@ -67,8 +68,14 @@ export async function api<T, B extends BodyInitOrObject>(path: string, options: 
 
   const setCookies = getSetCookies(response);
   setCookies.forEach((cookie) => {
+    if (!cookie.value) {
+      cookies().delete(cookie.name);
+      return;
+    }
+
     cookies().set(cookie.name, cookie.value, {
       path: cookie.path,
+      maxAge: cookie.maxAge,
       httpOnly: cookie.httpOnly,
       secure: cookie.secure,
       sameSite: cookie.sameSite,
