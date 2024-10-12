@@ -1,9 +1,11 @@
 import { parseSetCookie, ResponseCookie } from '@edge-runtime/cookies';
 import { cookies } from 'next/headers';
+import { redirect } from 'next/navigation';
 
 import { ApiError, ApiErrorData } from '@/utils/error';
 import { isNotNullOrUndefined } from '@/utils/validators';
 import { isObject } from '@/utils/object';
+import * as constants from '@/constants';
 
 const backendURL = process.env.BACKEND_URL;
 
@@ -46,6 +48,12 @@ export async function api<T, B extends BodyInitOrObject>(path: string, options: 
   if (!response.ok) {
     let errorBody: ApiErrorData | null = null;
     let errorDescription: string = `An error occurred while calling the backend API for path: ${path}`;
+
+    if (response.status === 401) {
+      cookies().delete(constants.AUTH_COOKIE);
+      cookies().delete(constants.VERIFY_COOKIE);
+      redirect('/login');
+    }
 
     try {
       errorBody = await response.json();
