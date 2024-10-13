@@ -1,16 +1,22 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
+import { toast } from 'sonner';
 
 import { DropdownMenuItem, DropdownMenuShortcut } from '@/components/ui/dropdown-menu';
-import clientApi from '@/lib/api/client';
+
+import { logout } from './action';
 
 export function LogoutDropItem() {
   const router = useRouter();
 
   const handleLogout = async () => {
-    await clientApi.post('/v1/u/logout');
-    router.push('/login');
+    try {
+      await logout();
+      router.push('/login');
+    } catch {
+      toast.error('Failed to logout');
+    }
   };
 
   return (
