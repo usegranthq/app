@@ -30,11 +30,11 @@ export default function Login() {
   }
 
   return (
-    <div className="min-h-screen flex flex-col justify-center items-center">
+    <div className="flex min-h-screen flex-col items-center justify-center">
       <div className="max-w-sm">
-        <h1 className="text-2xl font-bold text-center">Verification</h1>
-        <p className="mb-10 text-center text-sm mt-2">
-          We have sent you a verification code to <span className="text-muted-foreground font-medium">{email}.</span>{' '}
+        <h1 className="text-center text-2xl font-bold">Verification</h1>
+        <p className="mb-10 mt-2 text-center text-sm">
+          We have sent you a verification code to <span className="font-medium text-muted-foreground">{email}.</span>{' '}
           Enter it below
         </p>
         <VerifyForm />

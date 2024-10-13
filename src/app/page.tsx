@@ -3,15 +3,15 @@ import Link from 'next/link';
 
 export default function Home() {
   return (
-    <div className="min-h-dvh flex flex-col justify-center items-center gap-8 mx-auto">
+    <div className="mx-auto flex min-h-dvh flex-col items-center justify-center gap-8">
       <div>
-        <h1 className="text-5xl font-bold text-center">Simplify Machine-to-Machine Auth</h1>
-        <p className="text-center max-w-xl text-base font-medium mt-2.5 mx-auto text-gray-400">
+        <h1 className="text-center text-5xl font-bold">Simplify Machine-to-Machine Auth</h1>
+        <p className="mx-auto mt-2.5 max-w-xl text-center text-base font-medium text-gray-400">
           Set up secure M2M authentication in minutes. Built on OAuth/OpenID standards for maximum security.
         </p>
       </div>
 
-      <div className="flex gap-4 items-center flex-col sm:flex-row">
+      <div className="flex flex-col items-center gap-4 sm:flex-row">
         <Button asChild>
           <Link href="/login">Get started</Link>
         </Button>

@@ -10,10 +10,10 @@ import RedirectErrorRenderer from './RedirectErrorRenderer';
 
 export default function Login() {
   return (
-    <div className="min-h-screen flex flex-col justify-center items-center">
-      <Card className="w-full p-5 max-w-sm space-y-4 rounded-xl shadow-sm">
+    <div className="flex min-h-screen flex-col items-center justify-center">
+      <Card className="w-full max-w-sm space-y-4 rounded-xl p-5 shadow-sm">
         <CardHeader>
-          <CardTitle className="text-2xl font-bold text-center">
+          <CardTitle className="text-center text-2xl font-bold">
             Hey there <span>👋</span>
           </CardTitle>
         </CardHeader>
@@ -42,7 +42,7 @@ export default function Login() {
           </div>
           <LoginForm />
         </CardContent>
-        <CardFooter className="text-xs text-center">
+        <CardFooter className="text-center text-xs">
           <p>
             By continuing, you agree to our{' '}
             <Link href="/terms" className="hover:underline">

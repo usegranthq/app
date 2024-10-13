@@ -6,10 +6,10 @@ import Link from 'next/link';
 
 export default function ErrorComponent() {
   return (
-    <div className="h-dvh flex flex-col items-center justify-center p-4">
-      <AlertOctagon className="h-16 w-16 text-destructive mb-4" />
-      <h1 className="text-4xl font-bold mb-4 text-center font-mono">Oops! Something went wrong</h1>
-      <p className="text-muted-foreground text-sm font-medium mb-8 text-center max-w-md">
+    <div className="flex h-dvh flex-col items-center justify-center p-4">
+      <AlertOctagon className="mb-4 h-16 w-16 text-destructive" />
+      <h1 className="mb-4 text-center font-mono text-4xl font-bold">Oops! Something went wrong</h1>
+      <p className="mb-8 max-w-md text-center text-sm font-medium text-muted-foreground">
         It seems our digital realm encountered an issue. Please try reloading the page. If the problem continues,
         contact support at{' '}
         <Link href="mailto:support@usegrant.dev" className="hover:underline">
