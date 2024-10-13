@@ -18,7 +18,7 @@ import { minimumDelay } from '@/utils/time';
 
 export async function UserNav() {
   const initialTime = Date.now();
-  const response = await api.get<User>('/v1/u/me');
+  const user = await api.get<User>('v1/u/me').json();
 
   const currentTime = Date.now();
   await minimumDelay(2_000, initialTime, currentTime);
@@ -28,7 +28,7 @@ export async function UserNav() {
       <DropdownMenuTrigger asChild>
         <Button variant="ghost" className="relative h-8 w-8 rounded-full">
           <Avatar className="h-8 w-8">
-            <AvatarFallback>{response.data.email.charAt(0)}</AvatarFallback>
+            <AvatarFallback>{user.email.charAt(0)}</AvatarFallback>
           </Avatar>
         </Button>
       </DropdownMenuTrigger>
@@ -36,7 +36,7 @@ export async function UserNav() {
         <DropdownMenuLabel className="font-normal">
           <div className="flex flex-col space-y-1">
             <p className="text-sm font-medium leading-none">hey there 👋</p>
-            <p className="text-xs leading-none text-muted-foreground mt-0.5">{response.data.email}</p>
+            <p className="text-xs leading-none text-muted-foreground mt-0.5">{user.email}</p>
           </div>
         </DropdownMenuLabel>
         <DropdownMenuSeparator />

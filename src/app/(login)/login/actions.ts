@@ -11,7 +11,7 @@ export async function login(formData: FormData): Promise<string | undefined> {
   };
 
   try {
-    await api.post('/v1/login', payload);
+    await api.post('v1/login', { json: payload });
   } catch (error) {
     return getErrorMessage(error, 'Unable to login with email. Try again.');
   }

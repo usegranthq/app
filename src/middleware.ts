@@ -29,7 +29,7 @@ const next = () => NextResponse.next();
 
 const validateUserSession = async () => {
   try {
-    await api.get('/v1/u/refresh');
+    await api.get('v1/u/refresh');
   } catch {
     return false;
   }

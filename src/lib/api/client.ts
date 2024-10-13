@@ -1,8 +1,9 @@
-import axios from 'axios';
+import ky from 'ky';
 
-export const clientApi = axios.create({
-  baseURL: '/api/backend',
-  withCredentials: true,
+export const clientApi = ky.create({
+  prefixUrl: '/api/backend',
+  credentials: 'include',
+  hooks: {},
 });
 
 export default clientApi;

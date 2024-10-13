@@ -21,7 +21,7 @@ export async function GET(request: NextRequest, { params }: RouteParams) {
   const payload = searchParamsToObject(request.nextUrl.searchParams);
 
   try {
-    await api.post(`/v1/verify/${params.provider}`, payload);
+    await api.post(`v1/verify/${params.provider}`, { json: payload });
   } catch (error) {
     const errorMessage = getErrorMessage(error, `Failed to login to ${params.provider}`);
     redirect(`/login?redirect_error=${errorMessage}`, RedirectType.replace);
