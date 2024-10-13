@@ -1,7 +1,12 @@
-import { request } from '@/lib/api';
+import { minimumDelay } from '@/utils/time';
+
+const minimumLoadingTime = 1000;
 
 export default async function UserPage() {
-  await request('/v1/users/me');
+  const initialTime = Date.now();
+  await fetch(`http://localhost:7500/api/me`);
+  const currentTime = Date.now();
+  await minimumDelay(minimumLoadingTime, initialTime, currentTime);
 
   return <div>User page</div>;
 }
