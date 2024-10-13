@@ -3,7 +3,7 @@
 import { cookies } from 'next/headers';
 import { redirect, RedirectType } from 'next/navigation';
 
-import { api } from '@/lib/api';
+import api from '@/lib/api';
 import { getErrorMessage } from '@/utils/error';
 
 export async function verify(formData: FormData): Promise<string | undefined> {

@@ -24,7 +24,7 @@ export default function UserLoading() {
   return (
     <div className="flex h-screen w-full items-center justify-center">
       <div className="flex flex-col items-center gap-2">
-        <LoaderIcon className="animate-spin w-6 h-6" />
+        <LoaderIcon className="animate-spin size-6" />
         <h1 className="font-bold font-mono tracking-wider">{randomText}</h1>
       </div>
     </div>
