@@ -11,7 +11,7 @@ import RedirectErrorRenderer from './RedirectErrorRenderer';
 export default function Login() {
   return (
     <div className="min-h-screen flex flex-col justify-center items-center">
-      <Card className="w-full p-5 max-w-sm space-y-4 rounded-xl shadow-md">
+      <Card className="w-full p-5 max-w-sm space-y-4 rounded-xl shadow-sm">
         <CardHeader>
           <CardTitle className="text-2xl font-bold text-center">
             Hey there <span>👋</span>

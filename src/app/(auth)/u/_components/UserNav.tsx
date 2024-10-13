@@ -1,4 +1,4 @@
-import { User } from '@/app/types/app.types';
+import { User } from '@/types/app.types';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import {

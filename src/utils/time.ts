@@ -8,7 +8,6 @@ export const delay = (ms: number): Promise<void> => {
 // @param currentTime - current time in milliseconds
 export const minimumDelay = async (min: number, initialTime: number, currentTime: number): Promise<void> => {
   const totalTime = currentTime - initialTime;
-  console.log('totalTime', totalTime);
   if (totalTime < min) {
     await delay(min - totalTime);
   }
