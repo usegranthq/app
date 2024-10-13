@@ -12,11 +12,7 @@ export async function verify(formData: FormData): Promise<string | undefined> {
   };
 
   try {
-    await api('/v1/verify', {
-      method: 'POST',
-      body: payload,
-    });
-
+    await api.post('/v1/verify', payload);
     cookies().delete('verify');
   } catch (error) {
     return getErrorMessage(error, 'Unable to verify code. Try again.');
