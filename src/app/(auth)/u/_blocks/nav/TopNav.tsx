@@ -3,13 +3,13 @@ import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 
-import { NavUserContent } from './Sidebar/NavUser';
+import { NavUserContent } from './NavUser';
 
-interface UserNavProps {
+interface TapNavProps {
   user: User;
 }
 
-export async function UserNav({ user }: UserNavProps) {
+export async function TapNav({ user }: TapNavProps) {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>

@@ -13,6 +13,7 @@ interface NavItem {
   icon: LucideIcon;
   isActive?: boolean;
   items?: Pick<NavItem, 'title' | 'url'>[];
+  defaultOpen?: boolean;
 }
 
 interface NavMainProps {
@@ -24,7 +25,7 @@ export function NavMain({ className, items }: NavMainProps) {
   return (
     <ul className={cn('grid gap-0.5', className)}>
       {items.map((item) => (
-        <Collapsible key={item.title} asChild defaultOpen={item.isActive}>
+        <Collapsible key={item.title} asChild defaultOpen={item.isActive ?? item.defaultOpen}>
           <li>
             <div className="relative flex items-center">
               <Link

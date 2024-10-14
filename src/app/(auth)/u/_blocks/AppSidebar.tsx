@@ -21,10 +21,10 @@ import {
 } from '@/components/ui/sidebar';
 import { User } from '@/types/app.types';
 
-import { NavMain } from './NavMain';
-import { NavSecondary } from './NavSecondary';
-import { NavUser } from './NavUser';
-import { ProjectSwitcher } from './ProjectSwitcher';
+import { NavMain } from './nav/NavMain';
+import { NavSecondary } from './nav/NavSecondary';
+import { NavUser } from './nav/NavUser';
+import { ProjectSwitcher } from './nav/ProjectSwitcher';
 
 const data = {
   navMain: [
@@ -53,17 +53,22 @@ const data = {
           title: 'Assume role from Azure',
           url: '#',
         },
+        {
+          title: 'More...',
+          url: '#',
+        },
       ],
     },
     {
       title: 'API',
       url: '#',
       icon: Code2Icon,
+      defaultOpen: true,
       items: [
-        {
-          title: 'Create Project',
-          url: '#',
-        },
+        // {
+        //   title: 'Create Project',
+        //   url: '#',
+        // },
         {
           title: 'Create Client',
           url: '#',
@@ -78,6 +83,7 @@ const data = {
       title: 'Settings',
       url: '#',
       icon: Settings2Icon,
+      defaultOpen: true,
       items: [
         {
           title: 'General',
@@ -137,7 +143,7 @@ export function AppSidebar({ user }: AppSidebarProps) {
       </SidebarHeader>
       <SidebarContent>
         <SidebarItem>
-          <SidebarLabel>Platform</SidebarLabel>
+          <SidebarLabel>Project</SidebarLabel>
           <NavMain items={data.navMain} />
         </SidebarItem>
         <SidebarItem className="mt-auto">

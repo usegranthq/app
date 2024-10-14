@@ -1,7 +1,7 @@
 import { SidebarTrigger } from '@/components/ui/sidebar';
 import { User } from '@/types/app.types';
 
-import { UserNav } from './UserNav';
+import { TapNav } from './nav/TopNav';
 import { ThemeSwitcher } from './ThemeSwitcher';
 
 interface TopbarProps {
@@ -16,7 +16,7 @@ export default function Topbar({ user }: TopbarProps) {
       </div>
       <div className="ml-auto flex items-center space-x-2.5">
         <ThemeSwitcher />
-        <UserNav user={user} />
+        <TapNav user={user} />
       </div>
     </div>
   );

@@ -6,7 +6,7 @@ import api from '@/lib/api';
 import { minimumDelay } from '@/utils/time';
 
 import SWR from './_blocks/SWR';
-import { AppSidebar } from './_blocks/Sidebar/AppSidebar';
+import { AppSidebar } from './_blocks/AppSidebar';
 import Topbar from './_blocks/Topbar';
 
 export default async function UserLayout({ children }: { children: React.ReactNode }) {

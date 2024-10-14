@@ -1,4 +1,4 @@
-import { BadgeCheckIcon, SettingsIcon, ChevronsUpDownIcon, CreditCardIcon } from 'lucide-react';
+import { BadgeCheckIcon, LockIcon, ChevronsUpDownIcon, CreditCardIcon } from 'lucide-react';
 
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import {
@@ -48,8 +48,8 @@ export const NavUserContent = ({ user }: NavUserProps) => {
           <DropdownMenuShortcut>⌘B</DropdownMenuShortcut>
         </DropdownMenuItem>
         <DropdownMenuItem className="gap-2">
-          <SettingsIcon className="text-muted-foreground" />
-          Settings
+          <LockIcon className="text-muted-foreground" />
+          Security
           <DropdownMenuShortcut>⌘S</DropdownMenuShortcut>
         </DropdownMenuItem>
       </DropdownMenuGroup>
