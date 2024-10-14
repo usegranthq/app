@@ -84,7 +84,7 @@ const data = {
           url: '#',
         },
         {
-          title: 'Limits',
+          title: 'Custom Domains',
           url: '#',
         },
         {
