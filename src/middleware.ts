@@ -63,11 +63,13 @@ const handleVerifyRoute = (request: NextRequest) => {
   return next();
 };
 
+const authRoutes = ['/login', '/verify'];
+
 const handleDefaultRoute = (request: NextRequest) => {
   const isAuthCookieValid = hasValidCookie(request, constants.AUTH_COOKIE);
   if (!isAuthCookieValid) return next();
 
-  return redirectToUserPage(request);
+  return authRoutes.includes(request.nextUrl.pathname) ? redirectToUserPage(request) : next();
 };
 
 export async function middleware(request: NextRequest) {
