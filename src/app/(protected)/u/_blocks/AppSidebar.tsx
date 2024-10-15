@@ -1,16 +1,3 @@
-'use client';
-
-import {
-  BookOpenIcon,
-  Code2Icon,
-  FrameIcon,
-  LifeBuoyIcon,
-  MapIcon,
-  PieChartIcon,
-  SendIcon,
-  Settings2Icon,
-} from 'lucide-react';
-
 import {
   Sidebar,
   SidebarContent,
@@ -26,107 +13,6 @@ import { NavSecondary } from './nav/NavSecondary';
 import { NavUser } from './nav/NavUser';
 import { ProjectSwitcher } from './nav/ProjectSwitcher';
 
-const data = {
-  navMain: [
-    {
-      title: 'Documentation',
-      url: '#',
-      icon: BookOpenIcon,
-      items: [
-        {
-          title: 'Get Started',
-          url: '#',
-        },
-        {
-          title: 'Assume role from AWS',
-          url: '#',
-        },
-        {
-          title: 'Service Accounts in GCP',
-          url: '#',
-        },
-        {
-          title: 'Assume role from Azure',
-          url: '#',
-        },
-        {
-          title: 'More...',
-          url: '#',
-        },
-      ],
-    },
-    {
-      title: 'API',
-      url: '#',
-      icon: Code2Icon,
-      defaultOpen: true,
-      items: [
-        // {
-        //   title: 'Create Project',
-        //   url: '#',
-        // },
-        {
-          title: 'Create Client',
-          url: '#',
-        },
-        {
-          title: 'Get Access Token',
-          url: '#',
-        },
-      ],
-    },
-    {
-      title: 'Settings',
-      url: '#',
-      icon: Settings2Icon,
-      defaultOpen: true,
-      items: [
-        {
-          title: 'General',
-          url: '#',
-        },
-        {
-          title: 'Custom Domains',
-          url: '#',
-        },
-        {
-          title: 'Advanced',
-          url: '#',
-        },
-      ],
-    },
-  ],
-  navSecondary: [
-    {
-      title: 'Support',
-      url: 'mailto:support@usegrant.dev',
-      icon: LifeBuoyIcon,
-    },
-    {
-      title: 'Feedback',
-      url: 'mailto:feedback@usegrant.dev',
-      icon: SendIcon,
-    },
-  ],
-  projects: [
-    {
-      name: 'Design Engineering',
-      description: 'This project focuses on the design and engineering aspects of our platform.',
-      icon: FrameIcon,
-    },
-    {
-      name: 'Sales & Marketing',
-      description: 'Sales and marketing aspects of our platform.',
-      icon: PieChartIcon,
-    },
-    {
-      name: 'Travel',
-      description: 'Travel aspects of our platform.',
-      icon: MapIcon,
-    },
-  ],
-};
-
 interface AppSidebarProps {
   user: User;
 }
@@ -135,16 +21,16 @@ export function AppSidebar({ user }: AppSidebarProps) {
   return (
     <Sidebar defaultChecked={true}>
       <SidebarHeader className="h-12">
-        <ProjectSwitcher projects={data.projects} />
+        <ProjectSwitcher />
       </SidebarHeader>
       <SidebarContent>
         <SidebarItem>
           <SidebarLabel>Project</SidebarLabel>
-          <NavMain items={data.navMain} />
+          <NavMain />
         </SidebarItem>
         <SidebarItem className="mt-auto">
           <SidebarLabel>Help</SidebarLabel>
-          <NavSecondary items={data.navSecondary} />
+          <NavSecondary />
         </SidebarItem>
       </SidebarContent>
       <SidebarFooter>

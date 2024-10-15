@@ -1,7 +1,7 @@
 'use client';
 
-import * as React from 'react';
-import { ChevronsUpDown, LucideIcon, Plus } from 'lucide-react';
+import { useState } from 'react';
+import { ChevronsUpDown, FrameIcon, LucideIcon, MapIcon, PieChartIcon, Plus } from 'lucide-react';
 
 import {
   DropdownMenu,
@@ -19,12 +19,26 @@ interface Project {
   description: string;
 }
 
-interface ProjectSwitcherProps {
-  projects: Project[];
-}
+const projects: Project[] = [
+  {
+    name: 'Design Engineering',
+    description: 'This project focuses on the design and engineering aspects of our platform.',
+    icon: FrameIcon,
+  },
+  {
+    name: 'Sales & Marketing',
+    description: 'Sales and marketing aspects of our platform.',
+    icon: PieChartIcon,
+  },
+  {
+    name: 'Travel',
+    description: 'Travel aspects of our platform.',
+    icon: MapIcon,
+  },
+];
 
-export function ProjectSwitcher({ projects }: ProjectSwitcherProps) {
-  const [activeProject, setActiveProject] = React.useState(projects[0]);
+export function ProjectSwitcher() {
+  const [activeProject, setActiveProject] = useState(projects[0]);
 
   return (
     <DropdownMenu>

@@ -1,29 +1,30 @@
 'use client';
 
 import Link from 'next/link';
-import { type LucideIcon } from 'lucide-react';
+import { LifeBuoyIcon, SendIcon, type LucideIcon } from 'lucide-react';
 
 import { cn } from '@/lib/utils';
 
-interface NavItem {
-  title: string;
-  url: string;
-  icon: LucideIcon;
-  items?: Pick<NavItem, 'title' | 'url'>[];
-}
+const items = [
+  {
+    title: 'Support',
+    url: 'mailto:support@usegrant.dev',
+    icon: LifeBuoyIcon,
+  },
+  {
+    title: 'Feedback',
+    url: 'mailto:feedback@usegrant.dev',
+    icon: SendIcon,
+  },
+];
 
-interface NavSecondaryProps {
-  className?: string;
-  items: NavItem[];
-}
-
-export function NavSecondary({ className, items }: NavSecondaryProps) {
+export function NavSecondary() {
   if (!items?.length) {
     return null;
   }
 
   return (
-    <ul className={cn('grid gap-0.5', className)}>
+    <ul className={cn('grid gap-0.5')}>
       {items.map((item) => (
         <li key={item.title}>
           <Link

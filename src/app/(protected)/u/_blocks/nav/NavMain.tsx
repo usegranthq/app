@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { ChevronRight, type LucideIcon } from 'lucide-react';
+import { BookOpenIcon, ChevronRight, Code2Icon, Settings2Icon, type LucideIcon } from 'lucide-react';
 
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
@@ -16,16 +16,81 @@ interface NavItem {
   defaultOpen?: boolean;
 }
 
-interface NavMainProps {
-  className?: string;
-  items: NavItem[];
-}
+const items: NavItem[] = [
+  {
+    title: 'Documentation',
+    url: '#',
+    icon: BookOpenIcon,
+    items: [
+      {
+        title: 'Get Started',
+        url: '#',
+      },
+      {
+        title: 'Assume role from AWS',
+        url: '#',
+      },
+      {
+        title: 'Service Accounts in GCP',
+        url: '#',
+      },
+      {
+        title: 'Assume role from Azure',
+        url: '#',
+      },
+      {
+        title: 'More...',
+        url: '#',
+      },
+    ],
+  },
+  {
+    title: 'API',
+    url: '#',
+    icon: Code2Icon,
+    defaultOpen: true,
+    items: [
+      // {
+      //   title: 'Create Project',
+      //   url: '#',
+      // },
+      {
+        title: 'Create Client',
+        url: '#',
+      },
+      {
+        title: 'Get Access Token',
+        url: '#',
+      },
+    ],
+  },
+  {
+    title: 'Settings',
+    url: '#',
+    icon: Settings2Icon,
+    defaultOpen: true,
+    items: [
+      {
+        title: 'General',
+        url: '#',
+      },
+      {
+        title: 'Custom Domains',
+        url: '#',
+      },
+      {
+        title: 'Advanced',
+        url: '#',
+      },
+    ],
+  },
+];
 
-export function NavMain({ className, items }: NavMainProps) {
+export function NavMain({ className }: { className?: string }) {
   return (
     <ul className={cn('grid gap-0.5', className)}>
       {items.map((item) => (
-        <Collapsible key={item.title} asChild defaultOpen={item.isActive ?? item.defaultOpen}>
+        <Collapsible key={item.title} asChild defaultOpen={item.defaultOpen}>
           <li>
             <div className="relative flex items-center">
               <Link
