@@ -1,9 +1,9 @@
 import { User } from '@/types/app.types';
-import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 
 import { NavUserContent } from './NavUser';
+import { UserAvatar } from './UserAvatar';
 
 interface TapNavProps {
   user: User;
@@ -13,10 +13,8 @@ export async function TapNav({ user }: TapNavProps) {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="ghost" className="relative h-8 w-8 rounded-full">
-          <Avatar className="h-8 w-8">
-            <AvatarFallback className="font-medium uppercase">{user.email.charAt(0)}</AvatarFallback>
-          </Avatar>
+        <Button variant="ghost" className="relative size-8 rounded-full">
+          <UserAvatar user={user} />
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-56" align="end" forceMount>

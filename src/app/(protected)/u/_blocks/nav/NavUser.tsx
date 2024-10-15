@@ -1,6 +1,5 @@
 import { BadgeCheckIcon, LockIcon, ChevronsUpDownIcon, CreditCardIcon } from 'lucide-react';
 
-import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -14,6 +13,7 @@ import {
 import { User } from '@/types/app.types';
 
 import { LogoutDropItem } from './LogoutDropItem';
+import { UserAvatar } from './UserAvatar';
 
 interface NavUserProps {
   user: User;
@@ -24,9 +24,7 @@ export const NavUserContent = ({ user }: NavUserProps) => {
     <>
       <DropdownMenuLabel className="p-0 font-normal">
         <div className="flex items-center gap-2 px-1 py-1.5 text-left text-sm transition-all">
-          <Avatar className="h-7 w-7 rounded-md">
-            <AvatarFallback className="uppercase">{user.email.charAt(0)}</AvatarFallback>
-          </Avatar>
+          <UserAvatar user={user} className="rounded-md border" />
           <div className="grid flex-1">
             <div className="font-medium">hey there 👋</div>
             <div className="overflow-hidden text-xs text-muted-foreground">
@@ -64,9 +62,7 @@ export function NavUser({ user }: NavUserProps) {
     <DropdownMenu>
       <DropdownMenuTrigger className="w-full rounded-md outline-none ring-ring hover:bg-accent focus-visible:ring-2 data-[state=open]:bg-accent">
         <div className="flex items-center gap-2 px-2 py-1.5 text-left text-sm transition-all">
-          <Avatar className="size-7 rounded-md border">
-            <AvatarFallback className="rounded-md uppercase">{user.email.charAt(0)}</AvatarFallback>
-          </Avatar>
+          <UserAvatar user={user} className="rounded-md border" />
           <div className="grid flex-1 leading-none">
             {/* <div className="font-medium">{user.name}</div> */}
             <div className="overflow-hidden text-sm text-muted-foreground">
