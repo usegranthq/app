@@ -34,10 +34,6 @@ const data = {
       icon: BookOpenIcon,
       items: [
         {
-          title: 'Introduction',
-          url: '#',
-        },
-        {
           title: 'Get Started',
           url: '#',
         },
