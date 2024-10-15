@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { LifeBuoyIcon, SendIcon, type LucideIcon } from 'lucide-react';
+import { LifeBuoyIcon, SendIcon } from 'lucide-react';
 
 import { cn } from '@/lib/utils';
 
