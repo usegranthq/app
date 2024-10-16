@@ -1,0 +1,67 @@
+'use client';
+
+import { toast } from 'sonner';
+import { forwardRef, useRef } from 'react';
+import { useFormStatus } from 'react-dom';
+
+import { Button, ButtonProps } from '@/components/ui/button';
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from '@/components/ui/alert-dialog';
+import { deleteAccount } from '@/actions/account';
+
+const DeleteButton = forwardRef<HTMLButtonElement, ButtonProps>((props, ref) => {
+  const { pending } = useFormStatus();
+
+  return (
+    <Button variant="destructive" ref={ref} {...props} disabled={pending}>
+      {pending ? 'Deleting your account...' : 'Delete account'}
+    </Button>
+  );
+});
+
+export default function DeleteAccount() {
+  const formRef = useRef<HTMLFormElement>(null);
+
+  const handleDeleteClick = async () => {
+    const error = await deleteAccount();
+    if (error) {
+      toast.error(error);
+    }
+  };
+
+  return (
+    <div>
+      <form ref={formRef} action={handleDeleteClick}>
+        <AlertDialog>
+          <AlertDialogTrigger asChild>
+            <DeleteButton />
+          </AlertDialogTrigger>
+          <AlertDialogContent>
+            <AlertDialogHeader>
+              <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+              <AlertDialogDescription>
+                This action cannot be undone. This will permanently delete your account and remove your data from our
+                servers.
+              </AlertDialogDescription>
+            </AlertDialogHeader>
+            <AlertDialogFooter>
+              <AlertDialogCancel>Cancel</AlertDialogCancel>
+              <AlertDialogAction type="button" onClick={() => formRef.current?.requestSubmit()}>
+                Continue
+              </AlertDialogAction>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialog>
+      </form>
+    </div>
+  );
+}

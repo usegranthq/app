@@ -6,7 +6,7 @@ import { toast } from 'sonner';
 import { Input } from '@/components/ui/input';
 
 import SubmitButton from './SubmitButton';
-import { verify } from './actions';
+import { verify } from '@/actions';
 
 export default function VerifyForm() {
   const handleFormSubmit = async (formData: FormData) => {

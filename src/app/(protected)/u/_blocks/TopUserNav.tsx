@@ -1,24 +1,19 @@
-import { User } from '@/types/app.types';
 import { Button } from '@/components/ui/button';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 
-import { NavUserContent } from './NavUser';
 import { UserAvatar } from './UserAvatar';
+import UserNavContent from './UserNavContent';
 
-interface TapNavProps {
-  user: User;
-}
-
-export async function TapNav({ user }: TapNavProps) {
+export async function TopUserNav() {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button variant="ghost" className="relative size-8 rounded-full">
-          <UserAvatar user={user} />
+          <UserAvatar />
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-56" align="end" forceMount>
-        <NavUserContent user={user} />
+        <UserNavContent />
       </DropdownMenuContent>
     </DropdownMenu>
   );

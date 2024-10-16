@@ -14,7 +14,7 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en" className="dark" style={{ colorScheme: 'dark' }} suppressHydrationWarning>
-      <body className={`${GeistSans.variable} ${GeistMono.variable} font-sans`}>
+      <body className={`${GeistSans.variable} ${GeistMono.variable} mx-auto max-w-screen-2xl font-sans`}>
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
           {children}
           <Toaster richColors />

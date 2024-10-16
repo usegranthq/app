@@ -6,7 +6,7 @@ import { LogOutIcon } from 'lucide-react';
 
 import { DropdownMenuItem, DropdownMenuShortcut } from '@/components/ui/dropdown-menu';
 
-import { logout } from '../../action';
+import { logout } from '@/actions';
 
 export function LogoutDropItem() {
   const router = useRouter();

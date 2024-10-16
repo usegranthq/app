@@ -1,7 +1,12 @@
-import { Button } from '@/components/ui/button';
+import { cookies } from 'next/headers';
 import Link from 'next/link';
 
+import { Button } from '@/components/ui/button';
+import constants from '@/constants';
+
 export default function Home() {
+  const isLoggedIn = cookies().get(constants.AUTH_COOKIE);
+
   return (
     <div className="mx-auto flex min-h-dvh flex-col items-center justify-center gap-8">
       <div>
@@ -13,7 +18,7 @@ export default function Home() {
 
       <div className="flex flex-col items-center gap-4 sm:flex-row">
         <Button asChild>
-          <Link href="/login">Get started</Link>
+          <Link href="/login">{isLoggedIn ? 'Launch app 🚀' : 'Get started'}</Link>
         </Button>
         <Button variant="secondary">Read the guides</Button>
       </div>

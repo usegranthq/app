@@ -6,18 +6,13 @@ import {
   SidebarItem,
   SidebarLabel,
 } from '@/components/ui/sidebar';
-import { User } from '@/types/app.types';
 
-import { NavMain } from './nav/NavMain';
-import { NavSecondary } from './nav/NavSecondary';
-import { NavUser } from './nav/NavUser';
-import { ProjectSwitcher } from './nav/ProjectSwitcher';
+import { NavMain } from './sidenav/NavMain';
+import { NavSecondary } from './sidenav/NavSecondary';
+import { NavUser } from './sidenav/NavUser';
+import { ProjectSwitcher } from './sidenav/ProjectSwitcher';
 
-interface AppSidebarProps {
-  user: User;
-}
-
-export function AppSidebar({ user }: AppSidebarProps) {
+export function AppSidebar() {
   return (
     <Sidebar defaultChecked={true}>
       <SidebarHeader className="h-12">
@@ -34,7 +29,7 @@ export function AppSidebar({ user }: AppSidebarProps) {
         </SidebarItem>
       </SidebarContent>
       <SidebarFooter>
-        <NavUser user={user} />
+        <NavUser />
       </SidebarFooter>
     </Sidebar>
   );
