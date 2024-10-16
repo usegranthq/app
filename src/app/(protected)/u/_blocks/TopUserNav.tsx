@@ -1,8 +1,8 @@
 import { Button } from '@/components/ui/button';
-import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
+import { DropdownMenu, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 
 import { UserAvatar } from './UserAvatar';
-import UserNavContent from './UserNavContent';
+import UserNavDropdown from './UserNavDropdown';
 
 export async function TopUserNav() {
   return (
@@ -12,9 +12,7 @@ export async function TopUserNav() {
           <UserAvatar />
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent className="w-56" align="end" forceMount>
-        <UserNavContent />
-      </DropdownMenuContent>
+      <UserNavDropdown forceMount />
     </DropdownMenu>
   );
 }

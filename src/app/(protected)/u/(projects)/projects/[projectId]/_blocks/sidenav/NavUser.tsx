@@ -5,8 +5,8 @@ import { ChevronsUpDownIcon } from 'lucide-react';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import { useUser } from '@/contexts/User';
 
-import { UserAvatar } from '../../../../../_blocks/UserAvatar';
-import UserNavContent from '../../../../../_blocks/UserNavContent';
+import { UserAvatar } from '@/app/(protected)/u/_blocks/UserAvatar';
+import UserNavDropdown from '@/app/(protected)/u/_blocks/UserNavDropdown';
 
 export function NavUser() {
   const user = useUser();
@@ -25,9 +25,7 @@ export function NavUser() {
           <ChevronsUpDownIcon className="ml-auto mr-0.5 size-4 text-muted-foreground/50" />
         </div>
       </DropdownMenuTrigger>
-      <DropdownMenuContent className="w-56" align="end" side="right" sideOffset={4}>
-        <UserNavContent />
-      </DropdownMenuContent>
+      <UserNavDropdown side="right" sideOffset={4} />
     </DropdownMenu>
   );
 }
