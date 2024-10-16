@@ -27,7 +27,7 @@ const CreateTokenButton = () => {
 
   return (
     <Button className="ml-auto" disabled={pending}>
-      Create
+      {pending ? 'Creating api token...' : 'Create'}
     </Button>
   );
 };

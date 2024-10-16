@@ -1,15 +1,12 @@
+import { Suspense } from 'react';
+
 import { Card, CardHeader, CardTitle } from '@/components/ui/card';
 
-import api from '@/lib/api';
-import { Token } from '@/types/app.types';
-
 import CreateToken from './CreateToken';
-import TokensList from './TokensList';
-import NoTokens from './NoTokens';
+import Tokens from './Tokens';
+import TokensLoading from './TokensLoading';
 
-export default async function ApiPage() {
-  const tokens = await api.get<Token[]>('v1/u/settings/tokens').json();
-
+export default function ApiPage() {
   return (
     <div>
       <h1 className="text-2xl font-semibold">Tokens</h1>
@@ -24,13 +21,11 @@ export default async function ApiPage() {
           <CreateToken />
         </Card>
       </div>
-      {tokens.length === 0 ? (
-        <NoTokens />
-      ) : (
-        <div className="mt-10">
-          <TokensList tokens={tokens} />
-        </div>
-      )}
+      <div className="mt-10">
+        <Suspense fallback={<TokensLoading />}>
+          <Tokens />
+        </Suspense>
+      </div>
     </div>
   );
 }
