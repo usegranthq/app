@@ -7,7 +7,7 @@ export default async function SettingsLayout({ children }: { children: React.Rea
       <Topbar>
         <Header />
       </Topbar>
-      <div className="flex min-h-[calc(theme(height.dvh)-theme(spacing.12))] flex-col p-4 pt-10">{children}</div>
+      <div className="flex min-h-[calc(theme(height.dvh)-theme(spacing.14))] flex-col p-4 pt-10">{children}</div>
     </div>
   );
 }

@@ -1,26 +1,26 @@
-import ActiveLink from '@/components/ActiveLink';
+import NavLink from '@/components/NavLink';
 
 export default function SettingsNav() {
   return (
     <nav className="grid gap-4 text-sm text-muted-foreground">
-      <ActiveLink href="/u/settings" className="font-semibold">
+      <NavLink href="/u/settings" className="font-semibold">
         General
-      </ActiveLink>
-      <ActiveLink href="/u/settings/billing" className="font-semibold">
-        Billing
-      </ActiveLink>
-      <ActiveLink href="/u/settings/security" className="font-semibold">
-        Security
-      </ActiveLink>
-      <ActiveLink href="/u/settings/api" className="font-semibold">
+      </NavLink>
+      <NavLink href="/u/settings/api" className="font-semibold">
         API Keys
-      </ActiveLink>
-      <ActiveLink href="/u/settings/support" className="font-semibold">
+      </NavLink>
+      <NavLink href="/u/settings/billing" className="font-semibold">
+        Billing
+      </NavLink>
+      <NavLink href="/u/settings/security" className="font-semibold">
+        Security
+      </NavLink>
+      <NavLink href="/u/settings/support" className="font-semibold">
         Support
-      </ActiveLink>
-      <ActiveLink href="/u/settings/danger" className="font-semibold">
+      </NavLink>
+      <NavLink href="/u/settings/danger" className="font-semibold">
         Danger Zone
-      </ActiveLink>
+      </NavLink>
     </nav>
   );
 }
