@@ -6,8 +6,8 @@ export default function SettingsNav() {
       <NavLink href="/u/settings" className="font-semibold">
         General
       </NavLink>
-      <NavLink href="/u/settings/api" className="font-semibold">
-        API Keys
+      <NavLink href="/u/settings/tokens" className="font-semibold">
+        API Tokens
       </NavLink>
       <NavLink href="/u/settings/billing" className="font-semibold">
         Billing
