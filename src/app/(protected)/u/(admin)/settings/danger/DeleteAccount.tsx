@@ -28,6 +28,8 @@ const DeleteButton = forwardRef<HTMLButtonElement, ButtonProps>((props, ref) => 
   );
 });
 
+DeleteButton.displayName = 'DeleteButton';
+
 export default function DeleteAccount() {
   const formRef = useRef<HTMLFormElement>(null);
 

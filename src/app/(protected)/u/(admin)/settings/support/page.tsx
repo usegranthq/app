@@ -3,10 +3,10 @@ import Link from 'next/link';
 export default function SupportPage() {
   return (
     <div className="flex flex-col gap-6">
-      <p>Need help? We're here to assist you with any questions or issues you may have.</p>
+      <p>Need help? We&apos;re here to assist you with any questions or issues you may have.</p>
       <p>
-        Whether you have questions about our platform or need assistance with a specific issue, we're here to help! You
-        can email us at{' '}
+        Whether you have questions about our platform or need assistance with a specific issue, we&apos;re here to help!
+        You can email us at{' '}
         <Link href="mailto:support@usegrant.dev" className="text-primary hover:underline">
           support@usegrant.dev
         </Link>{' '}
