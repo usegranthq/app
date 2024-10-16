@@ -2,7 +2,7 @@
 
 import { ChevronsUpDownIcon } from 'lucide-react';
 
-import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
+import { DropdownMenu, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import { useUser } from '@/contexts/User';
 
 import { UserAvatar } from '@/app/(protected)/u/_blocks/UserAvatar';
