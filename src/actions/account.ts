@@ -5,13 +5,15 @@ import { getErrorMessage } from '@/utils/error';
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
 
-export async function deleteAccount() {
+export async function deleteAccount(): Promise<ActionResponse> {
   try {
     await api.delete('v1/u');
   } catch (error) {
-    return getErrorMessage(error, 'Unable to delete account. Try again.');
+    const errorMessage = getErrorMessage(error, 'Unable to delete account. Try again.');
+    return [errorMessage, null];
   }
 
   revalidatePath('/', 'layout');
   redirect('/');
+  return [null, null];
 }

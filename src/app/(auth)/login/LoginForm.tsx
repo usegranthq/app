@@ -10,7 +10,7 @@ import { login } from '@/actions';
 
 export default function LoginForm() {
   const handleFormSubmit = async (formData: FormData) => {
-    const errorMessage = await login(formData);
+    const [errorMessage] = await login(formData);
 
     if (errorMessage) {
       toast.error(errorMessage);

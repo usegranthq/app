@@ -6,7 +6,7 @@ import { redirect, RedirectType } from 'next/navigation';
 import api from '@/lib/api';
 import { getErrorMessage } from '@/utils/error';
 
-export async function verify(formData: FormData): Promise<string | undefined> {
+export async function verify(formData: FormData): Promise<ActionResponse> {
   const payload = {
     code: formData.get('code'),
   };
@@ -15,7 +15,8 @@ export async function verify(formData: FormData): Promise<string | undefined> {
     await api.post('v1/verify', { json: payload });
     cookies().delete('verify');
   } catch (error) {
-    return getErrorMessage(error, 'Unable to verify code. Try again.');
+    const errorMessage = getErrorMessage(error, 'Unable to verify code. Try again.');
+    return [errorMessage, null];
   }
 
   redirect('/u', RedirectType.replace);
