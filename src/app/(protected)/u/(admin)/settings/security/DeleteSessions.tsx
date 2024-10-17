@@ -23,7 +23,7 @@ const DeleteButton = forwardRef<HTMLButtonElement, ButtonProps>((props, ref) => 
   const { pending } = useFormStatus();
 
   return (
-    <Button variant="destructive" ref={ref} {...props} disabled={pending}>
+    <Button ref={ref} {...props} disabled={pending}>
       {pending ? 'Deleting your sessions...' : 'Delete all sessions'}
     </Button>
   );
