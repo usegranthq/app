@@ -50,7 +50,7 @@ export default function CreateToken() {
   const [token, setToken] = useState<string | null>(null);
   const router = useRouter();
 
-  const handleSubmit = useCallback(async (formData: FormData) => {
+  const handleSubmit = async (formData: FormData) => {
     const [error, token] = await createToken(formData);
     if (error) {
       toast.error(error);
@@ -61,7 +61,7 @@ export default function CreateToken() {
     formRef.current?.reset();
     setToken(token);
     router.refresh();
-  }, []);
+  };
 
   const handleTokenClose = useCallback(() => {
     setToken(null);
@@ -81,7 +81,7 @@ export default function CreateToken() {
             <CopyInput value={token ?? ''} />
           </div>
           <AlertDialogFooter>
-            <AlertDialogAction>I've saved it</AlertDialogAction>
+            <AlertDialogAction>I&apos;ve saved it</AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
