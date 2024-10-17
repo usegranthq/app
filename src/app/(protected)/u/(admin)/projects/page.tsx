@@ -9,26 +9,25 @@ import { formatRelative } from 'date-fns';
 
 const ProjectCard = ({ project }: { project: Project }) => {
   return (
-    <Link href={`/u/projects/${project.id}`}>
-      <Card className="flex h-44 flex-col hover:cursor-pointer hover:bg-muted/15">
-        <CardHeader className="space-y-3">
-          <CardTitle>{project.name}</CardTitle>
-          <CardDescription className="line-clamp-2 text-sm">{project.description}</CardDescription>
-        </CardHeader>
-        <CardFooter className="mt-auto flex flex-col items-start gap-0.5">
-          <Link
-            href={`https://usegrant.dev`}
-            target="_blank"
-            className="text-sm text-sky-400 underline-offset-2 hover:underline"
-          >
-            example.usegrant.dev
-          </Link>
-          <div className="text-xs text-muted-foreground">
-            last updated {formatRelative(new Date(project.created_at), new Date())}
-          </div>
-        </CardFooter>
-      </Card>
-    </Link>
+    <Card className="relative flex h-44 flex-col hover:cursor-pointer hover:bg-muted/15">
+      <CardHeader className="space-y-3">
+        <CardTitle>{project.name}</CardTitle>
+        <CardDescription className="line-clamp-2 text-sm">{project.description}</CardDescription>
+      </CardHeader>
+      <CardFooter className="mt-auto flex flex-col items-start gap-0.5">
+        <Link
+          href={`https://usegrant.dev`}
+          target="_blank"
+          className="z-10 text-sm text-sky-400 underline-offset-2 hover:underline"
+        >
+          example.usegrant.dev
+        </Link>
+        <div className="text-xs text-muted-foreground">
+          last updated {formatRelative(new Date(project.created_at), new Date())}
+        </div>
+      </CardFooter>
+      <Link href={`/u/projects/${project.id}`} className="absolute inset-0" />
+    </Card>
   );
 };
 
