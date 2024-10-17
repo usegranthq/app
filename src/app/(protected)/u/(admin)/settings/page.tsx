@@ -1,6 +1,11 @@
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
+import api from '@/lib/api';
+import { User } from '@/types/app.types';
 
-export default function Settings() {
+export default async function Settings() {
+  const user = await api.get('v1/u/me').json<User>();
+
   return (
     <div className="grid gap-6">
       <Card>
@@ -13,10 +18,11 @@ export default function Settings() {
             </CardDescription>
           </CardHeader>
           <CardContent>
-            <div className="rounded-md border border-border p-2 text-sm text-muted-foreground">
-              example@usegrant.dev
-            </div>
+            <div className="rounded-md border border-border p-2 text-sm text-muted-foreground">{user.email}</div>
           </CardContent>
+          <CardFooter>
+            <Button disabled>Save</Button>
+          </CardFooter>
         </form>
       </Card>
     </div>
