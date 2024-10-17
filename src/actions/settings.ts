@@ -4,28 +4,32 @@ import { revalidatePath } from 'next/cache';
 
 import api from '@/lib/api';
 import { getErrorMessage } from '@/utils/error';
+import { TokenWithToken } from '@/types/app.types';
 
-export async function createToken(formData: FormData) {
+export async function createToken(formData: FormData): ActionResponse<string> {
   const name = formData.get('name') as string;
   const expiration = Number(formData.get('expiration')) || 0;
 
   const payload = { name, expiry_days: expiration };
 
   try {
-    await api.post('v1/u/settings/tokens', { json: payload });
+    const response = await api.post<TokenWithToken>('v1/u/settings/tokens', { json: payload }).json();
+    revalidatePath('/u/settings/tokens');
+    return [null, response.token];
   } catch (error) {
-    return getErrorMessage(error, 'Failed to create token. Try again.');
+    const errorMessage = getErrorMessage(error, 'Failed to create token. Try again.');
+    return [errorMessage, null];
   }
-
-  revalidatePath('/u/settings/tokens');
 }
 
-export async function deleteToken(id: string) {
+export async function deleteToken(id: string): ActionResponse<null> {
   try {
     await api.delete(`v1/u/settings/tokens/${id}`);
   } catch (error) {
-    return getErrorMessage(error, 'Failed to delete token. Try again.');
+    const errorMessage = getErrorMessage(error, 'Failed to delete token. Try again.');
+    return [errorMessage, null];
   }
 
   revalidatePath('/u/settings/tokens');
+  return [null, null];
 }

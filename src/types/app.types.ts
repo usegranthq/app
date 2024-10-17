@@ -11,3 +11,8 @@ export interface Token {
   created_at: string;
   last_used_at: string | null;
 }
+
+// only returned from createToken api call
+export interface TokenWithToken extends Token {
+  token: string;
+}

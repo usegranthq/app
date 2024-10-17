@@ -1,24 +1,23 @@
 'use client';
 
 import { ColumnDef, flexRender, getCoreRowModel, useReactTable } from '@tanstack/react-table';
-import { format } from 'date-fns';
+import { format, formatRelative } from 'date-fns';
 
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Token } from '@/types/app.types';
 
 import TokenOptions from './TokenOptions';
+import { isNullOrUndefined } from '@/utils/validators';
 
 export const columns: ColumnDef<Token>[] = [
   {
-    accessorKey: 'name',
     header: 'Name',
     cell: ({ row }) => {
-      const token = row.original;
-      const expiresAt = token.expires_at;
+      const { name, expires_at: expiresAt } = row.original;
 
       return (
         <div>
-          <div className="capitalize">{token.name}</div>
+          <div className="capitalize">{name}</div>
           <div className="mt-0.5 text-xs text-muted-foreground">
             {expiresAt ? format(new Date(expiresAt), 'MMM d, yyyy') : 'No expiration'}
           </div>
@@ -27,32 +26,27 @@ export const columns: ColumnDef<Token>[] = [
     },
   },
   {
-    accessorKey: 'created_at',
     header: 'Created At',
     cell: ({ row }) => {
-      const createdAt = row.getValue('created_at');
-      return format(new Date(createdAt as string), 'MMM d, yyyy');
+      const createdAt = row.original.created_at;
+      return format(createdAt, 'MMM d, yyyy');
     },
   },
   {
-    accessorKey: 'last_used_at',
     header: 'Last Used At',
     cell: ({ row }) => {
-      const lastUsedAt = row.getValue('last_used_at');
-      if (!lastUsedAt) return <span className="text-muted-foreground">Never</span>;
-      return format(new Date(lastUsedAt as string), 'MMM d, yyyy');
+      const lastUsedAt = row.original.last_used_at;
+      if (isNullOrUndefined(lastUsedAt)) return <span className="text-muted-foreground">Never</span>;
+      return formatRelative(lastUsedAt, new Date());
     },
   },
   {
     id: 'actions',
-    enableHiding: false,
-    cell: ({ row }) => {
-      return (
-        <div className="flex justify-end">
-          <TokenOptions token={row.original} />
-        </div>
-      );
-    },
+    cell: ({ row }) => (
+      <div className="flex justify-end">
+        <TokenOptions token={row.original} />
+      </div>
+    ),
   },
 ];
 

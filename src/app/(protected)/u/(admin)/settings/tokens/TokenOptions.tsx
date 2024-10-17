@@ -2,6 +2,7 @@
 
 import { DotsHorizontalIcon } from '@radix-ui/react-icons';
 import { toast } from 'sonner';
+import { useRouter } from 'next/navigation';
 
 import { deleteToken } from '@/actions/settings';
 import { Token } from '@/types/app.types';
@@ -27,11 +28,13 @@ import {
 } from '@/components/ui/alert-dialog';
 
 export default function TokenOptions({ token }: { token: Token }) {
+  const router = useRouter();
   const handleDelete = async () => {
-    const error = await deleteToken(token.id);
+    const [error] = await deleteToken(token.id);
     if (error) {
       toast.error(error);
     }
+    router.refresh();
   };
 
   return (
