@@ -82,15 +82,19 @@ export default function UserNavDropdown(props: UserNavDropdownProps) {
               <DropdownMenuShortcut>⇧⌘P</DropdownMenuShortcut>
             </Link>
           </DropdownMenuItem>
-          <DropdownMenuItem className="gap-2">
-            <CreditCardIcon className="text-muted-foreground" />
-            Billing
-            <DropdownMenuShortcut>⌘B</DropdownMenuShortcut>
+          <DropdownMenuItem className="gap-2" asChild>
+            <Link href="/u/settings/billing">
+              <CreditCardIcon className="text-muted-foreground" />
+              Billing
+              <DropdownMenuShortcut>⌘B</DropdownMenuShortcut>
+            </Link>
           </DropdownMenuItem>
-          <DropdownMenuItem className="gap-2">
-            <LockIcon className="text-muted-foreground" />
-            Security
-            <DropdownMenuShortcut>⌘S</DropdownMenuShortcut>
+          <DropdownMenuItem className="gap-2" asChild>
+            <Link href="/u/settings/security">
+              <LockIcon className="text-muted-foreground" />
+              Security
+              <DropdownMenuShortcut>⌘S</DropdownMenuShortcut>
+            </Link>
           </DropdownMenuItem>
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
