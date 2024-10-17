@@ -16,3 +16,9 @@ export interface Token {
 export interface TokenWithToken extends Token {
   token: string;
 }
+
+export interface Session {
+  id: string;
+  created_at: string;
+  expires_at: string;
+}

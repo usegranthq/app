@@ -34,7 +34,7 @@ export default function DeleteAccount() {
   const formRef = useRef<HTMLFormElement>(null);
 
   const handleDeleteClick = async () => {
-    const error = await deleteAccount();
+    const [error] = await deleteAccount();
     if (error) {
       toast.error(error);
     }

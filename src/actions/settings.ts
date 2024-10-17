@@ -33,3 +33,27 @@ export async function deleteToken(id: string): ActionResponse<null> {
   revalidatePath('/u/settings/tokens');
   return [null, null];
 }
+
+export async function deleteSessions(): Promise<ActionResponse> {
+  try {
+    await api.delete('v1/u/settings/sessions');
+  } catch (error) {
+    const errorMessage = getErrorMessage(error, 'Failed to delete sessions. Try again.');
+    return [errorMessage, null];
+  }
+
+  revalidatePath('/u/settings/security');
+  return [null, null];
+}
+
+export async function deleteSession(id: string): Promise<ActionResponse> {
+  try {
+    await api.delete(`v1/u/settings/sessions/${id}`);
+  } catch (error) {
+    const errorMessage = getErrorMessage(error, 'Failed to delete session. Try again.');
+    return [errorMessage, null];
+  }
+
+  revalidatePath('/u/settings/security');
+  return [null, null];
+}

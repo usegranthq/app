@@ -15,5 +15,4 @@ export async function deleteAccount(): Promise<ActionResponse> {
 
   revalidatePath('/', 'layout');
   redirect('/');
-  return [null, null];
 }
