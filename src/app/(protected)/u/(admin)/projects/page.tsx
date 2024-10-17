@@ -17,7 +17,7 @@ export default function ProjectsPage() {
             Each project is like a seperated environment.
           </p>
           <Button className="mt-4" asChild>
-            <Link href="/u/projects/create">Create project</Link>
+            <Link href="/u/new/projects">Create project</Link>
           </Button>
         </div>
       </div>

@@ -1,1 +1,1 @@
-type ActionResponse<T = null, Error = string> = Promise<[Error, null] | [null, T]>;
+type ActionResponse<T = null, E = string> = Promise<[E, null] | [null, T]>;
