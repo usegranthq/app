@@ -15,7 +15,7 @@ import { ProjectSwitcher } from './sidenav/ProjectSwitcher';
 export function AppSidebar() {
   return (
     <Sidebar defaultChecked={true}>
-      <SidebarHeader className="h-12">
+      <SidebarHeader className="h-14">
         <ProjectSwitcher />
       </SidebarHeader>
       <SidebarContent>

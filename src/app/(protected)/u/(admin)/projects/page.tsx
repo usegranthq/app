@@ -5,6 +5,7 @@ import { Project } from '@/types/app.types';
 import { Card, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 
 import NoProjects from './NoProjects';
+import { formatRelative } from 'date-fns';
 
 const ProjectCard = ({ project }: { project: Project }) => {
   return (
@@ -12,10 +13,19 @@ const ProjectCard = ({ project }: { project: Project }) => {
       <Card className="flex h-44 flex-col hover:cursor-pointer hover:bg-muted/15">
         <CardHeader className="space-y-3">
           <CardTitle>{project.name}</CardTitle>
-          <CardDescription className="text-sm">{project.description}</CardDescription>
+          <CardDescription className="line-clamp-2 text-sm">{project.description}</CardDescription>
         </CardHeader>
-        <CardFooter className="mt-auto justify-end">
-          <div className="text-sm text-muted-foreground">customdomain.usegrant.dev</div>
+        <CardFooter className="mt-auto flex flex-col items-start gap-0.5">
+          <Link
+            href={`https://usegrant.dev`}
+            target="_blank"
+            className="text-sm text-sky-400 underline-offset-2 hover:underline"
+          >
+            example.usegrant.dev
+          </Link>
+          <div className="text-xs text-muted-foreground">
+            last updated {formatRelative(new Date(project.created_at), new Date())}
+          </div>
         </CardFooter>
       </Card>
     </Link>
