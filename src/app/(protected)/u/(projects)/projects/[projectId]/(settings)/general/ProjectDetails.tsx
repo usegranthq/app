@@ -42,7 +42,7 @@ export default function ProjectDetails() {
       </CardHeader>
       <form action={handleSubmit}>
         <CardContent>
-          <div className="flex flex-col gap-4">
+          <div className="flex flex-col gap-8">
             <div className="flex flex-col gap-2">
               <Label>Project name</Label>
               <Input
