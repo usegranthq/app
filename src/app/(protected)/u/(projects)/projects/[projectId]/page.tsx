@@ -1,4 +1,4 @@
-import RecentProjectTracker from './RecentProjectTracker';
+import RecentProjectTracker from './_blocks/RecentProjectTracker';
 
 interface ProjectPageProps {
   params: { projectId: string };

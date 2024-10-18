@@ -2,51 +2,54 @@
 
 import Link from 'next/link';
 import { BookOpenIcon, ChevronRight, Code2Icon, Settings2Icon, type LucideIcon } from 'lucide-react';
+import { usePathname } from 'next/navigation';
 
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
 
+interface SubItem {
+  title: string;
+  path: string;
+}
+
 interface NavItem {
   title: string;
-  url: string;
   icon: LucideIcon;
   isActive?: boolean;
-  items?: Pick<NavItem, 'title' | 'url'>[];
+  items?: SubItem[];
   defaultOpen?: boolean;
 }
 
 const items: NavItem[] = [
   {
     title: 'Documentation',
-    url: '#',
     icon: BookOpenIcon,
     items: [
       {
         title: 'Get Started',
-        url: '#',
+        path: '#',
       },
       {
         title: 'Assume role from AWS',
-        url: '#',
+        path: '#',
       },
       {
         title: 'Service Accounts in GCP',
-        url: '#',
+        path: '#',
       },
       {
         title: 'Assume role from Azure',
-        url: '#',
+        path: '#',
       },
       {
         title: 'More...',
-        url: '#',
+        path: '#',
       },
     ],
   },
   {
     title: 'API',
-    url: '#',
     icon: Code2Icon,
     defaultOpen: true,
     items: [
@@ -56,52 +59,50 @@ const items: NavItem[] = [
       // },
       {
         title: 'Create Client',
-        url: '#',
+        path: '#',
       },
       {
         title: 'Get Access Token',
-        url: '#',
+        path: '#',
       },
     ],
   },
   {
     title: 'Settings',
-    url: '#',
     icon: Settings2Icon,
     defaultOpen: true,
     items: [
       {
         title: 'General',
-        url: '#',
+        path: 'general',
       },
       {
-        title: 'Custom Domains',
-        url: '#',
+        title: 'Domain',
+        path: 'domain',
       },
       {
         title: 'Advanced',
-        url: '#',
+        path: 'advanced',
       },
     ],
   },
 ];
 
 export function NavMain({ className }: { className?: string }) {
+  const pathname = usePathname();
+
   return (
     <ul className={cn('grid gap-0.5', className)}>
       {items.map((item) => (
         <Collapsible key={item.title} asChild defaultOpen={item.defaultOpen}>
           <li>
             <div className="relative flex items-center">
-              <Link
-                href={item.url}
-                className="flex h-8 min-w-8 flex-1 items-center gap-2 overflow-hidden rounded-md px-1.5 text-sm font-medium outline-none ring-ring transition-all hover:bg-accent hover:text-accent-foreground focus-visible:ring-2"
-              >
+              <div className="flex h-8 min-w-8 flex-1 items-center gap-2 overflow-hidden rounded-md px-1.5 text-sm font-medium outline-none ring-ring transition-all hover:bg-accent hover:text-accent-foreground focus-visible:ring-2">
                 <item.icon className="h-4 w-4 shrink-0" />
                 <div className="flex flex-1 overflow-hidden">
                   <div className="line-clamp-1 pr-6">{item.title}</div>
                 </div>
-              </Link>
+              </div>
               <CollapsibleTrigger asChild>
                 <Button
                   variant="ghost"
@@ -117,7 +118,7 @@ export function NavMain({ className }: { className?: string }) {
                 {item.items?.map((subItem) => (
                   <li key={subItem.title}>
                     <Link
-                      href={subItem.url}
+                      href={`${pathname}/${subItem.path}`}
                       className="flex h-8 min-w-8 items-center gap-2 overflow-hidden rounded-md px-2 text-sm font-medium text-muted-foreground ring-ring transition-all hover:bg-accent hover:text-accent-foreground focus-visible:ring-2"
                     >
                       <div className="line-clamp-1">{subItem.title}</div>
