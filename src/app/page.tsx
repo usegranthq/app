@@ -1,14 +1,22 @@
 import { cookies } from 'next/headers';
 import Link from 'next/link';
+import Image from 'next/image';
 
 import { Button } from '@/components/ui/button';
 import constants from '@/constants';
+
+import darkLogo from '@/assets/logos/dark-logo-wordmark.png';
+import lightLogo from '@/assets/logos/light-logo-wordmark.png';
 
 export default function Home() {
   const isLoggedIn = cookies().get(constants.AUTH_COOKIE);
 
   return (
-    <div className="mx-auto flex min-h-dvh flex-col items-center justify-center gap-8">
+    <div className="relative mx-auto flex min-h-dvh flex-col items-center justify-center gap-8">
+      <div className="absolute left-4 top-6 bg-black/20">
+        <Image src={darkLogo} alt="logo" width={150} className="hidden dark:block" />
+        <Image src={lightLogo} alt="logo" width={150} className="dark:hidden" />
+      </div>
       <div>
         <h1 className="text-center text-5xl font-bold">Simplify Machine-to-Machine Auth</h1>
         <p className="mx-auto mt-2.5 max-w-xl text-center text-base font-medium text-gray-400">
