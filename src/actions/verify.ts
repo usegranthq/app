@@ -4,7 +4,7 @@ import { cookies } from 'next/headers';
 import { redirect, RedirectType } from 'next/navigation';
 
 import api from '@/lib/api';
-import { getErrorMessage } from '@/utils/error';
+import { getApiErrorMessage } from '@/utils/error';
 
 export async function verify(formData: FormData): Promise<ActionResponse> {
   const payload = {
@@ -15,7 +15,7 @@ export async function verify(formData: FormData): Promise<ActionResponse> {
     await api.post('v1/verify', { json: payload });
     cookies().delete('verify');
   } catch (error) {
-    const errorMessage = getErrorMessage(error, 'Unable to verify code. Try again.');
+    const errorMessage = await getApiErrorMessage(error, 'Unable to verify code. Try again.');
     return [errorMessage, null];
   }
 

@@ -3,7 +3,7 @@
 import { redirect } from 'next/navigation';
 
 import api from '@/lib/api';
-import { getErrorMessage } from '@/utils/error';
+import { getApiErrorMessage } from '@/utils/error';
 
 export async function login(formData: FormData): Promise<ActionResponse> {
   const payload = {
@@ -13,7 +13,7 @@ export async function login(formData: FormData): Promise<ActionResponse> {
   try {
     await api.post('v1/login', { json: payload });
   } catch (error) {
-    const errorMessage = getErrorMessage(error, 'Unable to login with email. Try again.');
+    const errorMessage = await getApiErrorMessage(error, 'Unable to login with email. Try again.');
     return [errorMessage, null];
   }
 
