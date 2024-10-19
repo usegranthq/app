@@ -81,3 +81,13 @@ export async function deleteClient(projectId: string, clientId: string): Promise
     return [errorMessage, null];
   }
 }
+export async function generateClientToken(projectId: string, clientId: string): Promise<ActionResponse<string>> {
+  try {
+    const response = await api.get<{ token: string }>(`v1/u/projects/${projectId}/clients/${clientId}/token`).json();
+    revalidatePath(`/u/projects/${projectId}`);
+    return [null, response.token];
+  } catch (error) {
+    const errorMessage = await getApiErrorMessage(error, 'Failed to generate client token');
+    return [errorMessage, null];
+  }
+}
