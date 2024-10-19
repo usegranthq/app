@@ -13,7 +13,7 @@ export default function NoProjects() {
           Each project is like a seperated environment.
         </p>
         <Button className="mt-4" asChild>
-          <Link href="/u/new/projects">Create project</Link>
+          <Link href="/u/projects/new">Create project</Link>
         </Button>
       </div>
     </div>

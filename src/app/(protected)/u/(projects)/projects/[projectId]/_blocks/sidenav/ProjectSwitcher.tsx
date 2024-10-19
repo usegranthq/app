@@ -64,7 +64,7 @@ export function ProjectSwitcher({ projects, activeProject }: ProjectSwitcherProp
             ))}
             <DropdownMenuSeparator />
             <DropdownMenuItem className="gap-2 p-2" asChild>
-              <Link href="/u/new/project">
+              <Link href="/u/projects/new">
                 <div className="flex size-6 items-center justify-center rounded-md border bg-background">
                   <PlusIcon className="size-4" />
                 </div>

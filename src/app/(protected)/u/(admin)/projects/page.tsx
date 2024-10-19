@@ -1,11 +1,12 @@
 import api from '@/lib/api';
 import Link from 'next/link';
+import { formatRelative } from 'date-fns';
 
 import { Project } from '@/types/app.types';
 import { Card, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
 
 import NoProjects from './NoProjects';
-import { formatRelative } from 'date-fns';
 
 const ProjectCard = ({ project }: { project: Project }) => {
   return (
@@ -39,8 +40,13 @@ export default async function ProjectsPage() {
   }
 
   return (
-    <div className="mx-auto max-w-7xl">
-      <h1 className="scroll-m-20 pb-2 text-3xl font-semibold tracking-tight first:mt-0">Projects</h1>
+    <div className="mx-auto w-full max-w-7xl">
+      <div className="flex items-center justify-between">
+        <h1 className="scroll-m-20 pb-2 text-3xl font-semibold tracking-tight first:mt-0">Projects</h1>
+        <Button asChild>
+          <Link href="/u/projects/new">Create new project</Link>
+        </Button>
+      </div>
       <div className="mt-10 grid grid-cols-1 gap-12 md:grid-cols-2 lg:grid-cols-3">
         {projects.map((project) => (
           <ProjectCard key={project.id} project={project} />
