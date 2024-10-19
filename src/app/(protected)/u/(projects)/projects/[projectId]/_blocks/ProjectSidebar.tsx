@@ -18,7 +18,7 @@ export async function ProjectSidebar({ projects, activeProject }: ProjectSidebar
         <ProjectSwitcher projects={projects} activeProject={activeProject} />
       </SidebarHeader>
       <SidebarContent>
-        <NavMain />
+        <NavMain projectId={activeProject.id} />
         <NavSecondary className="mt-auto" />
       </SidebarContent>
       <SidebarFooter>

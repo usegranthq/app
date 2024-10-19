@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { MenuIcon, VaultIcon } from 'lucide-react';
+import { KanbanIcon, MenuIcon } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
@@ -10,7 +10,7 @@ export default function Header() {
     <header className="flex h-fit items-center gap-4">
       <nav className="hidden flex-col gap-6 text-lg font-medium md:flex md:flex-row md:items-center md:gap-5 md:text-sm lg:gap-6">
         <Link href="/u/projects" className="flex items-center gap-2">
-          <VaultIcon className="size-6" />
+          <KanbanIcon className="size-6" />
           <span className="sr-only">useGrant</span>
         </Link>
         <NavLink href="/u/projects" className="text-muted-foreground transition-colors hover:text-foreground">
@@ -30,7 +30,7 @@ export default function Header() {
         <SheetContent side="left">
           <nav className="grid gap-6 text-lg font-medium">
             <Link href="/u/projects" className="flex items-center gap-2">
-              <VaultIcon className="size-6" />
+              <KanbanIcon className="size-6" />
               <span className="sr-only">useGrant</span>
             </Link>
             <NavLink href="/u/projects" className="text-muted-foreground hover:text-foreground">

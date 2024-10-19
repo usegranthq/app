@@ -1,8 +1,5 @@
-'use client';
-
 import Link from 'next/link';
 import { BookOpenIcon, ChevronRight, Code2Icon, Settings2Icon, type LucideIcon } from 'lucide-react';
-import { usePathname } from 'next/navigation';
 
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
 import {
@@ -96,9 +93,7 @@ const items: NavItem[] = [
   },
 ];
 
-export function NavMain() {
-  const pathname = usePathname();
-
+export function NavMain({ projectId }: { projectId: string }) {
   return (
     <SidebarGroup>
       <SidebarGroupLabel>Project</SidebarGroupLabel>
@@ -118,7 +113,7 @@ export function NavMain() {
                   {item.items?.map((subItem) => (
                     <SidebarMenuSubItem key={subItem.title}>
                       <SidebarMenuSubButton asChild>
-                        <Link href={`${pathname}/${subItem.path}`}>
+                        <Link href={`/u/projects/${projectId}/${subItem.path}`}>
                           <span>{subItem.title}</span>
                         </Link>
                       </SidebarMenuSubButton>
