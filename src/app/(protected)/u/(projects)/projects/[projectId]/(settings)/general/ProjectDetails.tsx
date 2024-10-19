@@ -30,7 +30,9 @@ export default function ProjectDetails() {
     const [error] = await updateProject(project.id, formData);
     if (error) {
       toast.error(error);
+      return;
     }
+    toast.success('Project details updated');
     router.refresh();
   };
 
