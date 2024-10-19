@@ -14,8 +14,8 @@ export default function Home() {
   return (
     <div className="relative mx-auto flex min-h-dvh flex-col items-center justify-center gap-8">
       <div className="absolute left-4 top-6 bg-black/20">
-        <Image src={darkLogo} alt="logo" width={150} className="hidden dark:block" />
-        <Image src={lightLogo} alt="logo" width={150} className="dark:hidden" />
+        <Image src={darkLogo} alt="logo" width={130} className="hidden dark:block" />
+        <Image src={lightLogo} alt="logo" width={130} className="dark:hidden" />
       </div>
       <div>
         <h1 className="text-center text-5xl font-bold">Simplify Machine-to-Machine Auth</h1>
