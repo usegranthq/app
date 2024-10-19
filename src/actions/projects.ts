@@ -56,3 +56,28 @@ export async function deleteProject(projectId: string): Promise<ActionResponse> 
 
   redirect('/u/projects');
 }
+
+export async function createClient(projectId: string, formData: FormData): Promise<ActionResponse> {
+  const name = formData.get('name');
+  const audience = formData.get('audience');
+
+  try {
+    await api.post(`v1/u/projects/${projectId}/clients`, { json: { name, audience } });
+    revalidatePath(`/u/projects/${projectId}`, 'layout');
+    return [null, null];
+  } catch (error) {
+    const errorMessage = await getApiErrorMessage(error, 'Failed to create client');
+    return [errorMessage, null];
+  }
+}
+
+export async function deleteClient(projectId: string, clientId: string): Promise<ActionResponse> {
+  try {
+    await api.delete(`v1/u/projects/${projectId}/clients/${clientId}`);
+    revalidatePath(`/u/projects/${projectId}`);
+    return [null, null];
+  } catch (error) {
+    const errorMessage = await getApiErrorMessage(error, 'Failed to delete client');
+    return [errorMessage, null];
+  }
+}
