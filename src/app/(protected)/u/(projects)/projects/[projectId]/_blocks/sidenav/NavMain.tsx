@@ -4,9 +4,17 @@ import Link from 'next/link';
 import { BookOpenIcon, ChevronRight, Code2Icon, Settings2Icon, type LucideIcon } from 'lucide-react';
 import { usePathname } from 'next/navigation';
 
-import { cn } from '@/lib/utils';
-import { Button } from '@/components/ui/button';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
+import {
+  SidebarGroup,
+  SidebarGroupLabel,
+  SidebarMenu,
+  SidebarMenuButton,
+  SidebarMenuItem,
+  SidebarMenuSub,
+  SidebarMenuSubButton,
+  SidebarMenuSubItem,
+} from '@/components/ui/sidebar';
 
 interface SubItem {
   title: string;
@@ -88,48 +96,40 @@ const items: NavItem[] = [
   },
 ];
 
-export function NavMain({ className }: { className?: string }) {
+export function NavMain() {
   const pathname = usePathname();
 
   return (
-    <ul className={cn('grid gap-0.5', className)}>
-      {items.map((item) => (
-        <Collapsible key={item.title} asChild defaultOpen={item.defaultOpen}>
-          <li>
-            <div className="relative flex items-center">
-              <div className="flex h-8 min-w-8 flex-1 items-center gap-2 overflow-hidden rounded-md px-1.5 text-sm font-medium outline-none ring-ring transition-all hover:bg-accent hover:text-accent-foreground focus-visible:ring-2">
-                <item.icon className="h-4 w-4 shrink-0" />
-                <div className="flex flex-1 overflow-hidden">
-                  <div className="line-clamp-1 pr-6">{item.title}</div>
-                </div>
-              </div>
+    <SidebarGroup>
+      <SidebarGroupLabel>Project</SidebarGroupLabel>
+      <SidebarMenu>
+        {items.map((item) => (
+          <Collapsible key={item.title} asChild defaultOpen={item.defaultOpen} className="group/collapsible">
+            <SidebarMenuItem>
               <CollapsibleTrigger asChild>
-                <Button
-                  variant="ghost"
-                  className="absolute right-1 h-6 w-6 rounded-md p-0 ring-ring transition-all focus-visible:ring-2 data-[state=open]:rotate-90"
-                >
-                  <ChevronRight className="h-4 w-4 text-muted-foreground" />
-                  <span className="sr-only">Toggle</span>
-                </Button>
+                <SidebarMenuButton tooltip={item.title}>
+                  {item.icon && <item.icon />}
+                  <span>{item.title}</span>
+                  <ChevronRight className="ml-auto transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90" />
+                </SidebarMenuButton>
               </CollapsibleTrigger>
-            </div>
-            <CollapsibleContent className="px-4 py-0.5">
-              <ul className="grid border-l px-2">
-                {item.items?.map((subItem) => (
-                  <li key={subItem.title}>
-                    <Link
-                      href={`${pathname}/${subItem.path}`}
-                      className="flex h-8 min-w-8 items-center gap-2 overflow-hidden rounded-md px-2 text-sm font-medium text-muted-foreground ring-ring transition-all hover:bg-accent hover:text-accent-foreground focus-visible:ring-2"
-                    >
-                      <div className="line-clamp-1">{subItem.title}</div>
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </CollapsibleContent>
-          </li>
-        </Collapsible>
-      ))}
-    </ul>
+              <CollapsibleContent>
+                <SidebarMenuSub>
+                  {item.items?.map((subItem) => (
+                    <SidebarMenuSubItem key={subItem.title}>
+                      <SidebarMenuSubButton asChild>
+                        <Link href={`${pathname}/${subItem.path}`}>
+                          <span>{subItem.title}</span>
+                        </Link>
+                      </SidebarMenuSubButton>
+                    </SidebarMenuSubItem>
+                  ))}
+                </SidebarMenuSub>
+              </CollapsibleContent>
+            </SidebarMenuItem>
+          </Collapsible>
+        ))}
+      </SidebarMenu>
+    </SidebarGroup>
   );
 }

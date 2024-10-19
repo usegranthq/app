@@ -1,11 +1,4 @@
-import {
-  Sidebar,
-  SidebarContent,
-  SidebarFooter,
-  SidebarHeader,
-  SidebarItem,
-  SidebarLabel,
-} from '@/components/ui/sidebar';
+import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader } from '@/components/ui/sidebar';
 import { Project } from '@/types/app.types';
 
 import { NavMain } from './sidenav/NavMain';
@@ -25,14 +18,8 @@ export async function ProjectSidebar({ projects, activeProject }: ProjectSidebar
         <ProjectSwitcher projects={projects} activeProject={activeProject} />
       </SidebarHeader>
       <SidebarContent>
-        <SidebarItem>
-          <SidebarLabel>Project</SidebarLabel>
-          <NavMain />
-        </SidebarItem>
-        <SidebarItem className="mt-auto">
-          <SidebarLabel>Help</SidebarLabel>
-          <NavSecondary />
-        </SidebarItem>
+        <NavMain />
+        <NavSecondary className="mt-auto" />
       </SidebarContent>
       <SidebarFooter>
         <NavUser />

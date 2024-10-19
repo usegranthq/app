@@ -65,31 +65,29 @@ export default function UserNavDropdown(props: UserNavDropdownProps) {
         <DropdownMenuLabel className="p-0 font-normal">
           <div className="flex items-center gap-2 px-1 py-1.5 text-left text-sm transition-all">
             <UserAvatar className="rounded-md border" />
-            <div className="grid flex-1">
-              <div className="font-medium">hey there 👋</div>
-              <div className="overflow-hidden text-xs text-muted-foreground">
-                <div className="line-clamp-1">{user.email}</div>
-              </div>
+            <div className="grid flex-1 text-left text-sm leading-tight">
+              <span className="truncate font-semibold">hey there 👋</span>
+              <span className="truncate text-xs">{user.email}</span>
             </div>
           </div>
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuGroup>
-          <DropdownMenuItem className="gap-2" asChild>
+          <DropdownMenuItem asChild>
             <Link href="/u/settings">
               <BadgeCheckIcon className="text-muted-foreground" />
               Account
               <DropdownMenuShortcut>⇧⌘P</DropdownMenuShortcut>
             </Link>
           </DropdownMenuItem>
-          <DropdownMenuItem className="gap-2" asChild>
+          <DropdownMenuItem asChild>
             <Link href="/u/settings/billing">
               <CreditCardIcon className="text-muted-foreground" />
               Billing
               <DropdownMenuShortcut>⌘B</DropdownMenuShortcut>
             </Link>
           </DropdownMenuItem>
-          <DropdownMenuItem className="gap-2" asChild>
+          <DropdownMenuItem asChild>
             <Link href="/u/settings/security">
               <LockIcon className="text-muted-foreground" />
               Security
@@ -99,7 +97,7 @@ export default function UserNavDropdown(props: UserNavDropdownProps) {
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
         <AlertDialogTrigger asChild>
-          <DropdownMenuItem className="gap-2">
+          <DropdownMenuItem>
             <LogOutIcon className="text-muted-foreground" />
             Log out
             <DropdownMenuShortcut>⇧⌘Q</DropdownMenuShortcut>

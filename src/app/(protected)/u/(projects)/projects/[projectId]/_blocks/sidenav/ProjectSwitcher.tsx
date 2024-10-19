@@ -1,6 +1,7 @@
-import { ChevronsUpDownIcon, KanbanIcon, PlusIcon } from 'lucide-react';
+'use client';
 
-import { Project } from '@/types/app.types';
+import { ChevronsUpDownIcon, KanbanIcon, PlusIcon } from 'lucide-react';
+import Link from 'next/link';
 
 import {
   DropdownMenu,
@@ -11,50 +12,68 @@ import {
   DropdownMenuShortcut,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import Link from 'next/link';
+import { SidebarMenu, SidebarMenuButton, SidebarMenuItem, useSidebar } from '@/components/ui/sidebar';
+import { Project } from '@/types/app.types';
 
 interface ProjectSwitcherProps {
   projects: Project[];
   activeProject: Project;
 }
 
-export async function ProjectSwitcher({ projects, activeProject }: ProjectSwitcherProps) {
+export function ProjectSwitcher({ projects, activeProject }: ProjectSwitcherProps) {
+  const { isMobile } = useSidebar();
+
   return (
-    <DropdownMenu>
-      <DropdownMenuTrigger className="w-full rounded-md ring-ring hover:bg-accent hover:text-accent-foreground focus-visible:outline-none focus-visible:ring-2 data-[state=open]:bg-accent">
-        <div className="flex items-center gap-1.5 overflow-hidden px-2 py-1.5 text-left text-sm transition-all">
-          <div className="flex h-5 w-5 items-center justify-center rounded-sm bg-primary text-primary-foreground">
-            <KanbanIcon className="size-3.5 shrink-0" />
-          </div>
-          <div className="line-clamp-1 flex-1 pr-2 font-medium">{activeProject.name}</div>
-          <ChevronsUpDownIcon className="ml-auto size-4 text-muted-foreground/50" />
-        </div>
-      </DropdownMenuTrigger>
-      <DropdownMenuContent className="w-64" align="start" side="right" sideOffset={4}>
-        <DropdownMenuLabel className="text-xs text-muted-foreground">Projects</DropdownMenuLabel>
-        {projects.map((project, index) => (
-          <DropdownMenuItem key={project.name} className="items-start gap-2 px-1.5" asChild>
-            <Link href={`/u/projects/${project.id}`}>
-              <div className="grid flex-1 leading-tight">
-                <div className="line-clamp-1 font-medium">{project.name}</div>
-                <div className="overflow-hidden text-xs text-muted-foreground">
-                  <div className="line-clamp-1">{project.description}</div>
-                </div>
+    <SidebarMenu>
+      <SidebarMenuItem>
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <SidebarMenuButton
+              size="lg"
+              className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
+            >
+              <div className="flex aspect-square size-5 items-center justify-center rounded-md bg-sidebar-primary text-sidebar-primary-foreground">
+                <KanbanIcon className="size-4 shrink-0" />
               </div>
-              <DropdownMenuShortcut className="self-center">⌘{index + 1}</DropdownMenuShortcut>
-            </Link>
-          </DropdownMenuItem>
-        ))}
-        <DropdownMenuSeparator />
-        <DropdownMenuItem className="gap-2 px-1.5" asChild>
-          <Link href="/u/new/projects">
-            <div className="flex size-8 items-center justify-center rounded-md border bg-background">
-              <PlusIcon className="size-5" />
-            </div>
-            <div className="font-medium text-muted-foreground">Add project</div>
-          </Link>
-        </DropdownMenuItem>
-      </DropdownMenuContent>
-    </DropdownMenu>
+              <div className="grid flex-1 text-left text-sm leading-tight">
+                <span className="truncate font-semibold">{activeProject.name}</span>
+                <span className="truncate text-xs">{activeProject.description}</span>
+              </div>
+              <ChevronsUpDownIcon className="ml-auto" />
+            </SidebarMenuButton>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent
+            className="w-[--radix-dropdown-menu-trigger-width] min-w-56 rounded-lg"
+            align="start"
+            side={isMobile ? 'bottom' : 'right'}
+            sideOffset={4}
+          >
+            <DropdownMenuLabel className="text-xs text-muted-foreground">Projects</DropdownMenuLabel>
+            {projects.map((project, index) => (
+              <DropdownMenuItem key={project.id} className="gap-2 p-2" asChild>
+                <Link href={`/u/projects/${project.id}`}>
+                  <div className="grid flex-1 leading-tight">
+                    <div className="line-clamp-1 font-medium">{project.name}</div>
+                    <div className="overflow-hidden text-xs text-muted-foreground">
+                      <div className="line-clamp-1">{project.description}</div>
+                    </div>
+                  </div>
+                  <DropdownMenuShortcut>⌘{index + 1}</DropdownMenuShortcut>
+                </Link>
+              </DropdownMenuItem>
+            ))}
+            <DropdownMenuSeparator />
+            <DropdownMenuItem className="gap-2 p-2" asChild>
+              <Link href="/u/new/project">
+                <div className="flex size-6 items-center justify-center rounded-md border bg-background">
+                  <PlusIcon className="size-4" />
+                </div>
+                <div className="font-medium text-muted-foreground">Add project</div>
+              </Link>
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
+      </SidebarMenuItem>
+    </SidebarMenu>
   );
 }
