@@ -1,4 +1,4 @@
-import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader } from '@/components/ui/sidebar';
+import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarRail } from '@/components/ui/sidebar';
 import { Project } from '@/types/app.types';
 
 import { NavMain } from './sidenav/NavMain';
@@ -13,8 +13,8 @@ interface ProjectSidebarProps {
 
 export async function ProjectSidebar({ projects, activeProject }: ProjectSidebarProps) {
   return (
-    <Sidebar defaultChecked={true}>
-      <SidebarHeader className="h-14">
+    <Sidebar collapsible="icon">
+      <SidebarHeader>
         <ProjectSwitcher projects={projects} activeProject={activeProject} />
       </SidebarHeader>
       <SidebarContent>
@@ -24,6 +24,7 @@ export async function ProjectSidebar({ projects, activeProject }: ProjectSidebar
       <SidebarFooter>
         <NavUser />
       </SidebarFooter>
+      <SidebarRail />
     </Sidebar>
   );
 }

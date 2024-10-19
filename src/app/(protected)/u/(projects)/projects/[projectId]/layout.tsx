@@ -1,8 +1,7 @@
-import { cookies } from 'next/headers';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 
-import { SidebarProvider, Sidebar, SidebarTrigger, SidebarInset } from '@/components/ui/sidebar';
+import { SidebarProvider, SidebarTrigger, SidebarInset } from '@/components/ui/sidebar';
 import { Project } from '@/types/app.types';
 import api from '@/lib/api';
 
@@ -16,8 +15,6 @@ interface UserLayoutProps {
 }
 
 export default async function UserLayout({ children, params }: UserLayoutProps) {
-  const defaultOpen = cookies().get('sidebar:state')?.value !== 'true';
-
   const projects = await api.get<Project[]>('v1/u/projects').json();
   const activeProject = projects.find((project) => project.id === params.projectId);
 
@@ -27,10 +24,8 @@ export default async function UserLayout({ children, params }: UserLayoutProps) 
 
   return (
     <ProjectProvider project={activeProject}>
-      <SidebarProvider defaultOpen={defaultOpen}>
-        <Sidebar className="bg-background">
-          <ProjectSidebar projects={projects} activeProject={activeProject} />
-        </Sidebar>
+      <SidebarProvider>
+        <ProjectSidebar projects={projects} activeProject={activeProject} />
         <SidebarInset>
           <div className="flex flex-1 flex-col transition-all duration-300 ease-in-out">
             <Topbar>
