@@ -34,5 +34,7 @@ export interface Project {
 export interface Client {
   id: string;
   name: string;
+  subject: string;
+  audience: string;
   created_at: string;
 }

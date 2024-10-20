@@ -15,8 +15,7 @@ function getColumns(projectId: string): ColumnDef<Client>[] {
     {
       header: 'Name',
       cell: ({ row }) => {
-        const name = row.original.name;
-        return name;
+        return row.original.name;
       },
     },
     {
@@ -24,6 +23,18 @@ function getColumns(projectId: string): ColumnDef<Client>[] {
       cell: ({ row }) => {
         const createdAt = row.original.created_at;
         return format(createdAt, 'MMM d, yyyy');
+      },
+    },
+    {
+      header: 'Subject',
+      cell: ({ row }) => {
+        return row.original.subject;
+      },
+    },
+    {
+      header: 'Audience',
+      cell: ({ row }) => {
+        return row.original.audience;
       },
     },
     {

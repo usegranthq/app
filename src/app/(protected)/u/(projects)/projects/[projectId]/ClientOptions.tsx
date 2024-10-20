@@ -33,12 +33,17 @@ export default function ClientOptions({ projectId, client }: { projectId: string
   const [accessToken, setAccessToken] = useState<string | null>(null);
 
   const handleGenerateToken = async () => {
+    const toastId = toast('GenerateToken');
+    toast.loading('Generating Token...', { id: toastId });
+
     const [error, token] = await generateClientToken(projectId, client.id);
     if (error) {
-      toast.error(error);
+      toast.error(error, { id: toastId });
       return;
     }
+
     setAccessToken(token);
+    toast.dismiss(toastId);
   };
 
   const handleDelete = async () => {
