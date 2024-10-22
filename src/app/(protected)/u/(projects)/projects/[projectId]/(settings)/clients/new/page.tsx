@@ -2,7 +2,13 @@ import { UserRoundPlusIcon } from 'lucide-react';
 
 import CreateClientForm from './CreateClientForm';
 
-export default function NewClientPage({ params }: { params: { projectId: string } }) {
+interface NewClientPageProps {
+  params: Promise<{ projectId: string }>;
+}
+
+export default async function NewClientPage(props: NewClientPageProps) {
+  const { projectId } = await props.params;
+
   return (
     <div className="mt-10 flex flex-1 items-center justify-center">
       <div className="flex flex-col items-center gap-2">
@@ -12,7 +18,7 @@ export default function NewClientPage({ params }: { params: { projectId: string 
           A client is a user that can access the API, you can create multiple clients for a project. The client will be
           configured with your targer oidc provider.
         </p>
-        <CreateClientForm projectId={params.projectId} />
+        <CreateClientForm projectId={projectId} />
       </div>
     </div>
   );

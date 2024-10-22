@@ -11,12 +11,15 @@ import { ProjectProvider } from './_blocks/ProjectContext';
 
 interface UserLayoutProps {
   children: React.ReactNode;
-  params: { projectId: string };
+  params: Promise<{ projectId: string }>;
 }
 
-export default async function UserLayout({ children, params }: UserLayoutProps) {
+export default async function UserLayout(props: UserLayoutProps) {
+  const { projectId } = await props.params;
+  const { children } = props;
+
   const projects = await api.get<Project[]>('v1/u/projects').json();
-  const activeProject = projects.find((project) => project.id === params.projectId);
+  const activeProject = projects.find((project) => project.id === projectId);
 
   if (!activeProject) {
     return notFound();

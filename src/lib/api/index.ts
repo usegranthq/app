@@ -22,15 +22,15 @@ const api = ky.create({
   credentials: 'include',
   hooks: {
     beforeRequest: [
-      (request) => {
-        const cookieStore = cookies();
+      async (request) => {
+        const cookieStore = await cookies();
         request.headers.set('Cookie', cookieStore.toString());
         return request;
       },
     ],
     afterResponse: [
       async (_request, _options, response) => {
-        const cookieStore = cookies();
+        const cookieStore = await cookies();
 
         if (response.status === 401) {
           cookieStore.delete(constants.AUTH_COOKIE);

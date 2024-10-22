@@ -6,7 +6,9 @@ import api from '@/lib/api';
 import { Project } from '@/types/app.types';
 
 export default async function UPage() {
-  const recentProjectId = cookies().get(RECENT_PROJECT_COOKIE)?.value;
+  const cookieStore = await cookies();
+  const recentProjectId = cookieStore.get(RECENT_PROJECT_COOKIE)?.value;
+
   const projects = await api.get<Project[]>('v1/u/projects').json();
   const recentProject = projects.find((project) => project.id === recentProjectId);
 

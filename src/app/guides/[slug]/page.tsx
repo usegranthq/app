@@ -26,13 +26,12 @@ const getFrontmatter = (source: string) => {
 };
 
 interface GuideDetailProps {
-  params: {
-    slug: string;
-  };
+  params: Promise<{ slug: string }>;
 }
 
-export async function generateMetadata({ params }: GuideDetailProps): Promise<Metadata> {
-  const source = await readFile(`${params.slug}.md`);
+export async function generateMetadata(props: GuideDetailProps): Promise<Metadata> {
+  const { slug } = await props.params;
+  const source = await readFile(`${slug}.md`);
   const frontmatter = getFrontmatter(source);
 
   return {
@@ -41,15 +40,16 @@ export async function generateMetadata({ params }: GuideDetailProps): Promise<Me
   };
 }
 
-export default async function Page({ params }: GuideDetailProps) {
+export default async function Page(props: GuideDetailProps) {
+  const { slug } = await props.params;
   const files = await getFiles();
   const slugs = files.map(getSlug);
 
-  if (!slugs.includes(params.slug)) {
+  if (!slugs.includes(slug)) {
     notFound();
   }
 
-  const source = await readFile(`${params.slug}.md`);
+  const source = await readFile(`${slug}.md`);
   const ast = Markdoc.parse(source);
   const frontmatter = getFrontmatter(source);
 

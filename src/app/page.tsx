@@ -8,8 +8,9 @@ import constants from '@/constants';
 import darkLogo from '@/assets/logos/dark-logo-wordmark.png';
 import lightLogo from '@/assets/logos/light-logo-wordmark.png';
 
-export default function Home() {
-  const isLoggedIn = cookies().get(constants.AUTH_COOKIE);
+export default async function Home() {
+  const cookieStore = await cookies();
+  const isLoggedIn = cookieStore.get(constants.AUTH_COOKIE);
 
   return (
     <div className="relative mx-auto flex min-h-dvh flex-col items-center justify-center gap-8">

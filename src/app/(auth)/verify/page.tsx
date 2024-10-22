@@ -6,8 +6,8 @@ import VerifyForm from './VerifyForm';
 import { isNullOrUndefined } from '@/utils/validators';
 import * as constants from '@/constants';
 
-const getEmailFromCookies = (): string | undefined => {
-  const cookieStore = cookies();
+const getEmailFromCookies = async (): Promise<string | undefined> => {
+  const cookieStore = await cookies();
 
   const verifyCookie = cookieStore.get(constants.VERIFY_COOKIE);
   if (!verifyCookie) {
@@ -22,8 +22,8 @@ const getEmailFromCookies = (): string | undefined => {
   return claims.email as string;
 };
 
-export default function Login() {
-  const email = getEmailFromCookies();
+export default async function Login() {
+  const email = await getEmailFromCookies();
 
   if (!email) {
     redirect('/login', RedirectType.replace);
