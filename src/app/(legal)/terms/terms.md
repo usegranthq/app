@@ -28,6 +28,14 @@ UseGrant reserves the right to terminate your access to the service without prio
 
 UseGrant will not be liable for any damages arising from the use of or inability to use the service, including but not limited to direct, indirect, incidental, punitive, and consequential damages. This limitation of liability applies to all claims, whether based on warranty, contract, tort, or any other legal theory, and whether or not UseGrant has been informed of the possibility of such damages.
 
+## Indemnification
+
+You agree to indemnify and hold UseGrant, its affiliates, and employees harmless from any claim, demand, or damage, including reasonable attorney's fees, arising out of or related to your use of the service, your violation of these terms, or your infringement of any intellectual property or other rights of a third party.
+
+## No Waiver
+
+If UseGrant doesn’t enforce a part of these terms right away, it doesn’t mean we’ve given up our right to enforce it later. Any waiver of our rights must be in writing and signed by an authorized UseGrant representative.
+
 ## Miscellaneous
 
 This agreement does not confer any benefit, right, or remedy to any person other than the parties involved. Neither party may assign or transfer its rights or obligations under this agreement without the prior written consent of the other party, which shall not be unreasonably withheld.
