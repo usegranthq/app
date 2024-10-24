@@ -13,7 +13,7 @@ const Plans = [
     id: 'starter',
     name: 'Starter',
     price: '$9/m',
-    features: ['10 Projects', 'Custom domains', 'Priority support 24/5'],
+    features: ['10 Projects', 'Custom domains', 'Priority support 24/5', 'Token introspection (coming soon)'],
   },
   {
     id: 'pro',
