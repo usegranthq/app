@@ -2,6 +2,7 @@
 // import Link from 'next/link';
 
 import PricingSection from './Pricing';
+import ZeroTrustSection from './ZeroTrust';
 
 // import { Button } from '@/components/ui/button';
 // import constants from '@/constants';
@@ -28,17 +29,17 @@ export default async function Home() {
       </div> */}
         <div className="text-center text-lg font-semibold text-primary">Signups are invite-only. Stay tuned!</div>
       </div>
-      <div>
+      <ZeroTrustSection />
+      <div className="mt-44">
         <h2 className="text-center text-4xl font-semibold">Worry about your app, not your bill.</h2>
         <p className="mx-auto mt-2.5 max-w-xl text-center text-base font-medium text-muted-foreground">
           We wanted pricing to be as simple as possible. No calculator needed.
         </p>
-
         <PricingSection />
       </div>
-      <div className="my-20">
-        <h2 className="text-center text-4xl font-semibold">Get started</h2>
-        <p className="mx-auto mt-2.5 max-w-xl text-center text-base font-medium text-muted-foreground">
+      <div className="my-44">
+        <h2 className="text-center text-4xl font-semibold">Stay tuned!</h2>
+        <p className="mx-auto mt-2.5 max-w-xl text-center text-base font-medium text-primary">
           Signups are invite-only. Stay tuned!
         </p>
       </div>

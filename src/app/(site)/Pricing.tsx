@@ -51,6 +51,7 @@ export default function PricingSection() {
           </Card>
         ))}
       </div>
+      <p className="mt-8 text-center text-sm text-muted-foreground">All prices in USD</p>
     </div>
   );
 }
