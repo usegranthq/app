@@ -1,4 +1,4 @@
-import { ShieldIcon, LockIcon, MailIcon, CheckCircleIcon, BookLock } from 'lucide-react';
+import { ShieldIcon, LockIcon, CheckCircleIcon, BookLock } from 'lucide-react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 
 const features = [
@@ -60,8 +60,9 @@ export default function ZeroTrustSection() {
         </div>
         <div className="mt-10 flex justify-center">
           <p className="max-w-xl text-center text-sm text-muted-foreground">
-            Experience the next level of authentication security. With UseGrant's Zero Trust approach, you're not just
-            adopting a service - you're embracing a security philosophy that puts your data and privacy first.
+            Experience the next level of authentication security. With UseGrant&apos;s Zero Trust approach, you&apos;re
+            not just adopting a service - you&apos;re embracing a security philosophy that puts your data and privacy
+            first.
           </p>
         </div>
       </div>
