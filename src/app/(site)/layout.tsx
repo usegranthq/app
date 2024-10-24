@@ -1,4 +1,8 @@
+import Image from 'next/image';
 import Link from 'next/link';
+
+import darkLogo from '@/assets/logos/dark-logo-wordmark.png';
+import lightLogo from '@/assets/logos/light-logo-wordmark.png';
 
 const Footer = () => {
   return (
@@ -28,7 +32,13 @@ const Footer = () => {
 export default function PageLayout({ children }: { children: React.ReactNode }) {
   return (
     <>
-      <section className="px-4">
+      <section className="relative px-4">
+        <Link href="/">
+          <div className="absolute left-4 top-6 bg-black/20">
+            <Image src={darkLogo} alt="logo" width={130} className="hidden dark:block" />
+            <Image src={lightLogo} alt="logo" width={130} className="dark:hidden" />
+          </div>
+        </Link>
         {children}
         <Footer />
       </section>
