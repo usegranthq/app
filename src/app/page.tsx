@@ -1,16 +1,16 @@
-import { cookies } from 'next/headers';
-import Link from 'next/link';
+// import { cookies } from 'next/headers';
+// import Link from 'next/link';
 import Image from 'next/image';
 
-import { Button } from '@/components/ui/button';
-import constants from '@/constants';
+// import { Button } from '@/components/ui/button';
+// import constants from '@/constants';
 
 import darkLogo from '@/assets/logos/dark-logo-wordmark.png';
 import lightLogo from '@/assets/logos/light-logo-wordmark.png';
 
 export default async function Home() {
-  const cookieStore = await cookies();
-  const isLoggedIn = cookieStore.get(constants.AUTH_COOKIE);
+  // const cookieStore = await cookies();
+  // const isLoggedIn = cookieStore.get(constants.AUTH_COOKIE);
 
   return (
     <div className="relative mx-auto flex min-h-dvh flex-col items-center justify-center gap-8">
@@ -25,12 +25,13 @@ export default async function Home() {
         </p>
       </div>
 
-      <div className="flex flex-col items-center gap-4 sm:flex-row">
+      {/* <div className="flex flex-col items-center gap-4 sm:flex-row">
         <Button asChild>
           <Link href="/login">{isLoggedIn ? 'Launch app 🚀' : 'Get started'}</Link>
         </Button>
         <Button variant="secondary">Read the guides</Button>
-      </div>
+      </div> */}
+      <div className="text-center text-lg font-semibold text-gray-500">Coming soon. Stay tuned!</div>
     </div>
   );
 }
