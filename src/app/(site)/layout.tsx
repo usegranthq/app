@@ -34,7 +34,7 @@ export default function PageLayout({ children }: { children: React.ReactNode }) 
     <>
       <section className="relative px-4">
         <Link href="/">
-          <div className="absolute left-10 top-10 bg-black/20">
+          <div className="absolute left-10 top-10">
             <Image src={darkLogo} alt="logo" width={130} className="hidden dark:block" />
             <Image src={lightLogo} alt="logo" width={130} className="dark:hidden" />
           </div>
