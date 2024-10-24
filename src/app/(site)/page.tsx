@@ -32,8 +32,8 @@ export default async function Home() {
       <ZeroTrustSection />
       <div className="mt-44">
         <h2 className="text-center text-4xl font-semibold">Worry about your app, not your bill.</h2>
-        <p className="mx-auto mt-2.5 max-w-xl text-center text-base font-medium text-muted-foreground">
-          We wanted pricing to be as simple as possible. No calculator needed.
+        <p className="mx-auto mt-2.5 max-w-lg text-center text-sm font-medium text-muted-foreground">
+          We wanted pricing to be as simple as possible. No calculator needed. Cost less than running your own service.
         </p>
         <PricingSection />
       </div>

@@ -7,13 +7,13 @@ const Plans = [
     id: 'free',
     name: 'Free',
     price: '$0',
-    features: ['1 Project', 'Free forever', 'API access'],
+    features: ['1 Project', 'Free forever', 'API access to create clients'],
   },
   {
     id: 'starter',
     name: 'Starter',
     price: '$9/m',
-    features: ['10 Projects', 'Custom domains', 'No API access to create projects'],
+    features: ['10 Projects', 'Custom domains', 'Priority support 24/5'],
   },
   {
     id: 'pro',
@@ -24,6 +24,7 @@ const Plans = [
       'All in starter',
       'Create projects on the fly',
       'Request unique signing key per project (coming soon)',
+      'Priority support',
     ],
   },
 ];
@@ -51,7 +52,7 @@ export default function PricingSection() {
           </Card>
         ))}
       </div>
-      <p className="mt-8 text-center text-sm text-muted-foreground">All prices in USD</p>
+      <p className="mt-8 text-center font-mono text-sm text-muted-foreground">All prices in USD</p>
     </div>
   );
 }
