@@ -2,6 +2,7 @@ import fs from 'node:fs/promises';
 import Markdoc, { Config, Node } from '@markdoc/markdoc';
 import React, { ReactNode } from 'react';
 import Link from 'next/link';
+import { cn } from '@/lib/utils';
 
 type HeadingProps = {
   children: ReactNode;
@@ -40,6 +41,12 @@ const config: Config = {
         href: { type: String },
       },
     },
+    list: {
+      render: 'List',
+      attributes: {
+        ordered: { type: Boolean },
+      },
+    },
   },
 };
 
@@ -47,11 +54,12 @@ type Components = {
   Paragraph: React.FC<{ children: ReactNode }>;
   Heading: React.FC<HeadingProps>;
   Link: React.FC<{ href: string; children: ReactNode }>;
+  List: React.FC<{ ordered: boolean; children: ReactNode }>;
 };
 
 const components: Components = {
   Paragraph: ({ children }) => {
-    return <p className="my-2 first:mb-2">{children}</p>;
+    return <p className="mb-5 mt-2">{children}</p>;
   },
   Heading: Heading,
   Link: ({ href, children }) => {
@@ -61,6 +69,10 @@ const components: Components = {
         {children}
       </Link>
     );
+  },
+  List: ({ ordered, children }) => {
+    const Tag = ordered ? 'ol' : 'ul';
+    return <Tag className={cn('ml-2 mt-1 list-inside', ordered ? 'list-decimal' : 'list-disc')}>{children}</Tag>;
   },
 };
 
