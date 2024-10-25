@@ -1,23 +1,21 @@
 import api from '@/lib/api';
 import { NextRequest, NextResponse } from 'next/server';
 
-const supportedProviders = ['github', 'google'];
+const supportedProviders: string[] = ['github', 'google'];
 
 interface RouteParams {
-  params: {
-    provider: string;
-  };
+  params: Promise<{ provider: string }>;
 }
 
-export async function GET(request: NextRequest, { params }: RouteParams) {
-  const { provider } = params;
+export async function GET(_req: NextRequest, { params }: RouteParams): Promise<NextResponse | Response> {
+  const { provider } = await params;
 
   if (!supportedProviders.includes(provider)) {
     return new Response('Unsupported provider', { status: 400 });
   }
 
   try {
-    const response = await api.get(`v1/login/${provider}`);
+    const response = await api.get<{ url: string }>(`v1/login/${provider}`);
     return NextResponse.redirect(response.url);
   } catch {}
 
