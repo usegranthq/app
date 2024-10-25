@@ -20,13 +20,13 @@ export default function Login() {
         <CardContent className="space-y-6">
           <div className="grid grid-cols-2 gap-4">
             <Button variant="outline" asChild>
-              <Link prefetch={false} href="/backend/v1/login/github">
+              <Link prefetch={false} href="/api/login/github">
                 <SiGithub className="mr-2 size-4" />
                 Github
               </Link>
             </Button>
             <Button variant="outline" asChild>
-              <Link prefetch={false} href="/backend/v1/login/google">
+              <Link prefetch={false} href="/api/login/google">
                 <SiGoogle className="mr-2 size-4" />
                 Google
               </Link>
