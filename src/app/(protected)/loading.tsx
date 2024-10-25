@@ -22,7 +22,7 @@ export default function UserLoading() {
   const randomText = loadingText[Math.floor(Math.random() * loadingText.length)];
 
   return (
-    <div className="flex h-screen w-full items-center justify-center">
+    <div className="flex h-dvh w-full items-center justify-center">
       <div className="flex flex-col items-center gap-2">
         <LoaderIcon className="size-6 animate-spin" />
         <h1 className="font-mono font-bold tracking-wider">{randomText}</h1>

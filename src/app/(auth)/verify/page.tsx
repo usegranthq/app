@@ -30,7 +30,7 @@ export default async function Login() {
   }
 
   return (
-    <div className="flex min-h-screen flex-col items-center justify-center">
+    <div className="flex h-dvh flex-col items-center justify-center">
       <div className="max-w-sm">
         <h1 className="text-center text-2xl font-bold">Verification</h1>
         <p className="mb-10 mt-2 text-center text-sm">

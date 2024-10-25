@@ -19,7 +19,7 @@ export default async function Home() {
   return (
     <>
       <div className="mx-auto flex flex-col items-center justify-center gap-8 lg:min-h-dvh">
-        <div className="mt-20 md:mt-56">
+        <div className="mt-44 md:mt-56">
           <h1 className="text-center text-3xl font-bold md:text-5xl">Simplify Machine-to-Machine Auth</h1>
           <p className="mx-auto mt-2.5 max-w-xl text-center text-base font-medium text-gray-400">
             Set up secure M2M authentication in minutes. Built on OAuth/OpenID standards for maximum security.
