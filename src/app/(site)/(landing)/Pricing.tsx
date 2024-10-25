@@ -32,9 +32,9 @@ const Plans = [
 export default function PricingSection() {
   return (
     <div className="mt-44">
-      <h2 className="text-center text-4xl font-semibold">Worry about your app, not your bill.</h2>
+      <h2 className="text-center text-4xl font-semibold">Worry about your auth, not your bill.</h2>
       <p className="mx-auto mt-2.5 max-w-lg text-center text-sm font-medium text-muted-foreground">
-        We wanted pricing to be as simple as possible. No calculator needed. Cost less than running your own service.
+        Our pricing is simple and transparent. No calculator needed. Way more affordable than running your own service.
       </p>
       <div className="mx-auto max-w-5xl">
         <div className="mt-12 grid gap-14 sm:grid-cols-1 lg:grid-cols-3 lg:items-center">
