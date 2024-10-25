@@ -1,6 +1,7 @@
 import type { NextRequest } from 'next/server';
 import { NextResponse } from 'next/server';
 import { decodeJwt } from 'jose';
+import { cookies } from 'next/headers';
 
 import { isNullOrUndefined } from '@/utils/validators';
 import * as constants from '@/constants';
@@ -37,6 +38,8 @@ const validateUserSession = async () => {
 };
 
 const handleProtectedRoute = async (request: NextRequest) => {
+  const cookieStore = await cookies();
+
   const isAuthCookieValid = hasValidCookie(request, constants.AUTH_COOKIE);
   if (!isAuthCookieValid) return redirectToLoginPage(request);
 
@@ -46,6 +49,13 @@ const handleProtectedRoute = async (request: NextRequest) => {
     const response = redirectToLoginPage(request);
     response.cookies.delete(constants.AUTH_COOKIE);
     return response;
+  }
+
+  if (request.nextUrl.pathname === '/u') {
+    const recentProjectId = cookieStore.get(constants.RECENT_PROJECT_COOKIE)?.value;
+    if (recentProjectId) {
+      return redirectToPage(`/u/projects/${recentProjectId}`, request);
+    }
   }
 
   return next();
