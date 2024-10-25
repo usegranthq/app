@@ -6,6 +6,7 @@ import PricingSection from './Pricing';
 import ZeroTrustSection from './ZeroTrust';
 
 import landerImg from './lander.png';
+import TrustBasedAccess from './TrustBasedAccess';
 
 // import { Button } from '@/components/ui/button';
 // import constants from '@/constants';
@@ -35,6 +36,7 @@ export default async function Home() {
         <Button variant="secondary">Read the guides</Button>
       </div> */}
       </div>
+      <TrustBasedAccess />
       <ZeroTrustSection />
       <PricingSection />
       <div className="my-44">
