@@ -31,7 +31,7 @@ export default function ZeroTrustSection() {
       <div className="container mx-auto px-4 md:px-6">
         <div className="flex flex-col items-center justify-center space-y-4 text-center">
           <div className="space-y-2">
-            <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl">Zero Trust Setup</h2>
+            <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl">Zero Trust</h2>
             <p className="mx-auto text-muted-foreground">Secure, private, and built for modern applications</p>
           </div>
         </div>
