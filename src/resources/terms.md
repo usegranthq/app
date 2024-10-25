@@ -1,8 +1,8 @@
-The terms, "UseGrant", "useGrant", "usegrant", "usegrant.dev", "We", "Us", or "Our" refers to usegrant.dev, and the terms “You” and “Your” refers to the licensed users of usegrant.dev.
+The terms "UseGrant", "useGrant", "usegrant", "usegrant.dev", "We", "Us", or "Our" refer to usegrant.dev, and the terms “You” and “Your” refer to the licensed users of usegrant.dev.
 
 ## Acceptance of Terms
 
-Welcome to usegrant. By signing up, browsing this website, and using our service, you are agreeing to comply with and be bound by the following terms and conditions of use, which together with our privacy policy govern our relationship with you in relation to this service. If you disagree with any part of these terms and conditions, please do not use our service.
+Welcome to usegrant. By signing up, browsing this website, and using our service, you agree to comply with and be bound by the following terms and conditions of use, which, together with our privacy policy, govern our relationship with you in relation to this service. If you disagree with any part of these terms and conditions, please do not use our service.
 
 ## Privacy and Data Security
 
@@ -19,6 +19,17 @@ We offer refunds only in cases where there is a technical issue with the product
 ## Modifications
 
 UseGrant reserves the right to revise these terms of service at any time without prior notice. By continuing to use this website, you agree to be bound by the most current version of these terms of service.
+
+## User Responsibilities
+
+You are responsible for ensuring that your use of UseGrant complies with all applicable laws and regulations. By using UseGrant, you agree that you will not:
+
+- Use the service for any illegal or unauthorized purpose.
+- Attempt to interfere with the proper working of the Services.
+- Use any automated system (such as bots or scrapers) to access the Services in a way that could disrupt our operations.
+- Misrepresent yourself or your affiliation with any individual or entity.
+
+Violation of any of the above restrictions can result in termination of your access to the Services.
 
 ## Termination
 
