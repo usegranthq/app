@@ -2,7 +2,6 @@ import api from '@/lib/api';
 import { User } from '@/types/app.types';
 import { UserProvider } from '@/contexts/User';
 
-import SWR from './_blocks/SWR';
 import { minimumDelay } from '@/utils/time';
 
 export default async function UserLayout({ children }: { children: React.ReactNode }) {
@@ -12,9 +11,5 @@ export default async function UserLayout({ children }: { children: React.ReactNo
   const currentTime = Date.now();
   await minimumDelay(2_000, initialTime, currentTime);
 
-  return (
-    <SWR>
-      <UserProvider user={user}>{children}</UserProvider>
-    </SWR>
-  );
+  return <UserProvider user={user}>{children}</UserProvider>;
 }
