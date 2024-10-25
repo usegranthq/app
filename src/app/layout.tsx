@@ -12,6 +12,11 @@ import './globals.css';
 export const metadata: Metadata = {
   title: 'useGrant',
   description: 'Effortless machine to machine grant setup',
+  openGraph: {
+    title: 'useGrant',
+    description: 'Effortless machine to machine grant setup',
+    images: ['/og.png'],
+  },
 };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
