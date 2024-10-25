@@ -31,13 +31,13 @@ const Plans = [
 
 export default function PricingSection() {
   return (
-    <div className="mt-44">
-      <h2 className="text-center text-4xl font-semibold">Worry about your auth, not your bill.</h2>
-      <p className="mx-auto mt-2.5 max-w-lg text-center text-sm font-medium text-muted-foreground">
+    <div className="mt-28 md:mt-44">
+      <h2 className="text-center text-3xl font-semibold md:text-4xl">Worry about your auth, not your bill.</h2>
+      <p className="mx-auto mt-2.5 max-w-lg text-pretty text-center text-sm font-medium text-muted-foreground">
         Our pricing is simple and transparent. No calculator needed. Way more affordable than running your own service.
       </p>
       <div className="mx-auto max-w-5xl">
-        <div className="mt-12 grid gap-14 sm:grid-cols-1 lg:grid-cols-3 lg:items-center">
+        <div className="mt-12 grid gap-10 sm:grid-cols-1 md:gap-14 lg:grid-cols-3 lg:items-center">
           {Plans.map((plan) => (
             <Card key={plan.id} className={cn('h-full', { 'border-primary': plan.id === 'starter' })}>
               <CardHeader className="pb-2 text-center">

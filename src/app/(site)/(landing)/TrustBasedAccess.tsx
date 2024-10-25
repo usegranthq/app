@@ -4,14 +4,10 @@ const code = `
 import * as aws from '@aws-sdk/client-sts';
 
 // get the token from usegrant.dev
-const response = await fetch('//project.usegrant.dev/sdk/v1/token', {
-  method: 'POST',
-  body: JSON.stringify({
-    access_token: 'YOUR_ACCESS_TOKEN',
-    client_id: 'YOUR_CLIENT_ID',
-  }),
+const token = await usegrant.getToken({
+  client_id: 'YOUR_CLIENT_ID',
+  api_key: 'YOUR_API_KEY',
 });
-const data = await response.json();
 
 // use the token to assume a role
 const command = new aws.AssumeRoleWithWebIdentityCommand({
@@ -30,13 +26,10 @@ export default async function TrustBasedAccess() {
   });
 
   return (
-    <div className="mx-auto mt-44 grid max-w-6xl grid-cols-12 gap-10">
-      <div className="col-span-7 overflow-hidden rounded-xl border border-border text-sm shadow-md">
-        <div dangerouslySetInnerHTML={{ __html: out }} className="[&>pre]:p-4" />
-      </div>
-      <div className="col-span-5 flex flex-col items-center justify-center">
-        <div>
-          <h2 className="text-4xl font-bold">Trust-based Access</h2>
+    <div className="mx-auto mt-28 grid max-w-6xl grid-cols-1 gap-10 md:mt-44 lg:grid-cols-2">
+      <div className="col-span-1 flex flex-col items-center justify-center">
+        <div className="max-sm:text-center">
+          <h2 className="text-3xl font-bold md:text-4xl">Trust-based Access</h2>
           <p className="mt-8 text-muted-foreground">
             Set up UseGrant as a trusted identity provider on your preferred platform. Generate tokens from your
             identity provider and use them to access your API effortlessly.
@@ -46,6 +39,9 @@ export default async function TrustBasedAccess() {
             authorization.
           </p>
         </div>
+      </div>
+      <div className="col-span-1 overflow-hidden rounded-xl border border-border text-sm shadow-md">
+        <div dangerouslySetInnerHTML={{ __html: out }} className="[&>pre]:p-4" />
       </div>
     </div>
   );

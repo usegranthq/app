@@ -27,7 +27,7 @@ const features = [
 
 export default function ZeroTrustSection() {
   return (
-    <section className="mt-44 w-full">
+    <section className="mt-28 w-full md:mt-44">
       <div className="container mx-auto px-4 md:px-6">
         <div className="flex flex-col items-center justify-center space-y-4 text-center">
           <div className="space-y-2">
@@ -35,7 +35,7 @@ export default function ZeroTrustSection() {
             <p className="mx-auto text-muted-foreground">Secure, private, and built for modern applications</p>
           </div>
         </div>
-        <div className="mx-auto grid max-w-5xl items-center gap-6 pt-20 lg:grid-cols-3 lg:gap-12">
+        <div className="mx-auto grid max-w-5xl items-center gap-6 pt-10 md:pt-20 lg:grid-cols-3 lg:gap-12">
           {features.map((feature, index) => (
             <Card className="relative overflow-hidden" key={`feature-${index}`}>
               <CardHeader>
