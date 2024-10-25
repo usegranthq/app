@@ -1,5 +1,5 @@
 import api from '@/lib/api';
-import { cookies, headers } from 'next/headers';
+import { cookies } from 'next/headers';
 import { NextRequest, NextResponse } from 'next/server';
 
 const supportedProviders: string[] = ['github', 'google'];
