@@ -56,6 +56,8 @@ const handleProtectedRoute = async (request: NextRequest) => {
     if (recentProjectId) {
       return redirectToPage(`/u/projects/${recentProjectId}`, request);
     }
+
+    return redirectToPage('/u/projects', request);
   }
 
   return next();
