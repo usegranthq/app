@@ -17,7 +17,6 @@ export const metadata: Metadata = {
     description: 'Effortless machine to machine grant setup',
     images: ['/og.png'],
     siteName: 'useGrant',
-    url: process.env.VERCEL_PROJECT_PRODUCTION_URL,
   },
 };
 
