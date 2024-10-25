@@ -1,5 +1,5 @@
 import api from '@/lib/api';
-import { cookies } from 'next/headers';
+import { cookies, headers } from 'next/headers';
 import { NextRequest, NextResponse } from 'next/server';
 
 const supportedProviders: string[] = ['github', 'google'];
@@ -23,7 +23,11 @@ export async function GET(_req: NextRequest, { params }: RouteParams): Promise<N
   }
 
   try {
-    const response = await api.get<{ url: string }>(`v1/login/${provider}`);
+    const response = await api.get<{ url: string }>(`v1/login/${provider}`, {
+      headers: {
+        Cookie: cookieStore.toString(),
+      },
+    });
     return NextResponse.redirect(response.url);
   } catch {}
 
