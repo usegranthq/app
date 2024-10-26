@@ -12,13 +12,13 @@ const Plans = [
   {
     id: 'starter',
     name: 'Starter',
-    price: '$9/m',
+    price: '$9/mo',
     features: ['10 Projects', 'Custom domains', 'Priority support 24/5', 'Token introspection (coming soon)'],
   },
   {
     id: 'pro',
     name: 'Pro',
-    price: '$49/m',
+    price: '$49/mo',
     features: [
       '100 Projects',
       'All in starter',
@@ -40,8 +40,8 @@ export default function PricingSection() {
         <div className="mt-12 grid gap-10 sm:grid-cols-1 md:gap-14 lg:grid-cols-3 lg:items-center">
           {Plans.map((plan) => (
             <Card key={plan.id} className={cn('h-full', { 'border-primary': plan.id === 'starter' })}>
-              <CardHeader className="pb-2 text-center">
-                <CardTitle className="mb-5 text-lg font-medium">{plan.name}</CardTitle>
+              <CardHeader className="pb-2">
+                <CardTitle className="text-sm font-bold text-muted-foreground">{plan.name}</CardTitle>
                 <span className="text-3xl font-bold">{plan.price}</span>
               </CardHeader>
               <CardContent>
