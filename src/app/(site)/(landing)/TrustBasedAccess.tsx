@@ -41,7 +41,7 @@ export default async function TrustBasedAccess() {
         </div>
       </div>
       <div className="col-span-1 overflow-hidden rounded-xl border border-border text-sm shadow-md">
-        <div dangerouslySetInnerHTML={{ __html: out }} className="[&>pre]:p-4" />
+        <div dangerouslySetInnerHTML={{ __html: out }} className="[&>pre]:p-4 [&>pre]:max-sm:overflow-x-auto" />
       </div>
     </div>
   );
