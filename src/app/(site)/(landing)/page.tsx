@@ -5,7 +5,9 @@ import Image from 'next/image';
 import PricingSection from './Pricing';
 import ZeroTrustSection from './ZeroTrust';
 
-import landerImg from './lander.png';
+import landerDarkImg from './lander-dark.png';
+import landerLightImg from './lander-light.png';
+
 import TrustBasedAccess from './TrustBasedAccess';
 import DynamicEnv from './DyanmicEnv';
 
@@ -29,7 +31,8 @@ export default async function Home() {
           Signups are invite-only. Stay tuned!
         </div>
         <div className="mt-10 max-w-5xl overflow-hidden rounded-lg border border-border shadow-lg md:mt-20">
-          <Image src={landerImg} alt="UseGrant" priority />
+          <Image src={landerDarkImg} alt="UseGrant" className="hidden dark:block" priority />
+          <Image src={landerLightImg} alt="UseGrant" className="block dark:hidden" priority />
         </div>
 
         {/* <div className="flex flex-col items-center gap-4 sm:flex-row">
