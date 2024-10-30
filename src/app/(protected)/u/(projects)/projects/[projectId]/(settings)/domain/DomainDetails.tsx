@@ -14,7 +14,7 @@ export default function DomainDetails() {
       <CardHeader>
         <CardTitle>Project Domain</CardTitle>
         <CardDescription>
-          Below are the details of your project's domain and its Certificate Authority (CA) thumbprint.
+          Below are the details of your project&apos;s domain and its Certificate Authority (CA) thumbprint.
         </CardDescription>
       </CardHeader>
       <div>
