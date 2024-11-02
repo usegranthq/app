@@ -1,5 +1,5 @@
 import { TopUserNav } from './TopUserNav';
-import { ThemeSwitcher } from './ThemeSwitcher';
+import { ThemeSwitcher } from '@/blocks/ThemeSwitcher';
 
 interface TopbarProps {
   children?: React.ReactNode;

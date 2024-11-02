@@ -2,8 +2,8 @@ import Link from 'next/link';
 
 export default function Footer() {
   return (
-    <footer className="-mx-4 border-t py-8">
-      <div className="mx-auto flex max-w-7xl max-lg:px-4 max-sm:flex-col">
+    <footer className="border-t px-4 py-8 lg:px-0">
+      <div className="mx-auto flex max-w-7xl max-sm:flex-col">
         <div className="flex flex-col gap-1">
           <p className="font-mono text-sm font-medium">© 2024 useGrant. All rights reserved.</p>
           <p className="font-mono text-sm font-medium text-muted-foreground">support@usegrant.com</p>

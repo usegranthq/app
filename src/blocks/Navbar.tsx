@@ -4,6 +4,8 @@ import Link from 'next/link';
 import darkLogo from '@/assets/logos/dark-logo-wordmark.png';
 import lightLogo from '@/assets/logos/light-logo-wordmark.png';
 
+import { ThemeSwitcher } from './ThemeSwitcher';
+
 const navItems = [
   { label: 'Home', href: '/' },
   { label: 'Pricing', href: '/#pricing' },
@@ -22,7 +24,7 @@ export default function Navbar() {
         </Link>
       </div>
       <div className="ml-auto">
-        <nav className="">
+        <nav className="flex">
           <ul className="flex items-center divide-x divide-border">
             {navItems.map((item) => (
               <li
@@ -34,6 +36,9 @@ export default function Navbar() {
               </li>
             ))}
           </ul>
+          <div className="flex items-center border-l border-border px-2">
+            <ThemeSwitcher />
+          </div>
         </nav>
       </div>
     </header>
