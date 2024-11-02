@@ -14,12 +14,12 @@ const navItems = [
 
 export default function Navbar() {
   return (
-    <header className="top-0 z-50 flex border-b bg-background md:sticky">
+    <header className="top-0 z-50 flex border-b bg-background shadow-sm md:sticky">
       <div className="ml-4 flex items-center">
         <Link href="/">
           <div className="left-4 top-8 md:left-10 md:top-10">
-            <Image src={darkLogo} alt="logo" width={120} className="hidden flex-shrink-0 dark:block" />
-            <Image src={lightLogo} alt="logo" width={120} className="flex-shrink-0 dark:hidden" />
+            <Image src={darkLogo} alt="logo" width={120} className="hidden shrink-0 dark:block" />
+            <Image src={lightLogo} alt="logo" width={120} className="shrink-0 dark:hidden" />
           </div>
         </Link>
       </div>
@@ -27,17 +27,19 @@ export default function Navbar() {
         <nav className="flex">
           <ul className="flex items-center divide-x divide-border">
             {navItems.map((item) => (
-              <li
-                className="group relative px-6 py-3.5 text-sm font-semibold text-muted-foreground transition-colors hover:text-foreground"
-                key={`nav-item-${item.href}`}
-              >
-                <Link href={item.href}>{item.label}</Link>
-                <span className="absolute bottom-0 left-0 right-0 h-[1.5px] w-0 bg-foreground transition-all duration-500 group-hover:w-full" />
+              <li key={`nav-item-${item.href}`} className="flex shrink-0">
+                <Link
+                  className="group relative px-6 py-3.5 text-sm font-semibold text-muted-foreground transition-colors hover:text-foreground"
+                  href={item.href}
+                >
+                  {item.label}
+                  <span className="absolute bottom-0 left-0 right-0 h-[1.5px] w-0 bg-foreground transition-all duration-500 group-hover:w-full" />
+                </Link>
               </li>
             ))}
           </ul>
-          <div className="flex items-center border-l border-border px-2">
-            <ThemeSwitcher />
+          <div className="flex border-l border-border">
+            <ThemeSwitcher className="w-11 rounded-none p-2" />
           </div>
         </nav>
       </div>
