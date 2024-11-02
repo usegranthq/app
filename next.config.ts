@@ -14,7 +14,11 @@ const nextConfig: NextConfig = {
       },
       {
         source: '/docs/:path+',
-        destination: 'https://docs.usegrant.dev/:path+',
+        destination: 'https://docs.usegrant.dev/docs/:path+',
+      },
+      {
+        source: '/docs-static/_next/:path+',
+        destination: 'https://docs.usegrant.dev/docs-static/_next/:path+',
       },
     ];
   },
