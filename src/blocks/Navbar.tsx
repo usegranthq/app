@@ -39,7 +39,7 @@ export default function Navbar() {
             ))}
           </ul>
           <div className="flex border-l border-border">
-            <ThemeSwitcher className="w-11 rounded-none p-2" />
+            <ThemeSwitcher className="h-full w-11 rounded-none p-2" />
           </div>
         </nav>
       </div>
