@@ -7,9 +7,9 @@ import lightLogo from '@/assets/logos/light-logo-wordmark.png';
 import { ThemeSwitcher } from './ThemeSwitcher';
 
 const navItems = [
-  { label: 'Home', href: '/' },
-  { label: 'Pricing', href: '/#pricing' },
-  // { label: 'Docs', href: '/docs' },
+  { label: 'home', href: '/' },
+  { label: 'pricing', href: '/#pricing' },
+  // { label: 'docs', href: '/docs' },
 ];
 
 export default function Navbar() {
