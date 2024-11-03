@@ -5,6 +5,7 @@ import { SpeedInsights } from '@vercel/speed-insights/next';
 import { Analytics } from '@vercel/analytics/react';
 
 import ThemeProvider from '@/components/ThemeProvider';
+import { ColorProvider } from '@/contexts/ColorProvider';
 import { Toaster } from '@/components/ui/sonner';
 
 import './globals.css';
@@ -25,7 +26,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
     <html lang="en" className="dark scroll-smooth" style={{ colorScheme: 'dark' }} suppressHydrationWarning>
       <body className={`${GeistSans.variable} ${GeistMono.variable} mx-auto max-w-screen-2xl font-sans`}>
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
-          {children}
+          <ColorProvider>{children}</ColorProvider>
           <Toaster richColors />
         </ThemeProvider>
         <SpeedInsights />

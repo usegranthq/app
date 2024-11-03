@@ -1,3 +1,4 @@
+import { ColorPicker } from '@/blocks/ColorPicker';
 import { TopUserNav } from './TopUserNav';
 import { ThemeSwitcher } from '@/blocks/ThemeSwitcher';
 
@@ -10,6 +11,7 @@ export default function Topbar({ children }: TopbarProps) {
     <div className="sticky top-0 flex h-14 items-center border-b bg-background px-4">
       <div className="flex-1">{children}</div>
       <div className="flex items-center space-x-2.5">
+        <ColorPicker />
         <ThemeSwitcher />
         <TopUserNav />
       </div>
