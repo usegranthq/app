@@ -29,6 +29,21 @@ const hasValidCookie = (request: NextRequest, cookieName: string) => {
 const next = () => NextResponse.next();
 
 const validateUserSession = async () => {
+  const cookieStore = await cookies();
+
+  // if cookie validity is greater than 4 hours, do nothing
+  const EXPIRATION_TIME = 4 * 60 * 60; // 4 hours
+  const authCookie = cookieStore.get(constants.AUTH_COOKIE);
+
+  if (authCookie) {
+    const claims = decodeJwt(authCookie.value as string);
+    const claimExp = claims.exp ?? 0;
+    const remainingTime = claimExp - Math.floor(Date.now() / 1000);
+    if (remainingTime > EXPIRATION_TIME) {
+      return true;
+    }
+  }
+
   try {
     await api.get('v1/u/refresh');
   } catch {
