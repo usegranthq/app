@@ -1,6 +1,6 @@
 'use client';
 
-import { createContext, Dispatch, SetStateAction, useContext, useEffect, useState } from 'react';
+import { createContext, Dispatch, memo, SetStateAction, useContext, useEffect, useState } from 'react';
 
 interface ColorContextType {
   color: string;
@@ -33,6 +33,17 @@ interface ColorProviderProps {
   defaultColor?: string;
 }
 
+const script = (color: string) => {
+  const el = document.documentElement;
+  el.setAttribute('data-color-mode', color);
+};
+
+const ColorThemeScript = memo(({ color }: { color: string }) => {
+  return <script suppressHydrationWarning dangerouslySetInnerHTML={{ __html: `(${script.toString()})('${color}')` }} />;
+});
+
+ColorThemeScript.displayName = 'ColorThemeScript';
+
 export const ColorProvider = ({ children, defaultColor }: ColorProviderProps) => {
   const [color, setColor] = useState<string>(getColorFromLocalStorage(defaultColor));
 
@@ -42,8 +53,12 @@ export const ColorProvider = ({ children, defaultColor }: ColorProviderProps) =>
 
   useEffect(() => {
     localStorage.setItem('color', color);
-    document.documentElement.setAttribute('data-color-mode', color);
   }, [color]);
 
-  return <ColorContext.Provider value={{ color, setColor }}>{children}</ColorContext.Provider>;
+  return (
+    <ColorContext.Provider value={{ color, setColor }}>
+      <ColorThemeScript color={color} />
+      {children}
+    </ColorContext.Provider>
+  );
 };
