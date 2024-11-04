@@ -1,12 +1,15 @@
 import { Suspense } from 'react';
 import { SiGithub, SiGoogle } from '@icons-pack/react-simple-icons';
 import Link from 'next/link';
+import Script from 'next/script';
 
 import { Button } from '@/components/ui/button';
 import { Card, CardHeader, CardTitle, CardContent, CardFooter } from '@/components/ui/card';
 
 import LoginForm from './LoginForm';
 import RedirectErrorRenderer from './RedirectErrorRenderer';
+
+const TURNSTILE_SITE_KEY = process.env.TURNSTILE_SITE_KEY ?? '';
 
 export default function Login() {
   return (
@@ -40,7 +43,7 @@ export default function Login() {
               <span className="bg-background px-2 text-muted-foreground">Or continue with</span>
             </div>
           </div>
-          <LoginForm />
+          <LoginForm turnstileSiteKey={TURNSTILE_SITE_KEY} />
         </CardContent>
         <CardFooter className="text-center text-xs">
           <p>
@@ -59,6 +62,7 @@ export default function Login() {
       <Suspense>
         <RedirectErrorRenderer />
       </Suspense>
+      <Script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer />
     </div>
   );
 }

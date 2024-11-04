@@ -13,6 +13,7 @@
     "@edge-runtime/cookies": "^5.0.1",
     "@icons-pack/react-simple-icons": "^10.1.0",
     "@markdoc/markdoc": "^0.4.0",
+    "@marsidev/react-turnstile": "^1.0.2",
     "@radix-ui/react-alert-dialog": "^1.1.2",
     "@radix-ui/react-avatar": "^1.1.1",
     "@radix-ui/react-checkbox": "^1.1.2",
