@@ -4,11 +4,12 @@ import { redirect, RedirectType } from 'next/navigation';
 import { cookies, headers } from 'next/headers';
 import { SignJWT } from 'jose';
 import { z } from 'zod';
+import ky from 'ky';
+import { nanoid } from 'nanoid';
 
 import { getApiErrorMessage, getZodErrorMessage } from '@/utils/error';
 import { auth } from '@/lib/auth';
 import constants from '@/constants';
-import { nanoid } from 'nanoid';
 import db from '@/lib/db';
 import { getSetCookies } from '@/lib/api';
 
@@ -16,21 +17,49 @@ const loginSchema = z.object({
   email: z
     .string({ required_error: 'Please enter your email address.' })
     .email({ message: 'Please enter a valid email address.' }),
-  cf_token: z.string({ required_error: 'Missing captcha verification token.' }),
+  token: z.string({ required_error: 'Missing captcha verification token.' }),
 });
+
+interface TurnstileResponse {
+  success: boolean;
+  'error-codes': string[];
+}
+
+const TURNSTILE_SITE_VERIFY_URL = 'https://challenges.cloudflare.com/turnstile/v0/siteverify';
 
 // public endpoint
 export async function login(formData: FormData): ActionResponse {
   const validation = loginSchema.safeParse({
     email: formData.get('email'),
-    cf_token: formData.get('cf-turnstile-response'),
+    token: formData.get('cf-turnstile-response'),
   });
 
   if (!validation.success) {
     return [getZodErrorMessage(validation.error), null];
   }
 
+  const headersList = await headers();
+
+  const turnstileFormData = new FormData();
+  turnstileFormData.append('secret', process.env.TURNSTILE_SECRET_KEY || '');
+  turnstileFormData.append('response', validation.data.token);
+  turnstileFormData.append('remoteip', headersList.get('x-forwarded-for') || '');
+
   const payload = validation.data;
+
+  try {
+    const resp = await ky
+      .post<TurnstileResponse>(TURNSTILE_SITE_VERIFY_URL, {
+        body: turnstileFormData,
+      })
+      .json();
+
+    if (!resp.success) {
+      return [resp['error-codes'].join(', ') || 'Unable to verify captcha. Try again.', null];
+    }
+  } catch {
+    return ['Unable to verify captcha. Try again.', null];
+  }
 
   try {
     await auth.api.signInMagicLink({
@@ -38,7 +67,7 @@ export async function login(formData: FormData): ActionResponse {
         email: payload.email,
         callbackURL: `/u`,
       },
-      headers: await headers(),
+      headers: headersList,
     });
 
     const token = await new SignJWT({})
