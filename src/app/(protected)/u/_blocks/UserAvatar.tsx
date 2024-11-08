@@ -13,7 +13,7 @@ export function UserAvatar({ className }: UserAvatarProps) {
 
   return (
     <Avatar className={cn('size-7', className)}>
-      <AvatarImage src={`/avatar/?username=${user.uid}`} />
+      <AvatarImage src={`/avatar/?username=${user.id}`} />
       <AvatarFallback className="rounded-md uppercase">{user.email.charAt(0)}</AvatarFallback>
     </Avatar>
   );

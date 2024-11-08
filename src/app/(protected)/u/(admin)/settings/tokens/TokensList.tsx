@@ -13,7 +13,7 @@ export const columns: ColumnDef<Token>[] = [
   {
     header: 'Name',
     cell: ({ row }) => {
-      const { name, expires_at: expiresAt } = row.original;
+      const { name, expiresAt } = row.original;
 
       return (
         <div>
@@ -28,14 +28,22 @@ export const columns: ColumnDef<Token>[] = [
   {
     header: 'Created At',
     cell: ({ row }) => {
-      const createdAt = row.original.created_at;
+      const createdAt = row.original.createdAt;
       return format(createdAt, 'MMM d, yyyy');
+    },
+  },
+  {
+    header: 'Expires At',
+    cell: ({ row }) => {
+      const expiresAt = row.original.expiresAt;
+      if (isNullOrUndefined(expiresAt)) return <span className="text-muted-foreground">Never</span>;
+      return format(expiresAt, 'MMM d, yyyy');
     },
   },
   {
     header: 'Last Used At',
     cell: ({ row }) => {
-      const lastUsedAt = row.original.last_used_at;
+      const lastUsedAt = row.original.lastUsedAt;
       if (isNullOrUndefined(lastUsedAt)) return <span className="text-muted-foreground">Never</span>;
       return formatRelative(lastUsedAt, new Date());
     },

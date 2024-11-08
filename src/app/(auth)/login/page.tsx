@@ -1,13 +1,11 @@
 import { Suspense } from 'react';
-import { SiGithub, SiGoogle } from '@icons-pack/react-simple-icons';
 import Link from 'next/link';
-import Script from 'next/script';
 
-import { Button } from '@/components/ui/button';
 import { Card, CardHeader, CardTitle, CardContent, CardFooter } from '@/components/ui/card';
 
 import LoginForm from './LoginForm';
 import RedirectErrorRenderer from './RedirectErrorRenderer';
+import OauthButtons from './OauthButtons';
 
 const TURNSTILE_SITE_KEY = process.env.TURNSTILE_SITE_KEY ?? '';
 
@@ -21,20 +19,7 @@ export default function Login() {
           </CardTitle>
         </CardHeader>
         <CardContent className="space-y-6">
-          <div className="grid grid-cols-2 gap-4">
-            <Button variant="outline" asChild>
-              <Link prefetch={false} href="/api/login/github">
-                <SiGithub className="mr-2 size-4" />
-                Github
-              </Link>
-            </Button>
-            <Button variant="outline" asChild>
-              <Link prefetch={false} href="/api/login/google">
-                <SiGoogle className="mr-2 size-4" />
-                Google
-              </Link>
-            </Button>
-          </div>
+          <OauthButtons />
           <div className="relative">
             <div className="absolute inset-0 flex items-center">
               <span className="w-full border-t"></span>
@@ -62,7 +47,6 @@ export default function Login() {
       <Suspense>
         <RedirectErrorRenderer />
       </Suspense>
-      <Script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer />
     </div>
   );
 }

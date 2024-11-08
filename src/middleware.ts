@@ -1,69 +1,60 @@
 import type { NextRequest } from 'next/server';
 import { NextResponse } from 'next/server';
-import { decodeJwt } from 'jose';
 import { cookies } from 'next/headers';
+import type { Session } from 'better-auth/types';
 
-import { isNullOrUndefined } from '@/utils/validators';
 import * as constants from '@/constants';
-import api from './lib/api';
+import ROUTES from './constants/routes';
+import { KyOptions } from './lib/api';
+import ky, { HTTPError } from 'ky';
 
 const isProtectedRoute = (pathname: string) => pathname.startsWith('/u');
 
 const redirectToPage = (path: string, request: NextRequest) => NextResponse.redirect(new URL(path, request.url));
-const redirectToLoginPage = (request: NextRequest) => redirectToPage('/login', request);
-const redirectToUserPage = (request: NextRequest) => redirectToPage('/u', request);
-
-const isTokenExpired = (expirationTime?: number) => {
-  if (isNullOrUndefined(expirationTime)) return true;
-  return new Date() > new Date(expirationTime * 1000);
-};
+const redirectToLoginPage = (request: NextRequest) => redirectToPage(ROUTES.LOGIN, request);
+const redirectToUserPage = (request: NextRequest) => redirectToPage(ROUTES.DASHBOARD, request);
 
 const hasValidCookie = (request: NextRequest, cookieName: string) => {
   const cookie = request.cookies.get(cookieName);
   if (!cookie?.value) return false;
 
-  const claims = decodeJwt(cookie.value as string);
-  return !isTokenExpired(claims.exp);
+  return true;
 };
 
 const next = () => NextResponse.next();
 
-const validateUserSession = async () => {
+const getSession = async (request: NextRequest, cookie: string): Promise<Session | null> => {
   const cookieStore = await cookies();
 
-  // if cookie validity is greater than 4 hours, do nothing
-  const EXPIRATION_TIME = 4 * 60 * 60; // 4 hours
-  const authCookie = cookieStore.get(constants.AUTH_COOKIE);
-
-  if (authCookie) {
-    const claims = decodeJwt(authCookie.value as string);
-    const claimExp = claims.exp ?? 0;
-    const remainingTime = claimExp - Math.floor(Date.now() / 1000);
-    if (remainingTime > EXPIRATION_TIME) {
-      return true;
-    }
-  }
+  const options: KyOptions = {
+    prefixUrl: request.nextUrl.origin,
+    headers: {
+      cookie,
+    },
+  };
 
   try {
-    await api.get('v1/u/refresh');
-  } catch {
-    return false;
+    return await ky.get<Session>('api/auth/get-session', options).json<Session>();
+  } catch (error) {
+    if (error instanceof HTTPError && error.response.status === 401) {
+      cookieStore.delete(constants.AUTH_COOKIE);
+      cookieStore.delete(constants.VERIFY_COOKIE);
+      return null;
+    }
+
+    return null;
   }
-  return true;
 };
 
 const handleProtectedRoute = async (request: NextRequest) => {
   const cookieStore = await cookies();
+  const authCookie = cookieStore.get(constants.AUTH_COOKIE);
 
-  const isAuthCookieValid = hasValidCookie(request, constants.AUTH_COOKIE);
-  if (!isAuthCookieValid) return redirectToLoginPage(request);
+  if (!authCookie) return redirectToLoginPage(request);
 
-  const isUserValid = await validateUserSession();
-
-  if (!isUserValid) {
-    const response = redirectToLoginPage(request);
-    response.cookies.delete(constants.AUTH_COOKIE);
-    return response;
+  const session = await getSession(request, cookieStore.toString());
+  if (!session) {
+    return redirectToLoginPage(request);
   }
 
   if (request.nextUrl.pathname === '/u') {
@@ -72,7 +63,7 @@ const handleProtectedRoute = async (request: NextRequest) => {
       return redirectToPage(`/u/projects/${recentProjectId}`, request);
     }
 
-    return redirectToPage('/u/projects', request);
+    return redirectToPage(ROUTES.PROJECTS, request);
   }
 
   return next();
@@ -90,7 +81,7 @@ const handleVerifyRoute = (request: NextRequest) => {
   return next();
 };
 
-const authRoutes = ['/login', '/verify'];
+const authRoutes = [ROUTES.LOGIN, '/verify'];
 
 const handleDefaultRoute = (request: NextRequest) => {
   const isAuthCookieValid = hasValidCookie(request, constants.AUTH_COOKIE);

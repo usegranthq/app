@@ -4,12 +4,17 @@ import Link from 'next/link';
 import { toast } from 'sonner';
 
 import { Input } from '@/components/ui/input';
-
-import SubmitButton from './SubmitButton';
 import { verify } from '@/actions';
 
-export default function VerifyForm() {
+import SubmitButton from './SubmitButton';
+
+interface VerifyFormProps {
+  email: string;
+}
+
+export default function VerifyForm({ email }: VerifyFormProps) {
   const handleFormSubmit = async (formData: FormData) => {
+    formData.set('email', email);
     const [errorMessage] = await verify(formData);
 
     if (errorMessage) {

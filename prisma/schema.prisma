@@ -1,0 +1,147 @@
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("POSTGRES_PRISMA_URL")
+  directUrl = env("POSTGRES_URL_NON_POOLING")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Root {
+  id        String   @id
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("root")
+}
+
+model User {
+  id            String    @id
+  name          String
+  email         String
+  emailVerified Boolean
+  image         String?
+  createdAt     DateTime
+  updatedAt     DateTime
+  Session       Session[]
+  Account       Account[]
+
+  isAnonymous Boolean?
+
+  @@unique([email])
+  @@map("user")
+}
+
+model Session {
+  id        String   @id
+  createdAt DateTime @default(now())
+  expiresAt DateTime
+  ipAddress String?
+  userAgent String?
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("session")
+}
+
+model Account {
+  id           String    @id
+  accountId    String
+  providerId   String
+  userId       String
+  user         User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  accessToken  String?
+  refreshToken String?
+  idToken      String?
+  expiresAt    DateTime?
+  password     String?
+  Project      Project[]
+  Token        Token[]
+
+  @@map("account")
+}
+
+model Verification {
+  id         String   @id
+  identifier String
+  value      String
+  expiresAt  DateTime
+
+  @@map("verification")
+}
+
+model Project {
+  id          String   @id @default(uuid())
+  name        String
+  description String
+  urlId       String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  Client      Client[]
+  Domain      Domain[]
+
+  Account   Account @relation(fields: [accountId], references: [id], onDelete: Cascade)
+  accountId String
+
+  Jwks Jwks[]
+
+  @@map("project")
+}
+
+model Client {
+  id        String   @id @default(uuid())
+  name      String
+  audience  String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  Project   Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  projectId String
+
+  @@map("client")
+}
+
+model Domain {
+  id         String    @id @default(uuid())
+  name       String
+  domain     String
+  verified   Boolean   @default(false)
+  verifiedAt DateTime?
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+
+  Project   Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  projectId String
+
+  @@map("domain")
+}
+
+model Token {
+  id         String    @id @default(uuid())
+  name       String
+  token      String    @unique
+  expiresAt  DateTime?
+  lastUsedAt DateTime?
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+
+  Account   Account @relation(fields: [accountId], references: [id], onDelete: Cascade)
+  accountId String
+
+  @@map("token")
+}
+
+model Jwks {
+  id        String   @id @default(uuid())
+  kid       String
+  key       Json
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  Project   Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  projectId String
+
+  @@map("jwks")
+}

@@ -21,14 +21,14 @@ function getColumns(projectId: string): ColumnDef<Client>[] {
     {
       header: 'Created At',
       cell: ({ row }) => {
-        const createdAt = row.original.created_at;
+        const createdAt = row.original.createdAt;
         return format(createdAt, 'MMM d, yyyy');
       },
     },
     {
       header: 'Subject',
       cell: ({ row }) => {
-        return row.original.subject;
+        return row.original.id;
       },
     },
     {

@@ -1,0 +1,48 @@
+'use client';
+import { Button } from '@/components/ui/button';
+import { SiGithub, SiGoogle } from '@icons-pack/react-simple-icons';
+
+import { authClient } from '@/lib/auth-client';
+import { startTransition, useActionState } from 'react';
+
+const githubLogin = async () => {
+  await authClient.signIn.social({
+    provider: 'github',
+    callbackURL: '/u',
+  });
+};
+
+const googleLogin = async () => {
+  await authClient.signIn.social({
+    provider: 'google',
+    callbackURL: '/u',
+  });
+};
+
+export default function OauthButtons() {
+  const [, loginGithub, isPendingGithub] = useActionState(githubLogin, null);
+  const [, loginGoogle, isPendingGoogle] = useActionState(googleLogin, null);
+
+  const handleClickGithub = () => {
+    startTransition(loginGithub);
+  };
+
+  const handleClickGoogle = () => {
+    startTransition(loginGoogle);
+  };
+
+  const isPending = isPendingGithub || isPendingGoogle;
+
+  return (
+    <div className="grid grid-cols-2 gap-4">
+      <Button variant="outline" onClick={handleClickGithub} disabled={isPending}>
+        <SiGithub className="mr-2 size-4" />
+        Github
+      </Button>
+      <Button variant="outline" onClick={handleClickGoogle} disabled={isPending}>
+        <SiGoogle className="mr-2 size-4" />
+        Google
+      </Button>
+    </div>
+  );
+}

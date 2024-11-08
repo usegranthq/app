@@ -6,9 +6,9 @@ import { useRef } from 'react';
 
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { login } from '@/actions';
 
 import SubmitButton from './SubmitButton';
-import { login } from '@/actions';
 
 interface LoginFormProps {
   turnstileSiteKey: string;
@@ -18,8 +18,14 @@ export default function LoginForm({ turnstileSiteKey }: LoginFormProps) {
   const turnstileRef = useRef<TurnstileInstance>(null);
 
   const handleFormSubmit = async (formData: FormData) => {
-    const [errorMessage] = await login(formData);
+    const token = formData.get('cf-turnstile-response');
 
+    if (!token) {
+      toast.warning('Captcha verification required.');
+      return;
+    }
+
+    const [errorMessage] = await login(formData);
     if (errorMessage) {
       toast.error(errorMessage);
     }

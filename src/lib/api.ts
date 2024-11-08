@@ -1,14 +1,15 @@
 import { parseSetCookie, ResponseCookie } from '@edge-runtime/cookies';
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
-import ky, { KyResponse } from 'ky';
+import ky, { KyResponse, Options as KyOptions } from 'ky';
 
 import { isNotNullOrUndefined } from '@/utils/validators';
 import * as constants from '@/constants';
+import ROUTES from '@/constants/routes';
 
-const backendURL = process.env.BACKEND_URL;
+export type { KyOptions };
 
-const getSetCookies = (response: KyResponse): ResponseCookie[] => {
+export const getSetCookies = (response: KyResponse): ResponseCookie[] => {
   const setCookies = response.headers.getSetCookie();
   if (!setCookies) {
     return [];
@@ -18,7 +19,6 @@ const getSetCookies = (response: KyResponse): ResponseCookie[] => {
 };
 
 const api = ky.create({
-  prefixUrl: new URL('/api', backendURL),
   credentials: 'include',
   hooks: {
     beforeRequest: [
@@ -29,13 +29,15 @@ const api = ky.create({
       },
     ],
     afterResponse: [
-      async (_request, _options, response) => {
+      async (request, _options, response) => {
         const cookieStore = await cookies();
 
         if (response.status === 401) {
           cookieStore.delete(constants.AUTH_COOKIE);
           cookieStore.delete(constants.VERIFY_COOKIE);
-          redirect('/login');
+          if (process.env.NEXT_RUNTIME !== 'edge') {
+            redirect(ROUTES.LOGIN);
+          }
         }
 
         const setCookies = getSetCookies(response);

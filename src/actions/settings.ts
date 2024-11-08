@@ -1,30 +1,58 @@
 'use server';
 
+import { addDays } from 'date-fns';
+import { headers } from 'next/headers';
+import { nanoid } from 'nanoid';
+import { redirect } from 'next/navigation';
 import { revalidatePath } from 'next/cache';
+import { z } from 'zod';
 
-import api from '@/lib/api';
 import { getApiErrorMessage } from '@/utils/error';
-import { TokenWithToken } from '@/types/app.types';
+import { verifySession } from '@/dal/_verifySession';
+import { auth } from '@/lib/auth';
+import db from '@/lib/db';
+
+const createTokenSchema = z.object({
+  name: z.string(),
+  expiration: z.number().optional(),
+});
 
 export async function createToken(formData: FormData): ActionResponse<string> {
-  const name = formData.get('name') as string;
-  const expiration = Number(formData.get('expiration')) || 0;
+  const session = await verifySession();
 
-  const payload = { name, expiry_days: expiration };
+  const validation = createTokenSchema.safeParse({
+    name: formData.get('name'),
+    expiration: formData.get('expiration'),
+  });
+
+  if (!validation.success) {
+    return ['Invalid form data. Try again.', null];
+  }
+
+  const expiresInDays = Number(validation.data.expiration) || 0;
 
   try {
-    const response = await api.post<TokenWithToken>('v1/u/settings/tokens', { json: payload }).json();
+    const token = await db.token.create({
+      data: {
+        token: 'usegrant_api_' + nanoid(),
+        name: validation.data.name,
+        expiresAt: expiresInDays > 0 ? addDays(new Date(), expiresInDays) : null,
+        accountId: session.account.id,
+      },
+    });
     revalidatePath('/u/settings/tokens');
-    return [null, response.token];
+    return [null, token.token];
   } catch (error) {
     const errorMessage = await getApiErrorMessage(error, 'Failed to create token. Try again.');
     return [errorMessage, null];
   }
 }
 
-export async function deleteToken(id: string): ActionResponse<null> {
+export async function deleteToken(id: string): ActionResponse {
+  const session = await verifySession();
+
   try {
-    await api.delete(`v1/u/settings/tokens/${id}`);
+    await db.token.delete({ where: { id, accountId: session.account.id } });
   } catch (error) {
     const errorMessage = await getApiErrorMessage(error, 'Failed to delete token. Try again.');
     return [errorMessage, null];
@@ -34,9 +62,18 @@ export async function deleteToken(id: string): ActionResponse<null> {
   return [null, null];
 }
 
-export async function deleteSessions(): Promise<ActionResponse> {
+export async function deleteSessions(): ActionResponse {
+  const session = await verifySession();
+
   try {
-    await api.delete('v1/u/settings/sessions');
+    await db.session.deleteMany({
+      where: {
+        userId: session.user.id,
+        NOT: {
+          id: session.session.id,
+        },
+      },
+    });
   } catch (error) {
     const errorMessage = await getApiErrorMessage(error, 'Failed to delete sessions. Try again.');
     return [errorMessage, null];
@@ -46,9 +83,16 @@ export async function deleteSessions(): Promise<ActionResponse> {
   return [null, null];
 }
 
-export async function deleteSession(id: string): Promise<ActionResponse> {
+export async function deleteSession(id: string): ActionResponse {
+  await verifySession();
+
   try {
-    await api.delete(`v1/u/settings/sessions/${id}`);
+    await auth.api.revokeSession({
+      body: {
+        id,
+      },
+      headers: await headers(),
+    });
   } catch (error) {
     const errorMessage = await getApiErrorMessage(error, 'Failed to delete session. Try again.');
     return [errorMessage, null];
@@ -56,4 +100,22 @@ export async function deleteSession(id: string): Promise<ActionResponse> {
 
   revalidatePath('/u/settings/security');
   return [null, null];
+}
+
+export async function deleteAccount(): ActionResponse {
+  const session = await verifySession();
+
+  try {
+    await db.user.delete({
+      where: {
+        id: session.user.id,
+      },
+    });
+  } catch (error) {
+    const errorMessage = await getApiErrorMessage(error, 'Unable to delete account. Try again.');
+    return [errorMessage, null];
+  }
+
+  revalidatePath('/', 'layout');
+  redirect('/');
 }

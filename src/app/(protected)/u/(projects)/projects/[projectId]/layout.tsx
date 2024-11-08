@@ -2,12 +2,11 @@ import Link from 'next/link';
 import { notFound } from 'next/navigation';
 
 import { SidebarProvider, SidebarTrigger, SidebarInset } from '@/components/ui/sidebar';
-import { Project } from '@/types/app.types';
-import api from '@/lib/api';
 
 import { ProjectSidebar } from './_blocks/ProjectSidebar';
 import Topbar from '../../../_blocks/Topbar';
 import { ProjectProvider } from './_blocks/ProjectContext';
+import { getProjects } from '@/dal/projects';
 
 interface UserLayoutProps {
   children: React.ReactNode;
@@ -18,7 +17,7 @@ export default async function UserLayout(props: UserLayoutProps) {
   const { projectId } = await props.params;
   const { children } = props;
 
-  const projects = await api.get<Project[]>('v1/u/projects').json();
+  const projects = await getProjects();
   const activeProject = projects.find((project) => project.id === projectId);
 
   if (!activeProject) {

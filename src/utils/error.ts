@@ -1,4 +1,5 @@
 import { HTTPError } from 'ky';
+import { ZodError } from 'zod';
 
 export const getApiErrorMessage = async (error: unknown, defaultMessage: string) => {
   if (!(error instanceof HTTPError)) {
@@ -24,4 +25,8 @@ export const getApiErrorMessage = async (error: unknown, defaultMessage: string)
   }
 
   return defaultMessage;
+};
+
+export const getZodErrorMessage = (error: ZodError) => {
+  return error.errors[0].message;
 };

@@ -15,11 +15,11 @@ const getEmailFromCookies = async (): Promise<string | undefined> => {
   }
 
   const claims = decodeJwt(verifyCookie.value);
-  if (isNullOrUndefined(claims.email)) {
+  if (isNullOrUndefined(claims.sub)) {
     return;
   }
 
-  return claims.email as string;
+  return claims.sub as string;
 };
 
 export default async function Login() {
@@ -37,7 +37,7 @@ export default async function Login() {
           We have sent you a verification code to <span className="font-medium text-muted-foreground">{email}.</span>{' '}
           Enter it below
         </p>
-        <VerifyForm />
+        <VerifyForm email={email} />
       </div>
     </div>
   );

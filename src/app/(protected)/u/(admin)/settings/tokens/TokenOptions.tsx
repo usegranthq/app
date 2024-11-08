@@ -29,6 +29,7 @@ import {
 
 export default function TokenOptions({ token }: { token: Token }) {
   const router = useRouter();
+
   const handleDelete = async () => {
     const [error] = await deleteToken(token.id);
     if (error) {

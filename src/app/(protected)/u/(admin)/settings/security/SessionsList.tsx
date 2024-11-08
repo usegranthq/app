@@ -1,7 +1,7 @@
 'use client';
 
 import { ColumnDef, flexRender, getCoreRowModel, useReactTable } from '@tanstack/react-table';
-import { format, formatDistanceToNow } from 'date-fns';
+import { formatDate, formatDistanceToNow } from 'date-fns';
 
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Session } from '@/types/app.types';
@@ -10,16 +10,23 @@ import SessionOptions from './SessionOptions';
 
 export const columns: ColumnDef<Session>[] = [
   {
+    header: 'IP Address',
+    cell: ({ row }) => {
+      const ipAddress = row.original.ipAddress;
+      return ipAddress || 'Unknown';
+    },
+  },
+  {
     header: 'Created At',
     cell: ({ row }) => {
-      const createdAt = row.original.created_at;
-      return format(createdAt, 'MMM d, yyyy');
+      const createdAt = row.original.createdAt;
+      return formatDate(createdAt, 'MMM dd, yyyy');
     },
   },
   {
     header: 'Expires At',
     cell: ({ row }) => {
-      const expiresAt = row.original.expires_at;
+      const expiresAt = row.original.expiresAt;
       if (new Date(expiresAt) < new Date()) {
         return 'Expired';
       }

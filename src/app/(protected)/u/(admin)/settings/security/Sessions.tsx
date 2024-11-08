@@ -1,11 +1,9 @@
-import api from '@/lib/api';
-import { Session } from '@/types/app.types';
-
 import NoSessions from './NoSessions';
 import SessionsList from './SessionsList';
+import { getSessions } from '@/dal/user';
 
 export default async function Sessions() {
-  const sessions = await api.get<Session[]>('v1/u/settings/sessions').json();
+  const sessions = await getSessions();
 
   if (sessions.length === 0) {
     return <NoSessions />;

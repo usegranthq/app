@@ -1,12 +1,12 @@
-import api from '@/lib/api';
-import { User } from '@/types/app.types';
 import { UserProvider } from '@/contexts/User';
+import { PropsWithChildren } from 'react';
 
 import { minimumDelay } from '@/utils/time';
+import { getUser } from '@/dal/user';
 
-export default async function UserLayout({ children }: { children: React.ReactNode }) {
+export default async function UserLayout({ children }: PropsWithChildren) {
   const initialTime = Date.now();
-  const user = await api.get<User>('v1/u/me').json();
+  const user = await getUser();
 
   const currentTime = Date.now();
   await minimumDelay(2_000, initialTime, currentTime);

@@ -1,11 +1,10 @@
 import Link from 'next/link';
 
-import api from '@/lib/api';
 import RecentProjectTracker from './_blocks/RecentProjectTracker';
 import { Button } from '@/components/ui/button';
+import * as projectsDal from '@/dal/projects';
 
 import ClientsList from './ClientsList';
-import { Client } from '@/types/app.types';
 import NoClients from './NoClients';
 
 interface ProjectPageProps {
@@ -14,7 +13,7 @@ interface ProjectPageProps {
 
 export default async function ProjectPage(props: ProjectPageProps) {
   const { projectId } = await props.params;
-  const clients = await api.get<Client[]>(`v1/u/projects/${projectId}/clients`).json();
+  const clients = await projectsDal.getClients(projectId);
 
   return (
     <div>

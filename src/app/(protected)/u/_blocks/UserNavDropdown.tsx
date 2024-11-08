@@ -3,6 +3,9 @@
 import { ComponentPropsWithoutRef } from 'react';
 import { BadgeCheckIcon, LockIcon, CreditCardIcon, LogOutIcon } from 'lucide-react';
 import Link from 'next/link';
+import { toast } from 'sonner';
+import { useRouter } from 'next/navigation';
+
 import {
   DropdownMenuContent,
   DropdownMenuGroup,
@@ -25,11 +28,9 @@ import {
 
 import { useUser } from '@/contexts/User';
 import { cn } from '@/lib/utils';
+import { authClient } from '@/lib/auth-client';
 
 import { UserAvatar } from './UserAvatar';
-import { logout } from '@/actions';
-import { toast } from 'sonner';
-import { useRouter } from 'next/navigation';
 
 type UserNavDropdownProps = ComponentPropsWithoutRef<typeof DropdownMenuContent>;
 
@@ -39,10 +40,10 @@ export default function UserNavDropdown(props: UserNavDropdownProps) {
 
   const handleLogout = async () => {
     try {
-      await logout();
+      await authClient.signOut();
       router.push('/login');
     } catch {
-      toast.error('Failed to logout');
+      toast.error('Failed to logout. Try again.');
     }
   };
 

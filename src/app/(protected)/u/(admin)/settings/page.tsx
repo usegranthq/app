@@ -1,10 +1,9 @@
+import { getUser } from '@/dal/user';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
-import api from '@/lib/api';
-import { User } from '@/types/app.types';
 
 export default async function Settings() {
-  const user = await api.get('v1/u/me').json<User>();
+  const user = await getUser();
 
   return (
     <div className="grid gap-6">

@@ -1,4 +1,3 @@
-import api from '@/lib/api';
 import Link from 'next/link';
 import { formatRelative } from 'date-fns';
 
@@ -7,6 +6,7 @@ import { Card, CardDescription, CardFooter, CardHeader, CardTitle } from '@/comp
 import { Button } from '@/components/ui/button';
 
 import NoProjects from './NoProjects';
+import { getProjects } from '@/dal/projects';
 
 const ProjectCard = ({ project }: { project: Project }) => {
   return (
@@ -24,7 +24,7 @@ const ProjectCard = ({ project }: { project: Project }) => {
           example.usegrant.dev
         </Link>
         <div className="text-xs text-muted-foreground">
-          last updated {formatRelative(new Date(project.created_at), new Date())}
+          last updated {formatRelative(new Date(project.createdAt), new Date())}
         </div>
       </CardFooter>
       <Link href={`/u/projects/${project.id}`} className="absolute inset-0" />
@@ -33,7 +33,7 @@ const ProjectCard = ({ project }: { project: Project }) => {
 };
 
 export default async function ProjectsPage() {
-  const projects = await api.get<Project[]>('v1/u/projects').json();
+  const projects = await getProjects();
 
   if (projects.length === 0) {
     return <NoProjects />;
