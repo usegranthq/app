@@ -63,16 +63,11 @@ export async function deleteToken(id: string): ActionResponse {
 }
 
 export async function deleteSessions(): ActionResponse {
-  const session = await verifySession();
+  await verifySession();
 
   try {
-    await db.session.deleteMany({
-      where: {
-        userId: session.user.id,
-        NOT: {
-          id: session.session.id,
-        },
-      },
+    await auth.api.revokeOtherSessions({
+      headers: await headers(),
     });
   } catch (error) {
     const errorMessage = await getApiErrorMessage(error, 'Failed to delete sessions. Try again.');
