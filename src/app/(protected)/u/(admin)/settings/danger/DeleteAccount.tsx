@@ -16,7 +16,7 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from '@/components/ui/alert-dialog';
-import { deleteAccount } from '@/actions/account';
+import { deleteAccount } from '@/actions/settings';
 
 const DeleteButton = forwardRef<HTMLButtonElement, ButtonProps>((props, ref) => {
   const { pending } = useFormStatus();
