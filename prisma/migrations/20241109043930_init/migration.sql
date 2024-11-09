@@ -16,7 +16,6 @@ CREATE TABLE "user" (
     "image" TEXT,
     "createdAt" TIMESTAMP(3) NOT NULL,
     "updatedAt" TIMESTAMP(3) NOT NULL,
-    "isAnonymous" BOOLEAN,
 
     CONSTRAINT "user_pkey" PRIMARY KEY ("id")
 );

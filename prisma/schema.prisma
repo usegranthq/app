@@ -28,8 +28,6 @@ model User {
   Session       Session[]
   Account       Account[]
 
-  isAnonymous Boolean?
-
   @@unique([email])
   @@map("user")
 }

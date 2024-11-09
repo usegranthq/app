@@ -147,10 +147,9 @@ export async function verify(formData: FormData): ActionResponse {
       if (authCookie) {
         headersList.set('cookie', `${constants.AUTH_COOKIE}=${authCookie}`);
 
-        await auth.api.linkAccount({
+        await auth.api.setPassword({
           body: {
-            email: payload.email,
-            password: nanoid(16),
+            newPassword: nanoid(16),
           },
           headers: headersList,
         });
