@@ -12,7 +12,7 @@ import { Client, Project } from '@/types/app.types';
 import db from '@/lib/db';
 import { getApiErrorMessage, getZodErrorMessage } from '@/utils/error';
 import { defaultJwk, signJwt } from '@/utils/jwt';
-import { verifySession } from '@/dal/_verifySession';
+import { verifySession } from '@/data/_verifySession';
 
 const projectSchema = z.object({
   name: z.string({ required_error: 'Please enter a project name.' }),

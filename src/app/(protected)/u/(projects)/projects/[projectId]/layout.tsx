@@ -6,7 +6,7 @@ import { SidebarProvider, SidebarTrigger, SidebarInset } from '@/components/ui/s
 import { ProjectSidebar } from './_blocks/ProjectSidebar';
 import Topbar from '../../../_blocks/Topbar';
 import { ProjectProvider } from './_blocks/ProjectContext';
-import { getProjects } from '@/dal/projects';
+import { getProjects } from '@/data/projects';
 
 interface UserLayoutProps {
   children: React.ReactNode;

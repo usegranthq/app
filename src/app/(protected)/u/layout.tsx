@@ -2,7 +2,7 @@ import { UserProvider } from '@/contexts/User';
 import { PropsWithChildren } from 'react';
 
 import { minimumDelay } from '@/utils/time';
-import { getUser } from '@/dal/user';
+import { getUser } from '@/data/user';
 
 export default async function UserLayout({ children }: PropsWithChildren) {
   const initialTime = Date.now();

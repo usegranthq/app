@@ -1,6 +1,6 @@
 import NoSessions from './NoSessions';
 import SessionsList from './SessionsList';
-import { getSessions } from '@/dal/user';
+import { getSessions } from '@/data/user';
 
 export default async function Sessions() {
   const sessions = await getSessions();

@@ -2,7 +2,7 @@ import Link from 'next/link';
 
 import RecentProjectTracker from './_blocks/RecentProjectTracker';
 import { Button } from '@/components/ui/button';
-import * as projectsDal from '@/dal/projects';
+import * as projectsDal from '@/data/projects';
 
 import ClientsList from './ClientsList';
 import NoClients from './NoClients';

@@ -1,6 +1,6 @@
 import NoTokens from './NoTokens';
 import TokensList from './TokensList';
-import { getTokens } from '@/dal/tokens';
+import { getTokens } from '@/data/tokens';
 
 export default async function Tokens() {
   const tokens = await getTokens();

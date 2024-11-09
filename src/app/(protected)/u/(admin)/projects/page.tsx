@@ -6,7 +6,7 @@ import { Card, CardDescription, CardFooter, CardHeader, CardTitle } from '@/comp
 import { Button } from '@/components/ui/button';
 
 import NoProjects from './NoProjects';
-import { getProjects } from '@/dal/projects';
+import { getProjects } from '@/data/projects';
 
 const ProjectCard = ({ project }: { project: Project }) => {
   return (

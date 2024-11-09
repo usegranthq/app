@@ -8,7 +8,7 @@ import { revalidatePath } from 'next/cache';
 import { z } from 'zod';
 
 import { getApiErrorMessage } from '@/utils/error';
-import { verifySession } from '@/dal/_verifySession';
+import { verifySession } from '@/data/_verifySession';
 import { auth } from '@/lib/auth';
 import db from '@/lib/db';
 
