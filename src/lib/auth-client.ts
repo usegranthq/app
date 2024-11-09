@@ -1,13 +1,20 @@
 import { createAuthClient } from 'better-auth/react';
 import { toast } from 'sonner';
-import { magicLinkClient, anonymousClient } from 'better-auth/client/plugins';
+import { magicLinkClient, anonymousClient, inferAdditionalFields } from 'better-auth/client/plugins';
+
+import { auth } from './auth';
 
 export const authClient = createAuthClient({
-  plugins: [magicLinkClient(), anonymousClient()],
+  plugins: [inferAdditionalFields<typeof auth>(), magicLinkClient(), anonymousClient()],
   fetchOptions: {
     onError(e) {
-      if (e.error.status === 429) {
-        toast.error('Too many requests. Please try again later.');
+      switch (e.error.status) {
+        case 429:
+          toast.error('Too many requests. Please try again later.');
+          break;
+        case 401:
+          toast.error('Unauthorized. Please login again.');
+          break;
       }
     },
   },
