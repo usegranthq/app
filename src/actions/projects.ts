@@ -80,6 +80,8 @@ export async function updateProject(projectId: string, formData: FormData): Acti
 }
 
 export async function deleteProject(projectId: string): ActionResponse {
+  await verifySession();
+
   try {
     await db.project.delete({ where: { id: projectId } });
     revalidatePath('/u/projects', 'layout');
@@ -125,6 +127,8 @@ export async function createClient(projectId: string, formData: FormData): Actio
 }
 
 export async function deleteClient(projectId: string, clientId: string): ActionResponse {
+  await verifySession();
+
   try {
     await db.client.delete({ where: { id: clientId, projectId } });
     revalidatePath(`/u/projects/${projectId}`);
@@ -135,6 +139,8 @@ export async function deleteClient(projectId: string, clientId: string): ActionR
   }
 }
 export async function generateClientToken(projectId: string, clientId: string): ActionResponse<string> {
+  await verifySession();
+
   try {
     const client = await db.client.findUnique({
       where: {
