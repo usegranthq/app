@@ -41,8 +41,8 @@ export async function createProject(formData: FormData): ActionResponse<Project>
       data: {
         name: validation.data.name,
         description: validation.data.description,
-        accountId: session.account.id,
         urlId,
+        userId: session.user.id,
       },
     });
 

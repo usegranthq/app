@@ -5,12 +5,10 @@ import { cookies, headers } from 'next/headers';
 import { SignJWT } from 'jose';
 import { z } from 'zod';
 import ky from 'ky';
-import { nanoid } from 'nanoid';
 
 import { getApiErrorMessage, getZodErrorMessage } from '@/utils/error';
 import { auth } from '@/lib/auth';
 import constants from '@/constants';
-import db from '@/lib/db';
 import { getSetCookies } from '@/lib/api';
 
 const loginSchema = z.object({
@@ -126,34 +124,6 @@ export async function verify(formData: FormData): ActionResponse {
           sameSite: cookie.sameSite,
         });
       });
-    }
-
-    const user = await db.user.findUnique({
-      where: { email: payload.email },
-    });
-
-    if (!user) {
-      return ['Something went wrong. Please try again.', null];
-    }
-
-    const account = await db.account.findFirst({
-      where: { userId: user.id },
-    });
-
-    if (!account) {
-      const headersList = new Headers();
-      const authCookie = cookieStore.get(constants.AUTH_COOKIE)?.value;
-
-      if (authCookie) {
-        headersList.set('cookie', `${constants.AUTH_COOKIE}=${authCookie}`);
-
-        await auth.api.setPassword({
-          body: {
-            newPassword: nanoid(16),
-          },
-          headers: headersList,
-        });
-      }
     }
 
     cookieStore.delete(constants.VERIFY_COOKIE);

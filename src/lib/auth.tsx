@@ -2,8 +2,9 @@ import { betterAuth } from 'better-auth';
 import { prismaAdapter } from 'better-auth/adapters/prisma';
 import { magicLink } from 'better-auth/plugins';
 
-import { prisma } from './db';
 import LoginEmail from '@/templates/LoginEmail';
+
+import { prisma } from './db';
 import { sendEmail } from './email';
 
 const database = prismaAdapter(prisma, {
@@ -15,7 +16,6 @@ export const auth = betterAuth({
   account: {
     accountLinking: {
       enabled: true,
-      trustedProviders: ['google', 'github'],
     },
   },
   plugins: [

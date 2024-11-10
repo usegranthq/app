@@ -37,7 +37,7 @@ export async function createToken(formData: FormData): ActionResponse<string> {
         token: 'usegrant_api_' + nanoid(),
         name: validation.data.name,
         expiresAt: expiresInDays > 0 ? addDays(new Date(), expiresInDays) : null,
-        accountId: session.account.id,
+        userId: session.user.id,
       },
     });
     revalidatePath('/u/settings/tokens');
@@ -52,7 +52,7 @@ export async function deleteToken(id: string): ActionResponse {
   const session = await verifySession();
 
   try {
-    await db.token.delete({ where: { id, accountId: session.account.id } });
+    await db.token.delete({ where: { id, userId: session.user.id } });
   } catch (error) {
     const errorMessage = await getApiErrorMessage(error, 'Failed to delete token. Try again.');
     return [errorMessage, null];

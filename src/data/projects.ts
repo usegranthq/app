@@ -10,7 +10,7 @@ export const getProjects = async (): Promise<Project[]> => {
 
   return await db.project.findMany({
     where: {
-      accountId: session.account.id,
+      userId: session.user.id,
     },
   });
 };

@@ -10,7 +10,7 @@ export const getTokens = async (): Promise<Token[]> => {
 
   return await db.token.findMany({
     where: {
-      accountId: session.account.id,
+      userId: session.user.id,
     },
   });
 };

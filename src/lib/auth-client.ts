@@ -1,6 +1,6 @@
 import { createAuthClient } from 'better-auth/react';
 import { toast } from 'sonner';
-import { magicLinkClient, inferAdditionalFields } from 'better-auth/client/plugins';
+import { inferAdditionalFields, magicLinkClient } from 'better-auth/client/plugins';
 
 import { auth } from './auth';
 

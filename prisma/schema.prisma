@@ -1,4 +1,3 @@
-
 datasource db {
   provider  = "postgresql"
   url       = env("POSTGRES_PRISMA_URL")
@@ -9,12 +8,13 @@ generator client {
   provider = "prisma-client-js"
 }
 
+// just a empty table to make the schema valid for better-auth
 model Root {
   id        String   @id
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  @@map("root")
+  @@map("_root")
 }
 
 model User {
@@ -28,6 +28,9 @@ model User {
   Session       Session[]
   Account       Account[]
 
+  Token   Token[]
+  Project Project[]
+
   @@unique([email])
   @@map("user")
 }
@@ -40,6 +43,8 @@ model Session {
   userAgent String?
   userId    String
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  activeOrganizationId String?
 
   @@map("session")
 }
@@ -55,8 +60,6 @@ model Account {
   idToken      String?
   expiresAt    DateTime?
   password     String?
-  Project      Project[]
-  Token        Token[]
 
   @@map("account")
 }
@@ -77,13 +80,13 @@ model Project {
   urlId       String
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
-  Client      Client[]
-  Domain      Domain[]
 
-  Account   Account @relation(fields: [accountId], references: [id], onDelete: Cascade)
-  accountId String
+  Client Client[]
+  Domain Domain[]
+  Jwks   Jwks[]
 
-  Jwks Jwks[]
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@map("project")
 }
@@ -125,8 +128,8 @@ model Token {
   createdAt  DateTime  @default(now())
   updatedAt  DateTime  @updatedAt
 
-  Account   Account @relation(fields: [accountId], references: [id], onDelete: Cascade)
-  accountId String
+  User   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId String
 
   @@map("token")
 }

@@ -14,16 +14,16 @@ export const sendEmail = async (data: SendEmailParams) => {
 
   if (process.env.NODE_ENV === 'development') {
     const transporter = nodemailer.createTransport({
-      host: 'smtp.ethereal.email',
-      port: 587,
+      host: process.env.EMAIL_SERVER_HOST as string,
+      port: parseInt(process.env.EMAIL_SERVER_PORT as string),
       auth: {
-        user: 'elise.koelpin@ethereal.email',
-        pass: 'MFn4qtSF8npk5ueZSX',
+        user: process.env.EMAIL_SERVER_USER as string,
+        pass: process.env.EMAIL_SERVER_PASSWORD as string,
       },
     });
 
     await transporter.sendMail({
-      from: 'Usergrant <onboarding@resend.dev>',
+      from: process.env.EMAIL_FROM as string,
       to: data.to,
       subject: data.subject,
       html: emailHtml,
@@ -35,7 +35,7 @@ export const sendEmail = async (data: SendEmailParams) => {
   const mailer = new Resend(process.env.RESEND_API_KEY);
 
   await mailer.emails.send({
-    from: 'Usergrant <onboarding@resend.dev>',
+    from: process.env.EMAIL_FROM as string,
     to: data.to,
     subject: data.subject,
     html: emailHtml,
