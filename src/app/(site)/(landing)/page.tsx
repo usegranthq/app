@@ -1,6 +1,3 @@
-// import { cookies } from 'next/headers';
-// import Link from 'next/link';
-
 import Image from 'next/image';
 import PricingSection from './Pricing';
 import ZeroTrustSection from './ZeroTrust';
@@ -11,13 +8,7 @@ import landerLightImg from './lander-light.png';
 import TrustBasedAccess from './TrustBasedAccess';
 import DynamicEnv from './DyanmicEnv';
 
-// import { Button } from '@/components/ui/button';
-// import constants from '@/constants';
-
 export default async function Home() {
-  // const cookieStore = await cookies();
-  // const isLoggedIn = cookieStore.get(constants.AUTH_COOKIE);
-
   return (
     <>
       <div className="mx-auto flex flex-col items-center justify-center gap-8 lg:min-h-dvh">
