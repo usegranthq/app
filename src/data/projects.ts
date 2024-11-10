@@ -15,6 +15,20 @@ export const getProjects = async (): Promise<Project[]> => {
   });
 };
 
+export const getProject = async (projectId: string): Promise<Project | null> => {
+  await verifySession();
+
+  try {
+    const project = await db.project.findUnique({
+      where: { id: projectId },
+    });
+
+    return project;
+  } catch {}
+
+  return null;
+};
+
 export const getClients = async (projectId: string): Promise<Client[]> => {
   await verifySession();
 
