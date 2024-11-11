@@ -35,7 +35,7 @@ export async function createProject(formData: FormData): ActionResponse<Project>
 
   try {
     const urlSuffix = sqids.encode([Date.now()]);
-    const urlId = slugify(urlSuffix, { lower: true }) + '-' + urlSuffix;
+    const urlId = slugify(validation.data.name, { lower: true }) + '-' + urlSuffix;
 
     const project = await db.project.create({
       data: {
