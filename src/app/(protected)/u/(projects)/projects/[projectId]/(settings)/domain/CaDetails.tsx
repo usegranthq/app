@@ -62,6 +62,7 @@ export default function CADetails({ defaultDomain, domains }: CADetailsProps) {
     const hasDomain = domainsOptions.some((domain) => domain.value === selectedDomain);
     if (!hasDomain) {
       setSelectedDomain(getHostname(defaultDomain));
+      setCaDetails(null);
     }
   }, [defaultDomain, domainsOptions, selectedDomain]);
 
