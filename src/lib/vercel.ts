@@ -12,17 +12,23 @@ const vapi = ky.create({
   },
 });
 
-interface AddDomainResponse {
+interface DomainResponse {
   name: string;
   verified: boolean;
 }
 
-export const addDomain = (domain: string): Promise<AddDomainResponse> => {
+// ref: https://vercel.com/docs/rest-api/endpoints/projects
+
+export const addDomain = (domain: string): Promise<DomainResponse> => {
   return vapi.post(`projects/${vercelProjectId}/domains`, { json: { name: domain } }).json();
 };
 
 export const deleteDomain = (domain: string) => {
-  return vapi.delete(`projects/${vercelProjectId}/domains/${domain}`);
+  return vapi.delete(`projects/${vercelProjectId}/domains/${domain}`).json();
+};
+
+export const verifyDomain = (domain: string): Promise<DomainResponse> => {
+  return vapi.post(`projects/${vercelProjectId}/domains/${domain}/verify`).json();
 };
 
 export default vapi;
