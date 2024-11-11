@@ -31,15 +31,12 @@ export async function addDomain(projectId: string, formData: FormData): ActionRe
   const domain = validation.data;
 
   try {
-    await db.$transaction(async (tx) => {
-      await tx.domain.create({
-        data: {
-          domain,
-          projectId,
-        },
-      });
-
-      await vercel.addDomain(domain);
+    await vercel.addDomain(domain);
+    await db.domain.create({
+      data: {
+        domain,
+        projectId,
+      },
     });
   } catch (error) {
     if (error instanceof Prisma.PrismaClientKnownRequestError) {
