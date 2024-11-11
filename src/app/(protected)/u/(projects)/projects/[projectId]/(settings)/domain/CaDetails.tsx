@@ -36,20 +36,15 @@ const FetchButton = () => {
   );
 };
 
-const getHostname = (domain: string) => {
-  return new URL(domain).hostname;
-};
-
 export default function CADetails({ defaultDomain, domains }: CADetailsProps) {
-  const [selectedDomain, setSelectedDomain] = useState(getHostname(defaultDomain));
+  const [selectedDomain, setSelectedDomain] = useState(defaultDomain);
   const [caDetails, setCaDetails] = useState<CADetails | null>(null);
 
   const domainsOptions = useMemo(() => {
-    const defaultHostname = getHostname(defaultDomain);
     return [
       {
-        label: defaultHostname,
-        value: defaultHostname,
+        label: defaultDomain,
+        value: defaultDomain,
       },
       ...domains.map((domain) => ({
         label: domain.domain,
@@ -61,7 +56,7 @@ export default function CADetails({ defaultDomain, domains }: CADetailsProps) {
   useEffect(() => {
     const hasDomain = domainsOptions.some((domain) => domain.value === selectedDomain);
     if (!hasDomain) {
-      setSelectedDomain(getHostname(defaultDomain));
+      setSelectedDomain(defaultDomain);
       setCaDetails(null);
     }
   }, [defaultDomain, domainsOptions, selectedDomain]);
