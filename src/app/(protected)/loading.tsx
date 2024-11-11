@@ -1,4 +1,4 @@
-import { LoaderIcon } from 'lucide-react';
+import Spinner from '@/blocks/Spinner';
 
 const loadingText = [
   'Synchronizing awesomeness...',
@@ -24,7 +24,7 @@ export default function UserLoading() {
   return (
     <div className="flex h-dvh w-full items-center justify-center">
       <div className="flex flex-col items-center gap-2">
-        <LoaderIcon className="size-6 animate-spin" />
+        <Spinner className="size-6" />
         <h1 className="font-mono font-bold tracking-wider">{randomText}</h1>
       </div>
     </div>

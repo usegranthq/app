@@ -1,7 +1,7 @@
 import { auth } from '@/lib/auth';
-import { Project, Token, Account, Session, Client } from '@prisma/client';
+import { Project, Token, Account, Session, Client, Domain } from '@prisma/client';
 
-export type { Project, Token, Account, Session, Client };
+export type { Project, Token, Account, Session, Client, Domain };
 
 export type User = typeof auth.$Infer.Session.user;
 

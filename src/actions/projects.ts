@@ -138,6 +138,7 @@ export async function deleteClient(projectId: string, clientId: string): ActionR
     return [errorMessage, null];
   }
 }
+
 export async function generateClientToken(projectId: string, clientId: string): ActionResponse<string> {
   await verifySession();
 

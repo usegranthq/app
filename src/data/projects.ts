@@ -1,6 +1,6 @@
 import 'server-only';
 
-import { Project, Client } from '@/types/app.types';
+import { Project, Client, Domain } from '@/types/app.types';
 import db from '@/lib/db';
 
 import { verifySession } from './_verifySession';
@@ -27,6 +27,19 @@ export const getProject = async (projectId: string): Promise<Project | null> => 
   } catch {}
 
   return null;
+};
+
+export const getDomains = async (projectId: string): Promise<Domain[]> => {
+  await verifySession();
+
+  return await db.domain.findMany({
+    where: {
+      projectId,
+    },
+    orderBy: {
+      createdAt: 'desc',
+    },
+  });
 };
 
 export const getClients = async (projectId: string): Promise<Client[]> => {
