@@ -13,7 +13,7 @@ const domainSchema = z
   .string({
     required_error: 'Please enter a domain name.',
   })
-  .regex(/^(?!:\/\/)([a-zA-Z0-9][a-zA-Z0-9-]{1,61}[a-zA-Z0-9]\.)+[a-zA-Z]{2,}$/, {
+  .regex(/^(?!:\/\/)([a-zA-Z0-9][a-zA-Z0-9-]{0,61}[a-zA-Z0-9]?\.)+[a-zA-Z]{2,}$/, {
     message: 'Please enter a valid domain name.',
   })
   .min(3, { message: 'Domain name must be at least 3 characters long.' })
