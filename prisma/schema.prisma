@@ -78,7 +78,7 @@ model Project {
   id          String   @id @default(uuid())
   name        String
   description String
-  urlId       String
+  urlId       String   @unique
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 
@@ -106,11 +106,11 @@ model Client {
 }
 
 model Domain {
-  id         String    @id @default(uuid())
-  domain     String    @unique
-  verified   Boolean   @default(false)
-  createdAt  DateTime  @default(now())
-  updatedAt  DateTime  @updatedAt
+  id        String   @id @default(uuid())
+  domain    String   @unique
+  verified  Boolean  @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   Project   Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
   projectId String
