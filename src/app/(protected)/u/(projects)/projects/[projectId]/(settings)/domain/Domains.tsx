@@ -8,7 +8,7 @@ import { Domain, Project } from '@/types/app.types';
 import { deleteDomain, verifyDomain } from '@/actions';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { getSubdomain } from '@/lib/url';
+import { getSubdomain } from '@/utils/url';
 
 interface CustomDomainsProps {
   project: Project;

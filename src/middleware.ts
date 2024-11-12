@@ -2,11 +2,11 @@ import type { NextRequest } from 'next/server';
 import { NextResponse } from 'next/server';
 import { cookies } from 'next/headers';
 import type { Session } from 'better-auth/types';
+import ky, { HTTPError, Options as KyOptions } from 'ky';
 
 import * as constants from '@/constants';
+
 import ROUTES from './constants/routes';
-import { KyOptions } from './lib/api';
-import ky, { HTTPError } from 'ky';
 
 const isProtectedRoute = (pathname: string) => pathname.startsWith('/u');
 

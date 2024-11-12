@@ -1,6 +1,6 @@
 import 'server-only';
 
-import ky from 'ky';
+import ky, { HTTPError as APIError } from 'ky';
 
 const vercelProjectId = process.env.VERCEL_DOMINATE_PROJECT_ID;
 const vercelApiToken = process.env.VERCEL_DOMINATE_API_TOKEN;
@@ -16,6 +16,8 @@ interface DomainResponse {
   name: string;
   verified: boolean;
 }
+
+export { APIError };
 
 // ref: https://vercel.com/docs/rest-api/endpoints/projects
 

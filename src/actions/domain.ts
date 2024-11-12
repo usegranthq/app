@@ -9,7 +9,6 @@ import * as vercel from '@/lib/vercel';
 import { verifySession } from '@/data/_verifySession';
 import { getZodErrorMessage } from '@/utils/error';
 import db from '@/lib/db';
-import { KyError } from '@/lib/api';
 
 const domainSchema = z
   .string({
@@ -107,7 +106,7 @@ export async function deleteDomain(projectId: string, domain: string): ActionRes
   try {
     await vercel.deleteDomain(domain);
   } catch (error) {
-    if (error instanceof KyError && error.response.status !== 404) {
+    if (error instanceof vercel.APIError && error.response.status !== 404) {
       return ['Failed to delete domain. Try again.', null];
     }
 
