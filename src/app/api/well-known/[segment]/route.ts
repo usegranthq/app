@@ -9,8 +9,10 @@ const addProtocol = (host: string): string => {
 };
 
 const getHostFromRequest = (request: NextRequest): string | null => {
-  const incomingHost = request.headers.get('host');
+  const ugHost = request.headers.get('x-ug-host');
+  const defaultHost = request.headers.get('host');
 
+  const incomingHost = ugHost || defaultHost;
   if (!incomingHost) {
     return null;
   }
@@ -75,8 +77,6 @@ export async function GET(request: NextRequest, { params }: { params: Promise<Pa
   if (!validSegments.includes(segment)) {
     return NextResponse.json({ error: 'Invalid route' }, { status: 404 });
   }
-
-  console.log('headers', request.headers);
 
   const hostname = getHostFromRequest(request);
   if (!hostname) {
