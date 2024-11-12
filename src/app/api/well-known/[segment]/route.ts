@@ -3,6 +3,8 @@ import { NextRequest, NextResponse } from 'next/server';
 import db from '@/lib/db';
 import { Project } from '@/types/app.types';
 import { getSubdomain } from '@/utils/url';
+import { defaultJwk } from '@/utils/jwt';
+import { JWK } from 'jose';
 
 const addProtocol = (host: string): string => {
   return host.startsWith('http') ? host : `https://${host}`;
@@ -63,12 +65,25 @@ interface Params {
   segment: string;
 }
 
-const validSegments = ['openid-configuration', 'jwks.json'];
+const validSegments = ['openid-configuration', 'jwks'];
+
+const extractPublicJwk = (jwk: JWK): JWK => {
+  return {
+    kty: jwk.kty,
+    alg: jwk.alg,
+    use: 'sig',
+    kid: jwk.kid,
+    n: jwk.n,
+    e: jwk.e,
+  };
+};
 
 const jwksResponse = (): NextResponse => {
-  return NextResponse.json({
-    keys: [],
-  });
+  const keys = [extractPublicJwk(defaultJwk)];
+  const response = NextResponse.json({ keys });
+
+  response.headers.set('Content-Type', 'application/jwk-set+json; charset=utf-8');
+  return response;
 };
 
 export async function GET(request: NextRequest, { params }: { params: Promise<Params> }) {
@@ -90,7 +105,7 @@ export async function GET(request: NextRequest, { params }: { params: Promise<Pa
     return NextResponse.json({ error: 'Invalid host' }, { status: 400 });
   }
 
-  if (segment === 'jwks.json') {
+  if (segment === 'jwks') {
     return jwksResponse();
   }
 

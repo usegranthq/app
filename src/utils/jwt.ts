@@ -12,7 +12,7 @@ export const defaultJwk = {
   dp: '6dTC0ZTfMh4djrQX_FwJ_LYCWolH4dB1zWd5WL6WDrj85JSRRTSEC-fzz0i1tBY6RmlEDPrpw7Plc1Rkr52uy630LzGKmBT93bFvsPkncxiFsPCcn00Iqwpem8zmCOxzVGBA2_6cZOy9Tar3Mih5gKH_dzWRjjOqCKBMzUEYKzk',
   dq: 'JG-3VEOs_4QscJ_TNIFYWzwiJQSfHGXblyCO3UufuGv5mxO7Mwq5xxOzIr0InzUXPrKxGmD9lMKulOXP1NQXF0kliSRl1yaV8PSjgp0AuIYTY0LJ4tQB5d4iSFV4mXibgdqL66haqKrIPy0kBemjrmLkoPbtqBIkfYAAl947c1k',
   qi: 'xRG42AS-3HVRjqKuVTRt2Hlgvzsn435ilEpbhbgqOyKLEQ6W82xyR0B7oba-QDkyxEh0nLvxO95EHWB0HolK4LxL-i18GJqXazQAaX9ZGKPh80c5VGL0cYitFVLNXGqSP6pVGeQD_07H0daclWM31W_6aVPU0iWCHCUiS2BQnuQ',
-  kid: 'rsG97agLkQ9055xqfpfxT',
+  kid: 'def-rsG97agLkQ9055xqfpfxT',
   alg: 'RS256',
 };
 
