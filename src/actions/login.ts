@@ -9,7 +9,6 @@ import ky from 'ky';
 import { getApiErrorMessage, getZodErrorMessage } from '@/utils/error';
 import { auth } from '@/lib/auth';
 import constants from '@/constants';
-import { getSetCookies } from '@/lib/api';
 
 const loginSchema = z.object({
   email: z
@@ -106,25 +105,10 @@ export async function verify(formData: FormData): ActionResponse {
   const cookieStore = await cookies();
 
   try {
-    const resp = await auth.api.magicLinkVerify({
+    await auth.api.magicLinkVerify({
       query: { token: payload.code },
       headers: await headers(),
-      asResponse: true,
     });
-
-    // get cookies from response
-    const cookiesList = getSetCookies(resp);
-    if (cookiesList) {
-      cookiesList.forEach((cookie) => {
-        cookieStore.set(cookie.name, cookie.value, {
-          path: cookie.path,
-          maxAge: cookie.maxAge,
-          httpOnly: cookie.httpOnly,
-          secure: cookie.secure,
-          sameSite: cookie.sameSite,
-        });
-      });
-    }
 
     cookieStore.delete(constants.VERIFY_COOKIE);
   } catch (error) {

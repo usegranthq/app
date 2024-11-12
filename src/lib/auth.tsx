@@ -1,6 +1,7 @@
 import { betterAuth } from 'better-auth';
 import { prismaAdapter } from 'better-auth/adapters/prisma';
 import { magicLink } from 'better-auth/plugins';
+import { nextCookies } from 'better-auth/next-js';
 
 import LoginEmail from '@/templates/LoginEmail';
 
@@ -19,6 +20,7 @@ export const auth = betterAuth({
     },
   },
   plugins: [
+    nextCookies(),
     magicLink({
       async sendMagicLink(data) {
         await sendEmail({
