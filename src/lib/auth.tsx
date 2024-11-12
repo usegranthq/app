@@ -20,7 +20,6 @@ export const auth = betterAuth({
     },
   },
   plugins: [
-    nextCookies(),
     magicLink({
       async sendMagicLink(data) {
         await sendEmail({
@@ -30,6 +29,7 @@ export const auth = betterAuth({
         });
       },
     }),
+    nextCookies(), // must be last
   ],
   session: {
     additionalFields: {
