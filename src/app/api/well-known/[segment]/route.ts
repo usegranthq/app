@@ -8,7 +8,7 @@ const addProtocol = (host: string): string => {
   return host.startsWith('http') ? host : `https://${host}`;
 };
 
-export const getHostFromRequest = (request: NextRequest): string | null => {
+const getHostFromRequest = (request: NextRequest): string | null => {
   const incomingHost = request.headers.get('host');
 
   if (!incomingHost) {
@@ -25,7 +25,7 @@ export const getHostFromRequest = (request: NextRequest): string | null => {
   }
 };
 
-export const getDefaultProjectId = (hostname: string) => {
+const getDefaultProjectId = (hostname: string) => {
   const defaultProjectDomain = process.env.PROJECT_DOMAIN as string;
   const defaultProjectDomainSuffix = defaultProjectDomain.replace(/^(\{urlId}\.)/, '');
 
