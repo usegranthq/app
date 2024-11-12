@@ -1,10 +1,10 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { JWK } from 'jose';
 
 import db from '@/lib/db';
 import { Project } from '@/types/app.types';
 import { getSubdomain } from '@/utils/url';
 import { defaultJwk } from '@/utils/jwt';
-import { JWK } from 'jose';
 
 const addProtocol = (host: string): string => {
   return host.startsWith('http') ? host : `https://${host}`;
@@ -78,11 +78,19 @@ const extractPublicJwk = (jwk: JWK): JWK => {
   };
 };
 
-const jwksResponse = (): NextResponse => {
-  const keys = [extractPublicJwk(defaultJwk)];
-  const response = NextResponse.json({ keys });
+const jwksResponse = async (projectId: string): Promise<NextResponse> => {
+  const keys = await db.jwks.findMany({
+    where: {
+      projectId,
+    },
+  });
 
+  const dbJwks = keys.map((key) => extractPublicJwk(key.key as unknown as JWK));
+  const publicJwks = [...dbJwks, extractPublicJwk(defaultJwk)];
+
+  const response = NextResponse.json({ keys: publicJwks });
   response.headers.set('Content-Type', 'application/jwk-set+json; charset=utf-8');
+
   return response;
 };
 
@@ -106,7 +114,7 @@ export async function GET(request: NextRequest, { params }: { params: Promise<Pa
   }
 
   if (segment === 'jwks') {
-    return jwksResponse();
+    return jwksResponse(project.id);
   }
 
   return NextResponse.json({
