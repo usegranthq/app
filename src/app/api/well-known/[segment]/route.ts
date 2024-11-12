@@ -76,6 +76,8 @@ export async function GET(request: NextRequest, { params }: { params: Promise<Pa
     return NextResponse.json({ error: 'Invalid route' }, { status: 404 });
   }
 
+  console.log('headers', request.headers);
+
   const hostname = getHostFromRequest(request);
   if (!hostname) {
     return NextResponse.json({ error: 'Invalid host' }, { status: 400 });
