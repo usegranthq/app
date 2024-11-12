@@ -83,6 +83,9 @@ const jwksResponse = async (projectId: string): Promise<NextResponse> => {
     where: {
       projectId,
     },
+    orderBy: {
+      createdAt: 'desc',
+    },
   });
 
   const dbJwks = keys.map((key) => extractPublicJwk(key.key as unknown as JWK));
