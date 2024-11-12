@@ -19,7 +19,9 @@ const projectSchema = z.object({
   description: z.string({ required_error: 'Please enter a project description.' }),
 });
 
-const sqids = new Sqids();
+const sqids = new Sqids({
+  alphabet: 'abcdefghijklmnopqrstuvwxyz0123456789',
+});
 
 export async function createProject(formData: FormData): ActionResponse<Project> {
   const session = await verifySession();
