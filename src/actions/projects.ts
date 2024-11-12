@@ -1,12 +1,14 @@
 'use server';
 
+import { revalidatePath } from 'next/cache';
+import { redirect } from 'next/navigation';
 import { z } from 'zod';
+import { nanoid } from 'nanoid';
+import { generateKeyPair, exportJWK } from 'jose';
+import { JWK } from 'jose';
+import { Prisma } from '@prisma/client';
 import Sqids from 'sqids';
 import slugify from 'slugify';
-import { revalidatePath } from 'next/cache';
-import { JWK } from 'jose';
-import { nanoid } from 'nanoid';
-import { redirect } from 'next/navigation';
 
 import { Client, Project } from '@/types/app.types';
 import db from '@/lib/db';
@@ -192,6 +194,61 @@ export async function generateClientToken(projectId: string, clientId: string): 
     return [null, token];
   } catch (error) {
     const errorMessage = await getApiErrorMessage(error, 'Failed to generate client token');
+    return [errorMessage, null];
+  }
+}
+
+export async function requestSigningKey(projectId: string): ActionResponse<string> {
+  await verifySession();
+
+  const alg = 'RS256';
+  const kid = nanoid();
+
+  try {
+    const { privateKey } = await generateKeyPair(alg);
+    const jwk = await exportJWK(privateKey);
+    jwk.kid = kid; // Set the kid
+    jwk.alg = alg;
+
+    const key = await db.jwks.create({
+      data: {
+        kid,
+        key: jwk as unknown as Prisma.JsonObject,
+        projectId,
+      },
+    });
+
+    revalidatePath(`/u/projects/${projectId}/advanced`);
+
+    return [null, key.id];
+  } catch (error) {
+    const errorMessage = await getApiErrorMessage(error, 'Failed to generate new key');
+    return [errorMessage, null];
+  }
+}
+
+export async function removeKey(projectId: string, id: string): ActionResponse {
+  await verifySession();
+
+  const latestKey = await db.jwks.findFirst({
+    where: { projectId },
+    orderBy: { createdAt: 'desc' },
+  });
+
+  if (!latestKey) {
+    return ['No keys found', null];
+  }
+
+  if (latestKey.id === id) {
+    return ['Cannot remove the latest key', null];
+  }
+
+  try {
+    await db.jwks.delete({ where: { id, projectId } });
+    revalidatePath(`/u/projects/${projectId}/advanced`);
+    return [null, null];
+  } catch (error) {
+    const errorMessage = await getApiErrorMessage(error, 'Failed to remove key');
     return [errorMessage, null];
   }
 }

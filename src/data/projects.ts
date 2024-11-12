@@ -2,6 +2,7 @@ import 'server-only';
 
 import { Project, Client, Domain } from '@/types/app.types';
 import db from '@/lib/db';
+import { defaultJwk } from '@/utils/jwt';
 
 import { verifySession } from './_verifySession';
 
@@ -50,4 +51,26 @@ export const getClients = async (projectId: string): Promise<Client[]> => {
       projectId,
     },
   });
+};
+
+interface SigningKey {
+  id: string;
+  kid: string;
+  isDefault: boolean;
+}
+
+export const getSigningKeys = async (projectId: string): Promise<SigningKey[]> => {
+  await verifySession();
+
+  const keys = await db.jwks.findMany({
+    where: { projectId },
+    orderBy: { createdAt: 'desc' },
+  });
+  const allKeys = [...keys, { ...defaultJwk, id: defaultJwk.kid }];
+
+  return allKeys.map((key) => ({
+    id: key.id,
+    kid: key.kid,
+    isDefault: key.kid === defaultJwk.kid,
+  }));
 };
