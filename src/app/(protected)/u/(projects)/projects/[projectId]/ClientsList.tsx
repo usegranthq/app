@@ -26,7 +26,7 @@ function getColumns(projectId: string): ColumnDef<Client>[] {
     {
       header: 'Subject',
       cell: ({ row }) => {
-        return row.original.id;
+        return row.original.subject;
       },
     },
     {

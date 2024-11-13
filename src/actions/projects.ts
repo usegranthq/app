@@ -163,7 +163,7 @@ export async function generateAccessToken(projectId: string, clientId: string): 
   const claims = {
     iss: `http://${client.Project.urlId}.auth.usegrant.dev`,
     aud: client.audience,
-    sub: client.id,
+    sub: client.subject,
   };
 
   const jwk = await db.jwks.findFirst({
