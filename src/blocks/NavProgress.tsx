@@ -1,7 +1,15 @@
 'use client';
 
 import { AnimatePresence, domAnimation, LazyMotion, motion, useMotionTemplate, useSpring } from 'framer-motion';
-import { PropsWithChildren, createContext, startTransition, useContext, useEffect, useOptimistic } from 'react';
+import {
+  PropsWithChildren,
+  createContext,
+  startTransition,
+  useCallback,
+  useContext,
+  useEffect,
+  useOptimistic,
+} from 'react';
 import { useRouter } from 'next/navigation';
 import { useInterval } from 'usehooks-ts';
 
@@ -62,10 +70,10 @@ function useProgress() {
     value.set(getDiff(0));
   }, [value, loading]);
 
-  function start() {
+  const start = useCallback(() => {
     value.jump(0);
     setLoading(true);
-  }
+  }, [value, setLoading]);
 
   return { value, start, loading };
 }
@@ -76,7 +84,7 @@ interface ProgressIndicatorProps {
 
 function ProgressIndicator({ className }: ProgressIndicatorProps) {
   const router = useRouter();
-  const progress = useProgressBar();
+  const { start: startProgress, ...progress } = useProgressBar();
   const width = useMotionTemplate`${progress.value}%`;
 
   useEffect(() => {
@@ -86,7 +94,7 @@ function ProgressIndicator({ className }: ProgressIndicatorProps) {
 
     router.push = async (...args) => {
       startTransition(() => {
-        progress.start();
+        startProgress();
         originalPush(...args);
       });
     };
@@ -94,7 +102,7 @@ function ProgressIndicator({ className }: ProgressIndicatorProps) {
     return () => {
       router.push = originalPush;
     };
-  }, []);
+  }, [router, startProgress]);
 
   return (
     <LazyMotion features={domAnimation}>
