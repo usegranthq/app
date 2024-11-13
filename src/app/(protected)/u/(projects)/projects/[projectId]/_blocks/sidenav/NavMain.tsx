@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { BookOpenIcon, ChevronRight, Code2Icon, Settings2Icon, type LucideIcon } from 'lucide-react';
+import { BookOpenIcon, ChevronRight, Code2Icon, Settings2Icon, UsersIcon, type LucideIcon } from 'lucide-react';
 
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
 import {
@@ -24,9 +24,15 @@ interface NavItem {
   isActive?: boolean;
   items?: SubItem[];
   defaultOpen?: boolean;
+  path?: string;
 }
 
 const items: NavItem[] = [
+  {
+    title: 'Clients',
+    icon: UsersIcon,
+    path: '/',
+  },
   {
     title: 'Documentation',
     icon: BookOpenIcon,
@@ -98,32 +104,45 @@ export function NavMain({ projectId }: { projectId: string }) {
     <SidebarGroup>
       <SidebarGroupLabel>Project</SidebarGroupLabel>
       <SidebarMenu>
-        {items.map((item) => (
-          <Collapsible key={item.title} asChild defaultOpen={item.defaultOpen} className="group/collapsible">
-            <SidebarMenuItem>
-              <CollapsibleTrigger asChild>
-                <SidebarMenuButton tooltip={item.title}>
+        {items.map((item) => {
+          if (item.path) {
+            return (
+              <SidebarMenuButton tooltip={item.title} asChild key={item.title}>
+                <Link href={`/u/projects/${projectId}/${item.path}`}>
                   {item.icon && <item.icon />}
                   <span>{item.title}</span>
-                  <ChevronRight className="ml-auto transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90" />
-                </SidebarMenuButton>
-              </CollapsibleTrigger>
-              <CollapsibleContent>
-                <SidebarMenuSub>
-                  {item.items?.map((subItem) => (
-                    <SidebarMenuSubItem key={subItem.title}>
-                      <SidebarMenuSubButton asChild>
-                        <Link href={`/u/projects/${projectId}/${subItem.path}`}>
-                          <span>{subItem.title}</span>
-                        </Link>
-                      </SidebarMenuSubButton>
-                    </SidebarMenuSubItem>
-                  ))}
-                </SidebarMenuSub>
-              </CollapsibleContent>
-            </SidebarMenuItem>
-          </Collapsible>
-        ))}
+                </Link>
+              </SidebarMenuButton>
+            );
+          }
+
+          return (
+            <Collapsible key={item.title} asChild defaultOpen={item.defaultOpen} className="group/collapsible">
+              <SidebarMenuItem>
+                <CollapsibleTrigger asChild>
+                  <SidebarMenuButton tooltip={item.title}>
+                    {item.icon && <item.icon />}
+                    <span>{item.title}</span>
+                    <ChevronRight className="ml-auto transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90" />
+                  </SidebarMenuButton>
+                </CollapsibleTrigger>
+                <CollapsibleContent>
+                  <SidebarMenuSub>
+                    {item.items?.map((subItem) => (
+                      <SidebarMenuSubItem key={subItem.title}>
+                        <SidebarMenuSubButton asChild>
+                          <Link href={`/u/projects/${projectId}/${subItem.path}`}>
+                            <span>{subItem.title}</span>
+                          </Link>
+                        </SidebarMenuSubButton>
+                      </SidebarMenuSubItem>
+                    ))}
+                  </SidebarMenuSub>
+                </CollapsibleContent>
+              </SidebarMenuItem>
+            </Collapsible>
+          );
+        })}
       </SidebarMenu>
     </SidebarGroup>
   );
