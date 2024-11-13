@@ -46,10 +46,12 @@ export default function CADetails({ defaultDomain, domains }: CADetailsProps) {
         label: defaultDomain,
         value: defaultDomain,
       },
-      ...domains.map((domain) => ({
-        label: domain.domain,
-        value: domain.domain,
-      })),
+      ...domains
+        .filter((domain) => domain.verified)
+        .map((domain) => ({
+          label: domain.domain,
+          value: domain.domain,
+        })),
     ];
   }, [defaultDomain, domains]);
 
