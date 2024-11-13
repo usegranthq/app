@@ -73,7 +73,7 @@ const DomainCard = ({ domain }: { domain: Domain }) => {
           <CardTitle>{domain.domain}</CardTitle>
           <CardDescription className="sr-only">Custom domain: {domain.domain}</CardDescription>
           <Badge variant={isVerified ? 'default' : 'secondary'} className="mt-4">
-            {isVerified ? 'Verified' : 'Pending Verification'}
+            {isVerified ? 'Verified' : 'Misconfigured'}
           </Badge>
         </div>
         <div className="ml-auto flex gap-2">
