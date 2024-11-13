@@ -2,6 +2,7 @@ import { render } from '@react-email/components';
 import { ReactElement } from 'react';
 import { Resend } from 'resend';
 import nodemailer from 'nodemailer';
+import { env } from '@/env';
 
 interface SendEmailParams {
   to: string;
@@ -12,18 +13,18 @@ interface SendEmailParams {
 export const sendEmail = async (data: SendEmailParams) => {
   const emailHtml = await render(data.template);
 
-  if (process.env.NODE_ENV === 'development') {
+  if (env.NODE_ENV === 'development') {
     const transporter = nodemailer.createTransport({
-      host: process.env.EMAIL_SERVER_HOST as string,
-      port: parseInt(process.env.EMAIL_SERVER_PORT as string),
+      host: env.EMAIL_SERVER_HOST,
+      port: parseInt(env.EMAIL_SERVER_PORT),
       auth: {
-        user: process.env.EMAIL_SERVER_USER as string,
-        pass: process.env.EMAIL_SERVER_PASSWORD as string,
+        user: env.EMAIL_SERVER_USER,
+        pass: env.EMAIL_SERVER_PASSWORD,
       },
     });
 
     await transporter.sendMail({
-      from: process.env.EMAIL_FROM as string,
+      from: env.EMAIL_FROM,
       to: data.to,
       subject: data.subject,
       html: emailHtml,
@@ -32,10 +33,10 @@ export const sendEmail = async (data: SendEmailParams) => {
     return;
   }
 
-  const mailer = new Resend(process.env.RESEND_API_KEY);
+  const mailer = new Resend(env.RESEND_API_KEY);
 
   await mailer.emails.send({
-    from: process.env.EMAIL_FROM as string,
+    from: env.EMAIL_FROM,
     to: data.to,
     subject: data.subject,
     html: emailHtml,

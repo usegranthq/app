@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { JWK } from 'jose';
 
+import { env } from '@/env';
 import db from '@/lib/db';
 import { Project } from '@/types/app.types';
 import { getSubdomain } from '@/utils/url';
@@ -30,7 +31,7 @@ const getHostFromRequest = (request: NextRequest): string | null => {
 };
 
 const getDefaultProjectId = (hostname: string) => {
-  const defaultProjectDomain = process.env.PROJECT_DOMAIN as string;
+  const defaultProjectDomain = env.PROJECT_DOMAIN;
   const defaultProjectDomainSuffix = defaultProjectDomain.replace(/^(\{urlId}\.)/, '');
 
   if (!hostname.endsWith(defaultProjectDomainSuffix)) {

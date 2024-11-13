@@ -1,10 +1,11 @@
 import type { NextRequest } from 'next/server';
 
+import { env } from '@/env';
 import { validateBearerToken } from '@/utils/rest';
 import db from '@/lib/db';
 
 export async function GET(request: NextRequest) {
-  if (!validateBearerToken(request, process.env.CRON_SECRET)) {
+  if (!validateBearerToken(request, env.CRON_SECRET)) {
     return new Response('Unauthorized', {
       status: 401,
     });

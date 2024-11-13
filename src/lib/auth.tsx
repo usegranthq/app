@@ -4,6 +4,7 @@ import { magicLink } from 'better-auth/plugins';
 import { nextCookies } from 'better-auth/next-js';
 
 import LoginEmail from '@/templates/LoginEmail';
+import { env } from '@/env';
 
 import { prisma } from './db';
 import { sendEmail } from './email';
@@ -47,12 +48,12 @@ export const auth = betterAuth({
   },
   socialProviders: {
     github: {
-      clientId: process.env.GITHUB_OAUTH_CLIENT_ID as string,
-      clientSecret: process.env.GITHUB_OAUTH_CLIENT_SECRET as string,
+      clientId: env.GITHUB_OAUTH_CLIENT_ID,
+      clientSecret: env.GITHUB_OAUTH_CLIENT_SECRET,
     },
     google: {
-      clientId: process.env.GOOGLE_OAUTH_CLIENT_ID as string,
-      clientSecret: process.env.GOOGLE_OAUTH_CLIENT_SECRET as string,
+      clientId: env.GOOGLE_OAUTH_CLIENT_ID,
+      clientSecret: env.GOOGLE_OAUTH_CLIENT_SECRET,
     },
   },
 });

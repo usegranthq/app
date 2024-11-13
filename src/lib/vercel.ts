@@ -1,9 +1,10 @@
 import 'server-only';
 
 import ky, { HTTPError as APIError } from 'ky';
+import { env } from '@/env';
 
-const vercelProjectId = process.env.VERCEL_DOMINATE_PROJECT_ID;
-const vercelApiToken = process.env.VERCEL_DOMINATE_API_TOKEN;
+const vercelProjectId = env.VERCEL_DOMINATE_PROJECT_ID;
+const vercelApiToken = env.VERCEL_DOMINATE_API_TOKEN;
 
 const vapi = ky.create({
   prefixUrl: 'https://api.vercel.com',

@@ -6,6 +6,7 @@ import { SignJWT } from 'jose';
 import { z } from 'zod';
 import ky from 'ky';
 
+import { env } from '@/env';
 import { getApiErrorMessage, getZodErrorMessage } from '@/utils/error';
 import { auth } from '@/lib/auth';
 import constants from '@/constants';
@@ -38,7 +39,7 @@ export async function login(formData: FormData): ActionResponse {
   const headersList = await headers();
 
   const turnstileFormData = new FormData();
-  turnstileFormData.append('secret', process.env.TURNSTILE_SECRET_KEY || '');
+  turnstileFormData.append('secret', env.TURNSTILE_SECRET_KEY);
   turnstileFormData.append('response', validation.data.token);
   turnstileFormData.append('remoteip', headersList.get('x-forwarded-for') || '');
 
@@ -71,7 +72,7 @@ export async function login(formData: FormData): ActionResponse {
       .setProtectedHeader({ alg: 'HS256' })
       .setExpirationTime('10m')
       .setSubject(payload.email)
-      .sign(new TextEncoder().encode(process.env.JWT_SIGNING_SECRET));
+      .sign(new TextEncoder().encode(env.JWT_SIGNING_SECRET));
 
     const cookieStore = await cookies();
     cookieStore.set(constants.VERIFY_COOKIE, token);

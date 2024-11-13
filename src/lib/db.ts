@@ -1,5 +1,7 @@
 import { Prisma, PrismaClient } from '@prisma/client';
 
+import { env } from '@/env';
+
 let db: PrismaClient;
 
 declare global {
@@ -7,7 +9,7 @@ declare global {
   var prisma: PrismaClient | undefined;
 }
 
-if (process.env.NODE_ENV === 'production') {
+if (env.NODE_ENV === 'production') {
   db = new PrismaClient();
 } else {
   if (!global.prisma) {

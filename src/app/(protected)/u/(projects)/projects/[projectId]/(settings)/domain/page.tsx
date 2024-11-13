@@ -1,6 +1,7 @@
 import { notFound } from 'next/navigation';
 
 import { getDomains, getProject } from '@/data/projects';
+import { getDefaultDomain } from '@/app/project-helpers';
 
 import CADetails from './CaDetails';
 import DomainDetails from './DomainDetails';
@@ -21,7 +22,7 @@ export default async function DomainPage(props: DomainPageProps) {
     return notFound();
   }
 
-  const defaultDomain = `${process.env.PROJECT_DOMAIN}`.replace('{urlId}', project.urlId);
+  const defaultDomain = getDefaultDomain(project.urlId);
 
   return (
     <div>

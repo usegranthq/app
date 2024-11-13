@@ -1,5 +1,7 @@
 import { NextConfig } from 'next';
 
+import './src/env';
+
 const nextConfig: NextConfig = {
   reactStrictMode: true,
   async rewrites() {
