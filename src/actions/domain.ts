@@ -44,9 +44,12 @@ export async function addDomain(projectId: string, formData: FormData): ActionRe
 
   try {
     await vercel.addDomain(domain);
+    const domainConfig = await vercel.getDomainConfig(domain);
+    const isVerified = isDomainVerified(domain, domainConfig);
     await db.domain.create({
       data: {
         domain,
+        verified: isVerified,
         projectId,
       },
     });
