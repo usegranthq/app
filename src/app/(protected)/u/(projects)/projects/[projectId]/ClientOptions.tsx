@@ -4,7 +4,7 @@ import { DotsHorizontalIcon } from '@radix-ui/react-icons';
 import { toast } from 'sonner';
 import { useRouter } from 'next/navigation';
 
-import { deleteClient, generateClientToken } from '@/actions';
+import { deleteClient, generateAccessToken } from '@/actions';
 import { Client } from '@/types/app.types';
 
 import { Button } from '@/components/ui/button';
@@ -27,6 +27,7 @@ import {
   AlertDialogTrigger,
 } from '@/components/ui/alert-dialog';
 import { useState } from 'react';
+import Link from 'next/link';
 
 export default function ClientOptions({ projectId, client }: { projectId: string; client: Client }) {
   const router = useRouter();
@@ -36,7 +37,7 @@ export default function ClientOptions({ projectId, client }: { projectId: string
     const toastId = toast('GenerateToken');
     toast.loading('Generating Token...', { id: toastId });
 
-    const [error, token] = await generateClientToken(projectId, client.id);
+    const [error, token] = await generateAccessToken(projectId, client.id);
     if (error) {
       toast.error(error, { id: toastId });
       return;
@@ -61,9 +62,34 @@ export default function ClientOptions({ projectId, client }: { projectId: string
         <AlertDialogContent>
           <AlertDialogHeader>
             <AlertDialogTitle>Access token</AlertDialogTitle>
+            <AlertDialogDescription>
+              Generated access token for the client. This token is not stored. If you lose it, you will have to generate
+              a new one.
+            </AlertDialogDescription>
           </AlertDialogHeader>
           <div className="rounded-md bg-muted p-2">
-            <p className="break-all font-mono text-xs">{accessToken}</p>
+            <div
+              className="break-all font-mono text-xs"
+              onClick={(e) => {
+                const range = document.createRange();
+                range.selectNodeContents(e.target as HTMLDivElement);
+                const sel = window.getSelection();
+                if (!sel) return;
+                sel.removeAllRanges();
+                sel.addRange(range);
+              }}
+            >
+              {accessToken}
+            </div>
+          </div>
+          <div>
+            <Link
+              target="_blank"
+              href={`https://jwt.io/?value=${accessToken}`}
+              className="text-sm underline underline-offset-2"
+            >
+              Open in jwt.io
+            </Link>
           </div>
           <AlertDialogFooter>
             <AlertDialogCancel>Close</AlertDialogCancel>

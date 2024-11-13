@@ -13,7 +13,7 @@ import slugify from 'slugify';
 import { Client, Project } from '@/types/app.types';
 import db from '@/lib/db';
 import { getApiErrorMessage, getZodErrorMessage } from '@/utils/error';
-import { defaultJwk, signJwt } from '@/utils/jwt';
+import { createJwt, defaultJwk } from '@/utils/jwt';
 import { verifySession } from '@/data/_verifySession';
 
 const projectSchema = z.object({
@@ -143,7 +143,7 @@ export async function deleteClient(projectId: string, clientId: string): ActionR
   }
 }
 
-export async function generateClientToken(projectId: string, clientId: string): ActionResponse<string> {
+export async function generateAccessToken(projectId: string, clientId: string): ActionResponse<string> {
   await verifySession();
 
   const client = await db.client.findUnique({
@@ -160,14 +160,10 @@ export async function generateClientToken(projectId: string, clientId: string): 
     return ['Client not found', null];
   }
 
-  const jwt = {
-    jti: nanoid(),
-    sub: client.id,
-    iat: Math.floor(Date.now() / 1000),
-    exp: Math.floor(Date.now() / 1000) + 3600,
-    client_id: clientId,
+  const claims = {
     iss: `http://${client.Project.urlId}.auth.usegrant.dev`,
     aud: client.audience,
+    sub: client.id,
   };
 
   const jwk = await db.jwks.findFirst({
@@ -180,12 +176,9 @@ export async function generateClientToken(projectId: string, clientId: string): 
   });
 
   const signingKey: JWK = jwk ? (jwk.key as unknown as JWK) : defaultJwk;
-  const protectedHeaders = {
-    alg: 'RS256',
-  };
 
   try {
-    const token = await signJwt(jwt, protectedHeaders, signingKey);
+    const token = await createJwt(claims, signingKey);
     revalidatePath(`/u/projects/${projectId}`);
     return [null, token];
   } catch (error) {

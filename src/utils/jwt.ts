@@ -1,6 +1,7 @@
 import 'server-only';
 
-import { CompactJWSHeaderParameters, CompactSign, JWK } from 'jose';
+import { CompactJWSHeaderParameters, CompactSign, JWK, JWTPayload } from 'jose';
+import { nanoid } from 'nanoid';
 
 export const defaultJwk = {
   kty: 'RSA',
@@ -16,7 +17,28 @@ export const defaultJwk = {
   alg: 'RS256',
 };
 
-export const signJwt = (claims: Record<string, unknown>, header: CompactJWSHeaderParameters, key: JWK) => {
+export const signJwt = async (claims: JWTPayload, header: CompactJWSHeaderParameters, key: JWK): Promise<string> => {
   const payload = Buffer.from(JSON.stringify(claims));
   return new CompactSign(payload).setProtectedHeader(header).sign(key);
+};
+
+export const createJwt = (claims: JWTPayload, key: JWK): Promise<string> => {
+  const now = Math.floor(Date.now() / 1000);
+  const exp = now + 3600; // 1 hour
+
+  const jwt = {
+    ...claims,
+    jti: nanoid(),
+    iat: now,
+    nbf: now,
+    exp,
+  };
+
+  const protectedHeaders: CompactJWSHeaderParameters = {
+    typ: 'at+jwt',
+    alg: 'RS256',
+    kid: key.kid,
+  };
+
+  return signJwt(jwt, protectedHeaders, key);
 };

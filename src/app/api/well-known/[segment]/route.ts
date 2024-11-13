@@ -126,7 +126,7 @@ export async function GET(request: NextRequest, { params }: { params: Promise<Pa
     subject_types_supported: ['public'],
     response_types_supported: [],
     id_token_signing_alg_values_supported: ['RS256'],
-    claims_supported: ['sub', 'aud', 'exp', 'iat', 'iss', 'jti', 'nbf'],
+    claims_supported: ['jti', 'iss', 'aud', 'sub', 'iat', 'nbf', 'exp'],
     scopes_supported: ['openid'],
   });
 }

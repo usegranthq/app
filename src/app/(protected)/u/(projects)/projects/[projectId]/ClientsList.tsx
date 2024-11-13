@@ -8,8 +8,6 @@ import { Client } from '@/types/app.types';
 import ClientOptions from './ClientOptions';
 import { useMemo } from 'react';
 
-// import SessionOptions from './SessionOptions';
-
 function getColumns(projectId: string): ColumnDef<Client>[] {
   const columns: ColumnDef<Client>[] = [
     {
