@@ -1,7 +1,7 @@
 'use client';
 
 import { AnimatePresence, domAnimation, LazyMotion, motion, useMotionTemplate, useSpring } from 'framer-motion';
-import { PropsWithChildren, createContext, startTransition, useContext, useEffect, useOptimistic, useRef } from 'react';
+import { PropsWithChildren, createContext, startTransition, useContext, useEffect, useOptimistic } from 'react';
 import { useRouter } from 'next/navigation';
 import { useInterval } from 'usehooks-ts';
 
@@ -38,7 +38,6 @@ function getDiff(current: number): number {
 
 function useProgress() {
   const [loading, setLoading] = useOptimistic<boolean>(false);
-  const stopRef = useRef<boolean>(false);
 
   const value = useSpring(0, {
     damping: 25,
@@ -56,12 +55,6 @@ function useProgress() {
   );
 
   useEffect(() => {
-    if (stopRef.current) {
-      setLoading(false);
-    }
-  }, [value.get()]);
-
-  useEffect(() => {
     if (!loading) {
       return value.jump(100);
     }
@@ -74,11 +67,7 @@ function useProgress() {
     setLoading(true);
   }
 
-  function done() {
-    stopRef.current = true;
-  }
-
-  return { value, start, loading, done };
+  return { value, start, loading };
 }
 
 interface ProgressIndicatorProps {
@@ -96,9 +85,8 @@ function ProgressIndicator({ className }: ProgressIndicatorProps) {
     const originalPush = router.push;
 
     router.push = async (...args) => {
-      progress.start();
-
       startTransition(() => {
+        progress.start();
         originalPush(...args);
       });
     };
