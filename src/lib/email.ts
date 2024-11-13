@@ -14,14 +14,7 @@ export const sendEmail = async (data: SendEmailParams) => {
   const emailHtml = await render(data.template);
 
   if (env.NODE_ENV === 'development') {
-    const transporter = nodemailer.createTransport({
-      host: env.EMAIL_SERVER_HOST,
-      port: parseInt(env.EMAIL_SERVER_PORT),
-      auth: {
-        user: env.EMAIL_SERVER_USER,
-        pass: env.EMAIL_SERVER_PASSWORD,
-      },
-    });
+    const transporter = nodemailer.createTransport(env.NODEMAILER_SMTP_URL);
 
     await transporter.sendMail({
       from: env.EMAIL_FROM,
