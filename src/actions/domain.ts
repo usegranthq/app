@@ -2,12 +2,11 @@
 
 import { z } from 'zod';
 import { revalidatePath } from 'next/cache';
-import { Prisma } from '@prisma/client';
 
 import * as vercel from '@/lib/vercel';
 import { verifySession } from '@/data/_verifySession';
 import { getZodErrorMessage } from '@/utils/error';
-import db from '@/lib/db';
+import db, { isDbError } from '@/lib/db';
 
 const domainSchema = z
   .string({
@@ -29,7 +28,7 @@ const isDomainVerified = (domain: string, domainConfig: vercel.DomainConfigRespo
     return domainConfig.aValues.includes('76.76.21.21');
   }
 
-  return domainConfig.cnames.includes('cname.usegrant.dev');
+  return domainConfig.cnames.includes('cname.usegrant.dev.');
 };
 
 export async function addDomain(projectId: string, formData: FormData): ActionResponse {
@@ -52,10 +51,8 @@ export async function addDomain(projectId: string, formData: FormData): ActionRe
       },
     });
   } catch (error) {
-    if (error instanceof Prisma.PrismaClientKnownRequestError) {
-      if (error.code === 'P2002') {
-        return ['Domain already added to this project.', null];
-      }
+    if (isDbError(error) && error.code === 'P2002') {
+      return ['Domain already added to this project.', null];
     }
 
     return ['Failed to add domain. Try again.', null];
