@@ -39,23 +39,23 @@ const items: NavItem[] = [
     items: [
       {
         title: 'Get Started',
-        path: '#',
+        path: '/docs',
       },
       {
         title: 'Assume role from AWS',
-        path: '#',
+        path: '/docs/guides/aws',
       },
       {
         title: 'Service Accounts in GCP',
-        path: '#',
+        path: '/docs/guides/gcp',
       },
       {
         title: 'Assume role from Azure',
-        path: '#',
+        path: '/docs/guides/azure',
       },
       {
         title: 'More...',
-        path: '#',
+        path: '/docs/guides',
       },
     ],
   },
