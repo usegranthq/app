@@ -146,49 +146,45 @@ export async function deleteClient(projectId: string, clientId: string): ActionR
 export async function generateClientToken(projectId: string, clientId: string): ActionResponse<string> {
   await verifySession();
 
+  const client = await db.client.findUnique({
+    where: {
+      id: clientId,
+      projectId,
+    },
+    include: {
+      Project: true,
+    },
+  });
+
+  if (!client) {
+    return ['Client not found', null];
+  }
+
+  const jwt = {
+    jti: nanoid(),
+    sub: client.id,
+    iat: Math.floor(Date.now() / 1000),
+    exp: Math.floor(Date.now() / 1000) + 3600,
+    client_id: clientId,
+    iss: `http://${client.Project.urlId}.auth.usegrant.dev`,
+    aud: client.audience,
+  };
+
+  const jwk = await db.jwks.findFirst({
+    where: {
+      projectId,
+    },
+    orderBy: {
+      createdAt: 'desc',
+    },
+  });
+
+  const signingKey: JWK = jwk ? (jwk.key as unknown as JWK) : defaultJwk;
+  const protectedHeaders = {
+    alg: 'RS256',
+  };
+
   try {
-    const client = await db.client.findUnique({
-      where: {
-        id: clientId,
-        projectId,
-      },
-      include: {
-        Project: true,
-      },
-    });
-
-    if (!client) {
-      return ['Client not found', null];
-    }
-
-    const jwt = {
-      jti: nanoid(),
-      sub: client.id,
-      iat: Math.floor(Date.now() / 1000),
-      exp: Math.floor(Date.now() / 1000) + 3600,
-      client_id: clientId,
-      iss: `http://${client.Project.urlId}.auth.usegrant.dev`,
-      aud: client.audience,
-    };
-
-    const jwks = await db.jwks.findMany({
-      where: {
-        projectId,
-      },
-      orderBy: {
-        createdAt: 'desc',
-      },
-    });
-
-    let signingKey: JWK = defaultJwk;
-
-    if (jwks.length !== 0) {
-      signingKey = jwks[0].key as unknown as JWK;
-    }
-
-    const protectedHeaders = {
-      alg: 'RS256',
-    };
     const token = await signJwt(jwt, protectedHeaders, signingKey);
     revalidatePath(`/u/projects/${projectId}`);
     return [null, token];
