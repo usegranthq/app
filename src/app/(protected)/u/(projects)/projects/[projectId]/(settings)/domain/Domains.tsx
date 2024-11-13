@@ -9,6 +9,8 @@ import { deleteDomain, verifyDomain } from '@/actions';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { getSubdomain } from '@/utils/url';
+import Link from 'next/link';
+import { ExternalLinkIcon } from 'lucide-react';
 
 interface CustomDomainsProps {
   project: Project;
@@ -85,32 +87,52 @@ const DomainCard = ({ domain }: { domain: Domain }) => {
           </form>
         </div>
       </CardHeader>
-      {!isVerified && (
-        <CardContent>
-          <p className="text-sm">
-            Domain verification is required to use this domain. Set the following records on your DNS provider to
-            continue:
-          </p>
-          <div className="mt-4 rounded-md bg-muted p-2">
-            <table className="text-sm">
-              <thead>
-                <tr>
-                  <th className="text-left">Type</th>
-                  <th className="text-left">Name</th>
-                  <th className="text-left">Value</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td className="pr-10 pt-2">{isApexDomain ? 'A' : 'CNAME'}</td>
-                  <td className="pr-10 pt-2">{domainRecord}</td>
-                  <td className="pr-10 pt-2">{isApexDomain ? '76.76.21.21' : 'cname.usegrant.dev'}</td>
-                </tr>
-              </tbody>
-            </table>
+      <CardContent>
+        {!isVerified && (
+          <>
+            <p className="text-sm">
+              Domain verification is required to use this domain. Set the following records on your DNS provider to
+              continue:
+            </p>
+            <div className="mt-4 rounded-md bg-muted p-2">
+              <table className="text-sm">
+                <thead>
+                  <tr>
+                    <th className="text-left">Type</th>
+                    <th className="text-left">Name</th>
+                    <th className="text-left">Value</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td className="pr-10 pt-2">{isApexDomain ? 'A' : 'CNAME'}</td>
+                    <td className="pr-10 pt-2">{domainRecord}</td>
+                    <td className="pr-10 pt-2">{isApexDomain ? '76.76.21.21' : 'cname.usegrant.dev'}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </>
+        )}
+        {isVerified && (
+          <div className="flex items-center gap-4 text-sm">
+            <Link
+              href={`https://${domain.domain}/.well-known/openid-configuration`}
+              className="flex items-center gap-1 underline-offset-4 hover:underline"
+              target="_blank"
+            >
+              <ExternalLinkIcon className="size-4" /> OpenId Configuration
+            </Link>
+            <Link
+              href={`https://${domain.domain}/.well-known/jwks`}
+              className="flex items-center gap-1 underline-offset-4 hover:underline"
+              target="_blank"
+            >
+              <ExternalLinkIcon className="size-4" /> Jwks
+            </Link>
           </div>
-        </CardContent>
-      )}
+        )}
+      </CardContent>
     </Card>
   );
 };
