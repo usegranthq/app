@@ -25,13 +25,6 @@ export default async function Home() {
           <Image src={landerDarkImg} alt="UseGrant" className="hidden dark:block" priority />
           <Image src={landerLightImg} alt="UseGrant" className="block dark:hidden" priority />
         </div>
-
-        {/* <div className="flex flex-col items-center gap-4 sm:flex-row">
-        <Button asChild>
-          <Link href="/login">{isLoggedIn ? 'Launch app 🚀' : 'Get started'}</Link>
-        </Button>
-        <Button variant="secondary">Read the guides</Button>
-      </div> */}
       </div>
       <TrustBasedAccess />
       <DynamicEnv />
