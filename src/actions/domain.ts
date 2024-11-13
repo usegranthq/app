@@ -3,7 +3,6 @@
 import { z } from 'zod';
 import { revalidatePath } from 'next/cache';
 import { Prisma } from '@prisma/client';
-import dns from 'node:dns';
 
 import * as vercel from '@/lib/vercel';
 import { verifySession } from '@/data/_verifySession';
@@ -25,38 +24,12 @@ const isApexDomain = (domain: string) => {
   return domain.split('.').length === 2;
 };
 
-const getResolvedCname = async (domain: string): Promise<string[]> => {
-  return new Promise((resolve, reject) => {
-    dns.resolveCname(domain, (err, addresses) => {
-      if (err) {
-        reject([]);
-      }
-
-      resolve(addresses);
-    });
-  });
-};
-
-const getResolvedA = async (domain: string): Promise<string[]> => {
-  return new Promise((resolve, reject) => {
-    dns.resolve(domain, 'A', (err, addresses) => {
-      if (err) {
-        reject([]);
-      }
-
-      resolve(addresses);
-    });
-  });
-};
-
-const isDomainVerified = async (domain: string): Promise<boolean> => {
+const isDomainVerified = (domain: string, domainConfig: vercel.DomainConfigResponse): boolean => {
   if (isApexDomain(domain)) {
-    const resolvedA = await getResolvedA(domain);
-    return resolvedA.includes('76.76.21.21');
+    return domainConfig.aValues.includes('76.76.21.21');
   }
 
-  const resolvedCname = await getResolvedCname(domain);
-  return resolvedCname.includes('cname.usegrant.dev');
+  return domainConfig.cnames.includes('cname.usegrant.dev');
 };
 
 export async function addDomain(projectId: string, formData: FormData): ActionResponse {
@@ -125,7 +98,7 @@ export async function deleteDomain(projectId: string, domain: string): ActionRes
   return [null, null];
 }
 
-export async function verifyDomain(projectId: string, domain: string): ActionResponse {
+export async function verifyDomain(projectId: string, domain: string): ActionResponse<boolean> {
   await verifySession();
 
   const domainRecord = await db.domain.findUnique({
@@ -133,24 +106,30 @@ export async function verifyDomain(projectId: string, domain: string): ActionRes
   });
 
   if (!domainRecord) {
-    return ['Domain not found.', null];
+    return ['Domain not found.', false];
   }
 
   try {
     const response = await vercel.verifyDomain(domain);
     if (!response.verified) {
-      return ['Failed to verify domain. Try checking the ownership of the domain.', null];
+      return ['Failed to verify domain. Potentially configured with a different project.', null];
     }
 
-    const isVerified = await isDomainVerified(domain);
+    const domainConfig = await vercel.getDomainConfig(domain);
+    const isVerified = isDomainVerified(domain, domainConfig);
+
     await db.domain.update({
       where: { domain, projectId },
       data: { verified: isVerified },
     });
-  } catch {
+
+    revalidatePath(`/u/projects/${projectId}/settings/domain`);
+    return [null, isVerified];
+  } catch (error) {
+    if (error instanceof vercel.APIError && error.response.status !== 400) {
+      return ['Failed to verify domain. Potentially configured with a different project.', null];
+    }
+
     return ['Failed to verify domain. Try again.', null];
   }
-
-  revalidatePath(`/u/projects/${projectId}/settings/domain`);
-  return [null, null];
 }

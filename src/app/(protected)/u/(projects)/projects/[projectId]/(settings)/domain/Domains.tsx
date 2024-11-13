@@ -35,9 +35,14 @@ const DeleteButton = () => {
 
 const DomainCard = ({ domain }: { domain: Domain }) => {
   const handleVerify = async () => {
-    const [errorMessage] = await verifyDomain(domain.projectId, domain.domain);
+    const [errorMessage, isVerified] = await verifyDomain(domain.projectId, domain.domain);
     if (errorMessage) {
       toast.error(errorMessage);
+      return;
+    }
+
+    if (!isVerified) {
+      toast.error('Failed to verify domain. Check your DNS configuration.');
       return;
     }
 
