@@ -3,6 +3,7 @@ import { PropsWithChildren } from 'react';
 
 import { minimumDelay } from '@/utils/time';
 import { getUser } from '@/data/user';
+import LoadingProgress from '@/blocks/NavProgress';
 
 export default async function UserLayout({ children }: PropsWithChildren) {
   const initialTime = Date.now();
@@ -11,5 +12,10 @@ export default async function UserLayout({ children }: PropsWithChildren) {
   const currentTime = Date.now();
   await minimumDelay(2_000, initialTime, currentTime);
 
-  return <UserProvider user={user}>{children}</UserProvider>;
+  return (
+    <>
+      <LoadingProgress />
+      <UserProvider user={user}>{children}</UserProvider>
+    </>
+  );
 }
