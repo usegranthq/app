@@ -112,6 +112,10 @@ const DomainCard = ({ domain }: { domain: Domain }) => {
                 </tbody>
               </table>
             </div>
+            <p className="mt-4 text-sm text-muted-foreground">
+              <span className="text-sm text-destructive">*</span>For cloudflare users, disable the proxy(orange cloud)
+              for the domain and set the records above.
+            </p>
           </>
         )}
         {isVerified && (
