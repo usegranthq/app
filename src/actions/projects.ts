@@ -15,10 +15,11 @@ import db from '@/lib/db';
 import { getApiErrorMessage, getZodErrorMessage } from '@/utils/error';
 import { createJwt, defaultJwk } from '@/utils/jwt';
 import { verifySession } from '@/data/_verifySession';
+import sanitize from '@/utils/sanitize';
 
 const projectSchema = z.object({
-  name: z.string({ required_error: 'Please enter a project name.' }),
-  description: z.string({ required_error: 'Please enter a project description.' }),
+  name: z.string({ required_error: 'Please enter a project name.' }).trim().transform(sanitize),
+  description: z.string({ required_error: 'Please enter a project description.' }).trim().transform(sanitize),
 });
 
 const sqids = new Sqids({
