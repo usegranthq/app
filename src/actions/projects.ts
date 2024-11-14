@@ -162,7 +162,7 @@ export async function generateAccessToken(projectId: string, clientId: string): 
   }
 
   const claims = {
-    iss: `http://${client.Project.urlId}.auth.usegrant.dev`,
+    iss: `https://${client.Project.urlId}.auth.usegrant.dev`,
     aud: client.audience,
     sub: client.subject,
   };
