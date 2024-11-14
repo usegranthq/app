@@ -18,5 +18,5 @@ export function getWellKnownJwksUrl(domain: string) {
 
 export function getDefaultDomain(urlId: string, path: string = '/') {
   const domain = withProtocol(env.PROJECT_DOMAIN.replace('{urlId}', urlId));
-  return new URL(path, domain).toString();
+  return new URL(path, domain).toString().replace(/\/$/, '');
 }

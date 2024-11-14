@@ -61,11 +61,11 @@ export default function DomainDetails({ defaultDomain, project }: DomainDetailsP
           <p className="text-sm text-muted-foreground">
             Your default project&apos;s domain is{' '}
             <Link
-              href={`https://${defaultDomain}/.well-known/openid-configuration`}
+              href={`${defaultDomain}/.well-known/openid-configuration`}
               target="_blank"
               className="font-bold hover:underline"
             >
-              https://{defaultDomain}
+              {defaultDomain}
             </Link>
           </p>
         </div>
