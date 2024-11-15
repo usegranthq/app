@@ -31,7 +31,7 @@ const items: NavItem[] = [
   {
     title: 'Clients',
     icon: UsersIcon,
-    path: '/',
+    path: '',
   },
   {
     title: 'Documentation',
@@ -109,7 +109,7 @@ export function NavMain({ projectId }: { projectId: string }) {
       <SidebarGroupLabel>Project</SidebarGroupLabel>
       <SidebarMenu>
         {items.map((item) => {
-          if (item.path) {
+          if (typeof item.path === 'string') {
             const path = getPath(item.path, projectId);
 
             return (
