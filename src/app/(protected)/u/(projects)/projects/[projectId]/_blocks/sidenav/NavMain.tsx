@@ -70,11 +70,11 @@ const items: NavItem[] = [
       // },
       {
         title: 'Create Client',
-        path: '#',
+        path: '/docs/api/clients/create-client',
       },
       {
         title: 'Get Access Token',
-        path: '#',
+        path: '/docs/api/access-tokens/create-token',
       },
     ],
   },
@@ -99,6 +99,10 @@ const items: NavItem[] = [
   },
 ];
 
+const getPath = (path: string, projectId: string): string => {
+  return path.startsWith('/') ? path : `/u/projects/${projectId}/${path}`;
+};
+
 export function NavMain({ projectId }: { projectId: string }) {
   return (
     <SidebarGroup>
@@ -106,9 +110,11 @@ export function NavMain({ projectId }: { projectId: string }) {
       <SidebarMenu>
         {items.map((item) => {
           if (item.path) {
+            const path = getPath(item.path, projectId);
+
             return (
               <SidebarMenuButton tooltip={item.title} asChild key={item.title}>
-                <Link href={`/u/projects/${projectId}/${item.path}`}>
+                <Link href={path}>
                   {item.icon && <item.icon />}
                   <span>{item.title}</span>
                 </Link>
@@ -128,15 +134,19 @@ export function NavMain({ projectId }: { projectId: string }) {
                 </CollapsibleTrigger>
                 <CollapsibleContent>
                   <SidebarMenuSub>
-                    {item.items?.map((subItem) => (
-                      <SidebarMenuSubItem key={subItem.title}>
-                        <SidebarMenuSubButton asChild>
-                          <Link href={`/u/projects/${projectId}/${subItem.path}`}>
-                            <span>{subItem.title}</span>
-                          </Link>
-                        </SidebarMenuSubButton>
-                      </SidebarMenuSubItem>
-                    ))}
+                    {item.items?.map((subItem) => {
+                      const path = getPath(subItem.path, projectId);
+
+                      return (
+                        <SidebarMenuSubItem key={subItem.title}>
+                          <SidebarMenuSubButton asChild>
+                            <Link href={path}>
+                              <span>{subItem.title}</span>
+                            </Link>
+                          </SidebarMenuSubButton>
+                        </SidebarMenuSubItem>
+                      );
+                    })}
                   </SidebarMenuSub>
                 </CollapsibleContent>
               </SidebarMenuItem>
