@@ -26,12 +26,15 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from '@/components/ui/alert-dialog';
-import { useState } from 'react';
+import { useState, useTransition } from 'react';
 import Link from 'next/link';
+import { useProgressBar } from '@/blocks/NavProgress';
 
 export default function ClientOptions({ projectId, client }: { projectId: string; client: Client }) {
   const router = useRouter();
+  const progress = useProgressBar();
   const [accessToken, setAccessToken] = useState<string | null>(null);
+  const [isTransitioning, startTransition] = useTransition();
 
   const handleGenerateToken = async () => {
     const toastId = toast('GenerateToken');
@@ -48,12 +51,16 @@ export default function ClientOptions({ projectId, client }: { projectId: string
   };
 
   const handleDelete = async () => {
-    const [error] = await deleteClient(projectId, client.id);
-    if (error) {
-      toast.error(error);
-    }
+    startTransition(async () => {
+      progress.start();
 
-    router.refresh();
+      const [error] = await deleteClient(projectId, client.id);
+      if (error) {
+        toast.error(error);
+      }
+
+      router.refresh();
+    });
   };
 
   return (
@@ -118,7 +125,9 @@ export default function ClientOptions({ projectId, client }: { projectId: string
             <DropdownMenuLabel className="text-xs text-muted-foreground">Actions</DropdownMenuLabel>
             <DropdownMenuItem onClick={handleGenerateToken}>Generate token</DropdownMenuItem>
             <AlertDialogTrigger asChild>
-              <DropdownMenuItem className="text-destructive">Delete client</DropdownMenuItem>
+              <DropdownMenuItem className="text-destructive" disabled={isTransitioning}>
+                {isTransitioning ? 'Deleting client' : 'Delete client'}
+              </DropdownMenuItem>
             </AlertDialogTrigger>
           </DropdownMenuContent>
         </DropdownMenu>

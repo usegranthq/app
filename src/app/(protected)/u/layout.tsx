@@ -14,8 +14,9 @@ export default async function UserLayout({ children }: PropsWithChildren) {
 
   return (
     <>
-      <LoadingProgress />
-      <UserProvider user={user}>{children}</UserProvider>
+      <LoadingProgress>
+        <UserProvider user={user}>{children}</UserProvider>
+      </LoadingProgress>
     </>
   );
 }
