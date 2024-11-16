@@ -7,6 +7,7 @@ import { JWK } from 'jose';
 import { Prisma } from '@prisma/client';
 import Sqids from 'sqids';
 import slugify from 'slugify';
+import { cookies } from 'next/headers';
 
 import { Client, Project } from '@/types/app.types';
 import db from '@/lib/db';
@@ -15,6 +16,7 @@ import { createJwt, defaultJwk } from '@/utils/jwt';
 import { verifySession } from '@/data/_verifySession';
 import sanitize from '@/utils/sanitize';
 import { generateJwk } from '@/utils/jwk';
+import constants from '@/constants';
 
 const projectSchema = z.object({
   name: z.string({ required_error: 'Please enter a project name.' }).trim().transform(sanitize),
@@ -85,10 +87,12 @@ export async function updateProject(projectId: string, formData: FormData): Acti
 
 export async function deleteProject(projectId: string): ActionResponse {
   await verifySession();
+  const cookieStore = await cookies();
 
   try {
     await db.project.delete({ where: { id: projectId } });
     revalidatePath('/u/projects', 'layout');
+    cookieStore.delete(constants.RECENT_PROJECT_COOKIE);
   } catch (error) {
     const errorMessage = await getApiErrorMessage(error, 'Failed to delete project');
     return [errorMessage, null];

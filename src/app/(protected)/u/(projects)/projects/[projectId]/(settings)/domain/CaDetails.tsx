@@ -36,22 +36,22 @@ const FetchButton = () => {
   );
 };
 
+const toSelectOption = (domain: string) => ({
+  label: domain,
+  value: domain,
+});
+
 export default function CADetails({ defaultDomain, domains }: CADetailsProps) {
   const [selectedDomain, setSelectedDomain] = useState(defaultDomain);
   const [caDetails, setCaDetails] = useState<CADetails | null>(null);
 
   const domainsOptions = useMemo(() => {
     return [
-      {
-        label: defaultDomain,
-        value: defaultDomain,
-      },
+      toSelectOption(defaultDomain),
       ...domains
         .filter((domain) => domain.verified)
-        .map((domain) => ({
-          label: domain.domain,
-          value: domain.domain,
-        })),
+        .map((domain) => domain.domain)
+        .map(toSelectOption),
     ];
   }, [defaultDomain, domains]);
 
