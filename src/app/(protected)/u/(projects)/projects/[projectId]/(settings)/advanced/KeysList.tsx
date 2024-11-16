@@ -50,7 +50,7 @@ export default function KeysList({ signingKeys, project }: KeysListProps) {
           onCheckedChange={handleRotateJwks}
           disabled={isPending}
         />
-        <Label htmlFor="rotate-jwks">Automatically rotate JWKS</Label>
+        <Label htmlFor="rotate-jwks">Automatically rotate keys</Label>
       </div>
       <p className="mt-4 text-sm text-muted-foreground">
         When automatic rotation is enabled, a new key is generated daily. The most recent old key is retained in the
