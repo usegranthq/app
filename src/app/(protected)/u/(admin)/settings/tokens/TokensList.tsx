@@ -1,13 +1,14 @@
 'use client';
 
 import { ColumnDef, flexRender, getCoreRowModel, useReactTable } from '@tanstack/react-table';
-import { format, formatRelative } from 'date-fns';
+import { formatRelative } from 'date-fns';
 
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Token } from '@/types/app.types';
+import { isNullOrUndefined } from '@/utils/validators';
+import { formatDate } from '@/utils/date';
 
 import TokenOptions from './TokenOptions';
-import { isNullOrUndefined } from '@/utils/validators';
 
 export const columns: ColumnDef<Token>[] = [
   {
@@ -19,7 +20,7 @@ export const columns: ColumnDef<Token>[] = [
         <div>
           <div className="capitalize">{name}</div>
           <div className="mt-0.5 text-xs text-muted-foreground">
-            {expiresAt ? format(new Date(expiresAt), 'MMM d, yyyy') : 'No expiration'}
+            {expiresAt ? formatDate(expiresAt) : 'No expiration'}
           </div>
         </div>
       );
@@ -29,7 +30,7 @@ export const columns: ColumnDef<Token>[] = [
     header: 'Created At',
     cell: ({ row }) => {
       const createdAt = row.original.createdAt;
-      return format(createdAt, 'MMM d, yyyy');
+      return formatDate(createdAt);
     },
   },
   {
@@ -37,7 +38,7 @@ export const columns: ColumnDef<Token>[] = [
     cell: ({ row }) => {
       const expiresAt = row.original.expiresAt;
       if (isNullOrUndefined(expiresAt)) return <span className="text-muted-foreground">Never</span>;
-      return format(expiresAt, 'MMM d, yyyy');
+      return formatDate(expiresAt);
     },
   },
   {

@@ -19,7 +19,7 @@ const ProjectCard = ({ project }: { project: Project }) => {
       <CardFooter className="mt-auto flex flex-col items-start gap-0.5">
         <ProjectDomain project={project} />
         <div className="text-xs text-muted-foreground">
-          last updated {formatRelative(new Date(project.createdAt), new Date())}
+          last updated {formatRelative(new Date(project.updatedAt), new Date())}
         </div>
       </CardFooter>
       <Link href={`/u/projects/${project.id}`} className="absolute inset-0" />

@@ -1,12 +1,12 @@
 'use client';
 
 import { ColumnDef, flexRender, getCoreRowModel, useReactTable } from '@tanstack/react-table';
-import { format } from 'date-fns';
+import { useMemo } from 'react';
 
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Client } from '@/types/app.types';
 import ClientOptions from './ClientOptions';
-import { useMemo } from 'react';
+import { formatDate } from '@/utils/date';
 
 function getColumns(projectId: string): ColumnDef<Client>[] {
   const columns: ColumnDef<Client>[] = [
@@ -20,7 +20,7 @@ function getColumns(projectId: string): ColumnDef<Client>[] {
       header: 'Created At',
       cell: ({ row }) => {
         const createdAt = row.original.createdAt;
-        return format(createdAt, 'MMM d, yyyy');
+        return formatDate(createdAt);
       },
     },
     {

@@ -1,6 +1,5 @@
 'use client';
 
-import { formatDate } from 'date-fns';
 import { useOptimistic, useTransition } from 'react';
 import { toast } from 'sonner';
 
@@ -11,6 +10,7 @@ import { toggleRotateJwks } from '@/actions';
 import { useProgressBar } from '@/blocks/NavProgress';
 import { Switch } from '@/components/ui/switch';
 import { Label } from '@/components/ui/label';
+import { formatDate } from '@/utils/date';
 
 import RemoveKey from './RemoveKey';
 import RequestSigningKey from './RequestSigningKey';
@@ -74,9 +74,7 @@ export default function KeysList({ signingKeys, project }: KeysListProps) {
                 {isFirst && <Badge className="w-16 rounded-sm py-0">Current</Badge>}
                 {canRemoveKey && <RemoveKey id={key.id} projectId={project.id} />}
                 {key.createdAt && (
-                  <span className="text-xs text-muted-foreground">
-                    issued at: {formatDate(key.createdAt, 'MMM d, yyyy')}
-                  </span>
+                  <span className="text-xs text-muted-foreground">issued at: {formatDate(key.createdAt)}</span>
                 )}
               </div>
             </li>

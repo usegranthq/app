@@ -1,6 +1,7 @@
 import fs from 'node:fs/promises';
 import path from 'node:path';
-import { formatDate } from 'date-fns';
+
+import { formatDate } from '@/utils/date';
 
 import parse from '../parser';
 
@@ -15,7 +16,7 @@ export default async function TermsPage() {
       <div className="pt-20">
         <h1 className="text-center text-5xl font-semibold">Terms of Service</h1>
         <p className="mt-2 text-center text-sm font-medium text-muted-foreground">
-          Last updated: {formatDate(fileModified, 'MMMM d, yyyy')}
+          Last updated: {formatDate(fileModified)}
         </p>
         <div className="my-20 tracking-wide">{content}</div>
       </div>
