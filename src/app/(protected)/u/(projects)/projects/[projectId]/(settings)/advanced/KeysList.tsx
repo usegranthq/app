@@ -68,7 +68,9 @@ export default function KeysList({ signingKeys, project }: KeysListProps) {
                 {isFirst && <Badge>Current</Badge>}
                 {canRemoveKey && <RemoveKey id={key.id} projectId={project.id} />}
                 {key.createdAt && (
-                  <span className="text-xs text-muted-foreground">{formatDate(key.createdAt, 'MMM d, yyyy')}</span>
+                  <span className="text-xs text-muted-foreground">
+                    issued at: {formatDate(key.createdAt, 'MMM d, yyyy')}
+                  </span>
                 )}
               </div>
             </li>
