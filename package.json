@@ -37,7 +37,7 @@
     "@tanstack/react-table": "^8.20.5",
     "@vercel/analytics": "^1.4.0",
     "@vercel/speed-insights": "^1.1.0",
-    "better-auth": "^0.8.4",
+    "better-auth": "^0.8.5",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
     "date-fns": "^4.1.0",
