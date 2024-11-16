@@ -2,6 +2,7 @@ import { render } from '@react-email/components';
 import { ReactElement } from 'react';
 import { Resend } from 'resend';
 import nodemailer from 'nodemailer';
+
 import { env } from '@/env';
 
 interface SendEmailParams {
@@ -13,7 +14,7 @@ interface SendEmailParams {
 export const sendEmail = async (data: SendEmailParams) => {
   const emailHtml = await render(data.template);
 
-  if (env.NODE_ENV === 'development') {
+  if (process.env.NODE_ENV === 'development') {
     const transporter = nodemailer.createTransport(env.NODEMAILER_SMTP_URL);
 
     await transporter.sendMail({
