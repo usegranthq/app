@@ -20,12 +20,14 @@ interface KeysListProps {
   signingKeys: SigningKey[];
 }
 
+const updateProject = (project: Project, update: Partial<Project>) => {
+  return { ...project, ...update };
+};
+
 export default function KeysList({ signingKeys, project }: KeysListProps) {
   const [isPending, startTransition] = useTransition();
   const progress = useProgressBar();
-  const [optimisticProject, setOptimisticProject] = useOptimistic(project, (draft, update: Partial<Project>) => {
-    return { ...draft, ...update };
-  });
+  const [optimisticProject, setOptimisticProject] = useOptimistic(project, updateProject);
 
   const handleRotateJwks = (checked: boolean) => {
     startTransition(async () => {
