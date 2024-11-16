@@ -23,7 +23,7 @@ export default async function AdvancedPage({ params }: AdvancedPageProps) {
 
   return (
     <div className="flex flex-col gap-8">
-      <SigningKeys projectId={projectId} domain={domain} />
+      <SigningKeys project={project} domain={domain} />
     </div>
   );
 }

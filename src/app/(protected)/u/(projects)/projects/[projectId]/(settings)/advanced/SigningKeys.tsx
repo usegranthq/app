@@ -1,19 +1,18 @@
 import Link from 'next/link';
 
-import { Badge } from '@/components/ui/badge';
 import { Card, CardDescription, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Project } from '@/types';
+
+import KeysList from './KeysList';
 import { getSigningKeys } from '@/data/projects';
 
-import RequestSigningKey from './RequestSigningKey';
-import RemoveKey from './RemoveKey';
-
 interface SigningKeysProps {
-  projectId: string;
+  project: Project;
   domain: string;
 }
 
-export default async function SigningKeys({ projectId, domain }: SigningKeysProps) {
-  const signingKeys = await getSigningKeys(projectId);
+export default async function SigningKeys({ project, domain }: SigningKeysProps) {
+  const signingKeys = await getSigningKeys(project.id);
 
   return (
     <Card>
@@ -32,30 +31,8 @@ export default async function SigningKeys({ projectId, domain }: SigningKeysProp
             {domain}
           </Link>
         </div>
-        <p className="mb-2">The following keys are available:</p>
-        <ol className="flex list-decimal flex-col gap-2.5 pl-5">
-          {signingKeys.map((key, index) => {
-            const isFirst = index === 0;
 
-            return (
-              <li key={key.kid} className="list-item">
-                <div className="ml-2 flex items-center gap-3">
-                  <span className="text-sm font-medium">{key.kid}</span>
-                  {key.isDefault && <Badge variant="outline">Default</Badge>}
-                  {isFirst && <Badge>Current</Badge>}
-                  {!isFirst && !key.isDefault && <RemoveKey id={key.id} projectId={projectId} />}
-                </div>
-              </li>
-            );
-          })}
-        </ol>
-        <div className="mt-8">
-          <p className="mb-4 text-sm text-muted-foreground">
-            You can request a new key to rotate the signing keys. The newly generated key will be used for signing the
-            tokens.
-          </p>
-          <RequestSigningKey projectId={projectId} />
-        </div>
+        <KeysList project={project} signingKeys={signingKeys} />
       </CardContent>
     </Card>
   );

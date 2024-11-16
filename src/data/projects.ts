@@ -53,10 +53,11 @@ export const getClients = async (projectId: string): Promise<Client[]> => {
   });
 };
 
-interface SigningKey {
+export interface SigningKey {
   id: string;
   kid: string;
   isDefault: boolean;
+  createdAt: Date | null;
 }
 
 export const getSigningKeys = async (projectId: string): Promise<SigningKey[]> => {
@@ -65,12 +66,17 @@ export const getSigningKeys = async (projectId: string): Promise<SigningKey[]> =
   const keys = await db.jwks.findMany({
     where: { projectId },
     orderBy: { createdAt: 'desc' },
+    select: {
+      id: true,
+      kid: true,
+      createdAt: true,
+    },
   });
-  const allKeys = [...keys, { ...defaultJwk, id: defaultJwk.kid }];
+  const allKeys = [...keys, { ...defaultJwk, id: defaultJwk.kid, createdAt: null }];
 
   return allKeys.map((key) => ({
-    id: key.id,
-    kid: key.kid,
+    ...key,
     isDefault: key.kid === defaultJwk.kid,
+    createdAt: key.createdAt ?? null,
   }));
 };

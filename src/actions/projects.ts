@@ -3,8 +3,6 @@
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
 import { z } from 'zod';
-import { nanoid } from 'nanoid';
-import { generateKeyPair, exportJWK } from 'jose';
 import { JWK } from 'jose';
 import { Prisma } from '@prisma/client';
 import Sqids from 'sqids';
@@ -16,6 +14,7 @@ import { getApiErrorMessage, getZodErrorMessage } from '@/utils/error';
 import { createJwt, defaultJwk } from '@/utils/jwt';
 import { verifySession } from '@/data/_verifySession';
 import sanitize from '@/utils/sanitize';
+import { generateJwk } from '@/utils/jwk';
 
 const projectSchema = z.object({
   name: z.string({ required_error: 'Please enter a project name.' }).trim().transform(sanitize),
@@ -191,15 +190,22 @@ export async function generateAccessToken(projectId: string, clientId: string): 
 export async function requestSigningKey(projectId: string): ActionResponse<string> {
   await verifySession();
 
-  const alg = 'RS256';
-  const kid = nanoid();
+  const project = await db.project.findUnique({
+    where: {
+      id: projectId,
+    },
+  });
+
+  if (!project) {
+    return ['Project not found', null];
+  }
+
+  if (project.rotateJwks) {
+    return ['Unable to rotate JWKS. Automatic rotation is enabled for this project.', null];
+  }
 
   try {
-    const { privateKey } = await generateKeyPair(alg);
-    const jwk = await exportJWK(privateKey);
-    jwk.kid = kid; // Set the kid
-    jwk.alg = alg;
-
+    const [kid, jwk] = await generateJwk('RS256');
     const key = await db.jwks.create({
       data: {
         kid,
@@ -220,6 +226,18 @@ export async function requestSigningKey(projectId: string): ActionResponse<strin
 export async function removeKey(projectId: string, id: string): ActionResponse {
   await verifySession();
 
+  const project = await db.project.findUnique({
+    where: { id: projectId },
+  });
+
+  if (!project) {
+    return ['Project not found', null];
+  }
+
+  if (project.rotateJwks) {
+    return ['Unable to remove key. Automatic rotation is enabled for this project.', null];
+  }
+
   const latestKey = await db.jwks.findFirst({
     where: { projectId },
     orderBy: { createdAt: 'desc' },
@@ -239,6 +257,19 @@ export async function removeKey(projectId: string, id: string): ActionResponse {
     return [null, null];
   } catch (error) {
     const errorMessage = await getApiErrorMessage(error, 'Failed to remove key');
+    return [errorMessage, null];
+  }
+}
+
+export async function toggleRotateJwks(projectId: string, rotateJwks: boolean): ActionResponse {
+  await verifySession();
+
+  try {
+    await db.project.update({ where: { id: projectId }, data: { rotateJwks } });
+    revalidatePath(`/u/projects/${projectId}/advanced`);
+    return [null, null];
+  } catch (error) {
+    const errorMessage = await getApiErrorMessage(error, 'Failed to toggle rotate JWKS');
     return [errorMessage, null];
   }
 }

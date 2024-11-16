@@ -80,6 +80,7 @@ model Project {
   name        String
   description String
   urlId       String   @unique
+  rotateJwks  Boolean  @default(false)
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 
