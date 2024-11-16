@@ -63,7 +63,7 @@ export default function KeysList({ signingKeys, project }: KeysListProps) {
           return (
             <li key={key.kid} className="list-item">
               <div className="ml-2 flex items-center gap-3">
-                <span className="py-0.5 text-sm font-medium">{key.kid}</span>
+                <span className="py-0.5 font-mono text-sm font-medium">{key.kid}</span>
                 {key.isDefault && <Badge variant="outline">Default</Badge>}
                 {isFirst && <Badge>Current</Badge>}
                 {canRemoveKey && <RemoveKey id={key.id} projectId={project.id} />}
