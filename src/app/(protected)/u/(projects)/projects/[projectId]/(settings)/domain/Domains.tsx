@@ -11,56 +11,73 @@ import { Badge } from '@/components/ui/badge';
 import { getSubdomain } from '@/utils/url';
 import Link from 'next/link';
 import { ExternalLinkIcon } from 'lucide-react';
+import { useTransition } from 'react';
+import { useProgressBar } from '@/blocks/NavProgress';
 
 interface CustomDomainsProps {
   project: Project;
   domains: Domain[];
 }
 
-const VerifyButton = () => {
+interface ActionButtonProps {
+  isLoading: boolean;
+}
+
+const VerifyButton = ({ isLoading }: ActionButtonProps) => {
   const { pending } = useFormStatus();
+
   return (
-    <Button size="sm" variant="outline" type="submit" disabled={pending}>
+    <Button size="sm" variant="outline" type="submit" disabled={pending || isLoading}>
       {pending ? 'Verifying...' : 'Verify'}
     </Button>
   );
 };
 
-const DeleteButton = () => {
+const DeleteButton = ({ isLoading }: ActionButtonProps) => {
   const { pending } = useFormStatus();
+
   return (
-    <Button size="sm" variant="outline" type="submit" disabled={pending}>
+    <Button size="sm" variant="outline" type="submit" disabled={pending || isLoading}>
       Remove
     </Button>
   );
 };
 
 const DomainCard = ({ domain }: { domain: Domain }) => {
+  const [isPending, startTransition] = useTransition();
+  const progress = useProgressBar();
+
   const handleVerify = async () => {
-    const [errorMessage, isVerified] = await verifyDomain(domain.projectId, domain.domain);
-    if (errorMessage) {
-      toast.error(errorMessage);
-      return;
-    }
+    startTransition(async () => {
+      progress.start();
+      const [errorMessage, isVerified] = await verifyDomain(domain.projectId, domain.domain);
+      if (errorMessage) {
+        toast.error(errorMessage);
+        return;
+      }
 
-    if (!isVerified) {
-      toast.error('Failed to verify domain. Check your DNS configuration.');
-      return;
-    }
+      if (!isVerified) {
+        toast.error('Failed to verify domain. Check your DNS configuration.');
+        return;
+      }
 
-    toast.success('Domain verified successfully.');
+      toast.success('Domain verified successfully.');
+    });
   };
 
   const handleDelete = async () => {
     const yes = confirm('Are you sure you want to remove this domain?');
     if (!yes) return;
 
-    const [errorMessage] = await deleteDomain(domain.projectId, domain.domain);
-    if (errorMessage) {
-      toast.error(errorMessage);
-    }
+    startTransition(async () => {
+      progress.start();
+      const [errorMessage] = await deleteDomain(domain.projectId, domain.domain);
+      if (errorMessage) {
+        toast.error(errorMessage);
+      }
 
-    toast.success('Domain removed successfully.');
+      toast.success('Domain removed successfully.');
+    });
   };
 
   const isVerified = domain.verified;
@@ -80,10 +97,10 @@ const DomainCard = ({ domain }: { domain: Domain }) => {
         </div>
         <div className="ml-auto flex gap-2">
           <form action={handleVerify}>
-            <VerifyButton />
+            <VerifyButton isLoading={isPending} />
           </form>
           <form action={handleDelete}>
-            <DeleteButton />
+            <DeleteButton isLoading={isPending} />
           </form>
         </div>
       </CardHeader>

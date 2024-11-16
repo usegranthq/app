@@ -20,3 +20,8 @@ export function getDefaultDomain(urlId: string, path: string = '/') {
   const domain = withProtocol(env.PROJECT_DOMAIN.replace('{urlId}', urlId));
   return new URL(path, domain).toString().replace(/\/$/, '');
 }
+
+export function getDefaultDomainHostname(urlId: string) {
+  const domain = getDefaultDomain(urlId);
+  return new URL(domain).hostname;
+}

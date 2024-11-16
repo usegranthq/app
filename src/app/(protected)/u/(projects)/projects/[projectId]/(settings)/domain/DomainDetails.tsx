@@ -3,6 +3,7 @@
 import { toast } from 'sonner';
 import { useFormStatus } from 'react-dom';
 import Link from 'next/link';
+import { startTransition } from 'react';
 
 import { addDomain } from '@/actions';
 import { Button } from '@/components/ui/button';
@@ -10,6 +11,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Domain, Project } from '@/types/app.types';
+import { useProgressBar } from '@/blocks/NavProgress';
 
 interface DomainDetailsProps {
   project: Project;
@@ -28,15 +30,20 @@ const AddButton = () => {
 };
 
 export default function DomainDetails({ defaultDomain, project }: DomainDetailsProps) {
+  const progress = useProgressBar();
+
   const handleFormSubmit = async (formData: FormData) => {
-    const [errorMessage] = await addDomain(project.id, formData);
+    startTransition(async () => {
+      progress.start();
+      const [errorMessage] = await addDomain(project.id, formData);
 
-    if (errorMessage) {
-      toast.error(errorMessage);
-      return;
-    }
+      if (errorMessage) {
+        toast.error(errorMessage);
+        return;
+      }
 
-    toast.success('Domain added');
+      toast.success('Domain added');
+    });
   };
 
   return (
