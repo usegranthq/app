@@ -3,8 +3,13 @@ import { nanoid } from 'nanoid';
 
 type Alg = 'RS256';
 
+const generateKid = (): string => {
+  const id = nanoid();
+  return 'gen-' + id;
+};
+
 export const generateJwk = async (alg: Alg): Promise<[string, JWK]> => {
-  const kid = nanoid();
+  const kid = generateKid();
   const { privateKey } = await generateKeyPair(alg);
 
   const jwk = await exportJWK(privateKey);

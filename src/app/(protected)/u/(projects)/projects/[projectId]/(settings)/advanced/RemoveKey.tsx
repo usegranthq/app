@@ -16,7 +16,7 @@ interface RemoveKeyProps {
 const RemoveButton = () => {
   const { pending } = useFormStatus();
   return (
-    <Button variant="link" className="h-0 text-xs text-destructive" disabled={pending}>
+    <Button variant="link" className="h-0 w-16 text-center text-xs text-destructive" disabled={pending}>
       Remove
     </Button>
   );
