@@ -16,6 +16,7 @@ import {
 interface SubItem {
   title: string;
   path: string;
+  external?: boolean;
 }
 
 interface NavItem {
@@ -40,22 +41,27 @@ const items: NavItem[] = [
       {
         title: 'Get Started',
         path: '/docs',
+        external: true,
       },
       {
         title: 'Assume role from AWS',
         path: '/docs/guides/aws',
+        external: true,
       },
       {
         title: 'Service Accounts in GCP',
         path: '/docs/guides/gcp',
+        external: true,
       },
       {
         title: 'Assume role from Azure',
         path: '/docs/guides/azure',
+        external: true,
       },
       {
         title: 'More...',
         path: '/docs/guides',
+        external: true,
       },
     ],
   },
@@ -71,10 +77,12 @@ const items: NavItem[] = [
       {
         title: 'Create Client',
         path: '/docs/api/clients/create-client',
+        external: true,
       },
       {
         title: 'Get Access Token',
         path: '/docs/api/access-tokens/create-token',
+        external: true,
       },
     ],
   },
@@ -136,13 +144,14 @@ export function NavMain({ projectId }: { projectId: string }) {
                   <SidebarMenuSub>
                     {item.items?.map((subItem) => {
                       const path = getPath(subItem.path, projectId);
+                      const LinkComponent = subItem.external ? 'a' : Link;
 
                       return (
                         <SidebarMenuSubItem key={subItem.title}>
                           <SidebarMenuSubButton asChild>
-                            <Link href={path}>
+                            <LinkComponent href={path}>
                               <span>{subItem.title}</span>
-                            </Link>
+                            </LinkComponent>
                           </SidebarMenuSubButton>
                         </SidebarMenuSubItem>
                       );
