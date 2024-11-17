@@ -2,6 +2,8 @@ import { NextConfig } from 'next';
 
 import './src/env';
 
+const docsUrl = process.env.NODE_ENV === 'development' ? 'http://localhost:7575' : 'https://docs.usegrant.dev';
+
 const nextConfig: NextConfig = {
   reactStrictMode: true,
   async rewrites() {
@@ -12,15 +14,15 @@ const nextConfig: NextConfig = {
       },
       {
         source: '/docs',
-        destination: 'https://docs.usegrant.dev/docs',
+        destination: `${docsUrl}/docs`,
       },
       {
         source: '/docs/:path+',
-        destination: 'https://docs.usegrant.dev/docs/:path+',
+        destination: `${docsUrl}/docs/:path+`,
       },
       {
         source: '/docs-static/_next/:path+',
-        destination: 'https://docs.usegrant.dev/docs-static/_next/:path+',
+        destination: `${docsUrl}/docs-static/_next/:path+`,
       },
     ];
   },
