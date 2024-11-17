@@ -28,80 +28,98 @@ interface NavItem {
   path?: string;
 }
 
-const items: NavItem[] = [
+interface NavGroup {
+  type: 'group';
+  label: string;
+  items: NavItem[];
+}
+
+const items: NavGroup[] = [
   {
-    title: 'Clients',
-    icon: UsersIcon,
-    path: '',
-  },
-  {
-    title: 'Documentation',
-    icon: BookOpenIcon,
+    type: 'group',
+    label: 'Project',
     items: [
       {
-        title: 'Get Started',
-        path: '/docs',
-        external: true,
+        title: 'Clients',
+        icon: UsersIcon,
+        path: '',
       },
       {
-        title: 'Assume role from AWS',
-        path: '/docs/guides/aws',
-        external: true,
-      },
-      {
-        title: 'Service Accounts in GCP',
-        path: '/docs/guides/gcp',
-        external: true,
-      },
-      {
-        title: 'Assume role from Azure',
-        path: '/docs/guides/azure',
-        external: true,
-      },
-      {
-        title: 'More...',
-        path: '/docs/guides',
-        external: true,
+        title: 'Settings',
+        icon: Settings2Icon,
+        defaultOpen: true,
+        items: [
+          {
+            title: 'General',
+            path: 'general',
+          },
+          {
+            title: 'Domain',
+            path: 'domain',
+          },
+          {
+            title: 'Advanced',
+            path: 'advanced',
+          },
+        ],
       },
     ],
   },
   {
-    title: 'API',
-    icon: Code2Icon,
-    defaultOpen: true,
-    items: [
-      // {
-      //   title: 'Create Project',
-      //   url: '#',
-      // },
-      {
-        title: 'Create Client',
-        path: '/docs/api/clients/create-client',
-        external: true,
-      },
-      {
-        title: 'Get Access Token',
-        path: '/docs/api/access-tokens/create-token',
-        external: true,
-      },
-    ],
-  },
-  {
-    title: 'Settings',
-    icon: Settings2Icon,
-    defaultOpen: true,
+    type: 'group',
+    label: 'Documentation',
     items: [
       {
-        title: 'General',
-        path: 'general',
+        title: 'Guides',
+        icon: BookOpenIcon,
+        items: [
+          {
+            title: 'Get Started',
+            path: '/docs',
+            external: true,
+          },
+          {
+            title: 'Assume role from AWS',
+            path: '/docs/guides/aws',
+            external: true,
+          },
+          {
+            title: 'Service Accounts in GCP',
+            path: '/docs/guides/gcp',
+            external: true,
+          },
+          {
+            title: 'Assume role from Azure',
+            path: '/docs/guides/azure',
+            external: true,
+          },
+          {
+            title: 'More...',
+            path: '/docs/guides',
+            external: true,
+          },
+        ],
       },
       {
-        title: 'Domain',
-        path: 'domain',
-      },
-      {
-        title: 'Advanced',
-        path: 'advanced',
+        title: 'API',
+        icon: Code2Icon,
+        defaultOpen: true,
+        items: [
+          // {
+          //   title: 'Create Project',
+          //   url: '#',
+          // },
+          {
+            title: 'Create Client',
+            path: '/docs/api/clients/create-client',
+            external: true,
+          },
+          {
+            title: 'Get Access Token',
+            path: '/docs/api/access-tokens/create-token',
+            external: true,
+          },
+        ],
       },
     ],
   },
@@ -113,56 +131,61 @@ const getPath = (path: string, projectId: string): string => {
 
 export function NavMain({ projectId }: { projectId: string }) {
   return (
-    <SidebarGroup>
-      <SidebarGroupLabel>Project</SidebarGroupLabel>
-      <SidebarMenu>
-        {items.map((item) => {
-          if (typeof item.path === 'string') {
-            const path = getPath(item.path, projectId);
+    <>
+      {items.map((group) => (
+        <SidebarGroup key={group.label}>
+          <SidebarGroupLabel>{group.label}</SidebarGroupLabel>
+          <SidebarMenu>
+            {group.items.map((item) => {
+              if (typeof item.path === 'string') {
+                const path = getPath(item.path, projectId);
 
-            return (
-              <SidebarMenuButton tooltip={item.title} asChild key={item.title}>
-                <Link href={path}>
-                  {item.icon && <item.icon />}
-                  <span>{item.title}</span>
-                </Link>
-              </SidebarMenuButton>
-            );
-          }
-
-          return (
-            <Collapsible key={item.title} asChild defaultOpen={item.defaultOpen} className="group/collapsible">
-              <SidebarMenuItem>
-                <CollapsibleTrigger asChild>
-                  <SidebarMenuButton tooltip={item.title}>
-                    {item.icon && <item.icon />}
-                    <span>{item.title}</span>
-                    <ChevronRight className="ml-auto transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90" />
+                return (
+                  <SidebarMenuButton tooltip={item.title} asChild key={item.title}>
+                    <Link href={path}>
+                      {item.icon && <item.icon />}
+                      <span>{item.title}</span>
+                    </Link>
                   </SidebarMenuButton>
-                </CollapsibleTrigger>
-                <CollapsibleContent>
-                  <SidebarMenuSub>
-                    {item.items?.map((subItem) => {
-                      const path = getPath(subItem.path, projectId);
-                      const LinkComponent = subItem.external ? 'a' : Link;
+                );
+              }
 
-                      return (
-                        <SidebarMenuSubItem key={subItem.title}>
-                          <SidebarMenuSubButton asChild>
-                            <LinkComponent href={path}>
-                              <span>{subItem.title}</span>
-                            </LinkComponent>
-                          </SidebarMenuSubButton>
-                        </SidebarMenuSubItem>
-                      );
-                    })}
-                  </SidebarMenuSub>
-                </CollapsibleContent>
-              </SidebarMenuItem>
-            </Collapsible>
-          );
-        })}
-      </SidebarMenu>
-    </SidebarGroup>
+              return (
+                <Collapsible key={item.title} asChild defaultOpen={item.defaultOpen} className="group/collapsible">
+                  <SidebarMenuItem>
+                    <CollapsibleTrigger asChild>
+                      <SidebarMenuButton tooltip={item.title}>
+                        {item.icon && <item.icon />}
+                        <span>{item.title}</span>
+                        <ChevronRight className="ml-auto transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90" />
+                      </SidebarMenuButton>
+                    </CollapsibleTrigger>
+                    <CollapsibleContent>
+                      <SidebarMenuSub>
+                        {item.items?.map((subItem) => {
+                          const path = getPath(subItem.path, projectId);
+                          const LinkComponent = subItem.external ? 'a' : Link;
+                          const target = subItem.external ? '_blank' : undefined;
+
+                          return (
+                            <SidebarMenuSubItem key={subItem.title}>
+                              <SidebarMenuSubButton asChild>
+                                <LinkComponent href={path} target={target}>
+                                  <span>{subItem.title}</span>
+                                </LinkComponent>
+                              </SidebarMenuSubButton>
+                            </SidebarMenuSubItem>
+                          );
+                        })}
+                      </SidebarMenuSub>
+                    </CollapsibleContent>
+                  </SidebarMenuItem>
+                </Collapsible>
+              );
+            })}
+          </SidebarMenu>
+        </SidebarGroup>
+      ))}
+    </>
   );
 }
