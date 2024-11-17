@@ -1,6 +1,6 @@
 'use client';
 
-import { AnimatePresence, domAnimation, LazyMotion, motion, useMotionTemplate, useSpring } from 'framer-motion';
+import { AnimatePresence, domAnimation, LazyMotion, motion, useMotionTemplate, useSpring } from 'motion/react';
 import {
   PropsWithChildren,
   createContext,
