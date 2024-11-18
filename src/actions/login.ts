@@ -3,20 +3,13 @@
 import { redirect, RedirectType } from 'next/navigation';
 import { cookies, headers } from 'next/headers';
 import { SignJWT } from 'jose';
-import { z } from 'zod';
 import ky from 'ky';
 
 import { env } from '@/env';
 import { getApiErrorMessage, getZodErrorMessage } from '@/utils/error';
 import { auth } from '@/lib/auth';
 import constants from '@/constants';
-
-const loginSchema = z.object({
-  email: z
-    .string({ required_error: 'Please enter your email address.' })
-    .email({ message: 'Please enter a valid email address.' }),
-  token: z.string({ required_error: 'Missing captcha verification token.' }),
-});
+import { loginSchema, verifySchema } from '@/schema';
 
 interface TurnstileResponse {
   success: boolean;
@@ -77,19 +70,12 @@ export async function login(formData: FormData): ActionResponse {
     const cookieStore = await cookies();
     cookieStore.set(constants.VERIFY_COOKIE, token);
   } catch (error) {
-    const errorMessage = await getApiErrorMessage(error, 'Unable to login with email. Try again.');
+    const errorMessage = getApiErrorMessage(error, 'Unable to login with email. Try again.');
     return [errorMessage, null];
   }
 
   redirect('/verify');
 }
-
-const verifySchema = z.object({
-  email: z
-    .string({ required_error: 'Please enter your email address.' })
-    .email({ message: 'Please enter a valid email address.' }),
-  code: z.string({ required_error: 'Please enter the code sent to your email.' }),
-});
 
 // public endpoint
 export async function verify(formData: FormData): ActionResponse {
@@ -113,7 +99,7 @@ export async function verify(formData: FormData): ActionResponse {
 
     cookieStore.delete(constants.VERIFY_COOKIE);
   } catch (error) {
-    const errorMessage = await getApiErrorMessage(error, 'Unable to verify code. Try again.');
+    const errorMessage = getApiErrorMessage(error, 'Unable to verify code. Try again.');
     return [errorMessage, null];
   }
 

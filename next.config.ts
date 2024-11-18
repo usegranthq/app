@@ -7,24 +7,39 @@ const docsUrl = process.env.NODE_ENV === 'development' ? 'http://localhost:7575'
 const nextConfig: NextConfig = {
   reactStrictMode: true,
   async rewrites() {
-    return [
-      {
-        source: '/avatar/:path*',
-        destination: 'https://avatar.iran.liara.run/public/boy/:path*',
-      },
-      {
-        source: '/docs',
-        destination: `${docsUrl}/docs`,
-      },
-      {
-        source: '/docs/:path+',
-        destination: `${docsUrl}/docs/:path+`,
-      },
-      {
-        source: '/docs-static/_next/:path+',
-        destination: `${docsUrl}/docs-static/_next/:path+`,
-      },
-    ];
+    return {
+      beforeFiles: [
+        {
+          source: '/:path*',
+          has: [
+            {
+              type: 'host',
+              value: 'sdk.usegrant.dev',
+            },
+          ],
+          destination: '/sdk/:path*',
+        },
+        {
+          source: '/avatar/:path*',
+          destination: 'https://avatar.iran.liara.run/public/boy/:path*',
+        },
+      ],
+      afterFiles: [
+        {
+          source: '/docs',
+          destination: `${docsUrl}/docs`,
+        },
+        {
+          source: '/docs/:path+',
+          destination: `${docsUrl}/docs/:path+`,
+        },
+        {
+          source: '/docs-static/_next/:path+',
+          destination: `${docsUrl}/docs-static/_next/:path+`,
+        },
+      ],
+      fallback: [],
+    };
   },
 };
 

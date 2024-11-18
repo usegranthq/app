@@ -3,6 +3,8 @@ import 'server-only';
 import { CompactJWSHeaderParameters, CompactSign, JWK, JWTPayload } from 'jose';
 import { nanoid } from 'nanoid';
 
+const ONE_HOUR = 3600;
+
 export const defaultJwk = {
   kty: 'RSA',
   n: 'vbsQjhyuySunRwXBbt5CYQk0nqJwIxOgNYxeLSbVPfvQzbuJouvE21uIWKvyTxjNrHIqBX3-jJE6GLat9ExCFimV0BTF6rbryOo0nVJL0SgKkuAlXwwtcmialjNES3uVnSpJgx6yZ1PYy30VchAlQIiiiVWS3Ojf1dsVG2OJapOUdFdGkl9rzAUNL1y5gaouLzCeWkKV3VqEkPppS_-fBA5gIrijyiMnzewUkVuTfKG-8Z3sglAk9TOl1UVjxDAHQy9ymksFzDHzBIrv4SAIKKPiB-f7VLI7Uae6l6xKVzG8InELPXncIgXFULftpPo0xhdoGugRoBESEf5ctQO_rQ',
@@ -22,9 +24,9 @@ export const signJwt = async (claims: JWTPayload, header: CompactJWSHeaderParame
   return new CompactSign(payload).setProtectedHeader(header).sign(key);
 };
 
-export const createJwt = (claims: JWTPayload, key: JWK): Promise<string> => {
+export const createJwt = (claims: JWTPayload, key: JWK, expiry: number = ONE_HOUR): Promise<string> => {
   const now = Math.floor(Date.now() / 1000);
-  const exp = now + 3600; // 1 hour
+  const exp = now + expiry;
 
   const jwt = {
     ...claims,

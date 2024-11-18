@@ -5,18 +5,12 @@ import { headers } from 'next/headers';
 import { nanoid } from 'nanoid';
 import { redirect } from 'next/navigation';
 import { revalidatePath } from 'next/cache';
-import { z } from 'zod';
 
 import { getApiErrorMessage, getZodErrorMessage } from '@/utils/error';
 import { verifySession } from '@/data/_verifySession';
 import { auth } from '@/lib/auth';
 import db from '@/lib/db';
-import sanitize from '@/utils/sanitize';
-
-const createTokenSchema = z.object({
-  name: z.string().trim().transform(sanitize),
-  expiration: z.string().transform(Number).optional(),
-});
+import { createTokenSchema } from '@/schema';
 
 export async function createToken(formData: FormData): ActionResponse<string> {
   const session = await verifySession();
@@ -44,7 +38,7 @@ export async function createToken(formData: FormData): ActionResponse<string> {
     revalidatePath('/u/settings/tokens');
     return [null, token.token];
   } catch (error) {
-    const errorMessage = await getApiErrorMessage(error, 'Failed to create token. Try again.');
+    const errorMessage = getApiErrorMessage(error, 'Failed to create token. Try again.');
     return [errorMessage, null];
   }
 }
@@ -55,7 +49,7 @@ export async function deleteToken(id: string): ActionResponse {
   try {
     await db.token.delete({ where: { id, userId: session.user.id } });
   } catch (error) {
-    const errorMessage = await getApiErrorMessage(error, 'Failed to delete token. Try again.');
+    const errorMessage = getApiErrorMessage(error, 'Failed to delete token. Try again.');
     return [errorMessage, null];
   }
 
@@ -71,7 +65,7 @@ export async function deleteSessions(): ActionResponse {
       headers: await headers(),
     });
   } catch (error) {
-    const errorMessage = await getApiErrorMessage(error, 'Failed to delete sessions. Try again.');
+    const errorMessage = getApiErrorMessage(error, 'Failed to delete sessions. Try again.');
     return [errorMessage, null];
   }
 
@@ -90,7 +84,7 @@ export async function deleteSession(id: string): ActionResponse {
       headers: await headers(),
     });
   } catch (error) {
-    const errorMessage = await getApiErrorMessage(error, 'Failed to delete session. Try again.');
+    const errorMessage = getApiErrorMessage(error, 'Failed to delete session. Try again.');
     return [errorMessage, null];
   }
 
@@ -108,7 +102,7 @@ export async function deleteAccount(): ActionResponse {
       },
     });
   } catch (error) {
-    const errorMessage = await getApiErrorMessage(error, 'Unable to delete account. Try again.');
+    const errorMessage = getApiErrorMessage(error, 'Unable to delete account. Try again.');
     return [errorMessage, null];
   }
 

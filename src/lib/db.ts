@@ -1,4 +1,4 @@
-import { Prisma, PrismaClient } from '@prisma/client';
+import { PrismaClient } from '@prisma/client';
 
 let db: PrismaClient;
 
@@ -16,9 +16,5 @@ if (process.env.NODE_ENV === 'production') {
   db = global.prisma;
 }
 
-const isDbError = (error: unknown): error is Prisma.PrismaClientKnownRequestError => {
-  return error instanceof Prisma.PrismaClientKnownRequestError;
-};
-
-export { db as prisma, isDbError };
+export { db as prisma };
 export default db;

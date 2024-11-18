@@ -5,8 +5,8 @@ import { revalidatePath } from 'next/cache';
 
 import * as vercel from '@/lib/vercel';
 import { verifySession } from '@/data/_verifySession';
-import { getZodErrorMessage } from '@/utils/error';
-import db, { isDbError } from '@/lib/db';
+import { getApiErrorMessage, getZodErrorMessage } from '@/utils/error';
+import db from '@/lib/db';
 
 const domainSchema = z
   .string({
@@ -54,11 +54,16 @@ export async function addDomain(projectId: string, formData: FormData): ActionRe
       },
     });
   } catch (error) {
-    if (isDbError(error) && error.code === 'P2002') {
-      return ['Domain already added to this project.', null];
-    }
+    const errorMessage = getApiErrorMessage(error, (errorCode) => {
+      switch (errorCode) {
+        case 'EXISTS':
+          return 'Domain already added to this project.';
+        default:
+          return 'Failed to add domain. Try again.';
+      }
+    });
 
-    return ['Failed to add domain. Try again.', null];
+    return [errorMessage, null];
   }
 
   revalidatePath(`/u/projects/${projectId}/settings/domain`);

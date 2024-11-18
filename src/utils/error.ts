@@ -1,30 +1,29 @@
-import { HTTPError } from 'ky';
+import { Prisma } from '@prisma/client';
 import { ZodError } from 'zod';
 
-export const getApiErrorMessage = async (error: unknown, defaultMessage: string) => {
-  if (!(error instanceof HTTPError)) {
-    return defaultMessage;
-  }
+type MessageHandler = (errorCode: string) => string;
 
-  if (error.response.status === 401) {
-    return 'Unauthorized';
-  }
+type ErrorCode = 'EXISTS' | 'UNKNOWN';
 
-  if (error.response.status === 404) {
-    return 'Resource not found';
-  }
+export const isDbError = (error: unknown): error is Prisma.PrismaClientKnownRequestError => {
+  return error instanceof Prisma.PrismaClientKnownRequestError;
+};
 
-  try {
-    const responseBody = await error.response.json();
-
-    if (responseBody && 'error_description' in responseBody) {
-      return responseBody.error_description ?? defaultMessage;
+const getErrorCodes = (error: unknown): ErrorCode => {
+  if (isDbError(error)) {
+    switch (error.code) {
+      case 'P2002':
+        return 'EXISTS';
+      default:
+        return 'UNKNOWN';
     }
-  } catch {
-    return 'Something went wrong';
   }
 
-  return defaultMessage;
+  return 'UNKNOWN';
+};
+
+export const getApiErrorMessage = (error: unknown, defaultMessage: string | MessageHandler) => {
+  return typeof defaultMessage === 'function' ? defaultMessage(getErrorCodes(error)) : defaultMessage;
 };
 
 export const getZodErrorMessage = (error: ZodError) => {

@@ -2,11 +2,8 @@
 
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
-import { z } from 'zod';
 import { JWK } from 'jose';
 import { Prisma } from '@prisma/client';
-import Sqids from 'sqids';
-import slugify from 'slugify';
 import { cookies } from 'next/headers';
 
 import { Client, Project } from '@/types/app.types';
@@ -14,18 +11,10 @@ import db from '@/lib/db';
 import { getApiErrorMessage, getZodErrorMessage } from '@/utils/error';
 import { createJwt, defaultJwk } from '@/utils/jwt';
 import { verifySession } from '@/data/_verifySession';
-import sanitize from '@/utils/sanitize';
 import { generateJwk } from '@/utils/jwk';
 import constants from '@/constants';
-
-const projectSchema = z.object({
-  name: z.string({ required_error: 'Please enter a project name.' }).trim().transform(sanitize),
-  description: z.string({ required_error: 'Please enter a project description.' }).trim().transform(sanitize),
-});
-
-const sqids = new Sqids({
-  alphabet: 'abcdefghijklmnopqrstuvwxyz0123456789',
-});
+import { clientSchema, projectSchema } from '@/schema';
+import { createUrlId, getIssuer } from '@/utils/project';
 
 export async function createProject(formData: FormData): ActionResponse<Project> {
   const session = await verifySession();
@@ -40,8 +29,7 @@ export async function createProject(formData: FormData): ActionResponse<Project>
   }
 
   try {
-    const urlSuffix = sqids.encode([Date.now()]);
-    const urlId = slugify(validation.data.name, { lower: true }) + '-' + urlSuffix;
+    const urlId = createUrlId(validation.data.name);
 
     const project = await db.project.create({
       data: {
@@ -55,7 +43,7 @@ export async function createProject(formData: FormData): ActionResponse<Project>
     revalidatePath('/u/projects', 'layout');
     return [null, project];
   } catch (error) {
-    const errorMessage = await getApiErrorMessage(error, 'Failed to create project');
+    const errorMessage = getApiErrorMessage(error, 'Failed to create project');
     return [errorMessage, null];
   }
 }
@@ -80,7 +68,7 @@ export async function updateProject(projectId: string, formData: FormData): Acti
     revalidatePath('/u/projects', 'layout');
     return [null, null];
   } catch (error) {
-    const errorMessage = await getApiErrorMessage(error, 'Failed to update project');
+    const errorMessage = getApiErrorMessage(error, 'Failed to update project');
     return [errorMessage, null];
   }
 }
@@ -94,17 +82,12 @@ export async function deleteProject(projectId: string): ActionResponse {
     revalidatePath('/u/projects', 'layout');
     cookieStore.delete(constants.RECENT_PROJECT_COOKIE);
   } catch (error) {
-    const errorMessage = await getApiErrorMessage(error, 'Failed to delete project');
+    const errorMessage = getApiErrorMessage(error, 'Failed to delete project');
     return [errorMessage, null];
   }
 
   redirect('/u/projects');
 }
-
-const clientSchema = z.object({
-  name: z.string({ required_error: 'Please provide a client name.' }),
-  audience: z.string({ required_error: 'Please provide a client audience.' }),
-});
 
 export async function createClient(projectId: string, formData: FormData): ActionResponse<Client> {
   await verifySession();
@@ -129,7 +112,7 @@ export async function createClient(projectId: string, formData: FormData): Actio
     revalidatePath(`/u/projects/${projectId}`, 'layout');
     return [null, null];
   } catch (error) {
-    const errorMessage = await getApiErrorMessage(error, 'Failed to create client');
+    const errorMessage = getApiErrorMessage(error, 'Failed to create client');
     return [errorMessage, null];
   }
 }
@@ -142,7 +125,7 @@ export async function deleteClient(projectId: string, clientId: string): ActionR
     revalidatePath(`/u/projects/${projectId}`);
     return [null, null];
   } catch (error) {
-    const errorMessage = await getApiErrorMessage(error, 'Failed to delete client');
+    const errorMessage = getApiErrorMessage(error, 'Failed to delete client');
     return [errorMessage, null];
   }
 }
@@ -165,7 +148,7 @@ export async function generateAccessToken(projectId: string, clientId: string): 
   }
 
   const claims = {
-    iss: `https://${client.Project.urlId}.auth.usegrant.dev`,
+    iss: getIssuer(client.Project.urlId),
     aud: client.audience,
     sub: client.subject,
   };
@@ -186,7 +169,7 @@ export async function generateAccessToken(projectId: string, clientId: string): 
     revalidatePath(`/u/projects/${projectId}`);
     return [null, token];
   } catch (error) {
-    const errorMessage = await getApiErrorMessage(error, 'Failed to generate client token');
+    const errorMessage = getApiErrorMessage(error, 'Failed to generate client token');
     return [errorMessage, null];
   }
 }
@@ -222,7 +205,7 @@ export async function requestSigningKey(projectId: string): ActionResponse<strin
 
     return [null, key.id];
   } catch (error) {
-    const errorMessage = await getApiErrorMessage(error, 'Failed to generate new key');
+    const errorMessage = getApiErrorMessage(error, 'Failed to generate new key');
     return [errorMessage, null];
   }
 }
@@ -260,7 +243,7 @@ export async function removeKey(projectId: string, id: string): ActionResponse {
     revalidatePath(`/u/projects/${projectId}/advanced`);
     return [null, null];
   } catch (error) {
-    const errorMessage = await getApiErrorMessage(error, 'Failed to remove key');
+    const errorMessage = getApiErrorMessage(error, 'Failed to remove key');
     return [errorMessage, null];
   }
 }
@@ -273,7 +256,7 @@ export async function toggleRotateJwks(projectId: string, rotateJwks: boolean): 
     revalidatePath(`/u/projects/${projectId}/advanced`);
     return [null, null];
   } catch (error) {
-    const errorMessage = await getApiErrorMessage(error, 'Failed to toggle rotate JWKS');
+    const errorMessage = getApiErrorMessage(error, 'Failed to toggle rotate JWKS');
     return [errorMessage, null];
   }
 }
