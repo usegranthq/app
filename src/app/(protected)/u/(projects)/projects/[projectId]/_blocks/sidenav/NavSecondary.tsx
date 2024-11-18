@@ -20,7 +20,7 @@ const items = [
   },
   {
     title: 'Feedback',
-    url: 'mailto:feedback@usegrant.dev',
+    url: 'mailto:support@usegrant.dev',
     icon: SendIcon,
   },
 ];
