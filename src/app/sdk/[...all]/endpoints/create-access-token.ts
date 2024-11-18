@@ -57,10 +57,12 @@ const createToken = createEndpoint(
     const signingKey: JWK = jwk ? (jwk.key as unknown as JWK) : defaultJwk;
     const token = await createJwt(claims, signingKey, ONE_HOUR);
 
+    const expiresAt = new Date(Date.now() + ONE_HOUR);
+
     return {
-      token,
+      accessToken: token,
       type: 'Bearer',
-      expiresIn: ONE_HOUR,
+      expiresAt,
     };
   },
 );

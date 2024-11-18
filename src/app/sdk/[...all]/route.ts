@@ -27,7 +27,7 @@ const verifyToken = async (bearerToken: string): Promise<string | null> => {
 const handler = async (request: NextRequest) => {
   const bearerToken = getBearerToken(request);
   if (!bearerToken) {
-    return unauthorizedResponse('Missing Bearer token');
+    return unauthorizedResponse('Missing api token');
   }
 
   const userId = await verifyToken(bearerToken);
