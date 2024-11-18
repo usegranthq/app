@@ -2,7 +2,7 @@ import { NextConfig } from 'next';
 
 import './src/env';
 
-const docsUrl = process.env.NODE_ENV === 'development' ? 'http://localhost:7575' : 'https://docs.usegrant.dev';
+const docsUrl = process.env.NODE_ENV === 'development' ? 'http://localhost:7575' : 'https://docs-usegrant.vercel.app';
 
 const nextConfig: NextConfig = {
   reactStrictMode: true,
