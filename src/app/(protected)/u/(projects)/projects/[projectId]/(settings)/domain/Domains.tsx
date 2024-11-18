@@ -8,7 +8,6 @@ import { Domain, Project } from '@/types/app.types';
 import { deleteDomain, verifyDomain } from '@/actions';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { getSubdomain } from '@/utils/url';
 import Link from 'next/link';
 import { ExternalLinkIcon } from 'lucide-react';
 import { useTransition } from 'react';
@@ -81,9 +80,7 @@ const DomainCard = ({ domain }: { domain: Domain }) => {
   };
 
   const isVerified = domain.verified;
-
   const isApexDomain = domain.domain.split('.').length === 2;
-  const domainRecord = isApexDomain ? domain.domain : getSubdomain(domain.domain);
 
   return (
     <Card key={domain.id}>
@@ -116,19 +113,21 @@ const DomainCard = ({ domain }: { domain: Domain }) => {
                 <thead>
                   <tr>
                     <th className="text-left">Type</th>
-                    <th className="text-left">Name</th>
                     <th className="text-left">Value</th>
                   </tr>
                 </thead>
                 <tbody>
                   <tr>
-                    <td className="pr-10 pt-2">{isApexDomain ? 'A' : 'CNAME'}</td>
-                    <td className="pr-10 pt-2">{domainRecord}</td>
-                    <td className="pr-10 pt-2">{isApexDomain ? '76.76.21.21' : 'cname.usegrant.dev'}</td>
+                    <td className="pr-10 pt-2">{isApexDomain ? 'ALIAS/ANAME/Flattended CNAME' : 'CNAME'}</td>
+                    <td className="pr-10 pt-2">{isApexDomain ? 'apex.usegrant.dev' : 'cname.usegrant.dev'}</td>
                   </tr>
                 </tbody>
               </table>
             </div>
+            <p className="mt-4 text-sm">
+              Add an ALIAS, ANAME, or flattened CNAME record. Depending on your provider, leave the host field empty or
+              enter `@`.
+            </p>
             <p className="mt-4 text-sm text-muted-foreground">
               <span className="text-sm text-destructive">*</span>For cloudflare users, disable the proxy(orange cloud)
               for the domain and set the records above.
