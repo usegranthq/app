@@ -34,9 +34,17 @@ const getSession = async (request: NextRequest, cookie: string): Promise<Session
   };
 
   try {
-    return await ky.get<Session>('api/auth/get-session', options).json<Session>();
+    const session = await ky.get<Session>('api/auth/get-session', options).json<Session>();
+    console.log('Session', session);
+    if (!session) {
+      throw new Error('SESSION_NOT_FOUND');
+    }
+
+    return session;
   } catch (error) {
-    if (error instanceof HTTPError && error.response.status === 401) {
+    const isSessionNotFoundError = error instanceof Error && error.message === 'SESSION_NOT_FOUND';
+    const isUnauthorizedError = error instanceof HTTPError && error.response.status === 401;
+    if (isSessionNotFoundError || isUnauthorizedError) {
       cookieStore.delete(constants.AUTH_COOKIE);
       cookieStore.delete(constants.VERIFY_COOKIE);
       return null;
