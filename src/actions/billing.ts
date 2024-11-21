@@ -8,39 +8,27 @@ import { verifySession } from '@/data/_verifySession';
 import paddle from '@/lib/paddle';
 import { getSubscriptionByTransactionId } from '@/lib/paddle/subscription';
 
-export const updateCustomer = async (paddleCustomerId: string): ActionResponse => {
+export const updateAfterCheckout = async (customerId: string, transactionId: string): ActionResponse => {
   const session = await verifySession();
 
   try {
-    await db.customer.upsert({
+    const subscription = await getSubscriptionByTransactionId(transactionId);
+
+    const customer = await db.customer.upsert({
       where: { userId: session.user.id },
       update: {},
       create: {
         userId: session.user.id,
-        paddleCustomerId,
+        paddleCustomerId: customerId,
       },
     });
-  } catch (error) {
-    const errorMessage = getApiErrorMessage(error, 'Failed to update customer');
-    return [errorMessage, null];
-  }
-
-  revalidatePath('/settings/billing');
-  return [null, null];
-};
-
-export const updateAfterCheckout = async (customerId: string, transactionId: string): ActionResponse => {
-  await verifySession();
-
-  try {
-    const subscription = await getSubscriptionByTransactionId(transactionId);
 
     const data = {
       subscriptionStatus: subscription.status,
       priceId: subscription.items[0].price?.id ?? '',
       productId: subscription.items[0].price?.productId ?? '',
       scheduledChange: subscription.scheduledChange?.effectiveAt ?? null,
-      customerId,
+      customerId: customer.id,
     };
 
     await db.subscription.upsert({

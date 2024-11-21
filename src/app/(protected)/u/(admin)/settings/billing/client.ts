@@ -6,11 +6,10 @@ import { useRouter } from 'next/navigation';
 import { toast } from 'sonner';
 
 import { env } from '@/env';
-import { updateAfterCheckout, updateCustomer } from '@/actions';
-import { Customer } from '@/types/app.types';
+import { updateAfterCheckout } from '@/actions';
 import { useProgressBar } from '@/blocks/NavProgress';
 
-export default function usePaddle(customer: Customer | null) {
+export default function usePaddle() {
   const [paddle, setPaddle] = useState<Paddle>();
   const router = useRouter();
   const progress = useProgressBar();
@@ -32,19 +31,12 @@ export default function usePaddle(customer: Customer | null) {
         },
       },
       eventCallback: (event) => {
-        if (event.name === CheckoutEventNames.CHECKOUT_CUSTOMER_CREATED && event.data && !customer) {
-          const customerId = event.data.customer.id;
-          if (!customerId) {
-            return;
-          }
-          void updateCustomer(customerId);
-        }
-
         const data = event.data;
 
         if (event.name === CheckoutEventNames.CHECKOUT_COMPLETED && data) {
           const customerId = data.customer.id;
           const transactionId = data.transaction_id;
+
           if (!customerId || !transactionId) {
             toast.error('Failed to update subscription. Please reload the page and try again.');
             return;
