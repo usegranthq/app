@@ -4,6 +4,8 @@ The terms "UseGrant", "useGrant", "usegrant", "usegrant.dev", "We", "Us", or "Ou
 
 Welcome to usegrant. By signing up, browsing this website, and using our service, you agree to comply with and be bound by the following terms and conditions of use, which, together with our privacy policy, govern our relationship with you in relation to this service. If you disagree with any part of these terms and conditions, please do not use our service.
 
+Note: UseGrant is currently in early access. Signups are limited to a small group of users. The product itself is stable, but we are still under active development to ensure a seamless experience. Soon the signups will be open to all.
+
 ## Privacy and Data Security
 
 We are dedicated to safeguarding your privacy and ensuring the security of your data. UseGrant will not access any of your data without your explicit consent. The data you provide, submit, or that is collected by UseGrant from you will be stored and processed in accordance with UseGrant's online privacy policy, which can be accessed at [usegrant.dev/privacy](/privacy).

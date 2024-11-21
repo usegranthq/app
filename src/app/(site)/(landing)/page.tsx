@@ -1,12 +1,15 @@
 import Image from 'next/image';
+import Link from 'next/link';
+
+import { Button } from '@/components/ui/button';
+
 import PricingSection from './Pricing';
 import ZeroTrustSection from './ZeroTrust';
+import DynamicEnv from './DyanmicEnv';
+import TrustBasedAccess from './TrustBasedAccess';
 
 import landerDarkImg from './lander-dark.png';
 import landerLightImg from './lander-light.png';
-
-import TrustBasedAccess from './TrustBasedAccess';
-import DynamicEnv from './DyanmicEnv';
 
 export default async function Home() {
   return (
@@ -18,8 +21,18 @@ export default async function Home() {
             Set up secure M2M authentication in minutes. Built on OAuth/OpenID standards for maximum security.
           </p>
         </div>
-        <div className="text-center text-base font-semibold text-primary md:text-lg">
-          Signups are invite-only. Stay tuned!
+        <div className="flex flex-col items-center gap-4">
+          <div className="flex gap-4">
+            <Button asChild>
+              <Link href="/login">🚀 Get started</Link>
+            </Button>
+            <Button variant="outline" asChild>
+              <Link href="/docs">Read the docs</Link>
+            </Button>
+          </div>
+          <p className="text-center text-sm text-muted-foreground">
+            Early Access Now Available for limited users - <br className="block md:hidden" /> Be Among the First to Try!
+          </p>
         </div>
         <div className="mt-10 max-w-5xl overflow-hidden rounded-lg border border-border shadow-lg md:mt-20">
           <Image src={landerDarkImg} alt="UseGrant" className="hidden dark:block" priority />
@@ -30,11 +43,16 @@ export default async function Home() {
       <DynamicEnv />
       <ZeroTrustSection />
       <PricingSection />
-      <div className="my-44">
-        <h2 className="text-center text-4xl font-semibold">Stay tuned!</h2>
-        <p className="mx-auto mt-2.5 max-w-xl text-center text-base font-medium text-primary">
-          Signups are invite-only. Stay tuned!
-        </p>
+      <div className="my-44 flex flex-col items-center gap-4">
+        <h2 className="text-center text-4xl font-semibold">Get started today!</h2>
+        <div className="mx-auto mt-4 flex items-center gap-4">
+          <Button asChild>
+            <Link href="/login">Get started</Link>
+          </Button>
+          <Button variant="outline" asChild>
+            <Link href="/docs">Read the docs</Link>
+          </Button>
+        </div>
       </div>
     </>
   );
