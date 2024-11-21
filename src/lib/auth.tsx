@@ -32,13 +32,6 @@ export const auth = betterAuth({
     }),
     nextCookies(), // must be last
   ],
-  session: {
-    additionalFields: {
-      createdAt: {
-        type: 'string',
-      },
-    },
-  },
   advanced: {
     cookiePrefix: '_ug',
   },

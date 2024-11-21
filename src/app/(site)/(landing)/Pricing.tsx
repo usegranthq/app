@@ -2,33 +2,7 @@ import { CheckIcon } from 'lucide-react';
 
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { cn } from '@/lib/utils';
-
-const Plans = [
-  {
-    id: 'free',
-    name: 'Free',
-    price: '$0',
-    features: ['1 Project', 'Free forever', 'API access to create clients'],
-  },
-  {
-    id: 'starter',
-    name: 'Starter',
-    price: '$9/mo',
-    features: ['10 Projects', 'Custom domains', 'Priority support 24/5', 'Token introspection (coming soon)'],
-  },
-  {
-    id: 'pro',
-    name: 'Pro',
-    price: '$49/mo',
-    features: [
-      '100 Projects',
-      'All in starter',
-      'Create projects on the fly',
-      'Request unique signing key per project (coming soon)',
-      'Priority support',
-    ],
-  },
-];
+import { Plans } from '@/utils/billing';
 
 export default function PricingSection() {
   return (
@@ -42,8 +16,11 @@ export default function PricingSection() {
           {Plans.map((plan) => (
             <Card key={plan.id} className={cn('h-full', { 'border-primary': plan.id === 'starter' })}>
               <CardHeader className="pb-2">
-                <CardTitle className="text-sm font-bold text-muted-foreground">{plan.name}</CardTitle>
-                <span className="text-3xl font-bold">{plan.price}</span>
+                <CardTitle className="text-lg">{plan.name}</CardTitle>
+                <div className="flex gap-0.5">
+                  <h3 className="text-3xl font-bold">${plan.price}</h3>
+                  <span className="mb-1 flex flex-col justify-end text-sm">{plan.price ? '/month' : null}</span>
+                </div>
               </CardHeader>
               <CardContent>
                 <ul className="mt-7 space-y-2.5 text-sm">

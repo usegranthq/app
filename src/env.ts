@@ -19,8 +19,15 @@ export const env = createEnv({
     VERCEL_DOMINATE_PROJECT_ID: z.string(),
     VERCEL_DOMINATE_API_TOKEN: z.string(),
     CRON_SECRET: z.string(),
+    PADDLE_API_KEY: z.string(),
+    PADDLE_NOTIFICATION_WEBHOOK_SECRET: z.string(),
   },
-  client: {},
+  client: {
+    NEXT_PUBLIC_PADDLE_ENV: z.enum(['sandbox', 'production']),
+    NEXT_PUBLIC_PADDLE_CLIENT_TOKEN: z.string(),
+    NEXT_PUBLIC_PADDLE_STARTER_PRICE_ID: z.string(),
+    NEXT_PUBLIC_PADDLE_PRO_PRICE_ID: z.string(),
+  },
   runtimeEnv: {
     JWT_SIGNING_SECRET: process.env.JWT_SIGNING_SECRET,
     TURNSTILE_SITE_KEY: process.env.TURNSTILE_SITE_KEY,
@@ -38,5 +45,13 @@ export const env = createEnv({
     VERCEL_DOMINATE_PROJECT_ID: process.env.VERCEL_DOMINATE_PROJECT_ID,
     VERCEL_DOMINATE_API_TOKEN: process.env.VERCEL_DOMINATE_API_TOKEN,
     CRON_SECRET: process.env.CRON_SECRET,
+    PADDLE_API_KEY: process.env.PADDLE_API_KEY,
+    PADDLE_NOTIFICATION_WEBHOOK_SECRET: process.env.PADDLE_NOTIFICATION_WEBHOOK_SECRET,
+
+    // public
+    NEXT_PUBLIC_PADDLE_ENV: process.env.NEXT_PUBLIC_PADDLE_ENV,
+    NEXT_PUBLIC_PADDLE_CLIENT_TOKEN: process.env.NEXT_PUBLIC_PADDLE_CLIENT_TOKEN,
+    NEXT_PUBLIC_PADDLE_STARTER_PRICE_ID: process.env.NEXT_PUBLIC_PADDLE_STARTER_PRICE_ID,
+    NEXT_PUBLIC_PADDLE_PRO_PRICE_ID: process.env.NEXT_PUBLIC_PADDLE_PRO_PRICE_ID,
   },
 });

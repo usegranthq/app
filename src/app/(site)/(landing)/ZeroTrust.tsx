@@ -21,7 +21,7 @@ const features = [
     title: 'Breach-Resistant',
     description:
       "Even in the unlikely event of a breach, there's no actionable information at risk. Your service implementations and use cases remain completely private.",
-    bullets: ['Minimized attack surface', 'Enhanced data protection'],
+    bullets: ['Minimized attack surface', 'No persistent signing keys'],
   },
 ];
 

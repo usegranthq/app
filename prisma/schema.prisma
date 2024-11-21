@@ -29,8 +29,9 @@ model User {
   Session       Session[]
   Account       Account[]
 
-  Token   Token[]
-  Project Project[]
+  Token    Token[]
+  Project  Project[]
+  Customer Customer?
 
   @@unique([email])
   @@map("user")
@@ -147,4 +148,32 @@ model Jwks {
   projectId String
 
   @@map("jwks")
+}
+
+model Customer {
+  id               String @id @default(cuid())
+  paddleCustomerId String @unique
+
+  userId String @unique
+  User   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  Subscription Subscription[]
+
+  @@map("customer")
+}
+
+model Subscription {
+  id                 String    @id @default(cuid())
+  subscriptionId     String    @unique
+  subscriptionStatus String
+  priceId            String
+  productId          String
+  scheduledChange    DateTime?
+  createdAt          DateTime  @default(now())
+  updatedAt          DateTime  @updatedAt
+
+  Customer   Customer @relation(fields: [customerId], references: [id], onDelete: Cascade)
+  customerId String
+
+  @@map("subscription")
 }
