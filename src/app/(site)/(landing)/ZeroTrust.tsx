@@ -6,8 +6,8 @@ const features = [
     icon: ShieldIcon,
     title: 'Secure by Design',
     description:
-      'Our authentication is built on zero trust principles. Your services maintain full control by verifying all credentials directly, ensuring maximum security.',
-    bullets: ['No implicit trust', 'Continuous verification'],
+      'Our authentication is built on OAuth/OpenID standards. Your services maintain full control by verifying all credentials directly, ensuring maximum security.',
+    bullets: ['No implicit trust', 'OAuth/OpenID based'],
   },
   {
     icon: LockIcon,
