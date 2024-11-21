@@ -109,7 +109,7 @@
   }
 
   ::view-transition-group(root) {
-    animation-duration: 0.8s;
+    animation-duration: 0.7s;
     animation-timing-function: var(--expo-out);
   }
 
