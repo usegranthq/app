@@ -23,12 +23,13 @@ CREATE TABLE "user" (
 -- CreateTable
 CREATE TABLE "session" (
     "id" TEXT NOT NULL,
-    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "expiresAt" TIMESTAMP(3) NOT NULL,
+    "token" TEXT NOT NULL,
+    "createdAt" TIMESTAMP(3) NOT NULL,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
     "ipAddress" TEXT,
     "userAgent" TEXT,
     "userId" TEXT NOT NULL,
-    "activeOrganizationId" TEXT,
 
     CONSTRAINT "session_pkey" PRIMARY KEY ("id")
 );
@@ -42,8 +43,12 @@ CREATE TABLE "account" (
     "accessToken" TEXT,
     "refreshToken" TEXT,
     "idToken" TEXT,
-    "expiresAt" TIMESTAMP(3),
+    "accessTokenExpiresAt" TIMESTAMP(3),
+    "refreshTokenExpiresAt" TIMESTAMP(3),
+    "scope" TEXT,
     "password" TEXT,
+    "createdAt" TIMESTAMP(3) NOT NULL,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
 
     CONSTRAINT "account_pkey" PRIMARY KEY ("id")
 );
@@ -54,6 +59,8 @@ CREATE TABLE "verification" (
     "identifier" TEXT NOT NULL,
     "value" TEXT NOT NULL,
     "expiresAt" TIMESTAMP(3) NOT NULL,
+    "createdAt" TIMESTAMP(3),
+    "updatedAt" TIMESTAMP(3),
 
     CONSTRAINT "verification_pkey" PRIMARY KEY ("id")
 );
@@ -64,6 +71,7 @@ CREATE TABLE "project" (
     "name" TEXT NOT NULL,
     "description" TEXT NOT NULL,
     "urlId" TEXT NOT NULL,
+    "rotateJwks" BOOLEAN NOT NULL DEFAULT false,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
     "userId" TEXT NOT NULL,
@@ -76,6 +84,7 @@ CREATE TABLE "client" (
     "id" TEXT NOT NULL,
     "name" TEXT NOT NULL,
     "audience" TEXT NOT NULL,
+    "subject" TEXT NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
     "projectId" TEXT NOT NULL,
@@ -86,10 +95,8 @@ CREATE TABLE "client" (
 -- CreateTable
 CREATE TABLE "domain" (
     "id" TEXT NOT NULL,
-    "name" TEXT NOT NULL,
     "domain" TEXT NOT NULL,
     "verified" BOOLEAN NOT NULL DEFAULT false,
-    "verifiedAt" TIMESTAMP(3),
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
     "projectId" TEXT NOT NULL,
@@ -123,11 +130,53 @@ CREATE TABLE "jwks" (
     CONSTRAINT "jwks_pkey" PRIMARY KEY ("id")
 );
 
+-- CreateTable
+CREATE TABLE "customer" (
+    "id" TEXT NOT NULL,
+    "paddleCustomerId" TEXT NOT NULL,
+    "userId" TEXT NOT NULL,
+
+    CONSTRAINT "customer_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "subscription" (
+    "id" TEXT NOT NULL,
+    "subscriptionId" TEXT NOT NULL,
+    "subscriptionStatus" TEXT NOT NULL,
+    "priceId" TEXT NOT NULL,
+    "productId" TEXT NOT NULL,
+    "scheduledChange" TIMESTAMP(3),
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
+    "customerId" TEXT NOT NULL,
+
+    CONSTRAINT "subscription_pkey" PRIMARY KEY ("id")
+);
+
 -- CreateIndex
 CREATE UNIQUE INDEX "user_email_key" ON "user"("email");
 
 -- CreateIndex
+CREATE UNIQUE INDEX "session_token_key" ON "session"("token");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "project_urlId_key" ON "project"("urlId");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "domain_domain_key" ON "domain"("domain");
+
+-- CreateIndex
 CREATE UNIQUE INDEX "token_token_key" ON "token"("token");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "customer_paddleCustomerId_key" ON "customer"("paddleCustomerId");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "customer_userId_key" ON "customer"("userId");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "subscription_subscriptionId_key" ON "subscription"("subscriptionId");
 
 -- AddForeignKey
 ALTER TABLE "session" ADD CONSTRAINT "session_userId_fkey" FOREIGN KEY ("userId") REFERENCES "user"("id") ON DELETE CASCADE ON UPDATE CASCADE;
@@ -149,3 +198,9 @@ ALTER TABLE "token" ADD CONSTRAINT "token_userId_fkey" FOREIGN KEY ("userId") RE
 
 -- AddForeignKey
 ALTER TABLE "jwks" ADD CONSTRAINT "jwks_projectId_fkey" FOREIGN KEY ("projectId") REFERENCES "project"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "customer" ADD CONSTRAINT "customer_userId_fkey" FOREIGN KEY ("userId") REFERENCES "user"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "subscription" ADD CONSTRAINT "subscription_customerId_fkey" FOREIGN KEY ("customerId") REFERENCES "customer"("id") ON DELETE CASCADE ON UPDATE CASCADE;
