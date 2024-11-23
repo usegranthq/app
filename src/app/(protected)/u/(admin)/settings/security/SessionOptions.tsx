@@ -30,7 +30,7 @@ import {
 export default function SessionOptions({ session }: { session: Session }) {
   const router = useRouter();
   const handleDelete = async () => {
-    const [error] = await deleteSession(session.id);
+    const [error] = await deleteSession(session.token);
     if (error) {
       toast.error(error);
     }

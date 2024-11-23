@@ -73,13 +73,13 @@ export async function deleteSessions(): ActionResponse {
   return [null, null];
 }
 
-export async function deleteSession(id: string): ActionResponse {
+export async function deleteSession(token: string): ActionResponse {
   await verifySession();
 
   try {
     await auth.api.revokeSession({
       body: {
-        id,
+        token,
       },
       headers: await headers(),
     });
