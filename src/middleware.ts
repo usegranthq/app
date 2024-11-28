@@ -106,7 +106,7 @@ export async function middleware(request: NextRequest) {
   if (process.env.NODE_ENV === 'production' && pathname.startsWith('/login')) {
     const inviteCookie = request.cookies.get(constants.INVITE_COOKIE);
     if (inviteCookie && inviteCookie.value === env.INVITE_TOKEN) {
-      return redirectToPage(pathname, request);
+      return redirectToPage(ROUTES.LANDING, request);
     }
   }
 
