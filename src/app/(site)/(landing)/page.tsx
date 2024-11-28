@@ -12,7 +12,7 @@ import landerDarkImg from './lander-dark.png';
 import landerLightImg from './lander-light.png';
 
 export default async function Home() {
-  const isProduction = process.env.NODE_ENV !== 'production';
+  const isProduction = process.env.NODE_ENV === 'production';
 
   return (
     <>
