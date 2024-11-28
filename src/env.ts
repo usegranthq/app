@@ -3,6 +3,7 @@ import { z } from 'zod';
 
 export const env = createEnv({
   server: {
+    INVITE_TOKEN: z.string(),
     JWT_SIGNING_SECRET: z.string().min(1),
     TURNSTILE_SITE_KEY: z.string(),
     TURNSTILE_SECRET_KEY: z.string(),
@@ -29,6 +30,7 @@ export const env = createEnv({
     NEXT_PUBLIC_PADDLE_PRO_PRICE_ID: z.string(),
   },
   runtimeEnv: {
+    INVITE_TOKEN: process.env.INVITE_TOKEN,
     JWT_SIGNING_SECRET: process.env.JWT_SIGNING_SECRET,
     TURNSTILE_SITE_KEY: process.env.TURNSTILE_SITE_KEY,
     TURNSTILE_SECRET_KEY: process.env.TURNSTILE_SECRET_KEY,

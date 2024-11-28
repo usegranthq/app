@@ -7,6 +7,7 @@ import ky, { HTTPError, Options as KyOptions } from 'ky';
 import * as constants from '@/constants';
 
 import ROUTES from './constants/routes';
+import { env } from './env';
 
 const isProtectedRoute = (pathname: string) => pathname.startsWith('/u');
 
@@ -100,6 +101,14 @@ const handleDefaultRoute = (request: NextRequest) => {
 
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
+
+  // @todo: remove this after invite code is removed
+  if (process.env.NODE_ENV === 'production' && pathname.startsWith('/login')) {
+    const inviteCookie = request.cookies.get(constants.INVITE_COOKIE);
+    if (inviteCookie && inviteCookie.value === env.INVITE_TOKEN) {
+      return redirectToPage(pathname, request);
+    }
+  }
 
   if (isProtectedRoute(pathname)) {
     return handleProtectedRoute(request);
