@@ -102,10 +102,12 @@ const handleDefaultRoute = (request: NextRequest) => {
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
+  const inviteToken = env.INVITE_TOKEN;
+
   // @todo: remove this after invite code is removed
-  if (process.env.NODE_ENV === 'production' && pathname.startsWith('/login')) {
+  if (process.env.NODE_ENV === 'production' && pathname.startsWith('/login') && inviteToken) {
     const inviteCookie = request.cookies.get(constants.INVITE_COOKIE);
-    if (inviteCookie && inviteCookie.value === env.INVITE_TOKEN) {
+    if (!inviteCookie || inviteCookie.value !== inviteToken) {
       return redirectToPage(ROUTES.LANDING, request);
     }
   }

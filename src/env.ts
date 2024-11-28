@@ -3,7 +3,7 @@ import { z } from 'zod';
 
 export const env = createEnv({
   server: {
-    INVITE_TOKEN: z.string(),
+    INVITE_TOKEN: z.string().optional(),
     JWT_SIGNING_SECRET: z.string().min(1),
     TURNSTILE_SITE_KEY: z.string(),
     TURNSTILE_SECRET_KEY: z.string(),
