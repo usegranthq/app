@@ -1,18 +1,13 @@
 import type { NextRequest } from 'next/server';
+import { waitUntil } from '@vercel/functions';
+import { Prisma } from '@prisma/client';
 
 import { env } from '@/env';
 import { validateBearerToken } from '@/utils/rest';
 import db from '@/lib/db';
 import { generateJwk } from '@/utils/jwk';
-import { Prisma } from '@prisma/client';
 
-export async function GET(request: NextRequest) {
-  if (!validateBearerToken(request, env.CRON_SECRET)) {
-    return new Response('Unauthorized', {
-      status: 401,
-    });
-  }
-
+const processCron = async () => {
   const now = new Date();
 
   try {
@@ -83,10 +78,18 @@ export async function GET(request: NextRequest) {
         });
       });
     }
-
-    return Response.json({ success: true });
   } catch (error) {
-    console.error(error);
-    return Response.json({ success: false, message: 'Something went wrong' }, { status: 500 });
+    console.error('Error processing cron', error);
   }
+};
+
+export async function GET(request: NextRequest) {
+  if (!validateBearerToken(request, env.CRON_SECRET)) {
+    return new Response('Unauthorized', {
+      status: 401,
+    });
+  }
+
+  waitUntil(processCron());
+  return Response.json({ success: true });
 }
