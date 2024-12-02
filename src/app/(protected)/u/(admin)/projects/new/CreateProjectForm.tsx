@@ -3,12 +3,13 @@
 import { useFormStatus } from 'react-dom';
 import { toast } from 'sonner';
 import { useRouter } from 'next/navigation';
+import { startTransition } from 'react';
 
 import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Button } from '@/components/ui/button';
-
+import { useProgressBar } from '@/blocks/NavProgress';
 import { createProject } from '@/actions';
 
 function CreateProjectButton() {
@@ -19,17 +20,21 @@ function CreateProjectButton() {
 
 export default function CreateProjectForm() {
   const router = useRouter();
+  const progress = useProgressBar();
 
   const handleSubmit = async (formData: FormData) => {
-    const [error, project] = await createProject(formData);
+    startTransition(async () => {
+      progress.start();
+      const [error, project] = await createProject(formData);
 
-    if (error || !project) {
-      toast.error(error);
-      return;
-    }
+      if (error || !project) {
+        toast.error(error);
+        return;
+      }
 
-    toast.success(`Project ${project.name} created successfully`);
-    router.push(`/u/projects/${project.id}`);
+      toast.success(`Project ${project.name} created successfully`);
+      router.push(`/u/projects/${project.id}`);
+    });
   };
 
   return (
