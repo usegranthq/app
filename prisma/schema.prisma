@@ -19,16 +19,15 @@ model Root {
 }
 
 model User {
-  id            String   @id
+  id            String    @id
   name          String
   email         String
   emailVerified Boolean
   image         String?
   createdAt     DateTime
   updatedAt     DateTime
-
-  Session Session[]
-  Account Account[]
+  sessions      Session[]
+  accounts      Account[]
 
   Token    Token[]
   Project  Project[]
