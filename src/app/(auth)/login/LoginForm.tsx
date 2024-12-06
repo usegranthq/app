@@ -3,6 +3,7 @@
 import { toast } from 'sonner';
 import { Turnstile, TurnstileInstance } from '@marsidev/react-turnstile';
 import { useRef } from 'react';
+import Form from 'next/form';
 
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -38,7 +39,7 @@ export default function LoginForm({ turnstileSiteKey }: LoginFormProps) {
   };
 
   return (
-    <form className="grid gap-4" action={handleFormSubmit}>
+    <Form className="grid gap-4" action={handleFormSubmit}>
       <div className="grid gap-2">
         <Label htmlFor="email">Email address</Label>
         <Input id="email" name="email" type="email" required placeholder="user@example.com" />
@@ -49,6 +50,6 @@ export default function LoginForm({ turnstileSiteKey }: LoginFormProps) {
       <div>
         <SubmitButton />
       </div>
-    </form>
+    </Form>
   );
 }
