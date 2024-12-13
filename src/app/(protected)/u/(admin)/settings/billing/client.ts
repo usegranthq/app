@@ -9,7 +9,7 @@ import { env } from '@/env';
 import { updateAfterCheckout } from '@/actions';
 import { useProgressBar } from '@/blocks/NavProgress';
 
-export default function usePaddle() {
+export default function usePaddle(email: string) {
   const [paddle, setPaddle] = useState<Paddle>();
   const router = useRouter();
   const progress = useProgressBar();
@@ -29,6 +29,9 @@ export default function usePaddle() {
           // frameInitialHeight: 450,
           // frameStyle: 'width: 100%; min-width: 312px; background-color: transparent; border: none;',
         },
+      },
+      pwCustomer: {
+        email,
       },
       eventCallback: (event) => {
         const data = event.data;

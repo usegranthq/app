@@ -19,9 +19,9 @@ interface PlanButtonProps {
 }
 
 export default function PlanButton({ plan, currentPlan, customer }: PlanButtonProps) {
-  const paddle = usePaddle();
   const theme = useTheme();
   const user = useUser();
+  const paddle = usePaddle(user.email);
 
   const isInitialized = !!paddle;
   const paddleTheme = (theme.resolvedTheme ?? 'dark') as Theme;
