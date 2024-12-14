@@ -11,8 +11,8 @@ import {
   useOptimistic,
 } from 'react';
 import { useRouter } from 'next/navigation';
-import { useInterval } from 'usehooks-ts';
 
+import { useInterval } from '@/hooks/use-interval';
 import { cn } from '@/lib/utils';
 
 const ProgressBarContext = createContext<ReturnType<typeof useProgress> | null>(null);
