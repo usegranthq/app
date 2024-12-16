@@ -50,6 +50,8 @@ async function getCertificates(hostname: string): Promise<string> {
       }, 5_000);
     });
   } catch (error) {
+    console.log(error);
+
     if (data.length > 0) {
       return data;
     }
@@ -76,7 +78,7 @@ async function retrieveDomainDetails(hostname: string): Promise<CaDetails> {
   const topIntermediateCertificate = getTopIntermediateCertificate(certificates);
 
   if (!topIntermediateCertificate) {
-    throw 'Failed to retrieve CA details';
+    throw null;
   }
 
   const x509 = new X509Certificate(topIntermediateCertificate);
