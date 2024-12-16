@@ -124,6 +124,7 @@ export async function GET(request: NextRequest, { params }: { params: Promise<Pa
   return NextResponse.json({
     issuer: `https://${hostname}`,
     jwks_uri: `https://${hostname}/.well-known/jwks`,
+    grant_types_supported: ['client_credentials'],
     subject_types_supported: ['public'],
     response_types_supported: [],
     id_token_signing_alg_values_supported: ['RS256'],
