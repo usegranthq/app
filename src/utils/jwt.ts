@@ -37,7 +37,7 @@ export const createJwt = (claims: JWTPayload, key: JWK, expiry: number = ONE_HOU
   };
 
   const protectedHeaders: CompactJWSHeaderParameters = {
-    typ: 'at+jwt',
+    typ: 'jwt', // @todo: change to at+jwt, since at+jwt is not working in alibaba cloud
     alg: 'RS256',
     kid: key.kid,
   };
