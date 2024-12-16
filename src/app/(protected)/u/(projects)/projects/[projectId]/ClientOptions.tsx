@@ -3,6 +3,8 @@
 import { DotsHorizontalIcon } from '@radix-ui/react-icons';
 import { toast } from 'sonner';
 import { useRouter } from 'next/navigation';
+import Link from 'next/link';
+import { useState, useTransition } from 'react';
 
 import { deleteClient, generateAccessToken } from '@/actions';
 import { Client } from '@/types/app.types';
@@ -26,9 +28,15 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from '@/components/ui/alert-dialog';
-import { useState, useTransition } from 'react';
-import Link from 'next/link';
 import { useProgressBar } from '@/blocks/NavProgress';
+import { Checkbox } from '@/components/ui/checkbox';
+import { Label } from '@/components/ui/label';
+
+const useToggle = (initialValue: boolean): [boolean, () => void] => {
+  const [value, setValue] = useState<boolean>(initialValue);
+  const toggle = () => setValue(!value);
+  return [value, toggle];
+};
 
 export default function ClientOptions({ projectId, client }: { projectId: string; client: Client }) {
   const router = useRouter();
@@ -36,18 +44,25 @@ export default function ClientOptions({ projectId, client }: { projectId: string
   const [accessToken, setAccessToken] = useState<string | null>(null);
   const [isTransitioning, startTransition] = useTransition();
 
+  const [jwtType, toggleJwtType] = useToggle(false);
+  const [audienceAsArray, toggleAudienceAsArray] = useToggle(false);
+
   const handleGenerateToken = async () => {
-    const toastId = toast('GenerateToken');
-    toast.loading('Generating Token...', { id: toastId });
+    startTransition(async () => {
+      const toastId = toast('GenerateToken');
+      toast.loading('Generating Token...', { id: toastId });
 
-    const [error, token] = await generateAccessToken(projectId, client.id);
-    if (error) {
-      toast.error(error, { id: toastId });
-      return;
-    }
+      progress.start();
 
-    setAccessToken(token);
-    toast.dismiss(toastId);
+      const [error, token] = await generateAccessToken(projectId, client.id, { jwtType, audienceAsArray });
+      if (error) {
+        toast.error(error, { id: toastId });
+        return;
+      }
+
+      setAccessToken(token);
+      toast.dismiss(toastId);
+    });
   };
 
   const handleDelete = async () => {
@@ -87,6 +102,30 @@ export default function ClientOptions({ projectId, client }: { projectId: string
               }}
             >
               {accessToken}
+            </div>
+          </div>
+          <div className="grid gap-2">
+            <div className="flex items-center space-x-2">
+              <Checkbox
+                id="jwtType"
+                checked={jwtType}
+                onCheckedChange={() => {
+                  toggleJwtType();
+                  handleGenerateToken();
+                }}
+              />
+              <Label htmlFor="jwtType">JWT</Label>
+            </div>
+            <div className="flex items-center space-x-2">
+              <Checkbox
+                id="audienceAsArray"
+                checked={audienceAsArray}
+                onCheckedChange={() => {
+                  toggleAudienceAsArray();
+                  handleGenerateToken();
+                }}
+              />
+              <Label htmlFor="audienceAsArray">Audience as array</Label>
             </div>
           </div>
           <div>

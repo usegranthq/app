@@ -24,7 +24,12 @@ export const signJwt = async (claims: JWTPayload, header: CompactJWSHeaderParame
   return new CompactSign(payload).setProtectedHeader(header).sign(key);
 };
 
-export const createJwt = (claims: JWTPayload, key: JWK, expiry: number = ONE_HOUR): Promise<string> => {
+export const createJwt = (
+  claims: JWTPayload,
+  key: JWK,
+  expiry: number = ONE_HOUR,
+  jwtType = false,
+): Promise<string> => {
   const now = Math.floor(Date.now() / 1000);
   const exp = now + expiry;
 
@@ -37,7 +42,7 @@ export const createJwt = (claims: JWTPayload, key: JWK, expiry: number = ONE_HOU
   };
 
   const protectedHeaders: CompactJWSHeaderParameters = {
-    typ: 'jwt', // @todo: change to at+jwt, since at+jwt is not working in alibaba cloud
+    typ: jwtType ? 'jwt' : 'at+jwt',
     alg: 'RS256',
     kid: key.kid,
   };

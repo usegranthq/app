@@ -130,8 +130,22 @@ export async function deleteClient(projectId: string, clientId: string): ActionR
   }
 }
 
-export async function generateAccessToken(projectId: string, clientId: string): ActionResponse<string> {
+const defaultAccessTokenOptions = {
+  audienceAsArray: true,
+  jwtType: true,
+};
+
+export async function generateAccessToken(
+  projectId: string,
+  clientId: string,
+  options = defaultAccessTokenOptions,
+): ActionResponse<string> {
   await verifySession();
+
+  const opts = {
+    ...defaultAccessTokenOptions,
+    ...options,
+  };
 
   const client = await db.client.findUnique({
     where: {
@@ -149,7 +163,7 @@ export async function generateAccessToken(projectId: string, clientId: string): 
 
   const claims = {
     iss: getIssuer(client.Project.urlId),
-    aud: client.audience,
+    aud: opts.audienceAsArray ? [client.audience] : client.audience,
     sub: client.subject,
   };
 
@@ -165,7 +179,7 @@ export async function generateAccessToken(projectId: string, clientId: string): 
   const signingKey: JWK = jwk ? (jwk.key as unknown as JWK) : defaultJwk;
 
   try {
-    const token = await createJwt(claims, signingKey);
+    const token = await createJwt(claims, signingKey, 3600, opts.jwtType);
     revalidatePath(`/u/projects/${projectId}`);
     return [null, token];
   } catch (error) {
