@@ -1,7 +1,8 @@
 'use server';
 
-import { spawn } from 'node:child_process';
-import { X509Certificate } from 'node:crypto';
+import https from 'node:https';
+import { DetailedPeerCertificate, TLSSocket } from 'node:tls';
+
 import { verifySession } from '@/data/_verifySession';
 
 interface CaDetails {
@@ -9,84 +10,64 @@ interface CaDetails {
   thumbprint: string;
 }
 
-async function getCertificates(hostname: string): Promise<string> {
-  let data = '';
+const getRootCertificate = (cert: DetailedPeerCertificate, seen = new Map()): DetailedPeerCertificate => {
+  if (seen.has(cert.fingerprint)) {
+    // last cert in seen is the root certificate
+    // get index of cert.fingerprint
+    const keys = Array.from(seen.keys());
+    const index = keys.indexOf(cert.fingerprint);
+    return seen.get(keys[index - 1]);
+  }
 
-  const controller = new AbortController();
+  seen.set(cert.fingerprint, cert);
+  return getRootCertificate(cert.issuerCertificate, seen);
+};
 
-  try {
-    await new Promise<void>((resolve, reject) => {
-      const child = spawn('openssl', [
-        's_client',
-        '-servername',
+async function getTopCa(hostname: string): Promise<DetailedPeerCertificate> {
+  return new Promise((resolve, reject) => {
+    // Make an HTTPS request to get the server's certificate
+    const req = https.request(
+      {
         hostname,
-        '-showcerts',
-        '-connect',
-        `${hostname}:443`,
-      ]);
+        port: 443,
+        method: 'GET',
+        agent: false,
+        rejectUnauthorized: false, // Don't reject self-signed certificates
+      },
+      (res) => {
+        // Get the peer certificate once the connection is established
+        const socket = res.socket as TLSSocket;
+        const cert = socket.getPeerCertificate(true);
 
-      child.stdout.on('data', (chunk) => {
-        data += chunk.toString();
-      });
-
-      child.stdout.on('end', () => {
-        resolve();
-      });
-
-      child.on('error', (error) => {
-        reject(new Error(`Child process error: ${error.message}`));
-      });
-
-      // Handle process exit to clean up resources
-      child.on('exit', (code) => {
-        if (code !== 0) {
-          reject(new Error(`Child process exited with code ${code}`));
+        if (!cert) {
+          reject(new Error('No certificate found'));
         }
-      });
 
-      setTimeout(() => {
-        controller.abort();
-        child.kill();
-      }, 5_000);
-    });
-  } catch (error) {
-    console.log(error);
+        const rootCertificate = getRootCertificate(cert);
 
-    if (data.length > 0) {
-      return data;
-    }
+        if (rootCertificate) {
+          resolve(rootCertificate);
+        } else {
+          reject(new Error('No root certificate found'));
+        }
+      },
+    );
 
-    throw error;
-  }
-
-  return data;
-}
-
-const certificateRegex = /-----BEGIN CERTIFICATE-----(?:[\s\S]*?)-----END CERTIFICATE-----/g;
-function getTopIntermediateCertificate(certificates: string): string | null {
-  const intermediateCertificate = certificates.match(certificateRegex);
-
-  if (!intermediateCertificate || intermediateCertificate.length === 0) {
-    return null;
-  }
-
-  return intermediateCertificate.at(-1) ?? null;
+    req.on('error', reject);
+    req.end();
+  });
 }
 
 async function retrieveDomainDetails(hostname: string): Promise<CaDetails> {
-  const certificates = await getCertificates(hostname);
-  const topIntermediateCertificate = getTopIntermediateCertificate(certificates);
+  const certificate = await getTopCa(hostname);
 
-  if (!topIntermediateCertificate) {
-    throw null;
-  }
-
-  const x509 = new X509Certificate(topIntermediateCertificate);
-  const issuer = x509.issuer.split('\n').join(', ');
+  const issuer = Object.entries(certificate.issuer)
+    .map(([key, value]) => `${key}: ${value}`)
+    .join(', ');
 
   return {
     name: issuer,
-    thumbprint: x509.fingerprint,
+    thumbprint: certificate.fingerprint,
   };
 }
 
@@ -97,7 +78,7 @@ export const getCaDetails = async (domain: string): ActionResponse<CaDetails> =>
     const ca = await retrieveDomainDetails(domain);
 
     if (!ca) {
-      throw 'Failed to retrieve CA details';
+      throw new Error('Failed to retrieve CA details');
     }
 
     return [null, ca];
