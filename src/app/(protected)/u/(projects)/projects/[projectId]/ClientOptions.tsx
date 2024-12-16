@@ -4,7 +4,7 @@ import { DotsHorizontalIcon } from '@radix-ui/react-icons';
 import { toast } from 'sonner';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { useState, useTransition } from 'react';
+import { useEffect, useState, useTransition } from 'react';
 
 import { deleteClient, generateAccessToken } from '@/actions';
 import { Client } from '@/types/app.types';
@@ -34,7 +34,7 @@ import { Label } from '@/components/ui/label';
 
 const useToggle = (initialValue: boolean): [boolean, () => void] => {
   const [value, setValue] = useState<boolean>(initialValue);
-  const toggle = () => setValue(!value);
+  const toggle = () => setValue((prevValue) => !prevValue);
   return [value, toggle];
 };
 
@@ -46,6 +46,11 @@ export default function ClientOptions({ projectId, client }: { projectId: string
 
   const [jwtType, toggleJwtType] = useToggle(false);
   const [audienceAsArray, toggleAudienceAsArray] = useToggle(false);
+
+  useEffect(() => {
+    if (!accessToken) return;
+    handleGenerateToken();
+  }, [audienceAsArray, jwtType]);
 
   const handleGenerateToken = async () => {
     startTransition(async () => {
@@ -106,26 +111,16 @@ export default function ClientOptions({ projectId, client }: { projectId: string
           </div>
           <div className="grid gap-2">
             <div className="flex items-center space-x-2">
-              <Checkbox
-                id="jwtType"
-                checked={jwtType}
-                onCheckedChange={() => {
-                  toggleJwtType();
-                  handleGenerateToken();
-                }}
-              />
-              <Label htmlFor="jwtType">JWT</Label>
+              <Checkbox id="jwtType" checked={jwtType} onCheckedChange={toggleJwtType} />
+              <Label htmlFor="jwtType" className="text-sm">
+                SimpleJWT
+              </Label>
             </div>
             <div className="flex items-center space-x-2">
-              <Checkbox
-                id="audienceAsArray"
-                checked={audienceAsArray}
-                onCheckedChange={() => {
-                  toggleAudienceAsArray();
-                  handleGenerateToken();
-                }}
-              />
-              <Label htmlFor="audienceAsArray">Audience as array</Label>
+              <Checkbox id="audienceAsArray" checked={audienceAsArray} onCheckedChange={toggleAudienceAsArray} />
+              <Label htmlFor="audienceAsArray" className="text-sm">
+                Audience as array
+              </Label>
             </div>
           </div>
           <div>
