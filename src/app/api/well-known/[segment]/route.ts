@@ -126,7 +126,7 @@ export async function GET(request: NextRequest, { params }: { params: Promise<Pa
     jwks_uri: `https://${hostname}/.well-known/jwks`,
     grant_types_supported: ['client_credentials'],
     subject_types_supported: ['public'],
-    response_types_supported: [],
+    response_types_supported: ['code'], // alibaba validation fails without this
     id_token_signing_alg_values_supported: ['RS256'],
     claims_supported: ['jti', 'iss', 'aud', 'sub', 'iat', 'nbf', 'exp'],
     scopes_supported: ['openid'],
