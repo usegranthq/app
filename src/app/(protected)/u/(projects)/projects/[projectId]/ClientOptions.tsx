@@ -31,12 +31,7 @@ import {
 import { useProgressBar } from '@/blocks/NavProgress';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Label } from '@/components/ui/label';
-
-const useToggle = (initialValue: boolean): [boolean, () => void] => {
-  const [value, setValue] = useState<boolean>(initialValue);
-  const toggle = () => setValue((prevValue) => !prevValue);
-  return [value, toggle];
-};
+import { useToggle } from '@/hooks/use-toggle';
 
 export default function ClientOptions({ projectId, client }: { projectId: string; client: Client }) {
   const router = useRouter();
@@ -44,22 +39,27 @@ export default function ClientOptions({ projectId, client }: { projectId: string
   const [accessToken, setAccessToken] = useState<string | null>(null);
   const [isTransitioning, startTransition] = useTransition();
 
-  const [jwtType, toggleJwtType] = useToggle(false);
+  const [useJwtType, toggleUseJwtType] = useToggle(false);
   const [audienceAsArray, toggleAudienceAsArray] = useToggle(false);
 
   useEffect(() => {
     if (!accessToken) return;
     handleGenerateToken();
-  }, [audienceAsArray, jwtType]);
+  }, [audienceAsArray, useJwtType]);
 
   const handleGenerateToken = async () => {
+    const generateAccessTokenOptions = {
+      useJwtType,
+      audienceAsArray,
+    };
+
     startTransition(async () => {
       const toastId = toast('GenerateToken');
       toast.loading('Generating Token...', { id: toastId });
 
       progress.start();
 
-      const [error, token] = await generateAccessToken(projectId, client.id, { jwtType, audienceAsArray });
+      const [error, token] = await generateAccessToken(projectId, client.id, generateAccessTokenOptions);
       if (error) {
         toast.error(error, { id: toastId });
         return;
@@ -111,8 +111,8 @@ export default function ClientOptions({ projectId, client }: { projectId: string
           </div>
           <div className="grid gap-2">
             <div className="flex items-center space-x-2">
-              <Checkbox id="jwtType" checked={jwtType} onCheckedChange={toggleJwtType} />
-              <Label htmlFor="jwtType" className="text-sm">
+              <Checkbox id="useJwtType" checked={useJwtType} onCheckedChange={toggleUseJwtType} />
+              <Label htmlFor="useJwtType" className="text-sm">
                 SimpleJWT
               </Label>
             </div>

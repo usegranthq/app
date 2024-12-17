@@ -24,14 +24,28 @@ export const signJwt = async (claims: JWTPayload, header: CompactJWSHeaderParame
   return new CompactSign(payload).setProtectedHeader(header).sign(key);
 };
 
+type CreateJwtOptions = {
+  expiry: number;
+  jwtType: boolean;
+};
+
+const createJwtOptions: CreateJwtOptions = {
+  expiry: ONE_HOUR,
+  jwtType: false,
+};
+
 export const createJwt = (
   claims: JWTPayload,
   key: JWK,
-  expiry: number = ONE_HOUR,
-  jwtType = false,
+  opts: Partial<CreateJwtOptions> = createJwtOptions,
 ): Promise<string> => {
+  const options = {
+    ...createJwtOptions,
+    ...opts,
+  };
+
   const now = Math.floor(Date.now() / 1000);
-  const exp = now + expiry;
+  const exp = now + options.expiry;
 
   const jwt = {
     ...claims,
@@ -42,7 +56,7 @@ export const createJwt = (
   };
 
   const protectedHeaders: CompactJWSHeaderParameters = {
-    typ: jwtType ? 'jwt' : 'at+jwt',
+    typ: options.jwtType ? 'jwt' : 'at+jwt',
     alg: 'RS256',
     kid: key.kid,
   };

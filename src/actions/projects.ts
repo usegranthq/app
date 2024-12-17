@@ -130,20 +130,20 @@ export async function deleteClient(projectId: string, clientId: string): ActionR
   }
 }
 
-const defaultAccessTokenOptions = {
+const defaultGenerateAccessTokenOptions = {
   audienceAsArray: true,
-  jwtType: true,
+  useJwtType: true,
 };
 
 export async function generateAccessToken(
   projectId: string,
   clientId: string,
-  options = defaultAccessTokenOptions,
+  options = defaultGenerateAccessTokenOptions,
 ): ActionResponse<string> {
   await verifySession();
 
   const opts = {
-    ...defaultAccessTokenOptions,
+    ...defaultGenerateAccessTokenOptions,
     ...options,
   };
 
@@ -178,8 +178,12 @@ export async function generateAccessToken(
 
   const signingKey: JWK = jwk ? (jwk.key as unknown as JWK) : defaultJwk;
 
+  const jwtOptions = {
+    jwtType: opts.useJwtType,
+  };
+
   try {
-    const token = await createJwt(claims, signingKey, 3600, opts.jwtType);
+    const token = await createJwt(claims, signingKey, jwtOptions);
     revalidatePath(`/u/projects/${projectId}`);
     return [null, token];
   } catch (error) {
