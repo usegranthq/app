@@ -125,10 +125,6 @@ export default function CaDetails({ defaultDomain, domains }: CaDetailsProps) {
                     <Label>Thumbprint</Label>
                     <Input name="fingerprint" readOnly disabled value={caDetails.thumbprint} />
                   </div>
-                  <p className="text-sm text-muted-foreground">
-                    The thumbprint of the top intermediate CA is shown. If the certificate chain is only one level deep,
-                    the thumbprint of the root certificate is shown.
-                  </p>
                 </div>
               </div>
             )}
