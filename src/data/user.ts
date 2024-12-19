@@ -4,6 +4,7 @@ import { Session, User, Customer, Subscription } from '@/types/app.types';
 import db from '@/lib/db';
 
 import { verifySession } from './_verifySession';
+import { getPlanLimits, PlanLimits } from '@/utils/billing';
 
 export const getUser = async (): Promise<User> => {
   const session = await verifySession();
@@ -42,4 +43,9 @@ export const getSubscription = async (customer: Customer | null): Promise<Subscr
       subscriptionStatus: 'active',
     },
   });
+};
+
+export const getPlanDetails = async (): Promise<PlanLimits> => {
+  const session = await verifySession();
+  return getPlanLimits(session.plan);
 };

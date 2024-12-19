@@ -1,11 +1,11 @@
 import { createAuthClient } from 'better-auth/react';
+import { inferAdditionalFields, magicLinkClient, customSessionClient } from 'better-auth/client/plugins';
 import { toast } from 'sonner';
-import { inferAdditionalFields, magicLinkClient } from 'better-auth/client/plugins';
 
 import { auth } from './auth';
 
 export const authClient = createAuthClient({
-  plugins: [inferAdditionalFields<typeof auth>(), magicLinkClient()],
+  plugins: [inferAdditionalFields<typeof auth>(), magicLinkClient(), customSessionClient<typeof auth>()],
   fetchOptions: {
     onError(e) {
       switch (e.error.status) {

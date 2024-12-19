@@ -7,6 +7,7 @@ import * as vercel from '@/lib/vercel';
 import { verifySession } from '@/data/_verifySession';
 import { getApiErrorMessage, getZodErrorMessage } from '@/utils/error';
 import db from '@/lib/db';
+import { getPlanLimits } from '../utils/billing';
 
 const domainSchema = z
   .string({
@@ -32,12 +33,28 @@ const isDomainVerified = (domain: string, domainConfig: vercel.DomainConfigRespo
 };
 
 export async function addDomain(projectId: string, formData: FormData): ActionResponse {
-  await verifySession();
+  const session = await verifySession();
 
   const validation = domainSchema.safeParse(formData.get('domain'));
 
   if (!validation.success) {
     return [getZodErrorMessage(validation.error), null];
+  }
+
+  // allow based on plan
+  const planLimits = getPlanLimits(session.plan);
+
+  if (!planLimits.customDomain.available) {
+    return ['Custom domains are not available on your current plan. Please upgrade.', null];
+  }
+
+  // get existing domains, don't allow more than 1
+  const existingDomains = await db.domain.findMany({
+    where: { projectId },
+  });
+
+  if (existingDomains.length >= planLimits.customDomain.limit) {
+    return ['You have reached the limit for custom domains. Please upgrade.', null];
   }
 
   const domain = validation.data;

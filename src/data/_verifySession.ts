@@ -7,14 +7,11 @@ import { redirect } from 'next/navigation';
 import { auth } from '@/lib/auth';
 import ROUTES from '@/constants/routes';
 
-type AuthSession = typeof auth.$Infer.Session;
+type AuthSession = NonNullable<Awaited<ReturnType<typeof auth.api.getSession>>>;
 
 export const verifySession = cache(async (): Promise<AuthSession> => {
   const session = await auth.api.getSession({
     headers: await headers(),
-    query: {
-      disableCookieCache: true,
-    },
   });
 
   if (!session) {

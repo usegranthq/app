@@ -14,23 +14,42 @@ export const PLAN_NAMES = {
 
 export const POPULAR_PLAN = PLAN.PRO;
 
-export const PLAN_LIMITS = {
+export type PlanLimits = {
+  projects: number;
+  clientsPerProject: number;
+  customDomain: {
+    available: boolean;
+    limit: number;
+  };
+  rotateSigningKey: boolean;
+};
+
+export const PLAN_LIMITS: Record<Plan, PlanLimits> = {
   [PLAN.FREE]: {
     projects: 1,
     clientsPerProject: 999,
-    customDomain: false,
+    customDomain: {
+      available: false,
+      limit: 0,
+    },
     rotateSigningKey: false,
   },
   [PLAN.PRO]: {
     projects: 10,
     clientsPerProject: 999,
-    customDomain: true,
+    customDomain: {
+      available: true,
+      limit: 1,
+    },
     rotateSigningKey: true,
   },
   [PLAN.ULTIMATE]: {
     projects: 100,
     clientsPerProject: 999,
-    customDomain: true,
+    customDomain: {
+      available: true,
+      limit: 1,
+    },
     rotateSigningKey: true,
   },
 };
@@ -82,4 +101,8 @@ export const Plans: PlanData[] = [
 
 export const findPlanByPriceId = (priceId: string): Plan => {
   return Plans.find((plan) => plan.priceId === priceId)?.id ?? PLAN.FREE;
+};
+
+export const getPlanLimits = (plan: Plan): PlanLimits => {
+  return PLAN_LIMITS[plan];
 };
