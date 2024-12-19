@@ -159,6 +159,7 @@ export async function generateAccessToken(
   const customDomain = await db.domain.findFirst({
     where: {
       projectId,
+      verified: true,
     },
   });
 

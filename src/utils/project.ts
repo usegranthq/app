@@ -20,7 +20,7 @@ export const getIssuer = (
   customDomain?: Domain | null,
   forceDefaultDomain: boolean = false,
 ) => {
-  if (customDomain && planDetails.customDomain && !forceDefaultDomain) {
+  if (customDomain && planDetails.customDomain.available && !forceDefaultDomain) {
     return `https://${customDomain.domain}`;
   }
 
