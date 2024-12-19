@@ -12,6 +12,9 @@ type AuthSession = typeof auth.$Infer.Session;
 export const verifySession = cache(async (): Promise<AuthSession> => {
   const session = await auth.api.getSession({
     headers: await headers(),
+    query: {
+      disableCookieCache: true,
+    },
   });
 
   if (!session) {
