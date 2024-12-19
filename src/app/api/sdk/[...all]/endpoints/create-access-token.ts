@@ -15,6 +15,8 @@ const createToken = createEndpoint(
   {
     method: 'POST',
     body: z.object({
+      useJwtType: z.boolean().optional(),
+      audienceAsArray: z.boolean().optional(),
       forceDefaultDomain: z.boolean().optional(),
     }),
   },
@@ -61,7 +63,7 @@ const createToken = createEndpoint(
 
     const claims = {
       iss: getIssuer(project.urlId, planDetails, customDomain, forceDefaultDomain),
-      aud: client.audience,
+      aud: ctx.body.audienceAsArray ? [client.audience] : client.audience,
       sub: client.subject,
     };
 
@@ -74,8 +76,13 @@ const createToken = createEndpoint(
       },
     });
 
+    const jwtOptions = {
+      expiry: ONE_HOUR,
+      jwtType: ctx.body.useJwtType,
+    };
+
     const signingKey: JWK = jwk ? (jwk.key as unknown as JWK) : defaultJwk;
-    const token = await createJwt(claims, signingKey, { expiry: ONE_HOUR });
+    const token = await createJwt(claims, signingKey, jwtOptions);
 
     const expiresAt = new Date(Date.now() + ONE_HOUR);
 
