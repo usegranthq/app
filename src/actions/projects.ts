@@ -4,7 +4,6 @@ import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
 import { JWK } from 'jose';
 import { Prisma } from '@prisma/client';
-import { cookies } from 'next/headers';
 
 import { Client, Project } from '@/types/app.types';
 import db from '@/lib/db';
@@ -12,7 +11,6 @@ import { getApiErrorMessage, getZodErrorMessage } from '@/utils/error';
 import { createJwt, defaultJwk } from '@/utils/jwt';
 import { verifySession } from '@/data/_verifySession';
 import { generateJwk } from '@/utils/jwk';
-import constants from '@/constants';
 import { clientSchema, projectSchema } from '@/schema';
 import { createUrlId, getIssuer } from '@/utils/project';
 
@@ -75,12 +73,10 @@ export async function updateProject(projectId: string, formData: FormData): Acti
 
 export async function deleteProject(projectId: string): ActionResponse {
   await verifySession();
-  const cookieStore = await cookies();
 
   try {
     await db.project.delete({ where: { id: projectId } });
     revalidatePath('/u/projects', 'layout');
-    cookieStore.delete(constants.RECENT_PROJECT_COOKIE);
   } catch (error) {
     const errorMessage = getApiErrorMessage(error, 'Failed to delete project');
     return [errorMessage, null];

@@ -1,6 +1,5 @@
 import Link from 'next/link';
 
-import RecentProjectTracker from './_blocks/RecentProjectTracker';
 import { Button } from '@/components/ui/button';
 import * as projectsDal from '@/data/projects';
 
@@ -17,7 +16,6 @@ export default async function ProjectPage(props: ProjectPageProps) {
 
   return (
     <div>
-      <RecentProjectTracker projectId={projectId} />
       <div className="mx-auto max-w-4xl px-4 py-10">
         {clients.length > 0 && (
           <div className="flex">

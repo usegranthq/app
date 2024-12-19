@@ -45,7 +45,6 @@ const getSession = async (request: NextRequest, cookie: string): Promise<Session
     const isSessionNotFoundError = error instanceof Error && error.message === 'SESSION_NOT_FOUND';
     const isUnauthorizedError = error instanceof HTTPError && error.response.status === 401;
     if (isSessionNotFoundError || isUnauthorizedError) {
-      cookieStore.delete(constants.RECENT_PROJECT_COOKIE);
       cookieStore.delete(constants.AUTH_COOKIE);
       cookieStore.delete(constants.VERIFY_COOKIE);
       return null;
@@ -67,11 +66,6 @@ const handleProtectedRoute = async (request: NextRequest) => {
   }
 
   if (request.nextUrl.pathname === '/u') {
-    const recentProjectId = cookieStore.get(constants.RECENT_PROJECT_COOKIE)?.value;
-    if (recentProjectId) {
-      return redirectToPage(`/u/projects/${recentProjectId}`, request);
-    }
-
     return redirectToPage(ROUTES.PROJECTS, request);
   }
 

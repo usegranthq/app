@@ -93,15 +93,14 @@ export async function deleteSession(token: string): ActionResponse {
 }
 
 export async function deleteAccount(): ActionResponse {
-  const session = await verifySession();
+  await verifySession();
 
   try {
-    await db.user.delete({
-      where: {
-        id: session.user.id,
-      },
+    await auth.api.deleteUser({
+      headers: await headers(),
     });
   } catch (error) {
+    console.log(error);
     const errorMessage = getApiErrorMessage(error, 'Unable to delete account. Try again.');
     return [errorMessage, null];
   }
