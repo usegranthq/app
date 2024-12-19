@@ -3,13 +3,13 @@ import { env } from '@/env';
 export const PLAN = {
   FREE: 'free',
   PRO: 'pro',
-  Ultimate: 'ultimate',
-};
+  ULTIMATE: 'ultimate',
+} as const;
 
 export const PLAN_NAMES = {
   [PLAN.FREE]: 'Free',
   [PLAN.PRO]: 'Pro',
-  [PLAN.Ultimate]: 'Ultimate',
+  [PLAN.ULTIMATE]: 'Ultimate',
 };
 
 export const POPULAR_PLAN = PLAN.PRO;
@@ -27,7 +27,7 @@ export const PLAN_LIMITS = {
     customDomain: true,
     rotateSigningKey: true,
   },
-  [PLAN.Ultimate]: {
+  [PLAN.ULTIMATE]: {
     projects: 100,
     clientsPerProject: 999,
     customDomain: true,
@@ -66,11 +66,11 @@ export const Plans: PlanData[] = [
     priceId: env.NEXT_PUBLIC_PADDLE_STARTER_PRICE_ID,
   },
   {
-    id: PLAN.Ultimate,
-    name: PLAN_NAMES[PLAN.Ultimate],
+    id: PLAN.ULTIMATE,
+    name: PLAN_NAMES[PLAN.ULTIMATE],
     price: 49,
     features: [
-      `${PLAN_LIMITS[PLAN.Ultimate].projects} Projects`,
+      `${PLAN_LIMITS[PLAN.ULTIMATE].projects} Projects`,
       'All in starter',
       'API access to create projects',
       'Auto Rotate signing keys',
@@ -79,3 +79,7 @@ export const Plans: PlanData[] = [
     priceId: env.NEXT_PUBLIC_PADDLE_PRO_PRICE_ID,
   },
 ];
+
+export const findPlanByPriceId = (priceId: string): Plan => {
+  return Plans.find((plan) => plan.priceId === priceId)?.id ?? PLAN.FREE;
+};
