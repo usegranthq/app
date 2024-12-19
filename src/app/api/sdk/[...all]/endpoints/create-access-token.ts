@@ -9,12 +9,14 @@ import { getPlan } from '@/lib/auth';
 import { getPlanDetails } from '@/utils/billing';
 
 const ONE_HOUR = 60 * 60;
+const MAX_EXPIRY = 2 * 24 * 60 * 60; // 2 days
 
 const createToken = createEndpoint(
   '/:projects/:projectId/clients/:clientId/tokens',
   {
     method: 'POST',
     body: z.object({
+      expiresIn: z.number().positive().max(MAX_EXPIRY).default(ONE_HOUR),
       useJwtType: z.boolean().optional(),
       audienceAsArray: z.boolean().optional(),
       forceDefaultDomain: z.boolean().optional(),
@@ -77,7 +79,7 @@ const createToken = createEndpoint(
     });
 
     const jwtOptions = {
-      expiry: ONE_HOUR,
+      expiry: ctx.body.expiresIn,
       jwtType: ctx.body.useJwtType,
     };
 
