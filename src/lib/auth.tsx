@@ -53,6 +53,12 @@ export const auth = betterAuth({
       enabled: true,
     },
   },
+  session: {
+    cookieCache: {
+      enabled: true,
+      maxAge: 5 * 60, // Cache duration in seconds
+    },
+  },
   plugins: [
     magicLink({
       async sendMagicLink(data) {
