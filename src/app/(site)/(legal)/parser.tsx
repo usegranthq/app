@@ -9,8 +9,10 @@ type HeadingProps = {
   level: number;
 };
 
+type HeadingTag = 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6';
+
 function Heading({ children, level }: HeadingProps) {
-  const Tag = `h${level}` as keyof JSX.IntrinsicElements;
+  const Tag = `h${level}` as HeadingTag;
 
   switch (level) {
     case 2:
