@@ -13,15 +13,15 @@ import { getCaDetails } from '@/actions/ca';
 import { Button } from '@/components/ui/button';
 import Spinner from '@/blocks/Spinner';
 
-interface CADetailsProps {
+interface CaDetailsProps {
   project: Project;
   defaultDomain: string;
   domains: Domain[];
 }
 
-interface CADetails {
+interface CaDetails {
   domain: string;
-  name: string;
+  issuer: string;
   thumbprint: string;
 }
 
@@ -41,9 +41,9 @@ const toSelectOption = (domain: string) => ({
   value: domain,
 });
 
-export default function CADetails({ defaultDomain, domains }: CADetailsProps) {
+export default function CaDetails({ defaultDomain, domains }: CaDetailsProps) {
   const [selectedDomain, setSelectedDomain] = useState(defaultDomain);
-  const [caDetails, setCaDetails] = useState<CADetails | null>(null);
+  const [caDetails, setCaDetails] = useState<CaDetails | null>(null);
 
   const domainsOptions = useMemo(() => {
     return [
@@ -79,7 +79,7 @@ export default function CADetails({ defaultDomain, domains }: CADetailsProps) {
 
     setCaDetails({
       domain: selectedDomain,
-      name: ca.name,
+      issuer: ca.issuer,
       thumbprint: ca.thumbprint,
     });
   };
@@ -93,6 +93,7 @@ export default function CADetails({ defaultDomain, domains }: CADetailsProps) {
       <div>
         <CardContent>
           <div className="flex flex-col gap-8">
+            <p className="text-sm text-muted-foreground">Note: Self signed certificates are not supported.</p>
             <form className="flex flex-col gap-2" action={formAction}>
               <Label>Select Domain</Label>
               <div className="flex items-center gap-4">
@@ -117,13 +118,17 @@ export default function CADetails({ defaultDomain, domains }: CADetailsProps) {
               <div>
                 <div className="my-4 flex flex-col gap-6">
                   <div className="grid gap-2">
-                    <Label>Certificate Authority (CA)</Label>
-                    <Input name="ca" readOnly disabled value={caDetails.name} />
+                    <Label>Issuer</Label>
+                    <Input name="ca" readOnly disabled value={caDetails.issuer} />
                   </div>
                   <div className="grid gap-2">
-                    <Label>Top Intermediate CA Thumbprint</Label>
+                    <Label>Thumbprint</Label>
                     <Input name="fingerprint" readOnly disabled value={caDetails.thumbprint} />
                   </div>
+                  <p className="text-sm text-muted-foreground">
+                    The thumbprint of the top intermediate CA is shown. If the certificate chain is only one level deep,
+                    the thumbprint of the root certificate is shown.
+                  </p>
                 </div>
               </div>
             )}

@@ -3,7 +3,7 @@ import { notFound } from 'next/navigation';
 import { getDomains, getProject } from '@/data/projects';
 import { getDefaultDomain, getDefaultDomainHostname } from '@/app/project-helpers';
 
-import CADetails from './CaDetails';
+import CaDetails from './CaDetails';
 import DomainDetails from './DomainDetails';
 import CustomDomains from './Domains';
 
@@ -31,7 +31,7 @@ export default async function DomainPage(props: DomainPageProps) {
       <div className="flex flex-col gap-8">
         <DomainDetails project={project} defaultDomain={defaultDomain} domains={domains} />
         <CustomDomains project={project} domains={domains} />
-        <CADetails project={project} defaultDomain={defaultDomainHostname} domains={domains} />
+        <CaDetails project={project} defaultDomain={defaultDomainHostname} domains={domains} />
       </div>
     </div>
   );
