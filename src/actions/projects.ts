@@ -13,6 +13,7 @@ import { verifySession } from '@/data/_verifySession';
 import { generateJwk } from '@/utils/jwk';
 import { clientSchema, projectSchema } from '@/schema';
 import { createUrlId, getIssuer } from '@/utils/project';
+import { getPlanDetails } from '@/data/user';
 
 export async function createProject(formData: FormData): ActionResponse<Project> {
   const session = await verifySession();
@@ -137,6 +138,7 @@ export async function generateAccessToken(
   options = defaultGenerateAccessTokenOptions,
 ): ActionResponse<string> {
   await verifySession();
+  const plan = await getPlanDetails();
 
   const opts = {
     ...defaultGenerateAccessTokenOptions,
@@ -153,12 +155,19 @@ export async function generateAccessToken(
     },
   });
 
+  // get custom domains for the project
+  const customDomain = await db.domain.findFirst({
+    where: {
+      projectId,
+    },
+  });
+
   if (!client) {
     return ['Client not found', null];
   }
 
   const claims = {
-    iss: getIssuer(client.Project.urlId),
+    iss: getIssuer(client.Project.urlId, plan, customDomain),
     aud: opts.audienceAsArray ? [client.audience] : client.audience,
     sub: client.subject,
   };

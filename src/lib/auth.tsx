@@ -14,7 +14,7 @@ const database = prismaAdapter(prisma, {
   provider: 'postgresql',
 });
 
-const getPlan = async (userId: string): Promise<Plan> => {
+export const getPlan = async (userId: string): Promise<Plan> => {
   const customer = await prisma.customer.findUnique({
     where: {
       userId,

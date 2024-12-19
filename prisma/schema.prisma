@@ -96,7 +96,7 @@ model Project {
   Jwks   Jwks[]
 
   userId String
-  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  User   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@map("project")
 }
@@ -109,8 +109,8 @@ model Client {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  Project   Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
   projectId String
+  Project   Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
 
   @@map("client")
 }

@@ -14,7 +14,7 @@ export const PLAN_NAMES = {
 
 export const POPULAR_PLAN = PLAN.PRO;
 
-export type PlanLimits = {
+export type PlanDetails = {
   projects: number;
   clientsPerProject: number;
   customDomain: {
@@ -24,7 +24,7 @@ export type PlanLimits = {
   rotateSigningKey: boolean;
 };
 
-export const PLAN_LIMITS: Record<Plan, PlanLimits> = {
+export const PLAN_LIMITS: Record<Plan, PlanDetails> = {
   [PLAN.FREE]: {
     projects: 1,
     clientsPerProject: 999,
@@ -103,6 +103,6 @@ export const findPlanByPriceId = (priceId: string): Plan => {
   return Plans.find((plan) => plan.priceId === priceId)?.id ?? PLAN.FREE;
 };
 
-export const getPlanLimits = (plan: Plan): PlanLimits => {
+export const getPlanDetails = (plan: Plan): PlanDetails => {
   return PLAN_LIMITS[plan];
 };

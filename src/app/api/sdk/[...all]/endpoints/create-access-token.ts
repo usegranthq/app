@@ -1,8 +1,12 @@
+import { z } from 'zod';
+import { APIError, createEndpoint } from 'better-call';
+import { JWK } from 'jose';
+
 import db from '@/lib/db';
 import { createJwt, defaultJwk } from '@/utils/jwt';
 import { getIssuer } from '@/utils/project';
-import { APIError, createEndpoint } from 'better-call';
-import { JWK } from 'jose';
+import { getPlan } from '@/lib/auth';
+import { getPlanDetails } from '@/utils/billing';
 
 const ONE_HOUR = 60 * 60;
 
@@ -10,13 +14,25 @@ const createToken = createEndpoint(
   '/:projects/:projectId/clients/:clientId/tokens',
   {
     method: 'POST',
+    body: z.object({
+      forceDefaultDomain: z.boolean().optional(),
+    }),
   },
   async (ctx) => {
     const { projectId, clientId } = ctx.params;
+    const { forceDefaultDomain } = ctx.body;
 
     const project = await db.project.findUnique({
       where: {
         id: projectId,
+      },
+      include: {
+        Domain: {
+          where: {
+            verified: true,
+          },
+        },
+        User: true,
       },
     });
 
@@ -39,8 +55,12 @@ const createToken = createEndpoint(
       });
     }
 
+    const plan = await getPlan(project.User.id);
+    const planDetails = getPlanDetails(plan);
+    const customDomain = project.Domain[0];
+
     const claims = {
-      iss: getIssuer(project.urlId),
+      iss: getIssuer(project.urlId, planDetails, customDomain, forceDefaultDomain),
       aud: client.audience,
       sub: client.subject,
     };
