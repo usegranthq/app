@@ -45,9 +45,12 @@ export default function usePaddle(email: string) {
             return;
           }
 
-          startTransition(() => {
+          startTransition(async () => {
             progress.start();
-            void updateAfterCheckout(customerId, transactionId);
+            const errorMessage = await updateAfterCheckout(customerId, transactionId);
+            if (errorMessage) {
+              toast.error(errorMessage);
+            }
             router.refresh();
           });
         }

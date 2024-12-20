@@ -1,10 +1,10 @@
-import { getCustomer, getSubscription } from '@/data/user';
+import { getCustomer, getPlanDetails } from '@/data/user';
 
 import Billing from './Billing';
 
 export default async function BillingPage() {
   const customer = await getCustomer();
-  const subscription = await getSubscription(customer);
+  const plan = await getPlanDetails();
 
-  return <Billing customer={customer} subscription={subscription} />;
+  return <Billing customer={customer} plan={plan} />;
 }

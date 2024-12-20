@@ -1,24 +1,19 @@
 import { CheckIcon } from '@radix-ui/react-icons';
 import Link from 'next/link';
-import { useMemo } from 'react';
 
-import { PLAN, PlanName, Plans } from '@/utils/billing';
+import { PLAN, PlanDetails, Plans } from '@/utils/billing';
 import { Card, CardHeader, CardTitle, CardContent, CardFooter } from '@/components/ui/card';
-import { Customer, Subscription } from '@/types/app.types';
+import { Customer } from '@/types/app.types';
 
 import PlanButton from './PlanButton';
 
 interface BillingProps {
   customer: Customer | null;
-  subscription: Subscription | null;
+  plan: PlanDetails;
 }
 
-export default function Billing({ customer, subscription }: BillingProps) {
-  const currentPlan = useMemo((): PlanName => {
-    if (!subscription) return PLAN.FREE;
-    const plan = Plans.find((plan) => plan.priceId === subscription.priceId);
-    return plan?.id ?? PLAN.FREE;
-  }, [subscription]);
+export default function Billing({ customer, plan }: BillingProps) {
+  const currentPlan = plan.id;
 
   return (
     <div>
