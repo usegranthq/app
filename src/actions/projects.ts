@@ -27,6 +27,21 @@ export async function createProject(formData: FormData): ActionResponse<Project>
     return [getZodErrorMessage(validation.error), null];
   }
 
+  // check if the user has reached the limit for projects
+  const projectsCount = await db.project.count({
+    where: {
+      userId: session.user.id,
+    },
+  });
+
+  const plan = await getPlanDetails();
+  if (projectsCount >= plan.projects) {
+    return [
+      'You have reached the limit for projects. Upgrade your plan or contact support to increase the limit.',
+      null,
+    ];
+  }
+
   try {
     const urlId = createUrlId(validation.data.name);
 
@@ -96,6 +111,20 @@ export async function createClient(projectId: string, formData: FormData): Actio
 
   if (!validation.success) {
     return [getZodErrorMessage(validation.error), null];
+  }
+
+  const clientsCount = await db.client.count({
+    where: {
+      projectId,
+    },
+  });
+
+  const plan = await getPlanDetails();
+  if (clientsCount >= plan.clients) {
+    return [
+      'You have reached the limit for clients per project. Upgrade your plan or contact support to increase the limit.',
+      null,
+    ];
   }
 
   try {
