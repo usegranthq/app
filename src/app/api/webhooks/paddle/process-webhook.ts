@@ -8,10 +8,70 @@ import {
 } from '@paddle/paddle-node-sdk';
 
 import db from '@/lib/db';
+import { getCustomer } from '@/lib/paddle/subscription';
 
 interface CustomerData {
   userId: string;
 }
+
+type CustomDataEvents =
+  | CustomerCreatedEvent
+  | CustomerUpdatedEvent
+  | SubscriptionCreatedEvent
+  | SubscriptionUpdatedEvent;
+
+const createOrUpdateCustomer = async (customerId: string, userId: string) => {
+  await db.customer.upsert({
+    where: {
+      userId: userId,
+    },
+    update: {},
+    create: {
+      paddleCustomerId: customerId,
+      userId: userId,
+    },
+  });
+};
+
+const getCustomData = (eventData: CustomDataEvents): CustomerData | undefined => {
+  const customData = eventData.data.customData as CustomerData | undefined;
+
+  if (!customData || !customData.userId) {
+    return undefined;
+  }
+
+  return customData;
+};
+
+const getCustomerId = async (
+  eventData: SubscriptionCreatedEvent | SubscriptionUpdatedEvent,
+): Promise<string | undefined> => {
+  const customer = await db.customer.findUnique({
+    where: {
+      paddleCustomerId: eventData.data.customerId,
+    },
+  });
+
+  if (customer) {
+    return customer.id;
+  }
+
+  const customerData = getCustomData(eventData);
+  if (!customerData) {
+    return;
+  }
+
+  try {
+    const paddleCustomer = await getCustomer(eventData.data.customerId);
+    // update customer since it doesn't exist in our database
+    await createOrUpdateCustomer(paddleCustomer.id, customerData.userId);
+    return paddleCustomer.id;
+  } catch (e) {
+    console.error('Failed to get customer', e);
+    console.error('Customer not found', eventData);
+    return undefined;
+  }
+};
 
 export class ProcessWebhook {
   async processEvent(eventData: EventEntity) {
@@ -28,35 +88,21 @@ export class ProcessWebhook {
   }
 
   private async updateCustomerData(eventData: CustomerCreatedEvent | CustomerUpdatedEvent) {
-    const customerData = eventData.data.customData as CustomerData | undefined;
-    if (!customerData || !customerData.userId) {
+    const customerData = getCustomData(eventData);
+    if (!customerData) {
       return;
     }
 
     try {
-      await db.customer.upsert({
-        where: {
-          id: eventData.data.id,
-        },
-        update: {},
-        create: {
-          paddleCustomerId: eventData.data.id,
-          userId: customerData.userId,
-        },
-      });
+      await createOrUpdateCustomer(eventData.data.id, customerData.userId);
     } catch (e) {
-      console.error(e);
+      console.error('Failed to update customer data', e);
     }
   }
 
   private async updateSubscriptionData(eventData: SubscriptionCreatedEvent | SubscriptionUpdatedEvent) {
-    const customer = await db.customer.findUnique({
-      where: {
-        paddleCustomerId: eventData.data.customerId,
-      },
-    });
-
-    if (!customer) {
+    const customerId = await getCustomerId(eventData);
+    if (!customerId) {
       console.error('Customer not found', eventData);
       return;
     }
@@ -66,7 +112,7 @@ export class ProcessWebhook {
       priceId: eventData.data.items[0].price?.id ?? '',
       productId: eventData.data.items[0].price?.productId ?? '',
       scheduledChange: eventData.data.scheduledChange?.effectiveAt ?? null,
-      customerId: customer.id,
+      customerId: customerId,
     };
 
     try {

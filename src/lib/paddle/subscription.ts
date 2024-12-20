@@ -1,4 +1,4 @@
-import { Subscription, Transaction } from '@paddle/paddle-node-sdk';
+import { Customer, Subscription, Transaction } from '@paddle/paddle-node-sdk';
 
 import { getPaddleInstance } from './get-instance';
 
@@ -30,4 +30,9 @@ export const getSubscriptionByTransactionId = async (transactionId: string): Pro
   }
 
   return getSubscription(transaction.subscriptionId);
+};
+
+export const getCustomer = async (customerId: string): Promise<Customer> => {
+  const paddle = getPaddleInstance();
+  return paddle.customers.get(customerId);
 };
