@@ -230,6 +230,11 @@ export async function generateAccessToken(
 export async function requestSigningKey(projectId: string): ActionResponse<string> {
   await verifySession();
 
+  const plan = await getPlanDetails();
+  if (!plan.rotateSigningKey) {
+    return ['This feature is not available in your current plan. Please upgrade to access this feature.', null];
+  }
+
   const project = await db.project.findUnique({
     where: {
       id: projectId,
@@ -303,6 +308,11 @@ export async function removeKey(projectId: string, id: string): ActionResponse {
 
 export async function toggleRotateJwks(projectId: string, rotateJwks: boolean): ActionResponse {
   await verifySession();
+
+  const plan = await getPlanDetails();
+  if (!plan.rotateSigningKey) {
+    return ['This feature is not available in your current plan. Please upgrade to access this feature.', null];
+  }
 
   try {
     await db.project.update({ where: { id: projectId }, data: { rotateJwks } });

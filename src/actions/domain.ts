@@ -35,17 +35,16 @@ const isDomainVerified = (domain: string, domainConfig: vercel.DomainConfigRespo
 export async function addDomain(projectId: string, formData: FormData): ActionResponse {
   const session = await verifySession();
 
+  // allow based on plan
+  const planLimits = findPlanByPlanName(session.plan);
+  if (!planLimits.customDomain.available) {
+    return ['Custom domains are not available on your current plan. Please upgrade.', null];
+  }
+
   const validation = domainSchema.safeParse(formData.get('domain'));
 
   if (!validation.success) {
     return [getZodErrorMessage(validation.error), null];
-  }
-
-  // allow based on plan
-  const planLimits = findPlanByPlanName(session.plan);
-
-  if (!planLimits.customDomain.available) {
-    return ['Custom domains are not available on your current plan. Please upgrade.', null];
   }
 
   // get existing domains, don't allow more than 1

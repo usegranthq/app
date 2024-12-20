@@ -34,7 +34,7 @@ export default async function SigningKeys({ project, jwksUrl, canRotateSigningKe
           </Link>
         </div>
 
-        <FeatureUnavailable available={canRotateSigningKey} name="Rotate signing key" inline>
+        <FeatureUnavailable available={canRotateSigningKey} name="Auto rotate and request custom signing key" inline>
           <KeysList project={project} signingKeys={signingKeys} />
         </FeatureUnavailable>
       </CardContent>

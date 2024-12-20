@@ -19,6 +19,11 @@ export type PlanDetails = {
   id: PlanName;
   projects: number;
   clients: number;
+  tenants: {
+    available: boolean;
+    limit: number;
+    providers: number; // providers per tenant
+  };
   customDomain: {
     available: boolean;
     limit: number;
@@ -31,6 +36,11 @@ export const PLAN_LIMITS: Record<PlanName, PlanDetails> = {
     id: PLAN.FREE,
     projects: 1,
     clients: 999,
+    tenants: {
+      available: false,
+      limit: 0,
+      providers: 0,
+    },
     customDomain: {
       available: false,
       limit: 0,
@@ -41,6 +51,11 @@ export const PLAN_LIMITS: Record<PlanName, PlanDetails> = {
     id: PLAN.PRO,
     projects: 10,
     clients: 9999,
+    tenants: {
+      available: true,
+      limit: 10,
+      providers: 9999,
+    },
     customDomain: {
       available: true,
       limit: 1,
@@ -51,6 +66,11 @@ export const PLAN_LIMITS: Record<PlanName, PlanDetails> = {
     id: PLAN.ULTIMATE,
     projects: 100,
     clients: 9999,
+    tenants: {
+      available: true,
+      limit: 100,
+      providers: 9999,
+    },
     customDomain: {
       available: true,
       limit: 1,
