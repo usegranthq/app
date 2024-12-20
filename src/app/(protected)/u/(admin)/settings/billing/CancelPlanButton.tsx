@@ -42,7 +42,7 @@ export default function CancelPlanButton() {
   return (
     <AlertDialog>
       <AlertDialogTrigger asChild>
-        <Button className="min-w-32" disabled={isPending}>
+        <Button className="min-w-32 opacity-70 hover:opacity-100" disabled={isPending}>
           Downgrade
         </Button>
       </AlertDialogTrigger>
