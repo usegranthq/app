@@ -4,7 +4,7 @@ import { Session, User, Customer, Subscription } from '@/types/app.types';
 import db from '@/lib/db';
 
 import { verifySession } from './_verifySession';
-import { getPlanDetails as getPlanLimits, PlanDetails } from '@/utils/billing';
+import { findPlanByPlanName, PlanDetails } from '@/utils/billing';
 
 export const getUser = async (): Promise<User> => {
   const session = await verifySession();
@@ -47,5 +47,5 @@ export const getSubscription = async (customer: Customer | null): Promise<Subscr
 
 export const getPlanDetails = async (): Promise<PlanDetails> => {
   const session = await verifySession();
-  return getPlanLimits(session.plan);
+  return findPlanByPlanName(session.plan);
 };

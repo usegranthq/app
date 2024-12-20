@@ -4,7 +4,7 @@ import { CheckoutCustomer, Theme } from '@paddle/paddle-js';
 import { useTheme } from 'next-themes';
 import { toast } from 'sonner';
 
-import { PLAN, Plan, PlanData, Plans } from '@/utils/billing';
+import { PLAN, PlanName, PlanData, Plans } from '@/utils/billing';
 import { Customer } from '@/types/app.types';
 import { useUser } from '@/contexts/User';
 import { Button } from '@/components/ui/button';
@@ -14,7 +14,7 @@ import CancelPlanButton from './CancelPlanButton';
 
 interface PlanButtonProps {
   plan: PlanData;
-  currentPlan: Plan;
+  currentPlan: PlanName;
   customer: Customer | null;
 }
 

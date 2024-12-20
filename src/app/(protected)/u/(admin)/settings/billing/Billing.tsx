@@ -2,7 +2,7 @@ import { CheckIcon } from '@radix-ui/react-icons';
 import Link from 'next/link';
 import { useMemo } from 'react';
 
-import { PLAN, Plan, Plans } from '@/utils/billing';
+import { PLAN, PlanName, Plans } from '@/utils/billing';
 import { Card, CardHeader, CardTitle, CardContent, CardFooter } from '@/components/ui/card';
 import { Customer, Subscription } from '@/types/app.types';
 
@@ -14,7 +14,7 @@ interface BillingProps {
 }
 
 export default function Billing({ customer, subscription }: BillingProps) {
-  const currentPlan = useMemo((): Plan => {
+  const currentPlan = useMemo((): PlanName => {
     if (!subscription) return PLAN.FREE;
     const plan = Plans.find((plan) => plan.priceId === subscription.priceId);
     return plan?.id ?? PLAN.FREE;

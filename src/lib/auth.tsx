@@ -5,7 +5,7 @@ import { nextCookies } from 'better-auth/next-js';
 
 import { env } from '@/env';
 import LoginEmail from '@/templates/LoginEmail';
-import { findPlanByPriceId, Plan, PLAN } from '@/utils/billing';
+import { findPlanByPriceId, findPlanByPlanName, PLAN, PlanDetails } from '@/utils/billing';
 
 import { prisma } from './db';
 import { sendEmail } from './email';
@@ -14,7 +14,7 @@ const database = prismaAdapter(prisma, {
   provider: 'postgresql',
 });
 
-export const getPlan = async (userId: string): Promise<Plan> => {
+export const getPlanByUserID = async (userId: string): Promise<PlanDetails> => {
   const customer = await prisma.customer.findUnique({
     where: {
       userId,
@@ -22,7 +22,7 @@ export const getPlan = async (userId: string): Promise<Plan> => {
   });
 
   if (!customer) {
-    return PLAN.FREE;
+    return findPlanByPlanName(PLAN.FREE);
   }
 
   const subscription = await prisma.subscription.findFirst({
@@ -35,7 +35,7 @@ export const getPlan = async (userId: string): Promise<Plan> => {
   });
 
   if (!subscription || subscription.subscriptionStatus !== 'active') {
-    return PLAN.FREE;
+    return findPlanByPlanName(PLAN.FREE);
   }
 
   return findPlanByPriceId(subscription.priceId);
@@ -70,12 +70,12 @@ export const auth = betterAuth({
       },
     }),
     customSession(async ({ user, session }) => {
-      const plan = await getPlan(user.id);
+      const plan = await getPlanByUserID(user.id);
 
       return {
         session,
         user,
-        plan,
+        plan: plan.id,
       };
     }),
     nextCookies(), // must be last

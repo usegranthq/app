@@ -1,9 +1,10 @@
 import { notFound } from 'next/navigation';
 
 import { getProject } from '@/data/projects';
+import { getDefaultDomain } from '@/app/project-helpers';
+import { getPlanDetails } from '@/data/user';
 
 import SigningKeys from './SigningKeys';
-import { getDefaultDomain } from '@/app/project-helpers';
 
 interface AdvancedPageProps {
   params: Promise<{
@@ -19,11 +20,12 @@ export default async function AdvancedPage({ params }: AdvancedPageProps) {
     return notFound();
   }
 
-  const domain = getDefaultDomain(project.urlId, '/.well-known/jwks');
+  const plan = await getPlanDetails();
+  const jwksUrl = getDefaultDomain(project.urlId, '/.well-known/jwks');
 
   return (
     <div className="flex flex-col gap-8">
-      <SigningKeys project={project} domain={domain} />
+      <SigningKeys project={project} jwksUrl={jwksUrl} canRotateSigningKey={plan.rotateSigningKey} />
     </div>
   );
 }

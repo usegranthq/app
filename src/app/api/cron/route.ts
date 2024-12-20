@@ -6,6 +6,7 @@ import { env } from '@/env';
 import { validateBearerToken } from '@/utils/rest';
 import db from '@/lib/db';
 import { generateJwk } from '@/utils/jwk';
+import { getPlanByUserID } from '@/lib/auth';
 
 const processCron = async () => {
   const now = new Date();
@@ -34,6 +35,9 @@ const processCron = async () => {
       where: {
         rotateJwks: true,
       },
+      include: {
+        User: true,
+      },
     });
 
     // get all jwks for the projects, and keep the last 1 key and delete the rest and add the new one
@@ -51,8 +55,13 @@ const processCron = async () => {
           },
         });
 
+        // get the plan of the user
+        const plan = await getPlanByUserID(project.User.id);
+
+        // if there is only 1 key, we don't need to delete anything
+        // but delete if the plan doesn't support rotating signing keys
         const excludeQuery: Prisma.JwksWhereInput = {};
-        if (jwks.length > 1) {
+        if (jwks.length > 1 && !plan.rotateSigningKey) {
           excludeQuery.id = jwks[0].id;
         }
 

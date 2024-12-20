@@ -13,8 +13,10 @@ export const PLAN_NAMES = {
 };
 
 export const POPULAR_PLAN = PLAN.PRO;
+export type PlanName = (typeof PLAN)[keyof typeof PLAN];
 
 export type PlanDetails = {
+  id: PlanName;
   projects: number;
   clientsPerProject: number;
   customDomain: {
@@ -24,8 +26,9 @@ export type PlanDetails = {
   rotateSigningKey: boolean;
 };
 
-export const PLAN_LIMITS: Record<Plan, PlanDetails> = {
+export const PLAN_LIMITS: Record<PlanName, PlanDetails> = {
   [PLAN.FREE]: {
+    id: PLAN.FREE,
     projects: 1,
     clientsPerProject: 999,
     customDomain: {
@@ -35,8 +38,9 @@ export const PLAN_LIMITS: Record<Plan, PlanDetails> = {
     rotateSigningKey: false,
   },
   [PLAN.PRO]: {
+    id: PLAN.PRO,
     projects: 10,
-    clientsPerProject: 999,
+    clientsPerProject: 9999,
     customDomain: {
       available: true,
       limit: 1,
@@ -44,8 +48,9 @@ export const PLAN_LIMITS: Record<Plan, PlanDetails> = {
     rotateSigningKey: true,
   },
   [PLAN.ULTIMATE]: {
+    id: PLAN.ULTIMATE,
     projects: 100,
-    clientsPerProject: 999,
+    clientsPerProject: 9999,
     customDomain: {
       available: true,
       limit: 1,
@@ -54,10 +59,8 @@ export const PLAN_LIMITS: Record<Plan, PlanDetails> = {
   },
 };
 
-export type Plan = (typeof PLAN)[keyof typeof PLAN];
-
 export type PlanData = {
-  id: Plan;
+  id: PlanName;
   name: string;
   price: number;
   features: string[];
@@ -99,10 +102,11 @@ export const Plans: PlanData[] = [
   },
 ];
 
-export const findPlanByPriceId = (priceId: string): Plan => {
-  return Plans.find((plan) => plan.priceId === priceId)?.id ?? PLAN.FREE;
+export const findPlanByPriceId = (priceId: string): PlanDetails => {
+  const planName = Plans.find((plan) => plan.priceId === priceId)?.id ?? PLAN.FREE;
+  return findPlanByPlanName(planName);
 };
 
-export const getPlanDetails = (plan: Plan): PlanDetails => {
-  return PLAN_LIMITS[plan];
+export const findPlanByPlanName = (planName: PlanName): PlanDetails => {
+  return PLAN_LIMITS[planName];
 };

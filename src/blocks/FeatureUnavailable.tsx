@@ -4,10 +4,12 @@ import Link from 'next/link';
 
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { cn } from '@/lib/utils';
 
 interface FeatureUnavailableProps extends PropsWithChildren {
   available: boolean;
   name: string;
+  inline?: boolean;
 }
 
 export function FeatureUnavailable(props: FeatureUnavailableProps) {
@@ -16,11 +18,11 @@ export function FeatureUnavailable(props: FeatureUnavailableProps) {
   }
 
   return (
-    <Card className="w-full max-w-md rounded-md">
-      <CardHeader>
+    <Card className={cn('w-full max-w-md rounded-md', { 'max-w-full border-0 p-0': props.inline })}>
+      <CardHeader className={cn({ 'px-0': props.inline })}>
         <CardTitle>Upgrade to access this feature</CardTitle>
       </CardHeader>
-      <CardContent className="space-y-4">
+      <CardContent className={cn('space-y-4', { 'p-0': props.inline })}>
         <p>
           The <span className="font-semibold">{props.name}</span> feature is not available in your current plan.
         </p>

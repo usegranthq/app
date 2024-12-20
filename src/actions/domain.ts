@@ -7,7 +7,7 @@ import * as vercel from '@/lib/vercel';
 import { verifySession } from '@/data/_verifySession';
 import { getApiErrorMessage, getZodErrorMessage } from '@/utils/error';
 import db from '@/lib/db';
-import { getPlanDetails } from '../utils/billing';
+import { findPlanByPlanName } from '../utils/billing';
 
 const domainSchema = z
   .string({
@@ -42,7 +42,7 @@ export async function addDomain(projectId: string, formData: FormData): ActionRe
   }
 
   // allow based on plan
-  const planLimits = getPlanDetails(session.plan);
+  const planLimits = findPlanByPlanName(session.plan);
 
   if (!planLimits.customDomain.available) {
     return ['Custom domains are not available on your current plan. Please upgrade.', null];

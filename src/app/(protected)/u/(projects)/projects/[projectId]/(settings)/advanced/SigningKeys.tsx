@@ -5,13 +5,15 @@ import { Project } from '@/types';
 
 import KeysList from './KeysList';
 import { getSigningKeys } from '@/data/projects';
+import { FeatureUnavailable } from '@/blocks/FeatureUnavailable';
 
 interface SigningKeysProps {
   project: Project;
-  domain: string;
+  jwksUrl: string;
+  canRotateSigningKey: boolean;
 }
 
-export default async function SigningKeys({ project, domain }: SigningKeysProps) {
+export default async function SigningKeys({ project, jwksUrl, canRotateSigningKey }: SigningKeysProps) {
   const signingKeys = await getSigningKeys(project.id);
 
   return (
@@ -27,12 +29,14 @@ export default async function SigningKeys({ project, domain }: SigningKeysProps)
       <CardContent>
         <div className="mb-8">
           Your JWKS endpoint:{' '}
-          <Link href={domain} target="_blank" className="text-sm underline underline-offset-2">
-            {domain}
+          <Link href={jwksUrl} target="_blank" className="text-sm underline underline-offset-2">
+            {jwksUrl}
           </Link>
         </div>
 
-        <KeysList project={project} signingKeys={signingKeys} />
+        <FeatureUnavailable available={canRotateSigningKey} name="Rotate signing key" inline>
+          <KeysList project={project} signingKeys={signingKeys} />
+        </FeatureUnavailable>
       </CardContent>
     </Card>
   );
