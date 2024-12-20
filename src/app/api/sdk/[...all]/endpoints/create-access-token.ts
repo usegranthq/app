@@ -5,7 +5,7 @@ import { JWK } from 'jose';
 import db from '@/lib/db';
 import { createJwt, defaultJwk } from '@/utils/jwt';
 import { getIssuer } from '@/utils/project';
-import { getPlanByUserID } from '@/lib/auth';
+import { getPlanByUserId } from '@/lib/auth';
 import { findPlanByPlanName } from '@/utils/billing';
 
 const ONE_HOUR = 60 * 60;
@@ -59,7 +59,7 @@ const createToken = createEndpoint(
       });
     }
 
-    const plan = await getPlanByUserID(project.User.id);
+    const plan = await getPlanByUserId(project.User.id);
     const planDetails = findPlanByPlanName(plan);
     const customDomain = project.Domain[0];
 

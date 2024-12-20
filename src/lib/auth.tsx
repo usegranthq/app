@@ -14,7 +14,7 @@ const database = prismaAdapter(prisma, {
   provider: 'postgresql',
 });
 
-export const getPlanByUserID = async (userId: string): Promise<PlanDetails> => {
+export const getPlanByUserId = async (userId: string): Promise<PlanDetails> => {
   const customer = await prisma.customer.findUnique({
     where: {
       userId,
@@ -70,7 +70,7 @@ export const auth = betterAuth({
       },
     }),
     customSession(async ({ user, session }) => {
-      const plan = await getPlanByUserID(user.id);
+      const plan = await getPlanByUserId(user.id);
 
       return {
         session,

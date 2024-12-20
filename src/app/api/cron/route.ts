@@ -6,7 +6,7 @@ import { env } from '@/env';
 import { validateBearerToken } from '@/utils/rest';
 import db from '@/lib/db';
 import { generateJwk } from '@/utils/jwk';
-import { getPlanByUserID } from '@/lib/auth';
+import { getPlanByUserId } from '@/lib/auth';
 
 const processCron = async () => {
   const now = new Date();
@@ -56,7 +56,7 @@ const processCron = async () => {
         });
 
         // get the plan of the user
-        const plan = await getPlanByUserID(project.User.id);
+        const plan = await getPlanByUserId(project.User.id);
 
         // if there is only 1 key, we don't need to delete anything
         // but delete if the plan doesn't support rotating signing keys

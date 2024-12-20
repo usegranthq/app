@@ -6,6 +6,7 @@ import { projectSchema } from '@/schema';
 import { createAuthEndpoint } from './utils/call';
 import { createUrlId } from '@/utils/project';
 import { getApiErrorMessage } from '@/utils/error';
+import { getPlanByUserId } from '@/lib/auth';
 
 const createProject = createAuthEndpoint(
   'v1/projects',
@@ -15,6 +16,19 @@ const createProject = createAuthEndpoint(
   },
   async (ctx) => {
     const { name, description } = ctx.body;
+
+    const plan = await getPlanByUserId(ctx.context.userId);
+    const projectsCount = await db.project.count({
+      where: {
+        userId: ctx.context.userId,
+      },
+    });
+
+    if (projectsCount >= plan.projects) {
+      return new APIError('FORBIDDEN', {
+        message: 'You have reached the limit for projects. Upgrade your plan or contact support to increase the limit.',
+      });
+    }
 
     try {
       const project = await db.project.create({
