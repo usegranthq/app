@@ -2,7 +2,6 @@
 
 import { startTransition, useEffect, useState } from 'react';
 import { CheckoutEventNames, initializePaddle, InitializePaddleOptions, Paddle } from '@paddle/paddle-js';
-import { useRouter } from 'next/navigation';
 import { toast } from 'sonner';
 
 import { env } from '@/env';
@@ -11,7 +10,6 @@ import { useProgressBar } from '@/blocks/NavProgress';
 
 export default function usePaddle(email: string) {
   const [paddle, setPaddle] = useState<Paddle>();
-  const router = useRouter();
   const progress = useProgressBar();
 
   useEffect(() => {
@@ -22,6 +20,7 @@ export default function usePaddle(email: string) {
       token: env.NEXT_PUBLIC_PADDLE_CLIENT_TOKEN,
       checkout: {
         settings: {
+          successUrl: '/u/settings/billing/subscription',
           allowLogout: false,
           variant: 'one-page',
           // displayMode: 'inline',
@@ -40,6 +39,7 @@ export default function usePaddle(email: string) {
           const customerId = data.customer.id;
           const transactionId = data.transaction_id;
 
+          console.log('CHECKOUT_COMPLETED', customerId, transactionId);
           if (!customerId || !transactionId) {
             toast.error('Failed to update subscription. Please reload the page and try again.');
             return;
@@ -47,11 +47,7 @@ export default function usePaddle(email: string) {
 
           startTransition(async () => {
             progress.start();
-            const [errorMessage] = await updateAfterCheckout(customerId, transactionId);
-            if (errorMessage) {
-              toast.error(errorMessage);
-            }
-            router.refresh();
+            void updateAfterCheckout(customerId, transactionId);
           });
         }
       },
