@@ -7,6 +7,8 @@ import { getPlanByUserId } from '@/lib/auth';
 import { createJwt, defaultJwk } from '@/utils/jwt';
 import { getIssuer } from '@/utils/project';
 
+import ERRORS from './utils/errors';
+
 const ONE_HOUR = 60 * 60;
 const MAX_EXPIRY = 2 * 24 * 60 * 60; // 2 days
 
@@ -40,9 +42,7 @@ const createToken = createEndpoint(
     });
 
     if (!project) {
-      throw new APIError('NOT_FOUND', {
-        message: 'Project not found',
-      });
+      throw new APIError('NOT_FOUND', ERRORS.PROJECT_NOT_FOUND);
     }
 
     const client = await db.client.findUnique({
@@ -53,9 +53,7 @@ const createToken = createEndpoint(
     });
 
     if (!client) {
-      throw new APIError('NOT_FOUND', {
-        message: 'Client not found',
-      });
+      throw new APIError('NOT_FOUND', ERRORS.CLIENT_NOT_FOUND);
     }
 
     const plan = await getPlanByUserId(project.User.id);

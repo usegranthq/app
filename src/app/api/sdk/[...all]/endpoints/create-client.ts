@@ -7,6 +7,8 @@ import { createAuthEndpoint } from './utils/call';
 import { getApiErrorMessage } from '@/utils/error';
 import { getPlanByUserId } from '@/lib/auth';
 
+import ERRORS from './utils/errors';
+
 const createClient = createAuthEndpoint(
   'v1/projects/:id/clients',
   {
@@ -24,9 +26,7 @@ const createClient = createAuthEndpoint(
     });
 
     if (clientsCount >= plan.clients) {
-      throw new APIError('FORBIDDEN', {
-        message: 'You have reached the limit for clients. Upgrade your plan or contact support to increase the limit.',
-      });
+      throw new APIError('FORBIDDEN', ERRORS.MAX_CLIENTS_LIMIT_REACHED);
     }
 
     try {

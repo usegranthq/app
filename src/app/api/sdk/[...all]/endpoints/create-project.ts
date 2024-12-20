@@ -7,6 +7,7 @@ import { createAuthEndpoint } from './utils/call';
 import { createUrlId } from '@/utils/project';
 import { getApiErrorMessage } from '@/utils/error';
 import { getPlanByUserId } from '@/lib/auth';
+import ERRORS from './utils/errors';
 
 const createProject = createAuthEndpoint(
   'v1/projects',
@@ -25,9 +26,7 @@ const createProject = createAuthEndpoint(
     });
 
     if (projectsCount >= plan.projects) {
-      throw new APIError('FORBIDDEN', {
-        message: 'You have reached the limit for projects. Upgrade your plan or contact support to increase the limit.',
-      });
+      throw new APIError('FORBIDDEN', ERRORS.MAX_PROJECTS_LIMIT_REACHED);
     }
 
     try {

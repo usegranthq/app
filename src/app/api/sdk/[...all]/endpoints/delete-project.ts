@@ -5,6 +5,8 @@ import db from '@/lib/db';
 import { createAuthEndpoint } from './utils/call';
 import { getApiErrorMessage } from '@/utils/error';
 
+import ERRORS from './utils/errors';
+
 const deleteProject = createAuthEndpoint(
   'v1/projects/:id',
   {
@@ -21,9 +23,7 @@ const deleteProject = createAuthEndpoint(
     });
 
     if (!project) {
-      throw new APIError('NOT_FOUND', {
-        message: 'Project not found',
-      });
+      throw new APIError('NOT_FOUND', ERRORS.PROJECT_NOT_FOUND);
     }
 
     try {

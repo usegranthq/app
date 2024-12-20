@@ -3,6 +3,7 @@ import { APIError } from 'better-call';
 import db from '@/lib/db';
 
 import { createAuthEndpoint } from './utils/call';
+import ERRORS from './utils/errors';
 
 const getClient = createAuthEndpoint(
   'v1/projects/:projectId/clients/:clientId',
@@ -25,9 +26,7 @@ const getClient = createAuthEndpoint(
     });
 
     if (!client) {
-      throw new APIError('NOT_FOUND', {
-        message: 'Client not found',
-      });
+      throw new APIError('NOT_FOUND', ERRORS.CLIENT_NOT_FOUND);
     }
 
     return client;

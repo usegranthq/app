@@ -5,6 +5,8 @@ import db from '@/lib/db';
 import { createAuthEndpoint } from './utils/call';
 import { getApiErrorMessage } from '@/utils/error';
 
+import ERRORS from './utils/errors';
+
 const deleteClient = createAuthEndpoint(
   'v1/projects/:projectId/clients/:clientId',
   {
@@ -21,9 +23,7 @@ const deleteClient = createAuthEndpoint(
     });
 
     if (!client) {
-      throw new APIError('NOT_FOUND', {
-        message: 'Client not found',
-      });
+      throw new APIError('NOT_FOUND', ERRORS.CLIENT_NOT_FOUND);
     }
 
     try {

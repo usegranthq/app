@@ -3,6 +3,7 @@ import { APIError } from 'better-call';
 import db from '@/lib/db';
 
 import { createAuthEndpoint } from './utils/call';
+import ERRORS from './utils/errors';
 
 const getProject = createAuthEndpoint(
   'v1/projects/:id',
@@ -26,9 +27,7 @@ const getProject = createAuthEndpoint(
     });
 
     if (!project) {
-      throw new APIError('NOT_FOUND', {
-        message: 'Project not found',
-      });
+      throw new APIError('NOT_FOUND', ERRORS.PROJECT_NOT_FOUND);
     }
 
     return project;
