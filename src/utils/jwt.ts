@@ -3,7 +3,8 @@ import 'server-only';
 import { CompactJWSHeaderParameters, CompactSign, JWK, JWTPayload } from 'jose';
 import { nanoid } from 'nanoid';
 
-const ONE_HOUR = 3600;
+export const ONE_HOUR = 3600;
+export const MAX_EXPIRY = 2 * 24 * 60 * 60; // 2 days
 
 export const defaultJwk = {
   kty: 'RSA',

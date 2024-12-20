@@ -4,13 +4,10 @@ import { JWK } from 'jose';
 
 import db from '@/lib/db';
 import { getPlanByUserId } from '@/lib/auth';
-import { createJwt, defaultJwk } from '@/utils/jwt';
+import { createJwt, defaultJwk, MAX_EXPIRY, ONE_HOUR } from '@/utils/jwt';
 import { getIssuer } from '@/utils/project';
 
 import ERRORS from './utils/errors';
-
-const ONE_HOUR = 60 * 60;
-const MAX_EXPIRY = 2 * 24 * 60 * 60; // 2 days
 
 const createToken = createEndpoint(
   '/:projects/:projectId/clients/:clientId/tokens',

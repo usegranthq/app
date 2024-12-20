@@ -8,7 +8,7 @@ import ERRORS from './utils/errors';
 const getProject = createAuthEndpoint(
   'v1/projects/:id',
   {
-    method: 'DELETE',
+    method: 'GET',
   },
   async (ctx) => {
     const { id } = ctx.params;
