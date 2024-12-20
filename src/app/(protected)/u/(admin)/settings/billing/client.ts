@@ -47,7 +47,7 @@ export default function usePaddle(email: string) {
 
           startTransition(async () => {
             progress.start();
-            const errorMessage = await updateAfterCheckout(customerId, transactionId);
+            const [errorMessage] = await updateAfterCheckout(customerId, transactionId);
             if (errorMessage) {
               toast.error(errorMessage);
             }
