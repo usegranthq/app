@@ -30,19 +30,35 @@ export const getCustomer = async (): Promise<Customer | null> => {
   const session = await verifySession();
   return db.customer.findUnique({
     where: { userId: session.user.id },
+    include: {
+      Subscription: {
+        where: {
+          subscriptionStatus: 'active',
+        },
+      },
+    },
   });
 };
 
-export const getSubscription = async (customer: Customer | null): Promise<Subscription | null> => {
-  await verifySession();
-  if (!customer) return null;
+export const getSubscription = async (): Promise<Subscription | null> => {
+  const session = await verifySession();
 
-  return db.subscription.findFirst({
-    where: {
-      customerId: customer.id,
-      subscriptionStatus: 'active',
+  const customer = await db.customer.findUnique({
+    where: { userId: session.user.id },
+    include: {
+      Subscription: {
+        where: {
+          subscriptionStatus: 'active',
+        },
+        orderBy: {
+          createdAt: 'desc',
+        },
+      },
     },
   });
+  if (!customer) return null;
+
+  return customer.Subscription[0] ?? null;
 };
 
 export const getPlanDetails = async (): Promise<PlanDetails> => {

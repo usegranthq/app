@@ -180,21 +180,23 @@ export async function generateAccessToken(
       projectId,
     },
     include: {
-      Project: true,
-    },
-  });
-
-  // get custom domains for the project
-  const customDomain = await db.domain.findFirst({
-    where: {
-      projectId,
-      verified: true,
+      Project: {
+        include: {
+          Domain: {
+            where: {
+              verified: true,
+            },
+          },
+        },
+      },
     },
   });
 
   if (!client) {
     return ['Client not found', null];
   }
+
+  const customDomain = client.Project.Domain[0];
 
   const claims = {
     iss: getIssuer(client.Project.urlId, plan, customDomain),

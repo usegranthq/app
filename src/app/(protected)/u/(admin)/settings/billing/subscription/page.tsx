@@ -1,12 +1,11 @@
 import { setTimeout } from 'node:timers/promises';
 import Link from 'next/link';
 
-import { getCustomer, getSubscription } from '@/data/user';
+import { getSubscription } from '@/data/user';
 import { Button } from '@/components/ui/button';
 
 const getSubscriptionWithRetries = async (attempts: number = 1) => {
-  const customer = await getCustomer();
-  const subscription = await getSubscription(customer);
+  const subscription = await getSubscription();
   if (subscription) return subscription;
 
   if (attempts > 5) return null;
