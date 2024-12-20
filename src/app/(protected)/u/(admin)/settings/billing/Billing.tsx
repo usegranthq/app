@@ -61,7 +61,7 @@ export default function Billing({ customer, subscription }: BillingProps) {
           <Link href="mailto:support@usegrant.dev" className="underline underline-offset-4 hover:text-primary">
             support@usegrant.dev
           </Link>
-          . Pricing might not change, but just to understand the use case and avoid DNS spamming.
+          . Pricing might not change, but just to understand the use case and provision resources as needed.
         </p>
       </div>
     </div>
