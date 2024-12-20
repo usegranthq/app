@@ -12,10 +12,9 @@ interface SendEmailParams {
 }
 
 export const sendEmail = async (data: SendEmailParams) => {
-  const emailHtml = await render(data.template);
-
   if (process.env.NODE_ENV === 'development') {
     const transporter = nodemailer.createTransport(env.NODEMAILER_SMTP_URL);
+    const emailHtml = await render(data.template);
 
     await transporter.sendMail({
       from: env.EMAIL_FROM,
@@ -33,6 +32,6 @@ export const sendEmail = async (data: SendEmailParams) => {
     from: env.EMAIL_FROM,
     to: data.to,
     subject: data.subject,
-    html: emailHtml,
+    react: data.template,
   });
 };
