@@ -3,10 +3,9 @@ import { APIError, createEndpoint } from 'better-call';
 import { JWK } from 'jose';
 
 import db from '@/lib/db';
+import { getPlanByUserId } from '@/lib/auth';
 import { createJwt, defaultJwk } from '@/utils/jwt';
 import { getIssuer } from '@/utils/project';
-import { getPlanByUserId } from '@/lib/auth';
-import { findPlanByPlanName } from '@/utils/billing';
 
 const ONE_HOUR = 60 * 60;
 const MAX_EXPIRY = 2 * 24 * 60 * 60; // 2 days
@@ -60,11 +59,10 @@ const createToken = createEndpoint(
     }
 
     const plan = await getPlanByUserId(project.User.id);
-    const planDetails = findPlanByPlanName(plan);
     const customDomain = project.Domain[0];
 
     const claims = {
-      iss: getIssuer(project.urlId, planDetails, customDomain, forceDefaultDomain),
+      iss: getIssuer(project.urlId, plan, customDomain, forceDefaultDomain),
       aud: ctx.body.audienceAsArray ? [client.audience] : client.audience,
       sub: client.subject,
     };
