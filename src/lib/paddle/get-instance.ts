@@ -8,9 +8,5 @@ export function getPaddleInstance() {
     logLevel: LogLevel.error,
   };
 
-  if (!env.PADDLE_API_KEY) {
-    console.error('Paddle API key is missing');
-  }
-
   return new Paddle(env.PADDLE_API_KEY, paddleOptions);
 }
