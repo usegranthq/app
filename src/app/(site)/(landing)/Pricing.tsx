@@ -7,7 +7,7 @@ import { Plans, POPULAR_PLAN } from '@/utils/billing';
 export default function PricingSection() {
   return (
     <div className="mt-28 scroll-mt-28 md:mt-44" id="pricing">
-      <h2 className="text-center text-3xl font-semibold md:text-4xl">Worry about your auth, not your bill.</h2>
+      <h2 className="text-center text-3xl font-semibold md:text-4xl">Pricing</h2>
       <p className="mx-auto mt-2.5 max-w-lg text-pretty text-center text-sm font-medium text-muted-foreground">
         Simple and transparent pricing. No calculator needed. Way more affordable than running your own service.
       </p>
