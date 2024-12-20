@@ -24,7 +24,7 @@ const createClient = createAuthEndpoint(
     });
 
     if (clientsCount >= plan.clients) {
-      return new APIError('FORBIDDEN', {
+      throw new APIError('FORBIDDEN', {
         message: 'You have reached the limit for clients. Upgrade your plan or contact support to increase the limit.',
       });
     }

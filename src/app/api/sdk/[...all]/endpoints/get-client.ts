@@ -25,7 +25,7 @@ const getClient = createAuthEndpoint(
     });
 
     if (!client) {
-      return new APIError('NOT_FOUND', {
+      throw new APIError('NOT_FOUND', {
         message: 'Client not found',
       });
     }

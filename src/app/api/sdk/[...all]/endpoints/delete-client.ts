@@ -21,7 +21,7 @@ const deleteClient = createAuthEndpoint(
     });
 
     if (!client) {
-      return new APIError('NOT_FOUND', {
+      throw new APIError('NOT_FOUND', {
         message: 'Client not found',
       });
     }
@@ -38,7 +38,7 @@ const deleteClient = createAuthEndpoint(
     } catch (error) {
       const errorMessage = getApiErrorMessage(error, 'Something went wrong');
 
-      return new APIError('INTERNAL_SERVER_ERROR', {
+      throw new APIError('INTERNAL_SERVER_ERROR', {
         message: errorMessage,
       });
     }

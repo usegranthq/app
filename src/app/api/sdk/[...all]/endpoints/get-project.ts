@@ -26,7 +26,7 @@ const getProject = createAuthEndpoint(
     });
 
     if (!project) {
-      return new APIError('NOT_FOUND', {
+      throw new APIError('NOT_FOUND', {
         message: 'Project not found',
       });
     }

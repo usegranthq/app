@@ -40,7 +40,7 @@ const createToken = createEndpoint(
     });
 
     if (!project) {
-      return new APIError('NOT_FOUND', {
+      throw new APIError('NOT_FOUND', {
         message: 'Project not found',
       });
     }
@@ -53,7 +53,7 @@ const createToken = createEndpoint(
     });
 
     if (!client) {
-      return new APIError('NOT_FOUND', {
+      throw new APIError('NOT_FOUND', {
         message: 'Client not found',
       });
     }
@@ -84,7 +84,7 @@ const createToken = createEndpoint(
     const signingKey: JWK = jwk ? (jwk.key as unknown as JWK) : defaultJwk;
     const token = await createJwt(claims, signingKey, jwtOptions);
 
-    const expiresAt = new Date(Date.now() + ONE_HOUR);
+    const expiresAt = new Date(Date.now() + ctx.body.expiresIn);
 
     return {
       accessToken: token,

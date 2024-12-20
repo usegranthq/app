@@ -25,7 +25,7 @@ const createProject = createAuthEndpoint(
     });
 
     if (projectsCount >= plan.projects) {
-      return new APIError('FORBIDDEN', {
+      throw new APIError('FORBIDDEN', {
         message: 'You have reached the limit for projects. Upgrade your plan or contact support to increase the limit.',
       });
     }
@@ -50,7 +50,7 @@ const createProject = createAuthEndpoint(
     } catch (error) {
       const errorMessage = getApiErrorMessage(error, 'Something went wrong');
 
-      return new APIError('INTERNAL_SERVER_ERROR', {
+      throw new APIError('INTERNAL_SERVER_ERROR', {
         message: errorMessage,
       });
     }

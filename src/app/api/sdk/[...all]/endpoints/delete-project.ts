@@ -21,7 +21,7 @@ const deleteProject = createAuthEndpoint(
     });
 
     if (!project) {
-      return new APIError('NOT_FOUND', {
+      throw new APIError('NOT_FOUND', {
         message: 'Project not found',
       });
     }
@@ -38,7 +38,7 @@ const deleteProject = createAuthEndpoint(
     } catch (error) {
       const errorMessage = getApiErrorMessage(error, 'Something went wrong');
 
-      return new APIError('INTERNAL_SERVER_ERROR', {
+      throw new APIError('INTERNAL_SERVER_ERROR', {
         message: errorMessage,
       });
     }
