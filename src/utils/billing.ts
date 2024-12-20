@@ -105,7 +105,7 @@ export const Plans: PlanData[] = [
       'Priority support',
       'Request custom signing keys',
     ],
-    priceId: env.NEXT_PUBLIC_PADDLE_STARTER_PRICE_ID,
+    priceId: env.NEXT_PUBLIC_PADDLE_PRO_PRICE_ID,
   },
   {
     id: PLAN.ULTIMATE,
@@ -118,7 +118,7 @@ export const Plans: PlanData[] = [
       'Auto Rotate signing keys',
       'Priority support 24/5',
     ],
-    priceId: env.NEXT_PUBLIC_PADDLE_PRO_PRICE_ID,
+    priceId: env.NEXT_PUBLIC_PADDLE_ULTIMATE_PRICE_ID,
   },
 ];
 

@@ -26,8 +26,8 @@ export const env = createEnv({
   client: {
     NEXT_PUBLIC_PADDLE_ENV: z.enum(['sandbox', 'production']),
     NEXT_PUBLIC_PADDLE_CLIENT_TOKEN: z.string(),
-    NEXT_PUBLIC_PADDLE_STARTER_PRICE_ID: z.string(),
     NEXT_PUBLIC_PADDLE_PRO_PRICE_ID: z.string(),
+    NEXT_PUBLIC_PADDLE_ULTIMATE_PRICE_ID: z.string(),
   },
   runtimeEnv: {
     INVITE_TOKEN: process.env.INVITE_TOKEN,
@@ -53,7 +53,7 @@ export const env = createEnv({
     // public
     NEXT_PUBLIC_PADDLE_ENV: process.env.NEXT_PUBLIC_PADDLE_ENV,
     NEXT_PUBLIC_PADDLE_CLIENT_TOKEN: process.env.NEXT_PUBLIC_PADDLE_CLIENT_TOKEN,
-    NEXT_PUBLIC_PADDLE_STARTER_PRICE_ID: process.env.NEXT_PUBLIC_PADDLE_STARTER_PRICE_ID,
     NEXT_PUBLIC_PADDLE_PRO_PRICE_ID: process.env.NEXT_PUBLIC_PADDLE_PRO_PRICE_ID,
+    NEXT_PUBLIC_PADDLE_ULTIMATE_PRICE_ID: process.env.NEXT_PUBLIC_PADDLE_ULTIMATE_PRICE_ID,
   },
 });
