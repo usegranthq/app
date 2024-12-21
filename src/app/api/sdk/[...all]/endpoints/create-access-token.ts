@@ -1,5 +1,4 @@
 import { z } from 'zod';
-import { APIError, createEndpoint } from 'better-call';
 import { JWK } from 'jose';
 
 import db from '@/lib/db';
@@ -7,9 +6,10 @@ import { getPlanByUserId } from '@/lib/auth';
 import { createJwt, defaultJwk, MAX_EXPIRY, ONE_HOUR } from '@/utils/jwt';
 import { getIssuer } from '@/utils/project';
 
-import ERRORS from './utils/errors';
+import { createAuthEndpoint } from './utils/call';
+import ERRORS, { SdkError } from './utils/errors';
 
-const createToken = createEndpoint(
+const createToken = createAuthEndpoint(
   '/:projects/:projectId/clients/:clientId/tokens',
   {
     method: 'POST',
@@ -39,7 +39,7 @@ const createToken = createEndpoint(
     });
 
     if (!project) {
-      throw new APIError('NOT_FOUND', ERRORS.PROJECT_NOT_FOUND);
+      throw new SdkError('NOT_FOUND', ERRORS.PROJECT_NOT_FOUND);
     }
 
     const client = await db.client.findUnique({
@@ -50,7 +50,7 @@ const createToken = createEndpoint(
     });
 
     if (!client) {
-      throw new APIError('NOT_FOUND', ERRORS.CLIENT_NOT_FOUND);
+      throw new SdkError('NOT_FOUND', ERRORS.CLIENT_NOT_FOUND);
     }
 
     const plan = await getPlanByUserId(project.User.id);

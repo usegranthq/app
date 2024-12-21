@@ -1,13 +1,10 @@
-import { APIError } from 'better-call';
-
 import db from '@/lib/db';
+import { getApiErrorMessage } from '@/utils/error';
+import { getPlanByUserId } from '@/lib/auth';
 import { clientSchema } from '@/schema';
 
 import { createAuthEndpoint } from './utils/call';
-import { getApiErrorMessage } from '@/utils/error';
-import { getPlanByUserId } from '@/lib/auth';
-
-import ERRORS from './utils/errors';
+import ERRORS, { SdkError } from './utils/errors';
 
 const createClient = createAuthEndpoint(
   'v1/projects/:id/clients',
@@ -26,7 +23,7 @@ const createClient = createAuthEndpoint(
     });
 
     if (clientsCount >= plan.clients) {
-      throw new APIError('FORBIDDEN', ERRORS.MAX_CLIENTS_LIMIT_REACHED);
+      throw new SdkError('FORBIDDEN', ERRORS.MAX_CLIENTS_LIMIT_REACHED);
     }
 
     try {
@@ -47,7 +44,7 @@ const createClient = createAuthEndpoint(
     } catch (error) {
       const errorMessage = getApiErrorMessage(error, 'Something went wrong');
 
-      return new APIError('INTERNAL_SERVER_ERROR', {
+      return new SdkError('INTERNAL_SERVER_ERROR', {
         message: errorMessage,
       });
     }

@@ -1,3 +1,5 @@
+import { APIError } from 'better-call';
+
 const ERRORS = {
   MAX_PROJECTS_LIMIT_REACHED: {
     code: 'MAX_PROJECTS_LIMIT_REACHED',
@@ -16,5 +18,7 @@ const ERRORS = {
     message: 'You have reached the maximum number of clients allowed.',
   },
 };
+
+export const SdkError = APIError;
 
 export default ERRORS;

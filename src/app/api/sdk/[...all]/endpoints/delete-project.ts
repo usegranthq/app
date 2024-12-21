@@ -1,11 +1,8 @@
-import { APIError } from 'better-call';
-
 import db from '@/lib/db';
-
-import { createAuthEndpoint } from './utils/call';
 import { getApiErrorMessage } from '@/utils/error';
 
-import ERRORS from './utils/errors';
+import { createAuthEndpoint } from './utils/call';
+import ERRORS, { SdkError } from './utils/errors';
 
 const deleteProject = createAuthEndpoint(
   'v1/projects/:id',
@@ -23,7 +20,7 @@ const deleteProject = createAuthEndpoint(
     });
 
     if (!project) {
-      throw new APIError('NOT_FOUND', ERRORS.PROJECT_NOT_FOUND);
+      throw new SdkError('NOT_FOUND', ERRORS.PROJECT_NOT_FOUND);
     }
 
     try {
@@ -38,7 +35,7 @@ const deleteProject = createAuthEndpoint(
     } catch (error) {
       const errorMessage = getApiErrorMessage(error, 'Something went wrong');
 
-      throw new APIError('INTERNAL_SERVER_ERROR', {
+      throw new SdkError('INTERNAL_SERVER_ERROR', {
         message: errorMessage,
       });
     }
