@@ -98,6 +98,7 @@ export async function deleteAccount(): ActionResponse {
   try {
     await auth.api.deleteUser({
       headers: await headers(),
+      body: {},
     });
   } catch (error) {
     console.log(error);
