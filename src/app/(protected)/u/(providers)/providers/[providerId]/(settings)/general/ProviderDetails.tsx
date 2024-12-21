@@ -33,32 +33,32 @@ export default function ProviderDetails() {
       toast.error(error);
       return;
     }
-    toast.success('Project details updated');
+    toast.success('Provider details updated');
     router.refresh();
   };
 
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Project details</CardTitle>
-        <CardDescription>Manage your project settings.</CardDescription>
+        <CardTitle>Provider details</CardTitle>
+        <CardDescription>Manage your provider settings.</CardDescription>
       </CardHeader>
       <form action={handleSubmit}>
         <CardContent>
           <div className="flex flex-col gap-8">
             <div className="flex flex-col gap-2">
-              <Label>Project name</Label>
+              <Label>Provider name</Label>
               <Input
                 name="name"
                 defaultValue={provider.name}
                 required
                 minLength={3}
                 maxLength={32}
-                placeholder="Project name"
+                placeholder="Provider name"
               />
             </div>
             <div className="flex flex-col gap-2">
-              <Label>Project description</Label>
+              <Label>Provider description</Label>
               <Textarea
                 rows={3}
                 name="description"
