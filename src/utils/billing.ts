@@ -17,7 +17,7 @@ export type PlanName = (typeof PLAN)[keyof typeof PLAN];
 
 export type PlanDetails = {
   id: PlanName;
-  projects: number;
+  providers: number;
   clients: number;
   tenants: {
     available: boolean;
@@ -34,7 +34,7 @@ export type PlanDetails = {
 export const PLAN_LIMITS: Record<PlanName, PlanDetails> = {
   [PLAN.FREE]: {
     id: PLAN.FREE,
-    projects: 1,
+    providers: 1,
     clients: 999,
     tenants: {
       available: false,
@@ -49,7 +49,7 @@ export const PLAN_LIMITS: Record<PlanName, PlanDetails> = {
   },
   [PLAN.PRO]: {
     id: PLAN.PRO,
-    projects: 10,
+    providers: 10,
     clients: 9999,
     tenants: {
       available: true,
@@ -64,7 +64,7 @@ export const PLAN_LIMITS: Record<PlanName, PlanDetails> = {
   },
   [PLAN.ULTIMATE]: {
     id: PLAN.ULTIMATE,
-    projects: 100,
+    providers: 100,
     clients: 9999,
     tenants: {
       available: true,
@@ -92,7 +92,7 @@ export const Plans: PlanData[] = [
     id: PLAN.FREE,
     name: PLAN_NAMES[PLAN.FREE],
     price: 0,
-    features: [`${PLAN_LIMITS[PLAN.FREE].projects} Project`, 'Free forever', 'API access to create clients'],
+    features: [`${PLAN_LIMITS[PLAN.FREE].providers} Providers`, 'Free forever', 'API access to create clients'],
     priceId: null,
   },
   {
@@ -100,7 +100,7 @@ export const Plans: PlanData[] = [
     name: PLAN_NAMES[PLAN.PRO],
     price: 9,
     features: [
-      `${PLAN_LIMITS[PLAN.PRO].projects} Projects`,
+      `${PLAN_LIMITS[PLAN.PRO].providers} Providers`,
       'Custom domains',
       'Priority support',
       'Request custom signing keys',
@@ -112,9 +112,9 @@ export const Plans: PlanData[] = [
     name: PLAN_NAMES[PLAN.ULTIMATE],
     price: 49,
     features: [
-      `${PLAN_LIMITS[PLAN.ULTIMATE].projects} Projects`,
+      `${PLAN_LIMITS[PLAN.ULTIMATE].providers} Providers`,
       'All in starter',
-      'API access to create projects',
+      'API access to create providers',
       'Auto Rotate signing keys',
       'Priority support 24/5',
     ],

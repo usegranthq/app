@@ -3,7 +3,7 @@ import { JWK } from 'jose';
 
 import { env } from '@/env';
 import db from '@/lib/db';
-import { Project } from '@/types/app.types';
+import { Provider } from '@/types/app.types';
 import { getSubdomain } from '@/utils/url';
 import { defaultJwk } from '@/utils/jwt';
 
@@ -30,20 +30,20 @@ const getHostFromRequest = (request: NextRequest): string | null => {
   }
 };
 
-const getDefaultProjectId = (hostname: string) => {
-  const defaultProjectDomain = env.PROJECT_DOMAIN;
-  const defaultProjectDomainSuffix = defaultProjectDomain.replace(/^(\{urlId}\.)/, '');
+const getDefaultProviderId = (hostname: string) => {
+  const defaultProviderDomain = env.PROVIDER_DOMAIN;
+  const defaultProviderDomainSuffix = defaultProviderDomain.replace(/^(\{urlId}\.)/, '');
 
-  if (!hostname.endsWith(defaultProjectDomainSuffix)) {
+  if (!hostname.endsWith(defaultProviderDomainSuffix)) {
     return null;
   }
 
   return getSubdomain(hostname);
 };
 
-const getProject = async (hostname: string, urlId: string | null): Promise<Project | null> => {
+const getProvider = async (hostname: string, urlId: string | null): Promise<Provider | null> => {
   if (urlId) {
-    return db.project.findUnique({
+    return db.provider.findUnique({
       where: { urlId },
     });
   }
@@ -51,7 +51,7 @@ const getProject = async (hostname: string, urlId: string | null): Promise<Proje
   const domain = await db.domain.findUnique({
     where: { domain: hostname },
     include: {
-      Project: true,
+      Provider: true,
     },
   });
 
@@ -59,7 +59,7 @@ const getProject = async (hostname: string, urlId: string | null): Promise<Proje
     return null;
   }
 
-  return domain.Project;
+  return domain.Provider;
 };
 
 interface Params {
@@ -79,10 +79,10 @@ const extractPublicJwk = (jwk: JWK): JWK => {
   };
 };
 
-const jwksResponse = async (projectId: string): Promise<NextResponse> => {
+const jwksResponse = async (providerId: string): Promise<NextResponse> => {
   const keys = await db.jwks.findMany({
     where: {
-      projectId,
+      providerId,
     },
     orderBy: {
       createdAt: 'desc',
@@ -110,15 +110,15 @@ export async function GET(request: NextRequest, { params }: { params: Promise<Pa
     return NextResponse.json({ error: 'Invalid host' }, { status: 400 });
   }
 
-  const urlId = getDefaultProjectId(hostname);
-  const project = await getProject(hostname, urlId);
+  const urlId = getDefaultProviderId(hostname);
+  const provider = await getProvider(hostname, urlId);
 
-  if (!project) {
+  if (!provider) {
     return NextResponse.json({ error: 'Invalid host' }, { status: 400 });
   }
 
   if (segment === 'jwks') {
-    return jwksResponse(project.id);
+    return jwksResponse(provider.id);
   }
 
   return NextResponse.json({

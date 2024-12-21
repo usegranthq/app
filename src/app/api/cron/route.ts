@@ -30,8 +30,8 @@ const processCron = async () => {
       },
     });
 
-    // get all projects that need to rotate jwks
-    const projects = await db.project.findMany({
+    // get all providers that need to rotate jwks
+    const providers = await db.provider.findMany({
       where: {
         rotateJwks: true,
       },
@@ -40,12 +40,12 @@ const processCron = async () => {
       },
     });
 
-    // get all jwks for the projects, and keep the last 1 key and delete the rest and add the new one
-    for (const project of projects) {
+    // get all jwks for the providers, and keep the last 1 key and delete the rest and add the new one
+    for (const provider of providers) {
       await db.$transaction(async (tx) => {
         const jwks = await tx.jwks.findMany({
           where: {
-            projectId: project.id,
+            providerId: provider.id,
           },
           orderBy: {
             createdAt: 'desc',
@@ -56,7 +56,7 @@ const processCron = async () => {
         });
 
         // get the plan of the user
-        const plan = await getPlanByUserId(project.User.id);
+        const plan = await getPlanByUserId(provider.User.id);
 
         // if there is only 1 key, we don't need to delete anything
         // but delete if the plan doesn't support rotating signing keys
@@ -68,7 +68,7 @@ const processCron = async () => {
         // keep the last 1 key and delete the rest, also createdAt should be greater than a 24 hours ago
         await tx.jwks.deleteMany({
           where: {
-            projectId: project.id,
+            providerId: provider.id,
             createdAt: {
               lt: new Date(Date.now() - 24 * 60 * 60 * 1000),
             },
@@ -80,7 +80,7 @@ const processCron = async () => {
         const [kid, jwk] = await generateJwk('RS256');
         await tx.jwks.create({
           data: {
-            projectId: project.id,
+            providerId: provider.id,
             kid,
             key: jwk as unknown as Prisma.JsonObject,
           },

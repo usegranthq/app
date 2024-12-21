@@ -7,7 +7,7 @@ import { createAuthEndpoint } from './utils/call';
 import ERRORS, { SdkError } from './utils/errors';
 
 const createClient = createAuthEndpoint(
-  'v1/projects/:id/clients',
+  'v1/providers/:id/clients',
   {
     method: 'POST',
     body: clientSchema,
@@ -18,7 +18,7 @@ const createClient = createAuthEndpoint(
     const plan = await getPlanByUserId(ctx.context.userId);
     const clientsCount = await db.client.count({
       where: {
-        projectId: ctx.params.id,
+        providerId: ctx.params.id,
       },
     });
 
@@ -31,7 +31,7 @@ const createClient = createAuthEndpoint(
         data: {
           name,
           audience,
-          projectId: ctx.params.id,
+          providerId: ctx.params.id,
         },
         select: {
           id: true,

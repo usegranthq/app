@@ -4,17 +4,17 @@ import { createAuthEndpoint } from './utils/call';
 import ERRORS, { SdkError } from './utils/errors';
 
 const getClient = createAuthEndpoint(
-  'v1/projects/:projectId/clients/:clientId',
+  'v1/providers/:providerId/clients/:clientId',
   {
     method: 'GET',
   },
   async (ctx) => {
-    const { projectId, clientId } = ctx.params;
+    const { providerId, clientId } = ctx.params;
 
     const client = await db.client.findUnique({
       where: {
         id: clientId,
-        projectId,
+        providerId,
       },
       select: {
         id: true,

@@ -1,8 +1,8 @@
 import { Endpoint } from 'better-call';
 
-import createProject from './create-project';
-import getProject from './get-project';
-import deleteProject from './delete-project';
+import createProvider from './create-provider';
+import getProvider from './get-provider';
+import deleteProvider from './delete-provider';
 
 import createClient from './create-client';
 import getClient from './get-client';
@@ -11,9 +11,9 @@ import deleteClient from './delete-client';
 import createAccessToken from './create-access-token';
 
 const endpoints: Record<string, Endpoint> = {
-  createProject,
-  getProject,
-  deleteProject,
+  createProvider: createProvider,
+  getProvider,
+  deleteProvider,
   createClient,
   getClient,
   deleteClient,

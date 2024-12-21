@@ -9,12 +9,12 @@ export default function Header() {
   return (
     <header className="flex h-fit items-center gap-4">
       <nav className="hidden flex-col gap-6 text-lg font-medium md:flex md:flex-row md:items-center md:gap-5 md:text-sm lg:gap-6">
-        <Link href="/u/projects" className="flex items-center gap-2">
+        <Link href="/u/providers" className="flex items-center gap-2">
           <KanbanIcon className="size-6" />
           <span className="sr-only">useGrant</span>
         </Link>
-        <NavLink href="/u/projects" className="text-muted-foreground transition-colors hover:text-foreground">
-          Projects
+        <NavLink href="/u/providers" className="text-muted-foreground transition-colors hover:text-foreground">
+          Providers
         </NavLink>
         <NavLink href="/u/settings" className="text-foreground transition-colors hover:text-foreground">
           Settings
@@ -29,12 +29,12 @@ export default function Header() {
         </SheetTrigger>
         <SheetContent side="left">
           <nav className="grid gap-6 text-lg font-medium">
-            <Link href="/u/projects" className="flex items-center gap-2">
+            <Link href="/u/providers" className="flex items-center gap-2">
               <KanbanIcon className="size-6" />
               <span className="sr-only">useGrant</span>
             </Link>
-            <NavLink href="/u/projects" className="text-muted-foreground hover:text-foreground">
-              Projects
+            <NavLink href="/u/providers" className="text-muted-foreground hover:text-foreground">
+              Providers
             </NavLink>
             <NavLink href="/u/settings" className="text-muted-foreground hover:text-foreground">
               Settings

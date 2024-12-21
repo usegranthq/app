@@ -30,7 +30,7 @@ model User {
   accounts      Account[]
 
   Token    Token[]
-  Project  Project[]
+  Provider Provider[]
   Customer Customer?
 
   @@unique([email])
@@ -82,7 +82,7 @@ model Verification {
   @@map("verification")
 }
 
-model Project {
+model Provider {
   id          String   @id @default(uuid())
   name        String
   description String
@@ -98,7 +98,7 @@ model Project {
   userId String
   User   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-  @@map("project")
+  @@map("provider")
 }
 
 model Client {
@@ -109,8 +109,8 @@ model Client {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  projectId String
-  Project   Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  providerId String
+  Provider   Provider @relation(fields: [providerId], references: [id], onDelete: Cascade)
 
   @@map("client")
 }
@@ -122,8 +122,8 @@ model Domain {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  Project   Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
-  projectId String
+  providerId String
+  Provider   Provider @relation(fields: [providerId], references: [id], onDelete: Cascade)
 
   @@map("domain")
 }
@@ -150,8 +150,8 @@ model Jwks {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  Project   Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
-  projectId String
+  providerId String
+  Provider   Provider @relation(fields: [providerId], references: [id], onDelete: Cascade)
 
   @@map("jwks")
 }

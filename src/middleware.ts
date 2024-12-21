@@ -66,7 +66,7 @@ const handleProtectedRoute = async (request: NextRequest) => {
   }
 
   if (request.nextUrl.pathname === '/u') {
-    return redirectToPage(ROUTES.PROJECTS, request);
+    return redirectToPage(ROUTES.PROVIDERS, request);
   }
 
   return next();

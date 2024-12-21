@@ -16,9 +16,9 @@ export const verifySchema = z.object({
   code: z.string({ required_error: 'Please enter the code sent to your email.' }),
 });
 
-export const projectSchema = z.object({
-  name: z.string({ required_error: 'Please enter a project name.' }).trim().transform(sanitize),
-  description: z.string({ required_error: 'Please enter a project description.' }).trim().transform(sanitize),
+export const providerSchema = z.object({
+  name: z.string({ required_error: 'Please enter a provider name.' }).trim().transform(sanitize),
+  description: z.string({ required_error: 'Please enter a provider description.' }).trim().transform(sanitize),
 });
 
 export const clientSchema = z.object({

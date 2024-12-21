@@ -1,0 +1,82 @@
+import 'server-only';
+
+import { Provider, Client, Domain } from '@/types/app.types';
+import db from '@/lib/db';
+import { defaultJwk } from '@/utils/jwt';
+
+import { verifySession } from './_verifySession';
+
+export const getProviders = async (): Promise<Provider[]> => {
+  const session = await verifySession();
+
+  return await db.provider.findMany({
+    where: {
+      userId: session.user.id,
+    },
+  });
+};
+
+export const getProvider = async (providerId: string): Promise<Provider | null> => {
+  await verifySession();
+
+  try {
+    const provider = await db.provider.findUnique({
+      where: { id: providerId },
+    });
+
+    return provider;
+  } catch {}
+
+  return null;
+};
+
+export const getDomains = async (providerId: string): Promise<Domain[]> => {
+  await verifySession();
+
+  return await db.domain.findMany({
+    where: {
+      providerId,
+    },
+    orderBy: {
+      createdAt: 'desc',
+    },
+  });
+};
+
+export const getClients = async (providerId: string): Promise<Client[]> => {
+  await verifySession();
+
+  return await db.client.findMany({
+    where: {
+      providerId,
+    },
+  });
+};
+
+export interface SigningKey {
+  id: string;
+  kid: string;
+  isDefault: boolean;
+  createdAt: Date | null;
+}
+
+export const getSigningKeys = async (providerId: string): Promise<SigningKey[]> => {
+  await verifySession();
+
+  const keys = await db.jwks.findMany({
+    where: { providerId },
+    orderBy: { createdAt: 'desc' },
+    select: {
+      id: true,
+      kid: true,
+      createdAt: true,
+    },
+  });
+  const allKeys = [...keys, { ...defaultJwk, id: defaultJwk.kid, createdAt: null }];
+
+  return allKeys.map((key) => ({
+    ...key,
+    isDefault: key.kid === defaultJwk.kid,
+    createdAt: key.createdAt ?? null,
+  }));
+};

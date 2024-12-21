@@ -1,13 +1,13 @@
 import { APIError } from 'better-call';
 
 const ERRORS = {
-  MAX_PROJECTS_LIMIT_REACHED: {
-    code: 'MAX_PROJECTS_LIMIT_REACHED',
-    message: 'You have reached the maximum number of projects allowed.',
+  MAX_PROVIDERS_LIMIT_REACHED: {
+    code: 'MAX_PROVIDERS_LIMIT_REACHED',
+    message: 'You have reached the maximum number of providers allowed.',
   },
-  PROJECT_NOT_FOUND: {
-    code: 'PROJECT_NOT_FOUND',
-    message: 'Project not found.',
+  PROVIDER_NOT_FOUND: {
+    code: 'PROVIDER_NOT_FOUND',
+    message: 'Provider not found.',
   },
   CLIENT_NOT_FOUND: {
     code: 'CLIENT_NOT_FOUND',

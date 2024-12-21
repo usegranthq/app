@@ -32,7 +32,7 @@ const isDomainVerified = (domain: string, domainConfig: vercel.DomainConfigRespo
   return domainConfig.cnames.includes('cname.usegrant.dev.');
 };
 
-export async function addDomain(projectId: string, formData: FormData): ActionResponse {
+export async function addDomain(providerId: string, formData: FormData): ActionResponse {
   const session = await verifySession();
 
   // allow based on plan
@@ -49,7 +49,7 @@ export async function addDomain(projectId: string, formData: FormData): ActionRe
 
   // get existing domains, don't allow more than 1
   const existingDomains = await db.domain.findMany({
-    where: { projectId },
+    where: { providerId },
   });
 
   if (existingDomains.length >= planLimits.customDomain.limit) {
@@ -66,14 +66,14 @@ export async function addDomain(projectId: string, formData: FormData): ActionRe
       data: {
         domain,
         verified: isVerified,
-        projectId,
+        providerId,
       },
     });
   } catch (error) {
     const errorMessage = getApiErrorMessage(error, (errorCode) => {
       switch (errorCode) {
         case 'EXISTS':
-          return 'Domain already added to this project.';
+          return 'Domain already added to this provider.';
         default:
           return 'Failed to add domain. Try again.';
       }
@@ -82,15 +82,15 @@ export async function addDomain(projectId: string, formData: FormData): ActionRe
     return [errorMessage, null];
   }
 
-  revalidatePath(`/u/projects/${projectId}/settings/domain`);
+  revalidatePath(`/u/providers/${providerId}/settings/domain`);
   return [null, null];
 }
 
-export async function deleteDomain(projectId: string, domain: string): ActionResponse {
+export async function deleteDomain(providerId: string, domain: string): ActionResponse {
   await verifySession();
 
   const domainRecord = await db.domain.findUnique({
-    where: { domain, projectId },
+    where: { domain, providerId },
   });
 
   if (!domainRecord) {
@@ -109,21 +109,21 @@ export async function deleteDomain(projectId: string, domain: string): ActionRes
 
   try {
     await db.domain.delete({
-      where: { domain, projectId },
+      where: { domain, providerId },
     });
   } catch {
     return ['Failed to delete domain. Try again.', null];
   }
 
-  revalidatePath(`/u/projects/${projectId}/settings/domain`);
+  revalidatePath(`/u/providers/${providerId}/settings/domain`);
   return [null, null];
 }
 
-export async function verifyDomain(projectId: string, domain: string): ActionResponse<boolean> {
+export async function verifyDomain(providerId: string, domain: string): ActionResponse<boolean> {
   await verifySession();
 
   const domainRecord = await db.domain.findUnique({
-    where: { domain, projectId },
+    where: { domain, providerId },
   });
 
   if (!domainRecord) {
@@ -133,22 +133,22 @@ export async function verifyDomain(projectId: string, domain: string): ActionRes
   try {
     const response = await vercel.verifyDomain(domain);
     if (!response.verified) {
-      return ['Failed to verify domain. Potentially configured with a different project.', null];
+      return ['Failed to verify domain. Potentially configured with a different provider.', null];
     }
 
     const domainConfig = await vercel.getDomainConfig(domain);
     const isVerified = isDomainVerified(domain, domainConfig);
 
     await db.domain.update({
-      where: { domain, projectId },
+      where: { domain, providerId },
       data: { verified: isVerified },
     });
 
-    revalidatePath(`/u/projects/${projectId}/settings/domain`);
+    revalidatePath(`/u/providers/${providerId}/settings/domain`);
     return [null, isVerified];
   } catch (error) {
     if (error instanceof vercel.APIError && error.response.status !== 400) {
-      return ['Failed to verify domain. Potentially configured with a different project.', null];
+      return ['Failed to verify domain. Potentially configured with a different provider.', null];
     }
 
     return ['Failed to verify domain. Try again.', null];

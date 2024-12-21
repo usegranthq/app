@@ -4,13 +4,13 @@ import { JWK } from 'jose';
 import db from '@/lib/db';
 import { getPlanByUserId } from '@/lib/auth';
 import { createJwt, defaultJwk, MAX_EXPIRY, ONE_HOUR } from '@/utils/jwt';
-import { getIssuer } from '@/utils/project';
+import { getIssuer } from '@/utils/provider';
 
 import { createAuthEndpoint } from './utils/call';
 import ERRORS, { SdkError } from './utils/errors';
 
 const createToken = createAuthEndpoint(
-  '/:projects/:projectId/clients/:clientId/tokens',
+  '/:providers/:providerId/clients/:clientId/tokens',
   {
     method: 'POST',
     body: z.object({
@@ -21,12 +21,12 @@ const createToken = createAuthEndpoint(
     }),
   },
   async (ctx) => {
-    const { projectId, clientId } = ctx.params;
+    const { providerId, clientId } = ctx.params;
     const { forceDefaultDomain } = ctx.body;
 
-    const project = await db.project.findUnique({
+    const provider = await db.provider.findUnique({
       where: {
-        id: projectId,
+        id: providerId,
       },
       include: {
         Domain: {
@@ -38,14 +38,14 @@ const createToken = createAuthEndpoint(
       },
     });
 
-    if (!project) {
-      throw new SdkError('NOT_FOUND', ERRORS.PROJECT_NOT_FOUND);
+    if (!provider) {
+      throw new SdkError('NOT_FOUND', ERRORS.PROVIDER_NOT_FOUND);
     }
 
     const client = await db.client.findUnique({
       where: {
         id: clientId,
-        projectId,
+        providerId,
       },
     });
 
@@ -53,18 +53,18 @@ const createToken = createAuthEndpoint(
       throw new SdkError('NOT_FOUND', ERRORS.CLIENT_NOT_FOUND);
     }
 
-    const plan = await getPlanByUserId(project.User.id);
-    const customDomain = project.Domain[0];
+    const plan = await getPlanByUserId(provider.User.id);
+    const customDomain = provider.Domain[0];
 
     const claims = {
-      iss: getIssuer(project.urlId, plan, customDomain, forceDefaultDomain),
+      iss: getIssuer(provider.urlId, plan, customDomain, forceDefaultDomain),
       aud: ctx.body.audienceAsArray ? [client.audience] : client.audience,
       sub: client.subject,
     };
 
     const jwk = await db.jwks.findFirst({
       where: {
-        projectId,
+        providerId,
       },
       orderBy: {
         createdAt: 'desc',
@@ -77,9 +77,9 @@ const createToken = createAuthEndpoint(
     };
 
     const signingKey: JWK = jwk ? (jwk.key as unknown as JWK) : defaultJwk;
-    const token = await createJwt(claims, signingKey, jwtOptions);
-
     const expiresAt = new Date(Date.now() + ctx.body.expiresIn);
+
+    const token = await createJwt(claims, signingKey, jwtOptions);
 
     return {
       accessToken: token,
