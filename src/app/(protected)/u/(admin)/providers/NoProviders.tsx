@@ -9,8 +9,8 @@ export default function NoProviders() {
         <KanbanIcon className="size-8" />
         <h1 className="text-2xl font-medium">Create your first provider</h1>
         <p className="max-w-lg text-center text-sm text-muted-foreground">
-          A provider is like a isolated realm/provider where you can create multiple clients and get access to the API.
-          Each provider is like a seperated environment.
+          A provider is like a isolated realm where you can create multiple clients and get access to the API. Each
+          provider is a seperated entity.
         </p>
         <Button className="mt-4" asChild>
           <Link href="/u/providers/new">Create provider</Link>

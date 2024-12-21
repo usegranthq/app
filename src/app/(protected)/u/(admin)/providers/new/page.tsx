@@ -10,7 +10,7 @@ export default function NewProviderPage() {
         <h1 className="text-2xl font-medium">Create your provider</h1>
         <p className="max-w-lg text-center text-sm text-muted-foreground">
           A provider is like a isolated realm where you can create multiple clients and get access to the API. Each
-          provider is treated like a seperated environment.
+          provider is a seperated entity.
         </p>
         <CreateProviderForm />
       </div>
