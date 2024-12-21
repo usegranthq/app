@@ -83,7 +83,7 @@ model Verification {
 }
 
 model Provider {
-  id          String   @id @default(uuid())
+  id          String   @id @default(cuid(2))
   name        String
   description String
   urlId       String   @unique
@@ -102,7 +102,7 @@ model Provider {
 }
 
 model Client {
-  id        String   @id @default(uuid())
+  id        String   @id @default(cuid(2))
   name      String
   audience  String
   subject   String   @default(cuid(2))
@@ -116,7 +116,7 @@ model Client {
 }
 
 model Domain {
-  id        String   @id @default(uuid())
+  id        String   @id @default(cuid(2))
   domain    String   @unique
   verified  Boolean  @default(false)
   createdAt DateTime @default(now())
@@ -129,7 +129,7 @@ model Domain {
 }
 
 model Token {
-  id         String    @id @default(uuid())
+  id         String    @id @default(cuid(2))
   name       String
   token      String    @unique
   expiresAt  DateTime?
@@ -144,7 +144,7 @@ model Token {
 }
 
 model Jwks {
-  id        String   @id @default(uuid())
+  id        String   @id @default(cuid(2))
   kid       String
   key       Json
   createdAt DateTime @default(now())
