@@ -31,7 +31,7 @@ export default function TrustBasedAccess() {
             identity provider and use them to access your API effortlessly.
           </p>
           <p className="mt-6 text-muted-foreground">
-            UseGrant leverages OAuth/OpenID standards, the most popular and secure protocols for authentication and
+            UseGrant leverages OAuth standards, the most popular and secure protocols for authentication and
             authorization.
           </p>
         </div>

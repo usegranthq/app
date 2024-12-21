@@ -6,8 +6,8 @@ const features = [
     icon: ShieldIcon,
     title: 'Secure by Design',
     description:
-      'Our authentication is built on OAuth/OpenID standards. Your services maintain full control by verifying all credentials directly, ensuring maximum security.',
-    bullets: ['No implicit trust', 'OAuth/OpenID based'],
+      'Our authentication is built on OAuth 2.0 standards. Your services maintain full control by verifying all credentials directly, ensuring maximum security.',
+    bullets: ['Automatic key rotation', 'OAuth 2.0 standards'],
   },
   {
     icon: LockIcon,
@@ -18,9 +18,9 @@ const features = [
   },
   {
     icon: BookLock,
-    title: 'Breach-Resistant',
+    title: 'No Lock-in',
     description:
-      "Even in the unlikely event of a breach, there's no actionable information at risk. Your service implementations and use cases remain completely private.",
+      'No lock-in. We do not store any data about your services or intended usage pattern. Use the apis to request client data any time.',
     bullets: ['Minimized attack surface', 'No persistent signing keys'],
   },
 ];
@@ -61,8 +61,7 @@ export default function ZeroTrustSection() {
         <div className="mt-10 flex justify-center">
           <p className="max-w-xl text-center text-sm text-muted-foreground">
             Experience the next level of authentication security. With UseGrant&apos;s Zero Trust approach, you&apos;re
-            not just adopting a service - you&apos;re embracing a security philosophy that puts your data and privacy
-            first.
+            embracing a security philosophy that puts your data and privacy first.
           </p>
         </div>
       </div>

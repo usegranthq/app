@@ -3,6 +3,7 @@ import { CheckIcon } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { cn } from '@/lib/utils';
 import { Plans, POPULAR_PLAN } from '@/utils/billing';
+import Link from 'next/link';
 
 export default function PricingSection() {
   return (
@@ -35,7 +36,14 @@ export default function PricingSection() {
             </Card>
           ))}
         </div>
-        <p className="mt-8 text-center font-mono text-sm text-muted-foreground">All prices in USD</p>
+        <p className="mt-8 text-center font-mono text-sm text-muted-foreground">All prices in USD, excl. taxes</p>
+        <p className="mt-2 text-center text-sm text-muted-foreground">
+          Contact{' '}
+          <Link href="mailto:support@usegrant.dev" className="underline-offset-4 hover:underline">
+            support@usegrant.dev
+          </Link>{' '}
+          for annual pricing and discounts
+        </p>
       </div>
     </div>
   );
