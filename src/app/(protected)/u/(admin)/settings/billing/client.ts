@@ -39,7 +39,6 @@ export default function usePaddle(email: string) {
           const customerId = data.customer.id;
           const transactionId = data.transaction_id;
 
-          console.log('CHECKOUT_COMPLETED', customerId, transactionId);
           if (!customerId || !transactionId) {
             toast.error('Failed to update subscription. Please reload the page and try again.');
             return;
