@@ -3,3 +3,6 @@
 
 '*.{js,mjs,jsx,ts,tsx}':
   - next lint --file
+
+'prisma/schema.prisma':
+  - prisma format --check
