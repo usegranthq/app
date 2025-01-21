@@ -1,3 +1,5 @@
+# make file for development
+
 dev:
 	npm run dev
 
@@ -9,3 +11,6 @@ db:
 
 dbd:
 	docker compose down
+
+migrate:
+	npm run migrate:dev

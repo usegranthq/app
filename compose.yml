@@ -1,15 +1,17 @@
+name: usegrant
+
 services:
   postgres:
-    image: postgres:16
+    image: postgres:16-alpine
     environment:
       POSTGRES_DB: ${POSTGRES_DATABASE}
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
     volumes:
-      - ug_backend-pgdata:/var/lib/postgresql/data
+      - pgdata:/var/lib/postgresql/data
     restart: always
     ports:
       - ${POSTGRES_PORT}:${POSTGRES_PORT}
 
 volumes:
-  ug_backend-pgdata:
+  pgdata:
