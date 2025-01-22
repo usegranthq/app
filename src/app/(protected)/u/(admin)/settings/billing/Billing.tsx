@@ -3,16 +3,14 @@ import Link from 'next/link';
 
 import { PLAN, PlanDetails, Plans } from '@/utils/billing';
 import { Card, CardHeader, CardTitle, CardContent, CardFooter } from '@/components/ui/card';
-import { Customer } from '@/types/app.types';
 
 import PlanButton from './PlanButton';
 
 interface BillingProps {
-  customer: Customer | null;
   plan: PlanDetails;
 }
 
-export default function Billing({ customer, plan }: BillingProps) {
+export default function Billing({ plan }: BillingProps) {
   const currentPlan = plan.id;
 
   return (
@@ -42,7 +40,7 @@ export default function Billing({ customer, plan }: BillingProps) {
               </ul>
             </CardContent>
             <CardFooter className="mt-5 justify-center">
-              <PlanButton plan={plan} currentPlan={currentPlan} customer={customer} />
+              <PlanButton plan={plan} currentPlan={currentPlan} />
             </CardFooter>
           </Card>
         ))}

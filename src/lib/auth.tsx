@@ -5,10 +5,11 @@ import { nextCookies } from 'better-auth/next-js';
 
 import { env } from '@/env';
 import LoginEmail from '@/templates/LoginEmail';
-import { findPlanByPriceId, findPlanByPlanName, PLAN, PlanDetails } from '@/utils/billing';
+import { findPlanByProductId, findPlanByPlanName, PLAN, PlanDetails } from '@/utils/billing';
 
 import { prisma } from './db';
 import { sendEmail } from './email';
+import { getSiteUrl } from './site';
 
 const database = prismaAdapter(prisma, {
   provider: 'postgresql',
@@ -34,14 +35,16 @@ export const getPlanByUserId = async (userId: string): Promise<PlanDetails> => {
     },
   });
 
-  if (!subscription || subscription.subscriptionStatus !== 'active') {
+  if (!subscription || subscription.status !== 'active') {
     return findPlanByPlanName(PLAN.FREE);
   }
 
-  return findPlanByPriceId(subscription.priceId);
+  return findPlanByProductId(subscription.productId);
 };
 
 export const auth = betterAuth({
+  baseURL: getSiteUrl(),
+  secret: env.BETTER_AUTH_SECRET,
   database,
   account: {
     accountLinking: {

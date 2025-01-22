@@ -133,7 +133,7 @@ CREATE TABLE "jwks" (
 -- CreateTable
 CREATE TABLE "customer" (
     "id" TEXT NOT NULL,
-    "paddleCustomerId" TEXT NOT NULL,
+    "customerRefId" TEXT NOT NULL,
     "userId" TEXT NOT NULL,
 
     CONSTRAINT "customer_pkey" PRIMARY KEY ("id")
@@ -142,11 +142,9 @@ CREATE TABLE "customer" (
 -- CreateTable
 CREATE TABLE "subscription" (
     "id" TEXT NOT NULL,
-    "subscriptionId" TEXT NOT NULL,
-    "subscriptionStatus" TEXT NOT NULL,
-    "priceId" TEXT NOT NULL,
+    "subscriptionRefId" TEXT NOT NULL,
+    "status" TEXT NOT NULL,
     "productId" TEXT NOT NULL,
-    "scheduledChange" TIMESTAMP(3),
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
     "customerId" TEXT NOT NULL,
@@ -170,13 +168,13 @@ CREATE UNIQUE INDEX "domain_domain_key" ON "domain"("domain");
 CREATE UNIQUE INDEX "token_token_key" ON "token"("token");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "customer_paddleCustomerId_key" ON "customer"("paddleCustomerId");
+CREATE UNIQUE INDEX "customer_customerRefId_key" ON "customer"("customerRefId");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "customer_userId_key" ON "customer"("userId");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "subscription_subscriptionId_key" ON "subscription"("subscriptionId");
+CREATE UNIQUE INDEX "subscription_subscriptionRefId_key" ON "subscription"("subscriptionRefId");
 
 -- AddForeignKey
 ALTER TABLE "session" ADD CONSTRAINT "session_userId_fkey" FOREIGN KEY ("userId") REFERENCES "user"("id") ON DELETE CASCADE ON UPDATE CASCADE;

@@ -1,55 +1,31 @@
 'use client';
 
-import { CheckoutCustomer, Theme } from '@paddle/paddle-js';
-import { useTheme } from 'next-themes';
+import { useTransition } from 'react';
 import { toast } from 'sonner';
 
 import { PLAN, PlanName, PlanData, Plans } from '@/utils/billing';
-import { Customer } from '@/types/app.types';
-import { useUser } from '@/contexts/User';
+import { checkout } from '@/actions';
 import { Button } from '@/components/ui/button';
+import { useProgressBar } from '@/blocks/NavProgress';
 
-import usePaddle from './client';
 import CancelPlanButton from './CancelPlanButton';
 
 interface PlanButtonProps {
   plan: PlanData;
   currentPlan: PlanName;
-  customer: Customer | null;
 }
 
-export default function PlanButton({ plan, currentPlan, customer }: PlanButtonProps) {
-  const theme = useTheme();
-  const user = useUser();
-  const paddle = usePaddle(user.email);
+export default function PlanButton({ plan, currentPlan }: PlanButtonProps) {
+  const [isPending, startTransition] = useTransition();
+  const progress = useProgressBar();
 
-  const isInitialized = !!paddle;
-  const paddleTheme = (theme.resolvedTheme ?? 'dark') as Theme;
-
-  const handleCheckoutClick = (priceId: string) => {
-    if (!isInitialized) {
-      toast.error('Uh oh! Failed to initialize billing module. Try reloading the page or contact support.');
-      return;
-    }
-
-    const paddleCustomer: CheckoutCustomer = customer?.paddleCustomerId
-      ? { id: customer.paddleCustomerId }
-      : { email: user.email };
-
-    paddle.Checkout.open({
-      items: [
-        {
-          priceId,
-          quantity: 1,
-        },
-      ],
-      customer: paddleCustomer,
-      customData: {
-        userId: user.id,
-      },
-      settings: {
-        theme: paddleTheme,
-      },
+  const handleCheckoutClick = (productId: string) => {
+    startTransition(async () => {
+      progress.start();
+      const [errorMessage] = await checkout(productId);
+      if (errorMessage) {
+        toast.error(errorMessage);
+      }
     });
   };
 
@@ -69,18 +45,18 @@ export default function PlanButton({ plan, currentPlan, customer }: PlanButtonPr
   const currentPlanIndex = Plans.findIndex((p) => p.id === currentPlan);
   const isDowngrade = planIndex < currentPlanIndex;
 
-  const priceId = plan.priceId as string;
+  const priceId = plan.productId as string;
 
   if (currentPlan === PLAN.FREE) {
     return (
-      <Button className="min-w-32" onClick={() => handleCheckoutClick(priceId)}>
+      <Button className="min-w-32" onClick={() => handleCheckoutClick(priceId)} disabled={isPending}>
         Upgrade
       </Button>
     );
   }
 
   return (
-    <Button disabled={!isDowngrade} className="min-w-32" onClick={() => handleCheckoutClick(priceId)}>
+    <Button disabled={!isDowngrade || isPending} className="min-w-32" onClick={() => handleCheckoutClick(priceId)}>
       {isDowngrade ? 'Downgrade' : 'Upgrade'}
     </Button>
   );

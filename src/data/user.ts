@@ -33,7 +33,7 @@ export const getCustomer = async (): Promise<Customer | null> => {
     include: {
       Subscription: {
         where: {
-          subscriptionStatus: 'active',
+          status: 'active',
         },
       },
     },
@@ -48,7 +48,7 @@ export const getSubscription = async (): Promise<Subscription | null> => {
     include: {
       Subscription: {
         where: {
-          subscriptionStatus: 'active',
+          status: 'active',
         },
         orderBy: {
           createdAt: 'desc',

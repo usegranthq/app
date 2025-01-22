@@ -101,7 +101,6 @@ export async function deleteAccount(): ActionResponse {
       body: {},
     });
   } catch (error) {
-    console.log(error);
     const errorMessage = getApiErrorMessage(error, 'Unable to delete account. Try again.');
     return [errorMessage, null];
   }

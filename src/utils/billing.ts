@@ -84,7 +84,7 @@ export type PlanData = {
   name: string;
   price: number;
   features: string[];
-  priceId: string | null;
+  productId: string | null;
 };
 
 export const Plans: PlanData[] = [
@@ -93,7 +93,7 @@ export const Plans: PlanData[] = [
     name: PLAN_NAMES[PLAN.FREE],
     price: 0,
     features: [`${PLAN_LIMITS[PLAN.FREE].providers} Providers`, 'Free forever', 'API access to create clients'],
-    priceId: null,
+    productId: null,
   },
   {
     id: PLAN.PRO,
@@ -105,7 +105,7 @@ export const Plans: PlanData[] = [
       'Priority support',
       'Request custom signing keys',
     ],
-    priceId: env.NEXT_PUBLIC_PADDLE_PRO_PRICE_ID,
+    productId: env.NEXT_PUBLIC_CREEM_PRO_PLAN_PRODUCT_ID,
   },
   {
     id: PLAN.ULTIMATE,
@@ -118,13 +118,16 @@ export const Plans: PlanData[] = [
       'Auto Rotate signing keys',
       'Priority support 24/5',
     ],
-    priceId: env.NEXT_PUBLIC_PADDLE_ULTIMATE_PRICE_ID,
+    productId: env.NEXT_PUBLIC_CREEM_ULTIMATE_PLAN_PRODUCT_ID,
   },
 ];
 
-export const findPlanByPriceId = (priceId: string): PlanDetails => {
-  const planName = Plans.find((plan) => plan.priceId === priceId)?.id ?? PLAN.FREE;
-  return findPlanByPlanName(planName);
+export const findPlanByProductId = (productId: string): PlanDetails => {
+  const plan = Plans.find((plan) => plan.productId === productId);
+  if (!plan) {
+    return findPlanByPlanName(PLAN.FREE);
+  }
+  return findPlanByPlanName(plan.id);
 };
 
 export const findPlanByPlanName = (planName: PlanName): PlanDetails => {

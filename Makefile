@@ -14,3 +14,6 @@ dbd:
 
 migrate:
 	npm run migrate:dev
+
+clear:
+	docker compose down -v --remove-orphans

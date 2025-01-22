@@ -1,94 +1,66 @@
 'use server';
 
-import { revalidatePath } from 'next/cache';
+import { redirect } from 'next/navigation';
 
-import db from '@/lib/db';
 import { getApiErrorMessage } from '@/utils/error';
 import { verifySession } from '@/data/_verifySession';
-import paddle from '@/lib/paddle';
-import { getSubscriptionByTransactionId } from '@/lib/paddle/subscription';
+import * as creem from '@/lib/creem';
+import db from '@/lib/db';
 
-export const updateAfterCheckout = async (customerId: string, transactionId: string): ActionResponse => {
+export const checkout = async (productId: string): ActionResponse => {
   const session = await verifySession();
+  let sessionURL = '';
 
   try {
-    const subscription = await getSubscriptionByTransactionId(transactionId);
-
-    const customer = await db.customer.upsert({
-      where: { userId: session.user.id },
-      update: {},
-      create: {
-        userId: session.user.id,
-        paddleCustomerId: customerId,
-      },
-    });
-
-    const data = {
-      subscriptionStatus: subscription.status,
-      priceId: subscription.items[0].price?.id ?? '',
-      productId: subscription.items[0].price?.productId ?? '',
-      scheduledChange: subscription.scheduledChange?.effectiveAt ?? null,
-      customerId: customer.id,
-    };
-
-    await db.subscription.upsert({
-      where: {
-        subscriptionId: subscription.id,
-      },
-      update: data,
-      create: {
-        subscriptionId: subscription.id,
-        ...data,
-      },
-    });
+    const checkoutSession = await creem.createCheckoutSession(session.user.email, productId);
+    sessionURL = checkoutSession.checkout_url;
   } catch (error) {
-    const errorMessage = getApiErrorMessage(error, 'Failed to update subscription');
+    const errorMessage = getApiErrorMessage(error, 'Failed to create a checkout session');
     return [errorMessage, null];
   }
 
-  revalidatePath('/settings/billing');
-  return [null, null];
+  // redirect to checkout session
+  redirect(sessionURL);
 };
 
 export const cancelSubscription = async (): ActionResponse => {
   const session = await verifySession();
 
-  const customerId = await db.customer.findFirst({
-    where: { userId: session.user.id },
+  // find customer
+  const customer = await db.customer.findUnique({
+    where: {
+      userId: session.user.id,
+    },
   });
 
-  if (!customerId) {
-    return ['Invalid customer. Try again or contact support.', null];
+  if (!customer) {
+    return ['Customer not found', null];
   }
 
+  // get subscription
   const subscription = await db.subscription.findFirst({
     where: {
-      customerId: customerId.id,
-      subscriptionStatus: 'active',
-    },
-    orderBy: {
-      createdAt: 'desc',
+      status: 'active',
+      customerId: customer.id,
     },
   });
 
   if (!subscription) {
-    return ['No active subscription found', null];
+    return ['Subscription not found', null];
   }
 
+  // cancel subscription
   try {
-    const newSubscription = await paddle.cancelSubscription(subscription.subscriptionId);
+    const creemSubscription = await creem.cancelSubscription(subscription.subscriptionRefId);
 
+    // update subscription
     await db.subscription.update({
       where: { id: subscription.id },
-      data: {
-        subscriptionStatus: newSubscription.status,
-      },
+      data: { status: creemSubscription.status },
     });
-  } catch (error) {
-    const errorMessage = getApiErrorMessage(error, 'Failed to cancel subscription');
-    return [errorMessage, null];
+  } catch {
+    return ['Failed to cancel subscription', null];
   }
 
-  revalidatePath('/settings/billing');
   return [null, null];
 };

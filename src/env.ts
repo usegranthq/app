@@ -3,6 +3,7 @@ import { z } from 'zod';
 
 export const env = createEnv({
   server: {
+    SITE_URL: z.string().url(),
     INVITE_TOKEN: z.string().optional(),
     JWT_SIGNING_SECRET: z.string().min(1),
     TURNSTILE_SITE_KEY: z.string(),
@@ -11,7 +12,6 @@ export const env = createEnv({
     GITHUB_OAUTH_CLIENT_SECRET: z.string(),
     GOOGLE_OAUTH_CLIENT_ID: z.string(),
     GOOGLE_OAUTH_CLIENT_SECRET: z.string(),
-    BETTER_AUTH_URL: z.string().url(),
     BETTER_AUTH_SECRET: z.string(),
     PROVIDER_DOMAIN: z.string(),
     NODEMAILER_SMTP_URL: z.string(),
@@ -20,16 +20,15 @@ export const env = createEnv({
     VERCEL_DOMINATE_PROJECT_ID: z.string(),
     VERCEL_DOMINATE_API_TOKEN: z.string(),
     CRON_SECRET: z.string(),
-    PADDLE_API_KEY: z.string(),
-    PADDLE_NOTIFICATION_WEBHOOK_SECRET: z.string(),
+    CREEM_API_KEY: z.string(),
+    CREEM_WEBHOOK_SECRET: z.string(),
   },
   client: {
-    NEXT_PUBLIC_PADDLE_ENV: z.enum(['sandbox', 'production']),
-    NEXT_PUBLIC_PADDLE_CLIENT_TOKEN: z.string(),
-    NEXT_PUBLIC_PADDLE_PRO_PRICE_ID: z.string(),
-    NEXT_PUBLIC_PADDLE_ULTIMATE_PRICE_ID: z.string(),
+    NEXT_PUBLIC_CREEM_PRO_PLAN_PRODUCT_ID: z.string(),
+    NEXT_PUBLIC_CREEM_ULTIMATE_PLAN_PRODUCT_ID: z.string(),
   },
   runtimeEnv: {
+    SITE_URL: process.env.SITE_URL,
     INVITE_TOKEN: process.env.INVITE_TOKEN,
     JWT_SIGNING_SECRET: process.env.JWT_SIGNING_SECRET,
     TURNSTILE_SITE_KEY: process.env.TURNSTILE_SITE_KEY,
@@ -38,7 +37,6 @@ export const env = createEnv({
     GITHUB_OAUTH_CLIENT_SECRET: process.env.GITHUB_OAUTH_CLIENT_SECRET,
     GOOGLE_OAUTH_CLIENT_ID: process.env.GOOGLE_OAUTH_CLIENT_ID,
     GOOGLE_OAUTH_CLIENT_SECRET: process.env.GOOGLE_OAUTH_CLIENT_SECRET,
-    BETTER_AUTH_URL: process.env.BETTER_AUTH_URL,
     BETTER_AUTH_SECRET: process.env.BETTER_AUTH_SECRET,
     PROVIDER_DOMAIN: process.env.PROVIDER_DOMAIN,
     NODEMAILER_SMTP_URL: process.env.NODEMAILER_SMTP_URL,
@@ -47,13 +45,9 @@ export const env = createEnv({
     VERCEL_DOMINATE_PROJECT_ID: process.env.VERCEL_DOMINATE_PROJECT_ID,
     VERCEL_DOMINATE_API_TOKEN: process.env.VERCEL_DOMINATE_API_TOKEN,
     CRON_SECRET: process.env.CRON_SECRET,
-    PADDLE_API_KEY: process.env.PADDLE_API_KEY,
-    PADDLE_NOTIFICATION_WEBHOOK_SECRET: process.env.PADDLE_NOTIFICATION_WEBHOOK_SECRET,
-
-    // public
-    NEXT_PUBLIC_PADDLE_ENV: process.env.NEXT_PUBLIC_PADDLE_ENV,
-    NEXT_PUBLIC_PADDLE_CLIENT_TOKEN: process.env.NEXT_PUBLIC_PADDLE_CLIENT_TOKEN,
-    NEXT_PUBLIC_PADDLE_PRO_PRICE_ID: process.env.NEXT_PUBLIC_PADDLE_PRO_PRICE_ID,
-    NEXT_PUBLIC_PADDLE_ULTIMATE_PRICE_ID: process.env.NEXT_PUBLIC_PADDLE_ULTIMATE_PRICE_ID,
+    CREEM_API_KEY: process.env.CREEM_API_KEY,
+    CREEM_WEBHOOK_SECRET: process.env.CREEM_WEBHOOK_SECRET,
+    NEXT_PUBLIC_CREEM_PRO_PLAN_PRODUCT_ID: process.env.NEXT_PUBLIC_CREEM_PRO_PLAN_PRODUCT_ID,
+    NEXT_PUBLIC_CREEM_ULTIMATE_PLAN_PRODUCT_ID: process.env.NEXT_PUBLIC_CREEM_ULTIMATE_PLAN_PRODUCT_ID,
   },
 });
