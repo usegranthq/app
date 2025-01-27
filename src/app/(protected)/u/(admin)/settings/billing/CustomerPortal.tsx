@@ -18,9 +18,9 @@ export default function CustomerPortal() {
   };
 
   return (
-    <div className="mt-10 flex">
-      <Button onClick={handleButtonClick}>
-        View Customer Portal <ExternalLinkIcon />
+    <div className="mt-5 flex">
+      <Button onClick={handleButtonClick} size="sm" variant="outline">
+        View customer portal <ExternalLinkIcon />
       </Button>
     </div>
   );
