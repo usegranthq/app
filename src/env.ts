@@ -22,6 +22,7 @@ export const env = createEnv({
     CRON_SECRET: z.string(),
     CREEM_API_KEY: z.string(),
     CREEM_WEBHOOK_SECRET: z.string(),
+    POSTHOG_API_KEY: z.string(),
   },
   client: {
     NEXT_PUBLIC_CREEM_PRO_PLAN_PRODUCT_ID: z.string(),
@@ -49,5 +50,6 @@ export const env = createEnv({
     CREEM_WEBHOOK_SECRET: process.env.CREEM_WEBHOOK_SECRET,
     NEXT_PUBLIC_CREEM_PRO_PLAN_PRODUCT_ID: process.env.NEXT_PUBLIC_CREEM_PRO_PLAN_PRODUCT_ID,
     NEXT_PUBLIC_CREEM_ULTIMATE_PLAN_PRODUCT_ID: process.env.NEXT_PUBLIC_CREEM_ULTIMATE_PLAN_PRODUCT_ID,
+    POSTHOG_API_KEY: process.env.POSTHOG_API_KEY,
   },
 });

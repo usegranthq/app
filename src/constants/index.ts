@@ -8,3 +8,5 @@ const constants = {
 
 export * from './cookies';
 export default constants;
+
+export * from './posthog';

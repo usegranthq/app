@@ -20,10 +20,7 @@ export const verifySchema = z.object({
     .email({ message: 'Please enter a valid email address.' })
     .trim()
     .transform(sanitize),
-  code: z
-    .string({ required_error: 'Please enter the code sent to your email.' })
-    .length(6, { message: 'Verification code must be 6 characters long.' })
-    .trim(),
+  code: z.string({ required_error: 'Please enter the code sent to your email.' }).trim(),
 });
 
 export const providerSchema = z.object({
