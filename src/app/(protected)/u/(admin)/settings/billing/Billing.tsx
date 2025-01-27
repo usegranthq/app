@@ -5,12 +5,14 @@ import { PLAN, PlanDetails, Plans } from '@/utils/billing';
 import { Card, CardHeader, CardTitle, CardContent, CardFooter } from '@/components/ui/card';
 
 import PlanButton from './PlanButton';
+import CustomerPortal from './CustomerPortal';
 
 interface BillingProps {
   plan: PlanDetails;
+  showCustomerPortal: boolean;
 }
 
-export default function Billing({ plan }: BillingProps) {
+export default function Billing({ plan, showCustomerPortal }: BillingProps) {
   const currentPlan = plan.id;
 
   return (
@@ -45,6 +47,7 @@ export default function Billing({ plan }: BillingProps) {
           </Card>
         ))}
       </div>
+      {showCustomerPortal && <CustomerPortal />}
       <div className="my-10 flex flex-col gap-2 text-sm text-muted-foreground">
         {currentPlan !== PLAN.FREE && (
           <p>You can upgrade to a new plan, after downgrading to free plan and then subscribing again.</p>

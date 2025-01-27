@@ -69,3 +69,10 @@ export const getSubscription = async (id: string): Promise<CreemTypes.CreemSubsc
 export const cancelSubscription = async (id: string): Promise<CreemTypes.CreemSubscription> => {
   return instance.post(`v1/subscriptions/${id}/cancel`).json();
 };
+
+export const getCustomerPortalUrl = async (id: string): Promise<string> => {
+  const response = await instance
+    .post<CreemTypes.CreemCustomerPortal>(`v1/customers/billing`, { json: { customer_id: id } })
+    .json();
+  return response.customer_portal_link;
+};

@@ -82,6 +82,10 @@ export interface CreemCheckout {
   mode: string;
 }
 
+export interface CreemCustomerPortal {
+  customer_portal_link: string;
+}
+
 export interface CreemCustomerCheckout {
   email: string;
 }

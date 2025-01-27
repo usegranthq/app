@@ -6,6 +6,7 @@ import { getApiErrorMessage } from '@/utils/error';
 import { verifySession } from '@/data/_verifySession';
 import * as creem from '@/lib/creem';
 import db from '@/lib/db';
+import { getCustomer } from '@/data/user';
 
 export const checkout = async (productId: string): ActionResponse => {
   const session = await verifySession();
@@ -63,4 +64,21 @@ export const cancelSubscription = async (): ActionResponse => {
   }
 
   return [null, null];
+};
+
+export const redirectToCustomerPortal = async (): ActionResponse<string | null> => {
+  await verifySession();
+  const customer = await getCustomer();
+
+  if (!customer) {
+    return ['Customer not found', null];
+  }
+
+  try {
+    const url = await creem.getCustomerPortalUrl(customer.customerRefId);
+    return [null, url];
+  } catch (error) {
+    const errorMessage = getApiErrorMessage(error, 'Failed to redirect to customer portal');
+    return [errorMessage, null];
+  }
 };
