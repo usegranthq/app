@@ -11,7 +11,7 @@ const sqids = new Sqids({
 
 export const createUrlId = (name: string) => {
   const urlSuffix = sqids.encode([Date.now()]);
-  return slugify(name, { lower: true }) + '-' + urlSuffix;
+  return slugify(name, { lower: true, strict: true }) + '-' + urlSuffix;
 };
 
 export const getIssuer = (
