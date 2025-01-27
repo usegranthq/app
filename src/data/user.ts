@@ -28,6 +28,7 @@ export const getSessions = async (): Promise<Session[]> => {
 
 export const getCustomer = async (): Promise<Customer | null> => {
   const session = await verifySession();
+
   return db.customer.findUnique({
     where: { userId: session.user.id },
     include: {

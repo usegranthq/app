@@ -6,3 +6,12 @@ export const getSubdomain = (url: string): string => {
   const subdomain = domain.split('.')[0];
   return subdomain;
 };
+
+export const isValidUrl = (url: string): boolean => {
+  try {
+    new URL(url);
+    return true;
+  } catch {
+    return false;
+  }
+};

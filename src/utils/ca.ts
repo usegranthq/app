@@ -78,3 +78,19 @@ export const selectIssuerCert = (cert: DetailedPeerCertificate, depth: number): 
   // to select top intermediate cert, use getCertByDepth(cert, depth - 1)
   return getCertByDepth(cert, depth);
 };
+
+export const getIssuerCertifcate = async (domain: string): Promise<DetailedPeerCertificate> => {
+  const certificate = await getCertificate(domain);
+  const depth = getCertificateDepth(certificate.issuerCertificate);
+
+  // a certificate is valid if it has a depth of 1,
+  // i.e. it is signed by the root certificate.
+  // if the depth is less than 1, then the certificate is not valid
+  if (depth < 1) {
+    throw new Error('Invalid certificate');
+  }
+
+  const cert = selectIssuerCert(certificate, depth);
+
+  return cert;
+};
