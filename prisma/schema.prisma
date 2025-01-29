@@ -31,6 +31,7 @@ model User {
 
   Token    Token[]
   Provider Provider[]
+  Tenant   Tenant[]
   Customer Customer?
 
   @@unique([email])
@@ -80,6 +81,32 @@ model Verification {
   updatedAt  DateTime?
 
   @@map("verification")
+}
+
+model Customer {
+  id            String @id @default(cuid(2))
+  customerRefId String @unique
+
+  userId String @unique
+  User   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  Subscription Subscription[]
+
+  @@map("customer")
+}
+
+model Subscription {
+  id                String   @id @default(cuid(2))
+  subscriptionRefId String   @unique
+  status            String
+  productId         String
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+
+  Customer   Customer @relation(fields: [customerId], references: [id], onDelete: Cascade)
+  customerId String
+
+  @@map("subscription")
 }
 
 model Provider {
@@ -156,28 +183,33 @@ model Jwks {
   @@map("jwks")
 }
 
-model Customer {
-  id            String @id @default(cuid(2))
-  customerRefId String @unique
+model Tenant {
+  id          String   @id @default(cuid(2))
+  name        String
+  description String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 
-  userId String @unique
+  TenantProvider TenantProvider[]
+
+  userId String
   User   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-  Subscription Subscription[]
-
-  @@map("customer")
+  @@map("tenant")
 }
 
-model Subscription {
-  id                String   @id @default(cuid(2))
-  subscriptionRefId String   @unique
-  status            String
-  productId         String
-  createdAt         DateTime @default(now())
-  updatedAt         DateTime @updatedAt
+model TenantProvider {
+  id                  String   @id @default(cuid(2))
+  url                 String
+  fingerprints        String[]
+  audience            String
+  earliestTimeAllowed Int
+  createdAt           DateTime @default(now())
+  updatedAt           DateTime @updatedAt
 
-  Customer   Customer @relation(fields: [customerId], references: [id], onDelete: Cascade)
-  customerId String
+  tenantId String
+  Tenant   Tenant @relation(fields: [tenantId], references: [id], onDelete: Cascade)
 
-  @@map("subscription")
+  @@unique([url, tenantId])
+  @@map("tenant_provider")
 }

@@ -16,7 +16,10 @@ export default function Header() {
         <NavLink href="/u/providers" className="text-muted-foreground transition-colors hover:text-foreground">
           Providers
         </NavLink>
-        <NavLink href="/u/settings" className="text-foreground transition-colors hover:text-foreground">
+        <NavLink href="/u/tenants" className="text-muted-foreground transition-colors hover:text-foreground">
+          Tenants
+        </NavLink>
+        <NavLink href="/u/settings" className="text-muted-foreground transition-colors hover:text-foreground">
           Settings
         </NavLink>
       </nav>

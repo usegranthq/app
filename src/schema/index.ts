@@ -67,3 +67,42 @@ export const createTokenSchema = z.object({
     .nullable()
     .optional(),
 });
+
+export const tenantSchema = z.object({
+  name: z
+    .string({ required_error: 'Please provide a tenant name.' })
+    .min(3, { message: 'Tenant name must be at least 3 characters long.' })
+    .max(50, { message: 'Tenant name must be at most 50 characters long.' })
+    .trim()
+    .transform(sanitize),
+  description: z
+    .string({ required_error: 'Please provide a tenant description.' })
+    .min(10, { message: 'Tenant description must be at least 10 characters long.' })
+    .max(200, { message: 'Tenant description must be at most 200 characters long.' })
+    .trim()
+    .transform(sanitize),
+});
+
+export const tenantProviderSchema = z.object({
+  url: z
+    .string({ required_error: 'Please provide a provider URL.' })
+    .trim()
+    .url({ message: 'Please provide a valid URL.' })
+    .transform(sanitize),
+  fingerprint: z
+    .string({ required_error: 'Please provide the provider fingerprint.' })
+    .min(32, { message: 'Fingerprint must be at least 32 characters long.' })
+    .max(64, { message: 'Fingerprint must be at most 64 characters long.' })
+    .trim()
+    .transform(sanitize),
+  audience: z
+    .string({ required_error: 'Please provide the provider audience.' })
+    .min(3, { message: 'Provider audience must be at least 3 characters long.' })
+    .max(100, { message: 'Provider audience must be at most 100 characters long.' })
+    .trim()
+    .transform(sanitize),
+  earliestTimeAllowed: z
+    .number({ required_error: 'Please provide the earliest time allowed.', coerce: true })
+    .min(0, { message: 'Earliest time allowed must be at least 0.' })
+    .max(12, { message: 'Earliest time allowed must be at most 12.' }),
+});
