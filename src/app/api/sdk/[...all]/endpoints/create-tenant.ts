@@ -1,8 +1,10 @@
 import db from '@/lib/db';
 
+import { tenantSchema } from '@/schema';
+import { getPlanByUserId } from '@/lib/auth';
+
 import { createAuthEndpoint } from './utils/call';
 import ERRORS, { SdkError } from './utils/errors';
-import { tenantSchema } from '@/schema';
 
 const createTenant = createAuthEndpoint(
   'v1/tenants',
@@ -12,6 +14,21 @@ const createTenant = createAuthEndpoint(
   },
   async (ctx) => {
     const { name, description } = ctx.body;
+
+    const plan = await getPlanByUserId(ctx.context.userId);
+    const tenantsCount = await db.tenant.count({
+      where: {
+        userId: ctx.context.userId,
+      },
+    });
+
+    if (!plan.tenants.available) {
+      throw new SdkError('FORBIDDEN', ERRORS.TENANTS_NOT_AVAILABLE);
+    }
+
+    if (tenantsCount >= plan.tenants.limit) {
+      throw new SdkError('FORBIDDEN', ERRORS.MAX_TENANTS_LIMIT_REACHED);
+    }
 
     // check if tenant already exists
     const tenantExists = await db.tenant
