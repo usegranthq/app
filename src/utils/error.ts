@@ -29,3 +29,84 @@ export const getApiErrorMessage = (error: unknown, defaultMessage: string | Mess
 export const getZodErrorMessage = (error: ZodError) => {
   return error.errors[0].message;
 };
+
+const ERRORS = {
+  PROVIDERS_NOT_AVAILABLE: {
+    code: 'PROVIDERS_NOT_AVAILABLE',
+    message: 'Providers are not available under your current plan. Please upgrade to access this feature',
+  },
+  MAX_PROVIDERS_LIMIT_REACHED: {
+    code: 'MAX_PROVIDERS_LIMIT_REACHED',
+    message: 'You have reached the limit for providers. Upgrade your plan or contact support to increase the limit',
+  },
+  PROVIDER_NOT_FOUND: {
+    code: 'PROVIDER_NOT_FOUND',
+    message: 'The specified provider could not be found. Please check the provider ID and try again',
+  },
+  CLIENT_NOT_FOUND: {
+    code: 'CLIENT_NOT_FOUND',
+    message: 'The specified client could not be found. Please verify the client ID and try again',
+  },
+  MAX_CLIENTS_LIMIT_REACHED: {
+    code: 'MAX_CLIENTS_LIMIT_REACHED',
+    message: 'You have reached the maximum number of clients allowed by your current plan',
+  },
+  TENANTS_NOT_AVAILABLE: {
+    code: 'TENANTS_NOT_AVAILABLE',
+    message: 'Tenants are not available under your current plan',
+  },
+  MAX_TENANTS_LIMIT_REACHED: {
+    code: 'MAX_TENANTS_LIMIT_REACHED',
+    message: 'You have reached the maximum number of tenants allowed by your current plan',
+  },
+  TENANT_ALREADY_EXISTS: {
+    code: 'TENANT_ALREADY_EXISTS',
+    message: 'A tenant with this name already exists',
+  },
+  TENANT_NOT_FOUND: {
+    code: 'TENANT_NOT_FOUND',
+    message: 'The specified tenant could not be found',
+  },
+  PROVIDER_ALREADY_EXISTS: {
+    code: 'PROVIDER_ALREADY_EXISTS',
+    message: 'A provider with this URL already exists',
+  },
+  INVALID_TOKEN: {
+    code: 'INVALID_TOKEN',
+    message: 'The provided JWT token is invalid',
+  },
+  INVALID_TOKEN_HEADERS: {
+    code: 'INVALID_TOKEN_HEADERS',
+    message: 'The JWT token headers are invalid',
+  },
+  INVALID_ISSUER: {
+    code: 'INVALID_ISSUER',
+    message: 'The issuer of the token is invalid',
+  },
+  EXPIRED_TOKEN: {
+    code: 'EXPIRED_TOKEN',
+    message: 'The provided token has expired and is no longer valid',
+  },
+  GENERIC_FEATURE_NOT_AVAILABLE: {
+    code: 'GENERIC_FEATURE_NOT_AVAILABLE',
+    message: 'This feature is not available in your current plan. Please upgrade to access this feature',
+  },
+  AUTOMATIC_ROTATION_ENABLED: {
+    code: 'AUTOMATIC_ROTATION_ENABLED',
+    message: 'Unable to rotate JWKS. Automatic rotation is enabled for this provider',
+  },
+  AUTOMATIC_ROTATION_ENABLED_REMOVE_KEY: {
+    code: 'AUTOMATIC_ROTATION_ENABLED_REMOVE_KEY',
+    message: 'Unable to remove key. Automatic rotation is enabled for this provider',
+  },
+  NO_KEYS_FOUND: {
+    code: 'NO_KEYS_FOUND',
+    message: 'No keys found for this provider',
+  },
+  CANNOT_REMOVE_LATEST_KEY: {
+    code: 'CANNOT_REMOVE_LATEST_KEY',
+    message: 'Cannot remove the latest key',
+  },
+} as const;
+
+export default ERRORS;

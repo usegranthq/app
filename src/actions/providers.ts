@@ -11,7 +11,7 @@ import { verifySession } from '@/data/_verifySession';
 import { getPlanDetails } from '@/data/user';
 import { createUrlId, getIssuer } from '@/utils/provider';
 import { createJwt, defaultJwk } from '@/utils/jwt';
-import { getApiErrorMessage, getZodErrorMessage } from '@/utils/error';
+import ERRORS, { getApiErrorMessage, getZodErrorMessage } from '@/utils/error';
 import { generateJwk } from '@/utils/jwk';
 import { clientSchema, providerSchema } from '@/schema';
 
@@ -37,14 +37,11 @@ export async function createProvider(formData: FormData): ActionResponse<Provide
   const plan = await getPlanDetails();
 
   if (!plan.providers.available) {
-    return ['Providers are not available under your current plan. Please upgrade to access this feature.', null];
+    return [ERRORS.PROVIDERS_NOT_AVAILABLE.message, null];
   }
 
   if (providersCount >= plan.providers.limit) {
-    return [
-      'You have reached the limit for providers. Upgrade your plan or contact support to increase the limit.',
-      null,
-    ];
+    return [ERRORS.MAX_PROVIDERS_LIMIT_REACHED.message, null];
   }
 
   try {
@@ -126,10 +123,7 @@ export async function createClient(providerId: string, formData: FormData): Acti
 
   const plan = await getPlanDetails();
   if (clientsCount >= plan.providers.clients) {
-    return [
-      'You have reached the limit for clients per provider. Upgrade your plan or contact support to increase the limit.',
-      null,
-    ];
+    return [ERRORS.MAX_CLIENTS_LIMIT_REACHED.message, null];
   }
 
   try {
@@ -239,7 +233,7 @@ export async function requestSigningKey(providerId: string): ActionResponse<stri
 
   const plan = await getPlanDetails();
   if (!plan.rotateSigningKey) {
-    return ['This feature is not available in your current plan. Please upgrade to access this feature.', null];
+    return [ERRORS.GENERIC_FEATURE_NOT_AVAILABLE.message, null];
   }
 
   const provider = await db.provider.findUnique({
@@ -249,11 +243,11 @@ export async function requestSigningKey(providerId: string): ActionResponse<stri
   });
 
   if (!provider) {
-    return ['Provider not found', null];
+    return [ERRORS.PROVIDER_NOT_FOUND.message, null];
   }
 
   if (provider.rotateJwks) {
-    return ['Unable to rotate JWKS. Automatic rotation is enabled for this provider.', null];
+    return [ERRORS.AUTOMATIC_ROTATION_ENABLED.message, null];
   }
 
   try {
@@ -283,11 +277,11 @@ export async function removeKey(providerId: string, id: string): ActionResponse 
   });
 
   if (!provider) {
-    return ['Provider not found', null];
+    return [ERRORS.PROVIDER_NOT_FOUND.message, null];
   }
 
   if (provider.rotateJwks) {
-    return ['Unable to remove key. Automatic rotation is enabled for this provider.', null];
+    return [ERRORS.AUTOMATIC_ROTATION_ENABLED_REMOVE_KEY.message, null];
   }
 
   const latestKey = await db.jwks.findFirst({
@@ -296,11 +290,11 @@ export async function removeKey(providerId: string, id: string): ActionResponse 
   });
 
   if (!latestKey) {
-    return ['No keys found', null];
+    return [ERRORS.NO_KEYS_FOUND.message, null];
   }
 
   if (latestKey.id === id) {
-    return ['Cannot remove the latest key', null];
+    return [ERRORS.CANNOT_REMOVE_LATEST_KEY.message, null];
   }
 
   try {
@@ -318,7 +312,7 @@ export async function toggleRotateJwks(providerId: string, rotateJwks: boolean):
 
   const plan = await getPlanDetails();
   if (!plan.rotateSigningKey) {
-    return ['This feature is not available in your current plan. Please upgrade to access this feature.', null];
+    return [ERRORS.GENERIC_FEATURE_NOT_AVAILABLE.message, null];
   }
 
   try {
