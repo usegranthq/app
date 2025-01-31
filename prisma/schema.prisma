@@ -199,13 +199,13 @@ model Tenant {
 }
 
 model TenantProvider {
-  id                  String   @id @default(cuid(2))
-  url                 String
-  fingerprints        String[]
-  audience            String
-  earliestTimeAllowed Int
-  createdAt           DateTime @default(now())
-  updatedAt           DateTime @updatedAt
+  id                          String   @id @default(cuid(2))
+  url                         String
+  fingerprints                String[]
+  audience                    String
+  earliestIssuanceTimeAllowed Int
+  createdAt                   DateTime @default(now())
+  updatedAt                   DateTime @updatedAt
 
   tenantId String
   Tenant   Tenant @relation(fields: [tenantId], references: [id], onDelete: Cascade)

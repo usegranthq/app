@@ -87,7 +87,7 @@ export async function createTenantProvider(tenantId: string, formData: FormData)
     url: formData.get('url'),
     fingerprint: formData.get('fingerprint'),
     audience: formData.get('audience'),
-    earliestTimeAllowed: formData.get('earliestTimeAllowed'),
+    earliestIssuanceTimeAllowed: formData.get('earliestIssuanceTimeAllowed'),
   });
 
   if (!validation.success) {
@@ -100,7 +100,7 @@ export async function createTenantProvider(tenantId: string, formData: FormData)
         url: validation.data.url,
         fingerprints: [validation.data.fingerprint],
         audience: validation.data.audience,
-        earliestTimeAllowed: validation.data.earliestTimeAllowed,
+        earliestIssuanceTimeAllowed: validation.data.earliestIssuanceTimeAllowed,
         tenantId,
       },
     });

@@ -93,7 +93,7 @@ export default function AddProviderForm({ tenantId }: AddProviderFormProps) {
           placeholder="https://"
           required
           minLength={3}
-          maxLength={32}
+          maxLength={255}
           pattern="https://.*"
         />
         <span className="text-xs text-muted-foreground">
@@ -124,7 +124,7 @@ export default function AddProviderForm({ tenantId }: AddProviderFormProps) {
         <Label>Earliest Time allowed (optional)</Label>
         <Input
           type="number"
-          name="earliestTimeAllowed"
+          name="earliestIssuanceTimeAllowed"
           min={0}
           max={12}
           placeholder="Earliest time allowed"

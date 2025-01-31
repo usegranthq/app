@@ -8,6 +8,7 @@ import { useMemo } from 'react';
 import { Button } from '@/components/ui/button';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import TenantOptions from './TenantOptions';
+import { formatDate } from 'date-fns';
 
 interface TenantProvidersProps {
   id: string;
@@ -23,12 +24,6 @@ function getColumns(tenantId: string): ColumnDef<TenantProvider>[] {
       },
     },
     {
-      header: 'Fingerprint',
-      cell: ({ row }) => {
-        return row.original.fingerprints.join(', ');
-      },
-    },
-    {
       header: 'Audience',
       cell: ({ row }) => {
         return row.original.audience;
@@ -37,8 +32,15 @@ function getColumns(tenantId: string): ColumnDef<TenantProvider>[] {
     {
       header: 'Earliest Time allowed',
       cell: ({ row }) => {
-        const earliestTimeAllowed = row.original.earliestTimeAllowed;
-        return earliestTimeAllowed;
+        const earliestIssuanceTimeAllowed = row.original.earliestIssuanceTimeAllowed;
+        return earliestIssuanceTimeAllowed;
+      },
+    },
+    {
+      header: 'Created at',
+      cell: ({ row }) => {
+        const createdAt = row.original.createdAt;
+        return formatDate(createdAt, 'MMM dd, yyyy');
       },
     },
     {

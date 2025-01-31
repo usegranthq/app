@@ -16,7 +16,7 @@ CREATE TABLE "tenant_provider" (
     "url" TEXT NOT NULL,
     "fingerprints" TEXT[],
     "audience" TEXT NOT NULL,
-    "earliestTimeAllowed" INTEGER NOT NULL,
+    "earliestIssuanceTimeAllowed" INTEGER NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
     "tenantId" TEXT NOT NULL,

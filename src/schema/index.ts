@@ -88,6 +88,7 @@ export const tenantProviderSchema = z.object({
     .string({ required_error: 'Please provide a provider URL.' })
     .trim()
     .url({ message: 'Please provide a valid URL.' })
+    .transform((url) => url.replace(/\/$/, '')) // Remove trailing slash
     .transform(sanitize),
   fingerprint: z
     .string({ required_error: 'Please provide the provider fingerprint.' })
@@ -101,7 +102,7 @@ export const tenantProviderSchema = z.object({
     .max(100, { message: 'Provider audience must be at most 100 characters long.' })
     .trim()
     .transform(sanitize),
-  earliestTimeAllowed: z
+  earliestIssuanceTimeAllowed: z
     .number({ required_error: 'Please provide the earliest time allowed.', coerce: true })
     .min(0, { message: 'Earliest time allowed must be at least 0.' })
     .max(12, { message: 'Earliest time allowed must be at most 12.' }),
