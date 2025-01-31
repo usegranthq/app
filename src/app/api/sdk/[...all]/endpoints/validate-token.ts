@@ -25,6 +25,8 @@ const allowedHeaderTypes = ['jwt', 'at+jwt'];
 
 const toHours = (seconds: number = 0) => Math.floor(seconds / 3600);
 
+const OPENID_URL = '/.well-known/openid-configuration';
+
 const validateToken = createAuthEndpoint(
   'v1/tenants/:tenantId/validate',
   {
@@ -99,7 +101,7 @@ const validateToken = createAuthEndpoint(
     type OpenIdConfig = z.infer<typeof openIdConfigSchema>;
 
     try {
-      const oidUrl = new URL('/.well-known/openid-configuration', tenantProvider.url);
+      const oidUrl = new URL(OPENID_URL, tenantProvider.url);
       const data = await ky.get(oidUrl.toString()).json<OpenIdConfig>();
 
       const validationResult = openIdConfigSchema.parse(data);
