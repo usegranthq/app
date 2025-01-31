@@ -35,7 +35,12 @@ export async function createProvider(formData: FormData): ActionResponse<Provide
   });
 
   const plan = await getPlanDetails();
-  if (providersCount >= plan.providers) {
+
+  if (!plan.providers.available) {
+    return ['Providers are not available under your current plan. Please upgrade to access this feature.', null];
+  }
+
+  if (providersCount >= plan.providers.limit) {
     return [
       'You have reached the limit for providers. Upgrade your plan or contact support to increase the limit.',
       null,
@@ -120,7 +125,7 @@ export async function createClient(providerId: string, formData: FormData): Acti
   });
 
   const plan = await getPlanDetails();
-  if (clientsCount >= plan.clients) {
+  if (clientsCount >= plan.providers.clients) {
     return [
       'You have reached the limit for clients per provider. Upgrade your plan or contact support to increase the limit.',
       null,

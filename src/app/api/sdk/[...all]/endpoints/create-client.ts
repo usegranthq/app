@@ -22,7 +22,7 @@ const createClient = createAuthEndpoint(
       },
     });
 
-    if (clientsCount >= plan.clients) {
+    if (clientsCount >= plan.providers.clients) {
       throw new SdkError('FORBIDDEN', ERRORS.MAX_CLIENTS_LIMIT_REACHED);
     }
 

@@ -17,8 +17,11 @@ export type PlanName = (typeof PLAN)[keyof typeof PLAN];
 
 export type PlanDetails = {
   id: PlanName;
-  providers: number;
-  clients: number;
+  providers: {
+    available: boolean;
+    limit: number;
+    clients: number; // clients per provider
+  };
   tenants: {
     available: boolean;
     limit: number;
@@ -34,8 +37,11 @@ export type PlanDetails = {
 export const PLAN_LIMITS: Record<PlanName, PlanDetails> = {
   [PLAN.FREE]: {
     id: PLAN.FREE,
-    providers: 1,
-    clients: 999,
+    providers: {
+      available: true,
+      limit: 1,
+      clients: 999,
+    },
     tenants: {
       available: false,
       limit: 0,
@@ -49,8 +55,11 @@ export const PLAN_LIMITS: Record<PlanName, PlanDetails> = {
   },
   [PLAN.PRO]: {
     id: PLAN.PRO,
-    providers: 10,
-    clients: 9999,
+    providers: {
+      available: true,
+      limit: 10,
+      clients: 9999,
+    },
     tenants: {
       available: true,
       limit: 10,
@@ -64,8 +73,11 @@ export const PLAN_LIMITS: Record<PlanName, PlanDetails> = {
   },
   [PLAN.ULTIMATE]: {
     id: PLAN.ULTIMATE,
-    providers: 100,
-    clients: 9999,
+    providers: {
+      available: true,
+      limit: 100,
+      clients: 9999,
+    },
     tenants: {
       available: true,
       limit: 100,

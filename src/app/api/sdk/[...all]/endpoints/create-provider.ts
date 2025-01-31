@@ -23,7 +23,11 @@ const createProvider = createAuthEndpoint(
       },
     });
 
-    if (providersCount >= plan.providers) {
+    if (!plan.providers.available) {
+      throw new SdkError('FORBIDDEN', ERRORS.PROVIDERS_NOT_AVAILABLE);
+    }
+
+    if (providersCount >= plan.providers.limit) {
       throw new SdkError('FORBIDDEN', ERRORS.MAX_PROVIDERS_LIMIT_REACHED);
     }
 
