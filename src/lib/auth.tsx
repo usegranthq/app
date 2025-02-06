@@ -8,7 +8,7 @@ import { createAuthMiddleware } from 'better-auth/api';
 import { env } from '@/env';
 import LoginEmail from '@/templates/LoginEmail';
 import { findPlanByProductId, findPlanByPlanName, PLAN, PlanDetails } from '@/utils/billing';
-// import { PH_EVENTS } from '@/constants';
+import * as constants from '@/constants/cookies';
 
 import { prisma } from './db';
 import { sendEmail } from './email';
@@ -94,7 +94,7 @@ export const auth = betterAuth({
     }),
   },
   advanced: {
-    cookiePrefix: '_ug',
+    cookiePrefix: constants.COOKIE_PREFIX,
   },
   rateLimit: {
     window: 10, // time window in seconds

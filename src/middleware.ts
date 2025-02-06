@@ -1,8 +1,6 @@
 import type { NextRequest } from 'next/server';
 import { NextResponse } from 'next/server';
-import { cookies } from 'next/headers';
-import type { Session } from 'better-auth/types';
-import ky, { HTTPError, Options as KyOptions } from 'ky';
+import { getSessionCookie } from 'better-auth';
 
 import * as constants from '@/constants';
 
@@ -24,44 +22,14 @@ const hasValidCookie = (request: NextRequest, cookieName: string) => {
 
 const next = () => NextResponse.next();
 
-const getSession = async (request: NextRequest, cookie: string): Promise<Session | null> => {
-  const cookieStore = await cookies();
-
-  const options: KyOptions = {
-    prefixUrl: request.nextUrl.origin,
-    headers: {
-      cookie,
-    },
-  };
-
-  try {
-    const session = await ky.get<Session>('api/auth/get-session', options).json<Session>();
-    if (!session) {
-      throw new Error('SESSION_NOT_FOUND');
-    }
-
-    return session;
-  } catch (error) {
-    const isSessionNotFoundError = error instanceof Error && error.message === 'SESSION_NOT_FOUND';
-    const isUnauthorizedError = error instanceof HTTPError && error.response.status === 401;
-    if (isSessionNotFoundError || isUnauthorizedError) {
-      cookieStore.delete(constants.AUTH_COOKIE);
-      cookieStore.delete(constants.VERIFY_COOKIE);
-      return null;
-    }
-
-    return null;
-  }
+const hasValidSessionCookie = (request: NextRequest) => {
+  const sessionCookie = getSessionCookie(request, { cookiePrefix: constants.COOKIE_PREFIX });
+  return !!sessionCookie;
 };
 
 const handleProtectedRoute = async (request: NextRequest) => {
-  const cookieStore = await cookies();
-  const authCookie = cookieStore.get(constants.AUTH_COOKIE);
-
-  if (!authCookie) return redirectToLoginPage(request);
-
-  const session = await getSession(request, cookieStore.toString());
-  if (!session) {
+  const hasSession = hasValidSessionCookie(request);
+  if (!hasSession) {
     return redirectToLoginPage(request);
   }
 
@@ -87,8 +55,8 @@ const handleVerifyRoute = (request: NextRequest) => {
 const authRoutes = [ROUTES.LOGIN, '/verify'];
 
 const handleDefaultRoute = (request: NextRequest) => {
-  const isAuthCookieValid = hasValidCookie(request, constants.AUTH_COOKIE);
-  if (!isAuthCookieValid) return next();
+  const hasSession = hasValidSessionCookie(request);
+  if (!hasSession) return next();
 
   return authRoutes.includes(request.nextUrl.pathname) ? redirectToUserPage(request) : next();
 };

@@ -15,7 +15,7 @@ export const verifySession = cache(async (): Promise<AuthSession> => {
   });
 
   if (!session) {
-    return redirect(ROUTES.LOGIN);
+    return redirect(ROUTES.API_UNAUTHORIZED);
   }
 
   return session;
