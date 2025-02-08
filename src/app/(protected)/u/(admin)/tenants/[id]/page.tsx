@@ -6,7 +6,10 @@ import { normalizePaginationParams } from '@/utils/pagination';
 import NoIdp from './NoIdp';
 import TenantProviders from './TenantProviders';
 
-type TenantPageProps = Params<{ id: string }> & SearchParams<{ page: string; limit: string }>;
+interface TenantPageProps {
+  params: Params<{ id: string }>;
+  searchParams: SearchParams<PaginationProps>;
+}
 
 export default async function TenantPage({ params, searchParams }: TenantPageProps) {
   const { id } = await params;

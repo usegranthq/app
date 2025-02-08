@@ -6,7 +6,7 @@ import { TenantProvider } from '@prisma/client';
 import { ColumnDef, flexRender, getCoreRowModel, useReactTable } from '@tanstack/react-table';
 import { formatDate } from 'date-fns';
 
-import PaginationControl from '@/blocks/PaginationControl';
+import PaginationControls from '@/blocks/PaginationControls';
 import { Button } from '@/components/ui/button';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 
@@ -99,11 +99,7 @@ export default function TenantProviders({ id, providers, pagination }: TenantPro
           </TableBody>
         </Table>
       </div>
-      {pagination.total > pagination.limit && (
-        <div className="mt-6">
-          <PaginationControl pagination={pagination} />
-        </div>
-      )}
+      <PaginationControls pagination={pagination} className="mt-6" />
     </div>
   );
 }

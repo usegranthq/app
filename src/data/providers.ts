@@ -2,6 +2,7 @@ import 'server-only';
 
 import db from '@/lib/db';
 import { defaultJwk } from '@/utils/jwt';
+import { toPaginatedResponse } from '@/utils/pagination';
 import { Client, Domain, Provider } from '@/types/app.types';
 
 import { verifySession } from './_verifySession';
@@ -43,14 +44,41 @@ export const getDomains = async (providerId: string): Promise<Domain[]> => {
   });
 };
 
-export const getClients = async (providerId: string): Promise<Client[]> => {
-  await verifySession();
+export const getClients = async (
+  providerId: string,
+  page: number,
+  limit: number,
+): Promise<PaginatedResponse<Client>> => {
+  const session = await verifySession();
 
-  return await db.client.findMany({
-    where: {
-      providerId,
-    },
-  });
+  const skip = (page - 1) * limit;
+  const take = limit;
+
+  const [clients, total] = await db.$transaction([
+    db.client.findMany({
+      where: {
+        providerId,
+        Provider: {
+          userId: session.user.id,
+        },
+      },
+      orderBy: {
+        createdAt: 'desc',
+      },
+      skip,
+      take,
+    }),
+    db.client.count({
+      where: {
+        providerId,
+        Provider: {
+          userId: session.user.id,
+        },
+      },
+    }),
+  ]);
+
+  return toPaginatedResponse(clients, total, page, limit);
 };
 
 export interface SigningKey {

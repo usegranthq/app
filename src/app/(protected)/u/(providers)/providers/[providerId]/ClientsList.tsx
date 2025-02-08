@@ -4,6 +4,7 @@ import { useMemo } from 'react';
 import { ColumnDef, flexRender, getCoreRowModel, useReactTable } from '@tanstack/react-table';
 
 import { formatDate } from '@/utils/date';
+import PaginationControls from '@/blocks/PaginationControls';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Client } from '@/types/app.types';
 
@@ -51,9 +52,10 @@ function getColumns(providerId: string): ColumnDef<Client>[] {
 interface ClientsListProps {
   clients: Client[];
   providerId: string;
+  pagination: Pagination;
 }
 
-export default function ClientsList({ clients, providerId }: ClientsListProps) {
+export default function ClientsList({ clients, providerId, pagination }: ClientsListProps) {
   const columns = useMemo(() => getColumns(providerId), [providerId]);
 
   const table = useReactTable({
@@ -88,6 +90,7 @@ export default function ClientsList({ clients, providerId }: ClientsListProps) {
           </TableBody>
         </Table>
       </div>
+      <PaginationControls pagination={pagination} className="mt-6" />
     </div>
   );
 }

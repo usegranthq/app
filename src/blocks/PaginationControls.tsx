@@ -1,8 +1,9 @@
 'use client';
 
-import { MouseEvent } from 'react';
+import { MouseEvent, useEffect } from 'react';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 
+import { cn } from '@/lib/utils';
 import {
   Pagination,
   PaginationContent,
@@ -111,22 +112,42 @@ function getControlState(pagination: Pagination) {
   };
 }
 
-export default function PaginationControl({ pagination }: { pagination: Pagination }) {
-  const pages = getPages(pagination, 2);
+interface PaginationControlsProps {
+  pagination: Pagination;
+  className?: string;
+}
+
+export default function PaginationControls({ pagination, className }: PaginationControlsProps) {
+  const pages = getPages(pagination, 10);
   const controlState = getControlState(pagination);
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
 
-  const handlePageClick = (e: MouseEvent, page: number) => {
-    e.preventDefault();
+  const setPage = (page: number) => {
     const params = new URLSearchParams(searchParams.toString());
     params.set('page', page.toString());
     router.push(pathname + '?' + params);
   };
 
+  const handlePageClick = (e: MouseEvent, page: number) => {
+    e.preventDefault();
+    setPage(page);
+  };
+
+  useEffect(() => {
+    // if currentpage is outside total pages, redirect to page 1
+    if (pagination.page > pages.length) {
+      setPage(1);
+    }
+  }, [pagination.page, pages.length, setPage]);
+
+  if (pagination.total < pagination.limit) {
+    return null;
+  }
+
   return (
-    <Pagination className="mx-0 justify-end">
+    <Pagination className={cn('mx-0 justify-end', className)}>
       <PaginationContent>
         <PaginationItem>
           <PaginationPrevious className={controlState.canGoToPrevious ? '' : 'pointer-events-none opacity-75'} />
