@@ -1,10 +1,10 @@
 import 'server-only';
 
-import { Session, User, Customer, Subscription } from '@/types/app.types';
 import db from '@/lib/db';
+import { findPlanByPlanName, PlanDetails } from '@/utils/billing';
+import { Customer, Session, Subscription, User } from '@/types/app.types';
 
 import { verifySession } from './_verifySession';
-import { findPlanByPlanName, PlanDetails } from '@/utils/billing';
 
 export const getUser = async (): Promise<User> => {
   const session = await verifySession();

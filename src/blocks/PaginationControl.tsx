@@ -1,4 +1,8 @@
 'use client';
+
+import { MouseEvent } from 'react';
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
+
 import {
   Pagination,
   PaginationContent,
@@ -8,8 +12,6 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from '@/components/ui/pagination';
-import { MouseEvent } from 'react';
-import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 
 function makePage(pageNumber: number, text: string, isActive: boolean) {
   return {

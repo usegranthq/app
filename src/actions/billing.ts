@@ -2,11 +2,11 @@
 
 import { redirect } from 'next/navigation';
 
-import { getApiErrorMessage } from '@/utils/error';
-import { verifySession } from '@/data/_verifySession';
 import * as creem from '@/lib/creem';
 import db from '@/lib/db';
+import { verifySession } from '@/data/_verifySession';
 import { getCustomer } from '@/data/user';
+import { getApiErrorMessage } from '@/utils/error';
 
 export const checkout = async (productId: string): ActionResponse => {
   const session = await verifySession();

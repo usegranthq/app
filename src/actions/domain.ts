@@ -1,12 +1,13 @@
 'use server';
 
-import { z } from 'zod';
 import { revalidatePath } from 'next/cache';
+import { z } from 'zod';
 
+import db from '@/lib/db';
 import * as vercel from '@/lib/vercel';
 import { verifySession } from '@/data/_verifySession';
 import { getApiErrorMessage, getZodErrorMessage } from '@/utils/error';
-import db from '@/lib/db';
+
 import { findPlanByPlanName } from '../utils/billing';
 
 const domainSchema = z

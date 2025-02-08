@@ -3,10 +3,10 @@
 import { ColumnDef, flexRender, getCoreRowModel, useReactTable } from '@tanstack/react-table';
 import { formatRelative } from 'date-fns';
 
+import { formatDate } from '@/utils/date';
+import { isNullOrUndefined } from '@/utils/validators';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Token } from '@/types/app.types';
-import { isNullOrUndefined } from '@/utils/validators';
-import { formatDate } from '@/utils/date';
 
 import TokenOptions from './TokenOptions';
 

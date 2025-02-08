@@ -1,15 +1,16 @@
 'use client';
 
-import { TenantProvider } from '@prisma/client';
-import { useReactTable, getCoreRowModel, flexRender, ColumnDef } from '@tanstack/react-table';
-import Link from 'next/link';
 import { useMemo } from 'react';
+import Link from 'next/link';
+import { TenantProvider } from '@prisma/client';
+import { ColumnDef, flexRender, getCoreRowModel, useReactTable } from '@tanstack/react-table';
+import { formatDate } from 'date-fns';
 
+import PaginationControl from '@/blocks/PaginationControl';
 import { Button } from '@/components/ui/button';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
+
 import TenantOptions from './TenantOptions';
-import { formatDate } from 'date-fns';
-import PaginationControl from '@/blocks/PaginationControl';
 
 interface TenantProvidersProps {
   id: string;

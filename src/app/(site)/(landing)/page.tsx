@@ -3,13 +3,12 @@ import Link from 'next/link';
 
 import { Button } from '@/components/ui/button';
 
-import PricingSection from './Pricing';
-import ZeroTrustSection from './ZeroTrust';
 import DynamicEnv from './DyanmicEnv';
-import TrustBasedAccess from './TrustBasedAccess';
-
 import landerDarkImg from './lander-dark.png';
 import landerLightImg from './lander-light.png';
+import PricingSection from './Pricing';
+import TrustBasedAccess from './TrustBasedAccess';
+import ZeroTrustSection from './ZeroTrust';
 
 export default async function Home() {
   const isProduction = process.env.NODE_ENV === 'production';

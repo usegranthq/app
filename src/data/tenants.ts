@@ -1,8 +1,8 @@
 import db from '@/lib/db';
+import { toPaginatedResponse } from '@/utils/pagination';
 import { Tenant, TenantProvider } from '@/types/app.types';
 
 import { verifySession } from './_verifySession';
-import { toPaginatedResponse } from '@/utils/pagination';
 
 export const getTenants = async (): Promise<Tenant[]> => {
   const session = await verifySession();

@@ -1,17 +1,17 @@
 'use client';
 
-import { toast } from 'sonner';
-import { useFormStatus } from 'react-dom';
-
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Domain, Provider } from '@/types/app.types';
-import { deleteDomain, verifyDomain } from '@/actions';
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
+import { useTransition } from 'react';
 import Link from 'next/link';
 import { ExternalLinkIcon } from 'lucide-react';
-import { useTransition } from 'react';
+import { useFormStatus } from 'react-dom';
+import { toast } from 'sonner';
+
+import { deleteDomain, verifyDomain } from '@/actions';
 import { useProgressBar } from '@/blocks/NavProgress';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Domain, Provider } from '@/types/app.types';
 
 interface CustomDomainsProps {
   provider: Provider;

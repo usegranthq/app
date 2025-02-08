@@ -2,18 +2,18 @@
 
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
-import { JWK } from 'jose';
 import { Prisma } from '@prisma/client';
+import { JWK } from 'jose';
 
 import db from '@/lib/db';
-import { Client, Provider } from '@/types/app.types';
 import { verifySession } from '@/data/_verifySession';
 import { getPlanDetails } from '@/data/user';
-import { createUrlId, getIssuer } from '@/utils/provider';
-import { createJwt, defaultJwk } from '@/utils/jwt';
 import ERRORS, { getApiErrorMessage, getZodErrorMessage } from '@/utils/error';
 import { generateJwk } from '@/utils/jwk';
+import { createJwt, defaultJwk } from '@/utils/jwt';
+import { createUrlId, getIssuer } from '@/utils/provider';
 import { clientSchema, providerSchema } from '@/schema';
+import { Client, Provider } from '@/types/app.types';
 
 export async function createProvider(formData: FormData): ActionResponse<Provider> {
   const session = await verifySession();

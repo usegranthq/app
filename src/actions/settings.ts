@@ -1,15 +1,15 @@
 'use server';
 
-import { addDays } from 'date-fns';
-import { headers } from 'next/headers';
-import { nanoid } from 'nanoid';
-import { redirect } from 'next/navigation';
 import { revalidatePath } from 'next/cache';
+import { headers } from 'next/headers';
+import { redirect } from 'next/navigation';
+import { addDays } from 'date-fns';
+import { nanoid } from 'nanoid';
 
-import { getApiErrorMessage, getZodErrorMessage } from '@/utils/error';
-import { verifySession } from '@/data/_verifySession';
 import { auth } from '@/lib/auth';
 import db from '@/lib/db';
+import { verifySession } from '@/data/_verifySession';
+import { getApiErrorMessage, getZodErrorMessage } from '@/utils/error';
 import { createTokenSchema } from '@/schema';
 
 export async function createToken(formData: FormData): ActionResponse<string> {

@@ -1,11 +1,11 @@
 'use client';
 
-import { ColumnDef, flexRender, getCoreRowModel, useReactTable } from '@tanstack/react-table';
 import { useMemo } from 'react';
+import { ColumnDef, flexRender, getCoreRowModel, useReactTable } from '@tanstack/react-table';
 
+import { formatDate } from '@/utils/date';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Client } from '@/types/app.types';
-import { formatDate } from '@/utils/date';
 
 import ClientOptions from './ClientOptions';
 

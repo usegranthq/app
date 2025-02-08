@@ -1,10 +1,10 @@
 'use client';
 
-import { toast } from 'sonner';
 import { forwardRef, useRef } from 'react';
 import { useFormStatus } from 'react-dom';
+import { toast } from 'sonner';
 
-import { Button, ButtonProps } from '@/components/ui/button';
+import { deleteAccount } from '@/actions/settings';
 import {
   AlertDialog,
   AlertDialogAction,
@@ -16,7 +16,7 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from '@/components/ui/alert-dialog';
-import { deleteAccount } from '@/actions/settings';
+import { Button, ButtonProps } from '@/components/ui/button';
 
 const DeleteButton = forwardRef<HTMLButtonElement, ButtonProps>((props, ref) => {
   const { pending } = useFormStatus();

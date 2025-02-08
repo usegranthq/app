@@ -3,3 +3,20 @@ trailingComma: 'all'
 printWidth: 120
 plugins:
   - prettier-plugin-tailwindcss
+  - '@ianvs/prettier-plugin-sort-imports'
+
+importOrder:
+  - <BUILTIN_MODULES>
+  - '^react$'
+  - '^next(.*)$'
+  - <THIRD_PARTY_MODULES>
+  - ''
+  - ^@/lib/(.*)$
+  - ^@/constants/(.*)$
+  - ^@/data/(.*)$
+  - ^@/utils/(.*)$
+  - '^@/(.*)$'
+  - ''
+  - '^../(.*)$'
+  - '^./(.*)$'
+  - '^[./]'

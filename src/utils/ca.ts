@@ -1,5 +1,5 @@
-import { DetailedPeerCertificate, TLSSocket } from 'node:tls';
 import https from 'node:https';
+import { DetailedPeerCertificate, TLSSocket } from 'node:tls';
 
 export const getCertificate = (hostname: string): Promise<DetailedPeerCertificate> => {
   return new Promise((resolve, reject) => {

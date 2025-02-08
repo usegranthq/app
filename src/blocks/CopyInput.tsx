@@ -1,10 +1,10 @@
 'use client';
 
 import { useState } from 'react';
+import { CopyCheckIcon, CopyIcon } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { CopyCheckIcon, CopyIcon } from 'lucide-react';
 
 export default function CopyInput({ value }: { value: string }) {
   const [copied, setCopied] = useState(false);

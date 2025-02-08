@@ -1,8 +1,9 @@
 'use client';
 
-import { cn } from '@/lib/utils';
 import Link, { LinkProps } from 'next/link';
 import { usePathname } from 'next/navigation';
+
+import { cn } from '@/lib/utils';
 
 type NavLinkProps = LinkProps & {
   className?: string;

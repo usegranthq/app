@@ -1,6 +1,7 @@
 import { ColorPicker } from '@/blocks/ColorPicker';
-import { TopUserNav } from './TopUserNav';
 import { ThemeSwitcher } from '@/blocks/ThemeSwitcher';
+
+import { TopUserNav } from './TopUserNav';
 
 interface TopbarProps {
   children?: React.ReactNode;

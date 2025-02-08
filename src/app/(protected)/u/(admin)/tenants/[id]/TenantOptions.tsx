@@ -1,20 +1,12 @@
 'use client';
 
+import { useTransition } from 'react';
+import { useRouter } from 'next/navigation';
 import { DotsHorizontalIcon } from '@radix-ui/react-icons';
 import { toast } from 'sonner';
-import { useRouter } from 'next/navigation';
-import { useTransition } from 'react';
 
 import { deleteTenantProvider } from '@/actions';
-import { TenantProvider } from '@/types/app.types';
-import { Button } from '@/components/ui/button';
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
+import { useProgressBar } from '@/blocks/NavProgress';
 import {
   AlertDialog,
   AlertDialogAction,
@@ -26,7 +18,15 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from '@/components/ui/alert-dialog';
-import { useProgressBar } from '@/blocks/NavProgress';
+import { Button } from '@/components/ui/button';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
+import { TenantProvider } from '@/types/app.types';
 
 interface TenantOptionsProps {
   tenantId: string;

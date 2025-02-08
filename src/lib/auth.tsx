@@ -1,14 +1,15 @@
 import { betterAuth } from 'better-auth';
 import { prismaAdapter } from 'better-auth/adapters/prisma';
-import { magicLink, customSession } from 'better-auth/plugins';
-import { nextCookies } from 'better-auth/next-js';
 import { createAuthMiddleware } from 'better-auth/api';
+import { nextCookies } from 'better-auth/next-js';
+import { customSession, magicLink } from 'better-auth/plugins';
+
 // import { PostHog } from 'posthog-node'
 
+import * as constants from '@/constants/cookies';
+import { findPlanByPlanName, findPlanByProductId, PLAN, PlanDetails } from '@/utils/billing';
 import { env } from '@/env';
 import LoginEmail from '@/templates/LoginEmail';
-import { findPlanByProductId, findPlanByPlanName, PLAN, PlanDetails } from '@/utils/billing';
-import * as constants from '@/constants/cookies';
 
 import { prisma } from './db';
 import { sendEmail } from './email';

@@ -1,7 +1,8 @@
 import fs from 'node:fs/promises';
-import Markdoc, { Config, Node } from '@markdoc/markdoc';
 import React, { ReactNode } from 'react';
 import Link from 'next/link';
+import Markdoc, { Config, Node } from '@markdoc/markdoc';
+
 import { cn } from '@/lib/utils';
 
 type HeadingProps = {

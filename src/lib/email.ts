@@ -1,7 +1,7 @@
-import { render } from '@react-email/components';
 import { ReactElement } from 'react';
-import { Resend } from 'resend';
+import { render } from '@react-email/components';
 import nodemailer from 'nodemailer';
+import { Resend } from 'resend';
 
 import { env } from '@/env';
 

@@ -1,6 +1,7 @@
 import 'server-only';
 
 import ky, { HTTPError as APIError } from 'ky';
+
 import { env } from '@/env';
 
 const vercelProjectId = env.VERCEL_DOMINATE_PROJECT_ID;

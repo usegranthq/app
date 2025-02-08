@@ -1,11 +1,11 @@
 import Link from 'next/link';
 
-import { Card, CardDescription, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { getSigningKeys } from '@/data/providers';
+import { FeatureUnavailable } from '@/blocks/FeatureUnavailable';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Provider } from '@/types';
 
 import KeysList from './KeysList';
-import { getSigningKeys } from '@/data/providers';
-import { FeatureUnavailable } from '@/blocks/FeatureUnavailable';
 
 interface SigningKeysProps {
   provider: Provider;

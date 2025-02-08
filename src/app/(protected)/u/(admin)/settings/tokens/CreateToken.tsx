@@ -1,28 +1,26 @@
 'use client';
 
-import { toast } from 'sonner';
-import { useFormStatus } from 'react-dom';
-import { useRef, useState, useCallback } from 'react';
+import { useCallback, useRef, useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { useFormStatus } from 'react-dom';
+import { toast } from 'sonner';
 
-import { Button } from '@/components/ui/button';
-import { CardContent, CardDescription, CardFooter } from '@/components/ui/card';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { createToken } from '@/actions/settings';
+import CopyInput from '@/blocks/CopyInput';
 import {
   AlertDialog,
   AlertDialogAction,
   AlertDialogContent,
   AlertDialogDescription,
-  AlertDialogTitle,
   AlertDialogFooter,
   AlertDialogHeader,
+  AlertDialogTitle,
 } from '@/components/ui/alert-dialog';
-
-import CopyInput from '@/blocks/CopyInput';
-
-import { createToken } from '@/actions/settings';
+import { Button } from '@/components/ui/button';
+import { CardContent, CardDescription, CardFooter } from '@/components/ui/card';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 
 const expirationOptions = [
   { label: '1 day', value: 1 },

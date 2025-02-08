@@ -2,9 +2,9 @@ import { Suspense } from 'react';
 
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 
+import DeleteSessions from './DeleteSessions';
 import Sessions from './Sessions';
 import SessionsLoading from './SessionsLoading';
-import DeleteSessions from './DeleteSessions';
 
 export default function ApiPage() {
   return (

@@ -2,9 +2,10 @@ import { cookies } from 'next/headers';
 import { redirect, RedirectType } from 'next/navigation';
 import { decodeJwt } from 'jose';
 
-import VerifyForm from './VerifyForm';
 import { isNullOrUndefined } from '@/utils/validators';
 import * as constants from '@/constants';
+
+import VerifyForm from './VerifyForm';
 
 const getEmailFromCookies = async (): Promise<string | undefined> => {
   const cookieStore = await cookies();

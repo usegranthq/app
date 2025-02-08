@@ -1,10 +1,10 @@
 import { NextRequest } from 'next/server';
 import { createRouter } from 'better-call';
 
+import db from '@/lib/db';
 import { getBearerToken, unauthorizedResponse } from '@/utils/rest';
 
 import endpoints from './endpoints';
-import db from '@/lib/db';
 
 const verifyToken = async (bearerToken: string): Promise<string | null> => {
   const token = await db.token.findUnique({

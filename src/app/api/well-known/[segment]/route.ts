@@ -1,11 +1,11 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { JWK } from 'jose';
 
-import { env } from '@/env';
 import db from '@/lib/db';
-import { Provider } from '@/types/app.types';
-import { getSubdomain } from '@/utils/url';
 import { defaultJwk } from '@/utils/jwt';
+import { getSubdomain } from '@/utils/url';
+import { env } from '@/env';
+import { Provider } from '@/types/app.types';
 
 const addProtocol = (host: string): string => {
   return host.startsWith('http') ? host : `https://${host}`;

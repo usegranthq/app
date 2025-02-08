@@ -1,8 +1,8 @@
 import 'server-only';
 
-import { Provider, Client, Domain } from '@/types/app.types';
 import db from '@/lib/db';
 import { defaultJwk } from '@/utils/jwt';
+import { Client, Domain, Provider } from '@/types/app.types';
 
 import { verifySession } from './_verifySession';
 

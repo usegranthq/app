@@ -1,10 +1,10 @@
 'use client';
 
-import { toast } from 'sonner';
 import { forwardRef, useRef } from 'react';
 import { useFormStatus } from 'react-dom';
+import { toast } from 'sonner';
 
-import { Button, ButtonProps } from '@/components/ui/button';
+import { deleteProvider } from '@/actions';
 import {
   AlertDialog,
   AlertDialogAction,
@@ -16,8 +16,8 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from '@/components/ui/alert-dialog';
+import { Button, ButtonProps } from '@/components/ui/button';
 
-import { deleteProvider } from '@/actions';
 import { useProviderContext } from '../../_blocks/ProviderContext';
 
 const DeleteButton = forwardRef<HTMLButtonElement, ButtonProps>((props, ref) => {

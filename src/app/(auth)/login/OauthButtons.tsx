@@ -1,9 +1,10 @@
 'use client';
-import { Button } from '@/components/ui/button';
+
+import { startTransition, useActionState } from 'react';
 import { SiGithub, SiGoogle } from '@icons-pack/react-simple-icons';
 
 import { authClient } from '@/lib/auth-client';
-import { startTransition, useActionState } from 'react';
+import { Button } from '@/components/ui/button';
 
 const githubLogin = async () => {
   await authClient.signIn.social({

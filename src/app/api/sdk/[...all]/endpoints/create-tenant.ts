@@ -1,7 +1,6 @@
-import db from '@/lib/db';
-
-import { tenantSchema } from '@/schema';
 import { getPlanByUserId } from '@/lib/auth';
+import db from '@/lib/db';
+import { tenantSchema } from '@/schema';
 
 import { createAuthEndpoint } from './utils/call';
 import ERRORS, { SdkError } from './utils/errors';

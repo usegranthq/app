@@ -1,9 +1,9 @@
 import Link from 'next/link';
 import { KanbanIcon, MenuIcon } from 'lucide-react';
 
+import NavLink from '@/components/NavLink';
 import { Button } from '@/components/ui/button';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
-import NavLink from '@/components/NavLink';
 
 export default function Header() {
   return (

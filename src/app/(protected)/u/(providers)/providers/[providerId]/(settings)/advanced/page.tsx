@@ -1,8 +1,8 @@
 import { notFound } from 'next/navigation';
 
 import { getProvider } from '@/data/providers';
-import { getDefaultDomain } from '@/app/provider-helpers';
 import { getPlanDetails } from '@/data/user';
+import { getDefaultDomain } from '@/app/provider-helpers';
 
 import SigningKeys from './SigningKeys';
 

@@ -3,10 +3,10 @@
 import { useTransition } from 'react';
 import { toast } from 'sonner';
 
-import { PLAN, PlanName, PlanData, Plans } from '@/utils/billing';
+import { PLAN, PlanData, PlanName, Plans } from '@/utils/billing';
 import { checkout } from '@/actions';
-import { Button } from '@/components/ui/button';
 import { useProgressBar } from '@/blocks/NavProgress';
+import { Button } from '@/components/ui/button';
 
 import CancelPlanButton from './CancelPlanButton';
 

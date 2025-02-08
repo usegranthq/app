@@ -1,4 +1,5 @@
-import { ShieldIcon, LockIcon, CheckCircleIcon, BookLock } from 'lucide-react';
+import { BookLock, CheckCircleIcon, LockIcon, ShieldIcon } from 'lucide-react';
+
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 
 const features = [

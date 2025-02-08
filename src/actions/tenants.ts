@@ -3,14 +3,13 @@
 import { revalidatePath } from 'next/cache';
 
 import db from '@/lib/db';
-
 import { verifySession } from '@/data/_verifySession';
 import { getPlanDetails } from '@/data/user';
-import { getApiErrorMessage, getZodErrorMessage } from '@/utils/error';
-import { Tenant, TenantProvider } from '@/types/app.types';
-import { tenantProviderSchema, tenantSchema } from '@/schema';
 import { getIssuerCertifcate } from '@/utils/ca';
+import { getApiErrorMessage, getZodErrorMessage } from '@/utils/error';
 import { isValidUrl } from '@/utils/url';
+import { tenantProviderSchema, tenantSchema } from '@/schema';
+import { Tenant, TenantProvider } from '@/types/app.types';
 
 export async function createTenant(formData: FormData): ActionResponse<Tenant> {
   const session = await verifySession();

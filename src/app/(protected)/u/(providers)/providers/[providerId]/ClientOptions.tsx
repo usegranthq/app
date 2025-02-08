@@ -1,22 +1,13 @@
 'use client';
 
+import { useEffect, useState, useTransition } from 'react';
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { DotsHorizontalIcon } from '@radix-ui/react-icons';
 import { toast } from 'sonner';
-import { useRouter } from 'next/navigation';
-import Link from 'next/link';
-import { useEffect, useState, useTransition } from 'react';
 
 import { deleteClient, generateAccessToken } from '@/actions';
-import { Client } from '@/types/app.types';
-
-import { Button } from '@/components/ui/button';
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
+import { useProgressBar } from '@/blocks/NavProgress';
 import {
   AlertDialog,
   AlertDialogAction,
@@ -28,10 +19,18 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from '@/components/ui/alert-dialog';
-import { useProgressBar } from '@/blocks/NavProgress';
+import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
 import { Label } from '@/components/ui/label';
 import { useToggle } from '@/hooks/use-toggle';
+import { Client } from '@/types/app.types';
 
 export default function ClientOptions({ providerId, client }: { providerId: string; client: Client }) {
   const router = useRouter();

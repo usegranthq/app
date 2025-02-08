@@ -1,9 +1,9 @@
+import Link from 'next/link';
 import { CheckIcon } from 'lucide-react';
 
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { cn } from '@/lib/utils';
 import { Plans, POPULAR_PLAN } from '@/utils/billing';
-import Link from 'next/link';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
 export default function PricingSection() {
   return (

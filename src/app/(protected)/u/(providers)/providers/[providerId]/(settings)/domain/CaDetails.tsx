@@ -4,14 +4,14 @@ import { useEffect, useMemo, useState } from 'react';
 import { useFormStatus } from 'react-dom';
 import { toast } from 'sonner';
 
+import { getCaDetails } from '@/actions/ca';
+import Spinner from '@/blocks/Spinner';
+import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Domain, Provider } from '@/types/app.types';
-import { getCaDetails } from '@/actions/ca';
-import { Button } from '@/components/ui/button';
-import Spinner from '@/blocks/Spinner';
 
 interface CaDetailsProps {
   provider: Provider;

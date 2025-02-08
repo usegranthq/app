@@ -1,9 +1,9 @@
 import Link from 'next/link';
 import { formatRelative } from 'date-fns';
 
+import { getTenants } from '@/data/tenants';
 import { Button } from '@/components/ui/button';
 import { Card, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
-import { getTenants } from '@/data/tenants';
 import { Tenant } from '@/types/app.types';
 
 import NoTenants from './NoTenants';

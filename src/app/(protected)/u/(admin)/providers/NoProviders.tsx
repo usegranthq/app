@@ -1,6 +1,7 @@
-import { Button } from '@/components/ui/button';
-import { KanbanIcon } from 'lucide-react';
 import Link from 'next/link';
+import { KanbanIcon } from 'lucide-react';
+
+import { Button } from '@/components/ui/button';
 
 export default function NoProviders() {
   return (

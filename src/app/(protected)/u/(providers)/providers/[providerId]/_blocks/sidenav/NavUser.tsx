@@ -2,12 +2,11 @@
 
 import { ChevronsUpDownIcon } from 'lucide-react';
 
-import { DropdownMenu, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
-import { useUser } from '@/contexts/User';
-import { SidebarMenu, SidebarMenuButton, SidebarMenuItem } from '@/components/ui/sidebar';
-
 import { UserAvatar } from '@/app/(protected)/u/_blocks/UserAvatar';
 import UserNavDropdown from '@/app/(protected)/u/_blocks/UserNavDropdown';
+import { DropdownMenu, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
+import { SidebarMenu, SidebarMenuButton, SidebarMenuItem } from '@/components/ui/sidebar';
+import { useUser } from '@/contexts/User';
 
 export function NavUser() {
   const user = useUser();

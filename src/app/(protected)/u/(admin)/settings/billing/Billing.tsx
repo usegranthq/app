@@ -1,11 +1,11 @@
-import { CheckIcon } from '@radix-ui/react-icons';
 import Link from 'next/link';
+import { CheckIcon } from '@radix-ui/react-icons';
 
 import { PLAN, PlanDetails, Plans } from '@/utils/billing';
-import { Card, CardHeader, CardTitle, CardContent, CardFooter } from '@/components/ui/card';
+import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 
-import PlanButton from './PlanButton';
 import CustomerPortal from './CustomerPortal';
+import PlanButton from './PlanButton';
 
 interface BillingProps {
   plan: PlanDetails;

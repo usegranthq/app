@@ -1,17 +1,17 @@
 'use client';
 
-import { toast } from 'sonner';
-import { useFormStatus } from 'react-dom';
-import Link from 'next/link';
 import { startTransition } from 'react';
+import Link from 'next/link';
+import { useFormStatus } from 'react-dom';
+import { toast } from 'sonner';
 
 import { addDomain } from '@/actions';
+import { useProgressBar } from '@/blocks/NavProgress';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Domain, Provider } from '@/types/app.types';
-import { useProgressBar } from '@/blocks/NavProgress';
 
 interface DomainDetailsProps {
   provider: Provider;

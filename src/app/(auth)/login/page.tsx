@@ -1,12 +1,12 @@
 import { Suspense } from 'react';
 import Link from 'next/link';
 
+import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { env } from '@/env';
-import { Card, CardHeader, CardTitle, CardContent, CardFooter } from '@/components/ui/card';
 
 import LoginForm from './LoginForm';
-import RedirectErrorRenderer from './RedirectErrorRenderer';
 import OauthButtons from './OauthButtons';
+import RedirectErrorRenderer from './RedirectErrorRenderer';
 
 const TURNSTILE_SITE_KEY = env.TURNSTILE_SITE_KEY;
 

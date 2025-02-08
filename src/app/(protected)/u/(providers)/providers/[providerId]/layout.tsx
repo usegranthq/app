@@ -1,13 +1,12 @@
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 
-import { SidebarProvider, SidebarTrigger, SidebarInset } from '@/components/ui/sidebar';
-
 import { getProviders } from '@/data/providers';
+import { SidebarInset, SidebarProvider, SidebarTrigger } from '@/components/ui/sidebar';
 
-import { ProviderSidebar } from './_blocks/ProviderSidebar';
 import Topbar from '../../../_blocks/Topbar';
 import { ProviderProvider } from './_blocks/ProviderContext';
+import { ProviderSidebar } from './_blocks/ProviderSidebar';
 
 interface UserLayoutProps {
   children: React.ReactNode;

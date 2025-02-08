@@ -1,8 +1,8 @@
 import { MoonIcon, SunIcon } from '@radix-ui/react-icons';
 
+import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import { DropdownMenu, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
-import { cn } from '@/lib/utils';
 
 import { ThemeSwitcherDropdown } from './ThemeSwitcherDropdown';
 

@@ -1,7 +1,7 @@
 'use client';
 
-import { ChevronsUpDownIcon, KanbanIcon, PlusIcon } from 'lucide-react';
 import Link from 'next/link';
+import { ChevronsUpDownIcon, KanbanIcon, PlusIcon } from 'lucide-react';
 
 import {
   DropdownMenu,

@@ -1,11 +1,24 @@
 'use client';
 
 import { ComponentPropsWithoutRef } from 'react';
-import { BadgeCheckIcon, LockIcon, CreditCardIcon, LogOutIcon } from 'lucide-react';
 import Link from 'next/link';
-import { toast } from 'sonner';
 import { useRouter } from 'next/navigation';
+import { BadgeCheckIcon, CreditCardIcon, LockIcon, LogOutIcon } from 'lucide-react';
+import { toast } from 'sonner';
 
+import { authClient } from '@/lib/auth-client';
+import { cn } from '@/lib/utils';
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from '@/components/ui/alert-dialog';
 import {
   DropdownMenuContent,
   DropdownMenuGroup,
@@ -14,21 +27,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuShortcut,
 } from '@/components/ui/dropdown-menu';
-import {
-  AlertDialog,
-  AlertDialogContent,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogCancel,
-  AlertDialogAction,
-  AlertDialogTrigger,
-} from '@/components/ui/alert-dialog';
-
 import { useUser } from '@/contexts/User';
-import { cn } from '@/lib/utils';
-import { authClient } from '@/lib/auth-client';
 
 import { UserAvatar } from './UserAvatar';
 

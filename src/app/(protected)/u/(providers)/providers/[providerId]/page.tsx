@@ -1,7 +1,7 @@
 import Link from 'next/link';
 
-import { Button } from '@/components/ui/button';
 import * as providersDal from '@/data/providers';
+import { Button } from '@/components/ui/button';
 
 import ClientsList from './ClientsList';
 import NoClients from './NoClients';

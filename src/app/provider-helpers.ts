@@ -1,5 +1,5 @@
-import { Provider, Domain } from '@/types/app.types';
 import { env } from '@/env';
+import { Domain, Provider } from '@/types/app.types';
 
 const withProtocol = (domain: string) => (domain.startsWith('http') ? domain : `https://${domain}`);
 

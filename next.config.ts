@@ -1,6 +1,6 @@
-import { NextConfig } from 'next';
-
 import './src/env';
+
+import { NextConfig } from 'next';
 
 const docsUrl = process.env.NODE_ENV === 'development' ? 'http://localhost:7575' : 'https://docs-usegrant.vercel.app';
 

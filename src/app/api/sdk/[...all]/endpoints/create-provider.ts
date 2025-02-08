@@ -1,10 +1,10 @@
-import db from '@/lib/db';
-import { createAuthEndpoint } from './utils/call';
-import { createUrlId } from '@/utils/provider';
-import { getApiErrorMessage } from '@/utils/error';
 import { getPlanByUserId } from '@/lib/auth';
+import db from '@/lib/db';
+import { getApiErrorMessage } from '@/utils/error';
+import { createUrlId } from '@/utils/provider';
 import { providerSchema } from '@/schema';
 
+import { createAuthEndpoint } from './utils/call';
 import ERRORS, { SdkError } from './utils/errors';
 
 const createProvider = createAuthEndpoint(

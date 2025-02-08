@@ -1,8 +1,8 @@
-import { z } from 'zod';
 import { JWK } from 'jose';
+import { z } from 'zod';
 
-import db from '@/lib/db';
 import { getPlanByUserId } from '@/lib/auth';
+import db from '@/lib/db';
 import { createJwt, defaultJwk, MAX_EXPIRY, ONE_HOUR } from '@/utils/jwt';
 import { getIssuer } from '@/utils/provider';
 

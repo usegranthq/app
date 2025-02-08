@@ -1,14 +1,14 @@
 'use server';
 
-import { redirect, RedirectType } from 'next/navigation';
 import { cookies, headers } from 'next/headers';
+import { redirect, RedirectType } from 'next/navigation';
 import { SignJWT } from 'jose';
 import ky from 'ky';
 
-import { env } from '@/env';
-import { getApiErrorMessage, getZodErrorMessage } from '@/utils/error';
 import { auth } from '@/lib/auth';
+import { getApiErrorMessage, getZodErrorMessage } from '@/utils/error';
 import constants from '@/constants';
+import { env } from '@/env';
 import { loginSchema, verifySchema } from '@/schema';
 
 interface TurnstileResponse {

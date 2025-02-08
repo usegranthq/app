@@ -3,14 +3,14 @@
 import { useOptimistic, useTransition } from 'react';
 import { toast } from 'sonner';
 
-import { Badge } from '@/components/ui/badge';
 import { type SigningKey } from '@/data/providers';
-import { Provider } from '@/types';
+import { formatDate } from '@/utils/date';
 import { toggleRotateJwks } from '@/actions';
 import { useProgressBar } from '@/blocks/NavProgress';
-import { Switch } from '@/components/ui/switch';
+import { Badge } from '@/components/ui/badge';
 import { Label } from '@/components/ui/label';
-import { formatDate } from '@/utils/date';
+import { Switch } from '@/components/ui/switch';
+import { Provider } from '@/types';
 
 import RemoveKey from './RemoveKey';
 import RequestSigningKey from './RequestSigningKey';

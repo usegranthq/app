@@ -1,6 +1,6 @@
 import db from '@/lib/db';
-import { CreemCustomer, CreemSubscription, CreemWebhookEvent } from '@/types/creem.types';
 import { Customer } from '@/types/app.types';
+import { CreemCustomer, CreemSubscription, CreemWebhookEvent } from '@/types/creem.types';
 
 async function createOrUpdateCustomer(email: string, data: CreemCustomer): Promise<Customer> {
   const user = await db.user.findUnique({

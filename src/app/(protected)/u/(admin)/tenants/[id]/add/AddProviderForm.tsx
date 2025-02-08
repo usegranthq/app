@@ -1,15 +1,15 @@
 'use client';
 
+import { startTransition } from 'react';
+import { useRouter } from 'next/navigation';
 import { useFormStatus } from 'react-dom';
 import { toast } from 'sonner';
-import { useRouter } from 'next/navigation';
-import { startTransition } from 'react';
 
-import { Label } from '@/components/ui/label';
-import { Input } from '@/components/ui/input';
-import { Button } from '@/components/ui/button';
-import { useProgressBar } from '@/blocks/NavProgress';
 import { createTenantProvider, fetchFingerprint } from '@/actions';
+import { useProgressBar } from '@/blocks/NavProgress';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
 
 function AddProviderButton() {
   const { pending } = useFormStatus();
