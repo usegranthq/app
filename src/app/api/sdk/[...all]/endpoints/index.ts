@@ -10,6 +10,7 @@ import deleteProvider from './delete-provider';
 import deleteTenant from './delete-tenant';
 import getClient from './get-client';
 import getProvider from './get-provider';
+import getTenant from './get-tenant';
 import validateToken from './validate-token';
 
 const endpoints: Record<string, Endpoint> = {
@@ -21,6 +22,7 @@ const endpoints: Record<string, Endpoint> = {
   deleteClient,
   createAccessToken,
   createTenant,
+  getTenant,
   deleteTenant,
   createTenantProvider,
   validateToken,
