@@ -15,8 +15,8 @@ export default async function NewClientPage(props: NewClientPageProps) {
         <UserRoundPlusIcon className="size-8" />
         <h1 className="text-2xl font-medium">Create a client</h1>
         <p className="max-w-lg text-center text-sm text-muted-foreground">
-          A client is a user that can access the API, you can create multiple clients for a provider. The client will be
-          configured with your target oidc provider.
+          A client is an entity that can access the API, you can create multiple clients for a provider. The client will
+          be configured with your target oidc provider.
         </p>
         <CreateClientForm providerId={providerId} />
       </div>
