@@ -121,13 +121,13 @@ export default function AddProviderForm({ tenantId }: AddProviderFormProps) {
         <Input name="audience" placeholder="Identity provider audience" required minLength={3} maxLength={32} />
       </div>
       <div className="grid w-full gap-2">
-        <Label>Earliest Time allowed (optional)</Label>
+        <Label>Earliest Issuance Time allowed (optional)</Label>
         <Input
           type="number"
           name="earliestIssuanceTimeAllowed"
           min={0}
           max={12}
-          placeholder="Earliest time allowed"
+          placeholder="Earliest issuance time allowed"
           required
           minLength={3}
           maxLength={32}

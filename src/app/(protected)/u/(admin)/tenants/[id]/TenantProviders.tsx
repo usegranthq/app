@@ -9,10 +9,12 @@ import { Button } from '@/components/ui/button';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import TenantOptions from './TenantOptions';
 import { formatDate } from 'date-fns';
+import PaginationControl from '@/blocks/PaginationControl';
 
 interface TenantProvidersProps {
   id: string;
   providers: TenantProvider[];
+  pagination: Pagination;
 }
 
 function getColumns(tenantId: string): ColumnDef<TenantProvider>[] {
@@ -30,10 +32,10 @@ function getColumns(tenantId: string): ColumnDef<TenantProvider>[] {
       },
     },
     {
-      header: 'Earliest Time allowed',
+      header: 'Earliest Issuance Time allowed',
       cell: ({ row }) => {
         const earliestIssuanceTimeAllowed = row.original.earliestIssuanceTimeAllowed;
-        return earliestIssuanceTimeAllowed;
+        return earliestIssuanceTimeAllowed > 1 ? `${earliestIssuanceTimeAllowed} hours` : '1 hour';
       },
     },
     {
@@ -55,7 +57,7 @@ function getColumns(tenantId: string): ColumnDef<TenantProvider>[] {
   return columns;
 }
 
-export default function TenantProviders({ id, providers }: TenantProvidersProps) {
+export default function TenantProviders({ id, providers, pagination }: TenantProvidersProps) {
   const columns = useMemo(() => getColumns(id), [id]);
 
   const table = useReactTable({
@@ -96,6 +98,11 @@ export default function TenantProviders({ id, providers }: TenantProvidersProps)
           </TableBody>
         </Table>
       </div>
+      {pagination.total > pagination.limit && (
+        <div className="mt-6">
+          <PaginationControl pagination={pagination} />
+        </div>
+      )}
     </div>
   );
 }

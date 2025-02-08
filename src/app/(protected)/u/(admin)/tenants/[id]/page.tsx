@@ -1,23 +1,28 @@
 import { notFound } from 'next/navigation';
 
 import { getTenant, getTenantProviders } from '@/data/tenants';
+import { normalizePaginationParams } from '@/utils/pagination';
+
 import NoIdp from './NoIdp';
 import TenantProviders from './TenantProviders';
 
-type TenantPageProps = Params<{ id: string }>;
+type TenantPageProps = Params<{ id: string }> & SearchParams<{ page: string; limit: string }>;
 
-export default async function TenantPage({ params }: TenantPageProps) {
+export default async function TenantPage({ params, searchParams }: TenantPageProps) {
   const { id } = await params;
-  const tenant = await getTenant(id);
+  const queryParams = await searchParams;
 
+  const tenant = await getTenant(id);
   if (!tenant) {
     return notFound();
   }
 
-  const providers = await getTenantProviders(tenant.id);
-  if (providers.length === 0) {
+  const { page, limit } = normalizePaginationParams(queryParams);
+  const [providers, pagination] = await getTenantProviders(tenant.id, page, limit);
+
+  if (pagination.total === 0) {
     return <NoIdp id={tenant.id} />;
   }
 
-  return <TenantProviders providers={providers} id={tenant.id} />;
+  return <TenantProviders providers={providers} id={tenant.id} pagination={pagination} />;
 }

@@ -2,6 +2,7 @@ import db from '@/lib/db';
 import { Tenant, TenantProvider } from '@/types/app.types';
 
 import { verifySession } from './_verifySession';
+import { toPaginatedResponse } from '@/utils/pagination';
 
 export const getTenants = async (): Promise<Tenant[]> => {
   const session = await verifySession();
@@ -24,15 +25,37 @@ export const getTenant = async (tenantId: string): Promise<Tenant | null> => {
   });
 };
 
-export const getTenantProviders = async (tenantId: string): Promise<TenantProvider[]> => {
+export const getTenantProviders = async (
+  tenantId: string,
+  page: number,
+  limit: number,
+): Promise<PaginatedResponse<TenantProvider>> => {
   const session = await verifySession();
 
-  return await db.tenantProvider.findMany({
-    where: {
-      tenantId,
-      Tenant: {
-        userId: session.user.id,
+  const skip = (page - 1) * limit;
+  const take = limit;
+
+  const [providers, total] = await db.$transaction([
+    db.tenantProvider.findMany({
+      where: {
+        tenantId,
+        Tenant: {
+          userId: session.user.id,
+        },
       },
-    },
-  });
+      orderBy: {
+        createdAt: 'desc',
+      },
+      skip,
+      take,
+    }),
+    db.tenantProvider.count({
+      where: {
+        tenantId,
+        Tenant: { userId: session.user.id },
+      },
+    }),
+  ]);
+
+  return toPaginatedResponse(providers, total, page, limit);
 };
