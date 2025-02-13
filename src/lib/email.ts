@@ -8,7 +8,7 @@ import { env } from '@/env';
 interface SendEmailParams {
   to: string;
   subject: string;
-  template: ReactElement;
+  template: ReactElement<unknown>;
 }
 
 export const sendEmail = async (data: SendEmailParams) => {
