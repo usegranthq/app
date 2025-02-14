@@ -104,7 +104,7 @@ export const Plans: PlanData[] = [
     id: PLAN.FREE,
     name: PLAN_NAMES[PLAN.FREE],
     price: 0,
-    features: [`${PLAN_LIMITS[PLAN.FREE].providers} Providers`, 'Free forever', 'API access to create clients'],
+    features: [`${PLAN_LIMITS[PLAN.FREE].providers.limit} Providers`, 'Free forever', 'API access to create clients'],
     productId: null,
   },
   {
@@ -112,7 +112,7 @@ export const Plans: PlanData[] = [
     name: PLAN_NAMES[PLAN.PRO],
     price: 9,
     features: [
-      `${PLAN_LIMITS[PLAN.PRO].providers} Providers`,
+      `${PLAN_LIMITS[PLAN.PRO].providers.limit} Providers`,
       'Custom domains',
       'Priority support',
       'Request custom signing keys',
@@ -124,7 +124,7 @@ export const Plans: PlanData[] = [
     name: PLAN_NAMES[PLAN.ULTIMATE],
     price: 49,
     features: [
-      `${PLAN_LIMITS[PLAN.ULTIMATE].providers} Providers`,
+      `${PLAN_LIMITS[PLAN.ULTIMATE].providers.limit} Providers`,
       'All in starter',
       'API access to create providers',
       'Auto Rotate signing keys',
