@@ -56,7 +56,7 @@ const DomainCard = ({ domain }: { domain: Domain }) => {
       }
 
       if (!isVerified) {
-        toast.error('Failed to verify domain. Check your DNS configuration.');
+        toast.error('Failed to verify domain. Check your DNS configuration with your provider.');
         return;
       }
 

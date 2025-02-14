@@ -1,49 +1,52 @@
 import 'server-only';
 
-import ky, { HTTPError as APIError } from 'ky';
+import { Vercel } from '@vercel/sdk';
 
 import { env } from '@/env';
 
 const vercelProjectId = env.VERCEL_DOMINATE_PROJECT_ID;
 const vercelApiToken = env.VERCEL_DOMINATE_API_TOKEN;
 
-const vapi = ky.create({
-  prefixUrl: 'https://api.vercel.com',
-  headers: {
-    Authorization: `Bearer ${vercelApiToken}`,
-  },
+const vercel = new Vercel({
+  bearerToken: vercelApiToken,
 });
-
-interface DomainResponse {
-  name: string;
-  verified: boolean;
-}
-
-export interface DomainConfigResponse {
-  nameservers: string[];
-  cnames: string[];
-  aValues: string[];
-  misconfigured: boolean;
-}
-
-export { APIError };
 
 // ref: https://vercel.com/docs/rest-api/endpoints/projects
 
-export const addDomain = (domain: string): Promise<DomainResponse> => {
-  return vapi.post(`v10/projects/${vercelProjectId}/domains`, { json: { name: domain } }).json();
+const addDomain = (domain: string) => {
+  return vercel.projects.addProjectDomain({
+    idOrName: vercelProjectId,
+    requestBody: {
+      name: domain,
+    },
+  });
 };
 
-export const deleteDomain = (domain: string) => {
-  return vapi.delete(`v10/projects/${vercelProjectId}/domains/${domain}`).json();
+const deleteDomain = (domain: string) => {
+  return vercel.projects.removeProjectDomain({
+    idOrName: vercelProjectId,
+    domain,
+  });
 };
 
-export const verifyDomain = (domain: string): Promise<DomainResponse> => {
-  return vapi.post(`v10/projects/${vercelProjectId}/domains/${domain}/verify`).json();
+const verifyDomain = (domain: string) => {
+  return vercel.projects.verifyProjectDomain({
+    idOrName: vercelProjectId,
+    domain,
+  });
 };
 
-export const getDomainConfig = (domain: string): Promise<DomainConfigResponse> => {
-  return vapi.get(`v6/domains/${domain}/config`).json();
+const getDomainConfig = (domain: string) => {
+  return vercel.domains.getDomainConfig({
+    domain,
+  });
 };
 
-export default vapi;
+export default {
+  domains: {
+    add: addDomain,
+    delete: deleteDomain,
+    verify: verifyDomain,
+    getConfig: getDomainConfig,
+  },
+};

@@ -15,3 +15,7 @@ export const isValidUrl = (url: string): boolean => {
     return false;
   }
 };
+
+export const isApexDomain = (domain: string) => {
+  return domain.split('.').length === 2;
+};

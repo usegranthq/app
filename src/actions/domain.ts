@@ -4,7 +4,7 @@ import { revalidatePath } from 'next/cache';
 import { z } from 'zod';
 
 import db from '@/lib/db';
-import * as vercel from '@/lib/vercel';
+import vercel from '@/lib/vercel';
 import { verifySession } from '@/data/_verifySession';
 import { getApiErrorMessage, getZodErrorMessage } from '@/utils/error';
 
@@ -20,18 +20,6 @@ const domainSchema = z
   .regex(/^(?!www\.)/, { message: 'Domain name cannot start with www.' })
   .min(3, { message: 'Domain name must be at least 3 characters long.' })
   .max(255, { message: 'Domain name must be less than 255 characters.' });
-
-const isApexDomain = (domain: string) => {
-  return domain.split('.').length === 2;
-};
-
-const isDomainVerified = (domain: string, domainConfig: vercel.DomainConfigResponse): boolean => {
-  if (isApexDomain(domain)) {
-    return domainConfig.aValues.includes('76.76.21.21');
-  }
-
-  return domainConfig.cnames.includes('cname.usegrant.dev.');
-};
 
 export async function addDomain(providerId: string, formData: FormData): ActionResponse {
   const session = await verifySession();
@@ -60,9 +48,10 @@ export async function addDomain(providerId: string, formData: FormData): ActionR
   const domain = validation.data;
 
   try {
-    await vercel.addDomain(domain);
-    const domainConfig = await vercel.getDomainConfig(domain);
-    const isVerified = isDomainVerified(domain, domainConfig);
+    const addDomainResponse = await vercel.domains.add(domain);
+    const domainConfig = await vercel.domains.getConfig(domain);
+    const isVerified = addDomainResponse.verified && !domainConfig.misconfigured;
+
     await db.domain.create({
       data: {
         domain,
@@ -99,12 +88,8 @@ export async function deleteDomain(providerId: string, domain: string): ActionRe
   }
 
   try {
-    await vercel.deleteDomain(domain);
-  } catch (error) {
-    if (error instanceof vercel.APIError && error.response.status !== 404) {
-      return ['Failed to delete domain. Try again.', null];
-    }
-
+    await vercel.domains.delete(domain);
+  } catch {
     return ['Failed to delete domain. Try again.', null];
   }
 
@@ -132,13 +117,13 @@ export async function verifyDomain(providerId: string, domain: string): ActionRe
   }
 
   try {
-    const response = await vercel.verifyDomain(domain);
-    if (!response.verified) {
+    const verifyDomainResponse = await vercel.domains.verify(domain);
+    if (!verifyDomainResponse.verified) {
       return ['Failed to verify domain. Potentially configured with a different provider.', null];
     }
 
-    const domainConfig = await vercel.getDomainConfig(domain);
-    const isVerified = isDomainVerified(domain, domainConfig);
+    const domainConfig = await vercel.domains.getConfig(domain);
+    const isVerified = verifyDomainResponse.verified && !domainConfig.misconfigured;
 
     await db.domain.update({
       where: { domain, providerId },
@@ -147,11 +132,7 @@ export async function verifyDomain(providerId: string, domain: string): ActionRe
 
     revalidatePath(`/u/providers/${providerId}/settings/domain`);
     return [null, isVerified];
-  } catch (error) {
-    if (error instanceof vercel.APIError && error.response.status !== 400) {
-      return ['Failed to verify domain. Potentially configured with a different provider.', null];
-    }
-
+  } catch {
     return ['Failed to verify domain. Try again.', null];
   }
 }
