@@ -39,7 +39,7 @@
     "@vercel/analytics": "^1.5.0",
     "@vercel/functions": "^2.0.0",
     "@vercel/speed-insights": "^1.2.0",
-    "better-auth": "^1.2.0-beta.6",
+    "better-auth": "^1.1.18",
     "better-call": "^0.3.3",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
