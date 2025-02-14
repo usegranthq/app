@@ -8,6 +8,7 @@ import { customSession, magicLink } from 'better-auth/plugins';
 
 import * as constants from '@/constants/cookies';
 import { findPlanByPlanName, findPlanByProductId, PLAN, PlanDetails } from '@/utils/billing';
+import { generateLoginToken } from '@/utils/random';
 import { env } from '@/env';
 import LoginEmail from '@/templates/LoginEmail';
 
@@ -70,6 +71,8 @@ export const auth = betterAuth({
   },
   plugins: [
     magicLink({
+      generateToken: () => generateLoginToken(),
+      expiresIn: 5 * 60, // 5 minutes,
       async sendMagicLink(data) {
         await sendEmail({
           to: data.email,
