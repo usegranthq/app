@@ -68,7 +68,7 @@ export default function TenantProviders({ id, providers, pagination }: TenantPro
   });
 
   return (
-    <div>
+    <div className="mx-auto max-w-4xl px-4 py-10">
       <div className="flex">
         <h1 className="text-2xl font-medium">Providers</h1>
         <Button asChild className="ml-auto">
