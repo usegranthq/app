@@ -13,14 +13,14 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { SidebarMenu, SidebarMenuButton, SidebarMenuItem, useSidebar } from '@/components/ui/sidebar';
-import { Provider } from '@/types/app.types';
+import { Tenant } from '@/types/app.types';
 
-interface ProviderSwitcherProps {
-  providers: Provider[];
-  activeProvider: Provider;
+interface TenantSwitcherProps {
+  tenants: Tenant[];
+  activeTenant: Tenant;
 }
 
-export function ProviderSwitcher({ providers, activeProvider }: ProviderSwitcherProps) {
+export function TenantSwitcher({ tenants, activeTenant }: TenantSwitcherProps) {
   const { isMobile } = useSidebar();
 
   return (
@@ -36,8 +36,8 @@ export function ProviderSwitcher({ providers, activeProvider }: ProviderSwitcher
                 <KanbanIcon className="size-4 shrink-0" />
               </div>
               <div className="grid flex-1 text-left text-sm leading-tight">
-                <span className="truncate font-semibold">{activeProvider.name}</span>
-                <span className="truncate text-xs">{activeProvider.description}</span>
+                <span className="truncate font-semibold">{activeTenant.name}</span>
+                <span className="truncate text-xs">{activeTenant.description}</span>
               </div>
               <ChevronsUpDownIcon className="ml-auto" />
             </SidebarMenuButton>
@@ -48,14 +48,14 @@ export function ProviderSwitcher({ providers, activeProvider }: ProviderSwitcher
             side={isMobile ? 'bottom' : 'right'}
             sideOffset={4}
           >
-            <DropdownMenuLabel className="text-xs text-muted-foreground">Providers</DropdownMenuLabel>
-            {providers.map((provider, index) => (
-              <DropdownMenuItem key={provider.id} className="gap-2 p-2" asChild>
-                <Link href={`/u/providers/${provider.id}`}>
+            <DropdownMenuLabel className="text-xs text-muted-foreground">Tenants</DropdownMenuLabel>
+            {tenants.map((tenant, index) => (
+              <DropdownMenuItem key={tenant.id} className="gap-2 p-2" asChild>
+                <Link href={`/u/tenants/${tenant.id}`}>
                   <div className="grid flex-1 leading-tight">
-                    <div className="line-clamp-1 font-medium">{provider.name}</div>
+                    <div className="line-clamp-1 font-medium">{tenant.name}</div>
                     <div className="overflow-hidden text-xs text-muted-foreground">
-                      <div className="line-clamp-1">{provider.description}</div>
+                      <div className="line-clamp-1">{tenant.description}</div>
                     </div>
                   </div>
                   <DropdownMenuShortcut>⌘{index + 1}</DropdownMenuShortcut>
@@ -64,11 +64,11 @@ export function ProviderSwitcher({ providers, activeProvider }: ProviderSwitcher
             ))}
             <DropdownMenuSeparator />
             <DropdownMenuItem className="gap-2 p-2" asChild>
-              <Link href="/u/providers/new">
+              <Link href="/u/tenants/new">
                 <div className="flex size-6 items-center justify-center rounded-md border bg-background">
                   <PlusIcon className="size-4" />
                 </div>
-                <div className="font-medium text-muted-foreground">Add provider</div>
+                <div className="font-medium text-muted-foreground">Add tenant</div>
               </Link>
             </DropdownMenuItem>
           </DropdownMenuContent>

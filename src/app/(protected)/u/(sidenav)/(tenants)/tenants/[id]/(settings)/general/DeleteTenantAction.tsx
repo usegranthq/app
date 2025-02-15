@@ -1,0 +1,75 @@
+'use client';
+
+import { FC, Ref, useRef } from 'react';
+import { useFormStatus } from 'react-dom';
+import { toast } from 'sonner';
+
+import { deleteTenant } from '@/actions';
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from '@/components/ui/alert-dialog';
+import { Button, ButtonProps } from '@/components/ui/button';
+import { Tenant } from '@/types/app.types';
+
+interface DeleteButtonProps extends ButtonProps {
+  ref?: Ref<HTMLButtonElement>;
+}
+
+const DeleteButton: FC<DeleteButtonProps> = ({ ref, ...props }) => {
+  const { pending } = useFormStatus();
+
+  return (
+    <Button variant="destructive" ref={ref} {...props} disabled={pending}>
+      {pending ? 'Deleting your tenant...' : 'Delete tenant'}
+    </Button>
+  );
+};
+
+interface DeleteTenantActionProps {
+  tenant: Tenant;
+}
+
+export default function DeleteTenantAction(props: DeleteTenantActionProps) {
+  const formRef = useRef<HTMLFormElement>(null);
+
+  const handleDeleteClick = async () => {
+    const [error] = await deleteTenant(props.tenant.id);
+    if (error) {
+      toast.error(error);
+    }
+  };
+
+  return (
+    <div>
+      <form ref={formRef} action={handleDeleteClick}>
+        <AlertDialog>
+          <AlertDialogTrigger asChild>
+            <DeleteButton />
+          </AlertDialogTrigger>
+          <AlertDialogContent>
+            <AlertDialogHeader>
+              <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+              <AlertDialogDescription>
+                This action cannot be undone. This will permanently delete your tenant and all of its providers.
+              </AlertDialogDescription>
+            </AlertDialogHeader>
+            <AlertDialogFooter>
+              <AlertDialogCancel>Cancel</AlertDialogCancel>
+              <AlertDialogAction type="button" onClick={() => formRef.current?.requestSubmit()}>
+                Continue
+              </AlertDialogAction>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialog>
+      </form>
+    </div>
+  );
+}

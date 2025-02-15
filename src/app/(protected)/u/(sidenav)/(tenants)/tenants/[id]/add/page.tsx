@@ -10,7 +10,7 @@ export default async function AddIdp({ params }: AddIdpProps) {
   const { id } = await params;
 
   return (
-    <div className="mx-auto -mt-10 flex w-full max-w-xl flex-1 items-center justify-center">
+    <div className="mx-auto mt-10 flex w-full max-w-xl flex-1 items-center justify-center">
       <div className="flex w-full flex-col items-center gap-2">
         <KeySquareIcon className="size-8" />
         <h1 className="text-2xl font-medium">Add identity provider</h1>

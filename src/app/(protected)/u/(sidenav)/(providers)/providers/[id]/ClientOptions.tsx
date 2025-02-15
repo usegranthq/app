@@ -41,11 +41,6 @@ export default function ClientOptions({ providerId, client }: { providerId: stri
   const [useJwtType, toggleUseJwtType] = useToggle(false);
   const [audienceAsArray, toggleAudienceAsArray] = useToggle(false);
 
-  useEffect(() => {
-    if (!accessToken) return;
-    handleGenerateToken();
-  }, [audienceAsArray, useJwtType]);
-
   const handleGenerateToken = async () => {
     const generateAccessTokenOptions = {
       useJwtType,
@@ -68,6 +63,11 @@ export default function ClientOptions({ providerId, client }: { providerId: stri
       toast.dismiss(toastId);
     });
   };
+
+  useEffect(() => {
+    if (!accessToken) return;
+    handleGenerateToken();
+  }, [audienceAsArray, useJwtType, accessToken, handleGenerateToken]);
 
   const handleDelete = async () => {
     startTransition(async () => {

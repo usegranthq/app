@@ -129,7 +129,7 @@ const getPath = (path: string, providerId: string): string => {
   return path.startsWith('/') ? path : `/u/providers/${providerId}/${path}`;
 };
 
-export function NavMain({ providerId }: { providerId: string }) {
+export default function ProviderNav({ providerId }: { providerId: string }) {
   return (
     <>
       {items.map((group) => (

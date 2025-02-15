@@ -9,7 +9,7 @@ interface NoIdpProps {
 
 export default async function NoIdp({ id }: NoIdpProps) {
   return (
-    <div className="-mt-14 flex flex-1 items-center justify-center">
+    <div className="flex h-96 mt-20 flex-1 items-center justify-center">
       <div className="flex flex-col items-center gap-2">
         <KanbanIcon className="size-8" />
         <h1 className="text-2xl font-medium">Add your first identity provider</h1>

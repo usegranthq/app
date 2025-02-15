@@ -135,3 +135,44 @@ export async function deleteTenantProvider(tenantId: string, providerId: string)
   revalidatePath(`/u/tenants`);
   return [null, null];
 }
+
+export async function updateTenant(tenantId: string, formData: FormData): ActionResponse<Tenant> {
+  await verifySession();
+
+  const validation = tenantSchema.safeParse({
+    name: formData.get('name'),
+    description: formData.get('description'),
+  });
+
+  if (!validation.success) {
+    return [getZodErrorMessage(validation.error), null];
+  }
+
+  try {
+    await db.tenant.update({
+      where: { id: tenantId },
+      data: validation.data,
+    });
+    revalidatePath('/u/tenants', 'layout');
+    return [null, null];
+  } catch (error) {
+    const errorMessage = getApiErrorMessage(error, 'Failed to update tenant');
+    return [errorMessage, null];
+  }
+}
+
+export async function deleteTenant(tenantId: string): ActionResponse {
+  const session = await verifySession();
+
+  try {
+    await db.tenant.delete({
+      where: { id: tenantId, userId: session.user.id },
+    });
+
+    revalidatePath('/u/tenants', 'layout');
+    return [null, null];
+  } catch (error) {
+    const errorMessage = getApiErrorMessage(error, 'Failed to delete tenant');
+    return [errorMessage, null];
+  }
+}
