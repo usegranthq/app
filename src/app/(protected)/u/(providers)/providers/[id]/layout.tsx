@@ -10,15 +10,15 @@ import { ProviderSidebar } from './_blocks/ProviderSidebar';
 
 interface UserLayoutProps {
   children: React.ReactNode;
-  params: Promise<{ providerId: string }>;
+  params: Promise<{ id: string }>;
 }
 
 export default async function UserLayout(props: UserLayoutProps) {
-  const { providerId } = await props.params;
+  const { id } = await props.params;
   const { children } = props;
 
   const providers = await getProviders();
-  const activeProvider = providers.find((provider) => provider.id === providerId);
+  const activeProvider = providers.find((provider) => provider.id === id);
 
   if (!activeProvider) {
     return notFound();
