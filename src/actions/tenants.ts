@@ -84,7 +84,7 @@ export async function createTenantProvider(tenantId: string, formData: FormData)
 
   const validation = tenantProviderSchema.safeParse({
     url: formData.get('url'),
-    fingerprint: formData.get('fingerprint'),
+    fingerprints: [formData.get('fingerprint')],
     audience: formData.get('audience'),
     earliestIssuanceTimeAllowed: formData.get('earliestIssuanceTimeAllowed'),
   });
@@ -97,7 +97,7 @@ export async function createTenantProvider(tenantId: string, formData: FormData)
     await db.tenantProvider.create({
       data: {
         url: validation.data.url,
-        fingerprints: [validation.data.fingerprint],
+        fingerprints: validation.data.fingerprints,
         audience: validation.data.audience,
         earliestIssuanceTimeAllowed: validation.data.earliestIssuanceTimeAllowed,
         tenantId,

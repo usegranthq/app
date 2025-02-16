@@ -90,12 +90,17 @@ export const tenantProviderSchema = z.object({
     .url({ message: 'Please provide a valid URL.' })
     .transform((url) => url.replace(/\/$/, '')) // Remove trailing slash
     .transform(sanitize),
-  fingerprint: z
-    .string({ required_error: 'Please provide the provider fingerprint.' })
-    .min(32, { message: 'Fingerprint must be at least 32 characters long.' })
-    .max(64, { message: 'Fingerprint must be at most 64 characters long.' })
-    .trim()
-    .transform(sanitize),
+  fingerprints: z
+    .array(
+      z
+        .string({ required_error: 'Please provide the provider fingerprint.' })
+        .min(32, { message: 'Fingerprint must be at least 32 characters long.' })
+        .max(64, { message: 'Fingerprint must be at most 64 characters long.' })
+        .trim()
+        .transform(sanitize),
+    )
+    .min(1, { message: 'Provider must have at least one fingerprint.' })
+    .max(5, { message: 'Provider must have at most 5 fingerprints.' }),
   audience: z
     .string({ required_error: 'Please provide the provider audience.' })
     .min(3, { message: 'Provider audience must be at least 3 characters long.' })

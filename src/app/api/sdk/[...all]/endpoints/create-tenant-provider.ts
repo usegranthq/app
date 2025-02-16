@@ -13,7 +13,7 @@ const createTenantProvider = createAuthEndpoint(
   },
   async (ctx) => {
     const { tenantId } = ctx.params;
-    const { url, fingerprint, audience, earliestIssuanceTimeAllowed } = ctx.body;
+    const { url, fingerprints, audience, earliestIssuanceTimeAllowed } = ctx.body;
 
     const plan = await getPlanByUserId(ctx.context.userId);
     const tenantsCount = await db.tenantProvider.count({
@@ -47,7 +47,7 @@ const createTenantProvider = createAuthEndpoint(
       data: {
         tenantId,
         url,
-        fingerprints: [fingerprint],
+        fingerprints,
         audience,
         earliestIssuanceTimeAllowed,
       },
