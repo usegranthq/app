@@ -67,6 +67,10 @@ const ERRORS = {
     code: 'TENANT_NOT_FOUND',
     message: 'The specified tenant could not be found',
   },
+  TENANT_PROVIDER_NOT_FOUND: {
+    code: 'TENANT_PROVIDER_NOT_FOUND',
+    message: 'The specified tenant provider could not be found',
+  },
   PROVIDER_ALREADY_EXISTS: {
     code: 'PROVIDER_ALREADY_EXISTS',
     message: 'A provider with this URL already exists',
