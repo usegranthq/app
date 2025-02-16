@@ -1,19 +1,19 @@
 import Codeblock from '@/blocks/Codeblock';
 
 const code = `
+import { UseGrant } from '@usegranthq/sdk';
 import * as aws from '@aws-sdk/client-sts';
 
+const sdk = new UseGrant('YOUR_API_KEY');
+
 // get the token from usegrant.dev
-const token = await usegrant.getToken({
-  client_id: 'YOUR_CLIENT_ID',
-  api_key: 'YOUR_API_KEY',
-});
+const resp = await sdk.createToken('providerId', 'clientId');
 
 // use the token to assume a role
 const command = new aws.AssumeRoleWithWebIdentityCommand({
   RoleArn: 'arn:aws:iam::ACCOUNT_ID:role/ROLE_NAME',
   RoleSessionName: 'SessionName',
-  WebIdentityToken: data.access_token,
+  WebIdentityToken: resp.accessToken,
 });
 
 const stsClient = new aws.STSClient();
