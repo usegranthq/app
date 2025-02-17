@@ -1,4 +1,4 @@
-import { createEndpointCreator, createMiddleware } from 'better-call';
+import { createEndpoint, createMiddleware } from 'better-call';
 
 interface AuthContext {
   userId: string;
@@ -12,6 +12,6 @@ export const optionsMiddleware = createMiddleware(async () => {
   return {} as AuthContext;
 });
 
-export const createAuthEndpoint = createEndpointCreator({
+export const createAuthEndpoint = createEndpoint.create({
   use: [optionsMiddleware],
 });

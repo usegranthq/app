@@ -40,6 +40,9 @@ const handler = async (request: NextRequest) => {
     extraContext: {
       userId,
     },
+    openAPI: {
+      disabled: true,
+    },
   });
 
   return router.handler(request);
