@@ -7,14 +7,14 @@ import { env } from '@/env';
 const vercelProjectId = env.VERCEL_DOMINATE_PROJECT_ID;
 const vercelApiToken = env.VERCEL_DOMINATE_API_TOKEN;
 
-const vercel = new Vercel({
+const vercelApi = new Vercel({
   bearerToken: vercelApiToken,
 });
 
 // ref: https://vercel.com/docs/rest-api/endpoints/projects
 
 const addDomain = (domain: string) => {
-  return vercel.projects.addProjectDomain({
+  return vercelApi.projects.addProjectDomain({
     idOrName: vercelProjectId,
     requestBody: {
       name: domain,
@@ -23,26 +23,26 @@ const addDomain = (domain: string) => {
 };
 
 const deleteDomain = (domain: string) => {
-  return vercel.projects.removeProjectDomain({
+  return vercelApi.projects.removeProjectDomain({
     idOrName: vercelProjectId,
     domain,
   });
 };
 
 const verifyDomain = (domain: string) => {
-  return vercel.projects.verifyProjectDomain({
+  return vercelApi.projects.verifyProjectDomain({
     idOrName: vercelProjectId,
     domain,
   });
 };
 
 const getDomainConfig = (domain: string) => {
-  return vercel.domains.getDomainConfig({
+  return vercelApi.domains.getDomainConfig({
     domain,
   });
 };
 
-export default {
+const vercel = {
   domains: {
     add: addDomain,
     delete: deleteDomain,
@@ -50,3 +50,5 @@ export default {
     getConfig: getDomainConfig,
   },
 };
+
+export default vercel;
