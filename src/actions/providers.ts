@@ -13,7 +13,7 @@ import { generateJwk } from '@/utils/jwk';
 import { createJwt, defaultJwk } from '@/utils/jwt';
 import { createUrlId, getIssuer } from '@/utils/provider';
 import { clientSchema, providerSchema } from '@/schema';
-import { Client, Provider } from '@/types/app.types';
+import { Provider } from '@/types/app.types';
 
 export async function createProvider(formData: FormData): ActionResponse<Provider> {
   const session = await verifySession();
@@ -64,7 +64,7 @@ export async function createProvider(formData: FormData): ActionResponse<Provide
   }
 }
 
-export async function updateProvider(providerId: string, formData: FormData): ActionResponse<Provider> {
+export async function updateProvider(providerId: string, formData: FormData): ActionResponse {
   await verifySession();
 
   const validation = providerSchema.safeParse({
@@ -103,7 +103,7 @@ export async function deleteProvider(providerId: string): ActionResponse {
   redirect('/u/providers');
 }
 
-export async function createClient(providerId: string, formData: FormData): ActionResponse<Client> {
+export async function createClient(providerId: string, formData: FormData): ActionResponse {
   await verifySession();
 
   const validation = clientSchema.safeParse({

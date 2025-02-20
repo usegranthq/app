@@ -1,4 +1,11 @@
-type ActionResponse<T = null, E = string | null> = Promise<[E, E extends null ? T : T | null]>;
+type ActionResponse<T = null | unknown, E = string> = Promise<
+  // Error case - returns error message and null data
+  | [E, null]
+  // Success case - returns null error and data
+  | [null, T]
+  // Never case - returns never
+  | never
+>;
 
 type SearchParams<T extends Record<string, string>> = Promise<T>;
 type Params<T extends Record<string, unknown>> = Promise<T>;

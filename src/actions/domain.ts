@@ -113,7 +113,7 @@ export async function verifyDomain(providerId: string, domain: string): ActionRe
   });
 
   if (!domainRecord) {
-    return ['Domain not found.', false];
+    return ['Domain not found.', null];
   }
 
   try {

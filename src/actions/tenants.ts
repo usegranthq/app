@@ -10,7 +10,7 @@ import { getIssuerCertifcate } from '@/utils/ca';
 import { getApiErrorMessage, getZodErrorMessage } from '@/utils/error';
 import { isValidUrl } from '@/utils/url';
 import { tenantProviderSchema, tenantSchema } from '@/schema';
-import { Tenant, TenantProvider } from '@/types/app.types';
+import { Tenant } from '@/types/app.types';
 
 export async function createTenant(formData: FormData): ActionResponse<Tenant> {
   const session = await verifySession();
@@ -80,7 +80,7 @@ export async function fetchFingerprint(url: string): ActionResponse<string> {
   }
 }
 
-export async function createTenantProvider(tenantId: string, formData: FormData): ActionResponse<TenantProvider> {
+export async function createTenantProvider(tenantId: string, formData: FormData): ActionResponse {
   await verifySession();
 
   const validation = tenantProviderSchema.safeParse({
@@ -106,14 +106,14 @@ export async function createTenantProvider(tenantId: string, formData: FormData)
     });
 
     revalidatePath(`/u/tenants`);
-    return [null, null];
+    return ['null', null];
   } catch (error) {
     const errorMessage = getApiErrorMessage(error, 'Failed to create provider');
     return [errorMessage, null];
   }
 }
 
-export async function deleteTenantProvider(tenantId: string, providerId: string): ActionResponse<void> {
+export async function deleteTenantProvider(tenantId: string, providerId: string): ActionResponse {
   await verifySession();
 
   const tenantProvider = await db.tenantProvider.findUnique({
@@ -137,7 +137,7 @@ export async function deleteTenantProvider(tenantId: string, providerId: string)
   return [null, null];
 }
 
-export async function updateTenant(tenantId: string, formData: FormData): ActionResponse<Tenant> {
+export async function updateTenant(tenantId: string, formData: FormData): ActionResponse {
   await verifySession();
 
   const validation = tenantSchema.safeParse({
