@@ -1,6 +1,7 @@
 'use server';
 
 import { revalidatePath } from 'next/cache';
+import { redirect } from 'next/navigation';
 
 import db from '@/lib/db';
 import { verifySession } from '@/data/_verifySession';
@@ -170,9 +171,10 @@ export async function deleteTenant(tenantId: string): ActionResponse {
     });
 
     revalidatePath('/u/tenants', 'layout');
-    return [null, null];
   } catch (error) {
     const errorMessage = getApiErrorMessage(error, 'Failed to delete tenant');
     return [errorMessage, null];
   }
+
+  redirect('/u/tenants');
 }
