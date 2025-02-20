@@ -51,12 +51,12 @@ function getColumns(providerId: string): ColumnDef<Client>[] {
 
 interface ClientsListProps {
   clients: Client[];
-  providerId: string;
+  id: string;
   pagination: Pagination;
 }
 
-export default function ClientsList({ clients, providerId, pagination }: ClientsListProps) {
-  const columns = useMemo(() => getColumns(providerId), [providerId]);
+export default function ClientsList({ clients, id, pagination }: ClientsListProps) {
+  const columns = useMemo(() => getColumns(id), [id]);
 
   const table = useReactTable({
     data: clients,

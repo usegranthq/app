@@ -1,6 +1,6 @@
 'use client';
 
-import { MouseEvent, useEffect } from 'react';
+import { MouseEvent, useCallback, useEffect } from 'react';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 
 import { cn } from '@/lib/utils';
@@ -124,11 +124,14 @@ export default function PaginationControls({ pagination, className }: Pagination
   const pathname = usePathname();
   const searchParams = useSearchParams();
 
-  const setPage = (page: number) => {
-    const params = new URLSearchParams(searchParams.toString());
-    params.set('page', page.toString());
-    router.push(pathname + '?' + params);
-  };
+  const setPage = useCallback(
+    (page: number) => {
+      const params = new URLSearchParams(searchParams.toString());
+      params.set('page', page.toString());
+      router.push(pathname + '?' + params);
+    },
+    [router, pathname, searchParams],
+  );
 
   const handlePageClick = (e: MouseEvent, page: number) => {
     e.preventDefault();

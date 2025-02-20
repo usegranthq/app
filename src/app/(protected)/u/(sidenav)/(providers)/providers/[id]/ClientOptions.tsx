@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState, useTransition } from 'react';
+import { MouseEvent, useState, useTransition } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { DotsHorizontalIcon } from '@radix-ui/react-icons';
@@ -41,7 +41,9 @@ export default function ClientOptions({ providerId, client }: { providerId: stri
   const [useJwtType, toggleUseJwtType] = useToggle(false);
   const [audienceAsArray, toggleAudienceAsArray] = useToggle(false);
 
-  const handleGenerateToken = async () => {
+  const generateToken = async (e: MouseEvent) => {
+    e.preventDefault();
+
     const generateAccessTokenOptions = {
       useJwtType,
       audienceAsArray,
@@ -63,11 +65,6 @@ export default function ClientOptions({ providerId, client }: { providerId: stri
       toast.dismiss(toastId);
     });
   };
-
-  useEffect(() => {
-    if (!accessToken) return;
-    handleGenerateToken();
-  }, [audienceAsArray, useJwtType, accessToken, handleGenerateToken]);
 
   const handleDelete = async () => {
     startTransition(async () => {
@@ -132,6 +129,9 @@ export default function ClientOptions({ providerId, client }: { providerId: stri
             </Link>
           </div>
           <AlertDialogFooter>
+            <AlertDialogAction disabled={isTransitioning} onClick={generateToken}>
+              {isTransitioning ? 'Generating token...' : 'Regenerate token'}
+            </AlertDialogAction>
             <AlertDialogCancel>Close</AlertDialogCancel>
           </AlertDialogFooter>
         </AlertDialogContent>
@@ -156,7 +156,7 @@ export default function ClientOptions({ providerId, client }: { providerId: stri
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
             <DropdownMenuLabel className="text-xs text-muted-foreground">Actions</DropdownMenuLabel>
-            <DropdownMenuItem onClick={handleGenerateToken}>Generate token</DropdownMenuItem>
+            <DropdownMenuItem onClick={generateToken}>Generate token</DropdownMenuItem>
             <AlertDialogTrigger asChild>
               <DropdownMenuItem className="text-destructive" disabled={isTransitioning}>
                 {isTransitioning ? 'Deleting client' : 'Delete client'}

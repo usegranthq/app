@@ -5,6 +5,7 @@ import { GeistMono } from 'geist/font/mono';
 import { GeistSans } from 'geist/font/sans';
 import { NuqsAdapter } from 'nuqs/adapters/next/app';
 
+import { SITE_URL } from '@/lib/site';
 import ThemeProvider from '@/components/ThemeProvider';
 import { Toaster } from '@/components/ui/sonner';
 import { ColorProvider } from '@/contexts/ColorProvider';
@@ -12,6 +13,7 @@ import { ColorProvider } from '@/contexts/ColorProvider';
 import './globals.css';
 
 export const metadata: Metadata = {
+  metadataBase: new URL(SITE_URL),
   title: 'useGrant',
   description: 'Effortless machine to machine grant setup',
   openGraph: {
