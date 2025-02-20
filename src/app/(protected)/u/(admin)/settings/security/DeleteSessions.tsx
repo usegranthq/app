@@ -1,6 +1,6 @@
 'use client';
 
-import { forwardRef, useRef } from 'react';
+import { FC, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import { useFormStatus } from 'react-dom';
 import { toast } from 'sonner';
@@ -19,15 +19,15 @@ import {
 } from '@/components/ui/alert-dialog';
 import { Button, ButtonProps } from '@/components/ui/button';
 
-const DeleteButton = forwardRef<HTMLButtonElement, ButtonProps>((props, ref) => {
+const DeleteButton: FC<ButtonProps> = (props) => {
   const { pending } = useFormStatus();
 
   return (
-    <Button ref={ref} {...props} disabled={pending}>
+    <Button {...props} disabled={pending}>
       {pending ? 'Deleting your sessions...' : 'Delete all sessions'}
     </Button>
   );
-});
+};
 
 DeleteButton.displayName = 'DeleteButton';
 
