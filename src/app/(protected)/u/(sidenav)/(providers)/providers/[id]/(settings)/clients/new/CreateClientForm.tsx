@@ -15,11 +15,11 @@ function CreateClientButton() {
   return <Button disabled={pending}>Create client</Button>;
 }
 
-export default function CreateClientForm({ providerId }: { providerId: string }) {
+export default function CreateClientForm({ id }: { id: string }) {
   const router = useRouter();
 
   const handleSubmit = async (formData: FormData) => {
-    const [error] = await createClient(providerId, formData);
+    const [error] = await createClient(id, formData);
 
     if (error) {
       toast.error(error);
@@ -27,7 +27,7 @@ export default function CreateClientForm({ providerId }: { providerId: string })
     }
 
     toast.success(`Client created successfully`);
-    router.push(`/u/providers/${providerId}`);
+    router.push(`/u/providers/${id}`);
   };
 
   return (

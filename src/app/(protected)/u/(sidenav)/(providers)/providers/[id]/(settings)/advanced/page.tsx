@@ -8,13 +8,13 @@ import SigningKeys from './SigningKeys';
 
 interface AdvancedPageProps {
   params: Promise<{
-    providerId: string;
+    id: string;
   }>;
 }
 
 export default async function AdvancedPage({ params }: AdvancedPageProps) {
-  const { providerId } = await params;
-  const provider = await getProvider(providerId);
+  const { id } = await params;
+  const provider = await getProvider(id);
 
   if (!provider) {
     return notFound();

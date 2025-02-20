@@ -10,13 +10,13 @@ import DomainDetails from './DomainDetails';
 import CustomDomains from './Domains';
 
 interface DomainPageProps {
-  params: Promise<{ providerId: string }>;
+  params: Promise<{ id: string }>;
 }
 
 export default async function DomainPage(props: DomainPageProps) {
-  const { providerId } = await props.params;
-  const providerPromise = getProvider(providerId);
-  const domainsPromise = getDomains(providerId);
+  const { id } = await props.params;
+  const providerPromise = getProvider(id);
+  const domainsPromise = getDomains(id);
   const plan = await getPlanDetails();
 
   const [provider, domains] = await Promise.all([providerPromise, domainsPromise]);

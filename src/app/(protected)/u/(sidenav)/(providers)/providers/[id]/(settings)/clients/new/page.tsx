@@ -3,11 +3,11 @@ import { UserRoundPlusIcon } from 'lucide-react';
 import CreateClientForm from './CreateClientForm';
 
 interface NewClientPageProps {
-  params: Promise<{ providerId: string }>;
+  params: Promise<{ id: string }>;
 }
 
 export default async function NewClientPage(props: NewClientPageProps) {
-  const { providerId } = await props.params;
+  const { id } = await props.params;
 
   return (
     <div className="mt-10 flex flex-1 items-center justify-center">
@@ -18,7 +18,7 @@ export default async function NewClientPage(props: NewClientPageProps) {
           A client is an entity that can access the API, you can create multiple clients for a provider. The client will
           be configured with your target oidc provider.
         </p>
-        <CreateClientForm providerId={providerId} />
+        <CreateClientForm id={id} />
       </div>
     </div>
   );
