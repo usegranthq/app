@@ -12,17 +12,17 @@ const features = [
   },
   {
     icon: LockIcon,
-    title: 'Minimal Data Exposure',
+    title: 'Zero Data Exposure',
     description:
-      'UseGrant only stores the essential: your signup email. We have no knowledge of your services or intended usage patterns, ensuring maximum privacy.',
+      'UseGrant only stores the essentials: your signup email for authentication. We have no knowledge of your services or intended usage patterns, ensuring maximum privacy.',
     bullets: ['Limited data storage', 'Privacy-first approach'],
   },
   {
     icon: BookLock,
     title: 'No Lock-in',
     description:
-      'No lock-in. We do not store any data about your services or intended usage pattern. Use the apis to request client data any time.',
-    bullets: ['Minimized attack surface', 'No persistent signing keys'],
+      'No lock-in. We do not store any data about your services or intended usage patterns. Use the APIs to request client data at any time.',
+    bullets: ['Rest API access', 'Export data anytime'],
   },
 ];
 
@@ -61,8 +61,8 @@ export default function ZeroTrustSection() {
         </div>
         <div className="mt-10 flex justify-center">
           <p className="max-w-xl text-center text-sm text-muted-foreground">
-            Experience the next level of authentication security. With UseGrant&apos;s Zero Trust approach, you&apos;re
-            embracing a security philosophy that puts your data and privacy first.
+            Boost your authentication standards with the OAuth 2.0 client credentials grant. Adopt a security model that
+            eliminates the need for persistent credentials.
           </p>
         </div>
       </div>
