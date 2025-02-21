@@ -44,8 +44,8 @@ export const PLAN_LIMITS: Record<PlanName, PlanDetails> = {
     },
     tenants: {
       available: false,
-      limit: 0,
-      providers: 0,
+      limit: 1,
+      providers: 999,
     },
     customDomain: {
       available: false,
@@ -57,12 +57,12 @@ export const PLAN_LIMITS: Record<PlanName, PlanDetails> = {
     id: PLAN.PRO,
     providers: {
       available: true,
-      limit: 10,
+      limit: 100,
       clients: 9999,
     },
     tenants: {
       available: true,
-      limit: 10,
+      limit: 100,
       providers: 9999,
     },
     customDomain: {
@@ -75,13 +75,13 @@ export const PLAN_LIMITS: Record<PlanName, PlanDetails> = {
     id: PLAN.ULTIMATE,
     providers: {
       available: true,
-      limit: 100,
-      clients: 9999,
+      limit: 1000,
+      clients: 99999,
     },
     tenants: {
       available: true,
-      limit: 100,
-      providers: 9999,
+      limit: 1000,
+      providers: 99999,
     },
     customDomain: {
       available: true,
@@ -99,12 +99,21 @@ export type PlanData = {
   productId: string | null;
 };
 
+const isSingular = (value: number) => value === 1;
+
 export const Plans: PlanData[] = [
   {
     id: PLAN.FREE,
     name: PLAN_NAMES[PLAN.FREE],
     price: 0,
-    features: [`${PLAN_LIMITS[PLAN.FREE].providers.limit} Providers`, 'Free forever', 'API access to create clients'],
+    features: [
+      `${PLAN_LIMITS[PLAN.FREE].providers.limit} ${isSingular(PLAN_LIMITS[PLAN.FREE].providers.limit) ? 'Provider' : 'Providers'}`,
+      `${PLAN_LIMITS[PLAN.FREE].tenants.limit} ${isSingular(PLAN_LIMITS[PLAN.FREE].tenants.limit) ? 'Tenant' : 'Tenants'}`,
+      `${PLAN_LIMITS[PLAN.FREE].providers.clients} Clients per provider`,
+      `${PLAN_LIMITS[PLAN.FREE].tenants.providers} Providers per tenant`,
+      'Free forever',
+      'API access to create clients',
+    ],
     productId: null,
   },
   {
@@ -113,6 +122,9 @@ export const Plans: PlanData[] = [
     price: 9,
     features: [
       `${PLAN_LIMITS[PLAN.PRO].providers.limit} Providers`,
+      `${PLAN_LIMITS[PLAN.PRO].tenants.limit} Tenants`,
+      'Unlimited clients per provider',
+      'Unlimited providers per tenant',
       'Custom domains',
       'Priority support',
       'Request custom signing keys',
@@ -125,6 +137,7 @@ export const Plans: PlanData[] = [
     price: 49,
     features: [
       `${PLAN_LIMITS[PLAN.ULTIMATE].providers.limit} Providers`,
+      `${PLAN_LIMITS[PLAN.ULTIMATE].tenants.limit} Tenants`,
       'All in starter',
       'API access to create providers',
       'Auto Rotate signing keys',
