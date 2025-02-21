@@ -5,7 +5,7 @@ import { getSessionCookie } from 'better-auth';
 import * as constants from '@/constants';
 
 import ROUTES from './constants/routes';
-import { env } from './env';
+import { env, isDev } from './env';
 
 const isProtectedRoute = (pathname: string) => pathname.startsWith('/u');
 
@@ -20,7 +20,36 @@ const hasValidCookie = (request: NextRequest, cookieName: string) => {
   return true;
 };
 
-const next = () => NextResponse.next();
+const next = (request: NextRequest, isProtected = false) => {
+  if (!isProtected) {
+    return NextResponse.next();
+  }
+
+  const nonce = Buffer.from(crypto.randomUUID()).toString('base64');
+
+  const cspHeader = `
+      script-src ${isDev ? `http: https: 'unsafe-inline'` : `'nonce-${nonce}' 'strict-dynamic'`};
+      object-src 'none';
+      base-uri 'none';
+      upgrade-insecure-requests;
+  `;
+  // Replace newline characters and spaces
+  const contentSecurityPolicyHeaderValue = cspHeader.replace(/\s{2,}/g, ' ').trim();
+
+  const requestHeaders = new Headers(request.headers);
+  requestHeaders.set('x-nonce', nonce);
+
+  requestHeaders.set('Content-Security-Policy', contentSecurityPolicyHeaderValue);
+
+  const response = NextResponse.next({
+    request: {
+      headers: requestHeaders,
+    },
+  });
+  response.headers.set('Content-Security-Policy', contentSecurityPolicyHeaderValue);
+
+  return response;
+};
 
 const hasValidSessionCookie = (request: NextRequest) => {
   const sessionCookie = getSessionCookie(request, { cookiePrefix: constants.COOKIE_PREFIX });
@@ -37,7 +66,7 @@ const handleProtectedRoute = async (request: NextRequest) => {
     return redirectToPage(ROUTES.PROVIDERS, request);
   }
 
-  return next();
+  return next(request, true);
 };
 
 const handleVerifyRoute = (request: NextRequest) => {
@@ -49,16 +78,16 @@ const handleVerifyRoute = (request: NextRequest) => {
     return response;
   }
 
-  return next();
+  return next(request);
 };
 
 const authRoutes = [ROUTES.LOGIN, '/verify'];
 
 const handleDefaultRoute = (request: NextRequest) => {
   const hasSession = hasValidSessionCookie(request);
-  if (!hasSession) return next();
+  if (!hasSession) return next(request);
 
-  return authRoutes.includes(request.nextUrl.pathname) ? redirectToUserPage(request) : next();
+  return authRoutes.includes(request.nextUrl.pathname) ? redirectToUserPage(request) : next(request);
 };
 
 export async function middleware(request: NextRequest) {
