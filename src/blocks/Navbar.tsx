@@ -18,8 +18,18 @@ export default function Navbar() {
       <div className="ml-4 flex items-center">
         <Link href="/">
           <div className="left-4 top-8 md:left-10 md:top-10">
-            <Image src={darkLogo} alt="logo" width={120} className="hidden shrink-0 dark:block" />
-            <Image src={lightLogo} alt="logo" width={120} className="shrink-0 dark:hidden" />
+            <Image
+              src={darkLogo}
+              alt="logo"
+              style={{ width: '120px', height: 'auto' }}
+              className=" hidden shrink-0 dark:block"
+            />
+            <Image
+              src={lightLogo}
+              alt="logo"
+              style={{ width: '120px', height: 'auto' }}
+              className="shrink-0 dark:hidden"
+            />
           </div>
         </Link>
       </div>
