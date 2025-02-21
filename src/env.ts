@@ -53,3 +53,6 @@ export const env = createEnv({
     POSTHOG_API_KEY: process.env.POSTHOG_API_KEY,
   },
 });
+
+export const isProd = process.env.NODE_ENV === 'production';
+export const isDev = process.env.NODE_ENV === 'development';

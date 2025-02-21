@@ -6,6 +6,7 @@ const docsUrl = process.env.NODE_ENV === 'development' ? 'http://localhost:7575'
 
 const nextConfig: NextConfig = {
   reactStrictMode: true,
+  poweredByHeader: false,
   async rewrites() {
     return {
       beforeFiles: [
@@ -40,6 +41,19 @@ const nextConfig: NextConfig = {
       ],
       fallback: [],
     };
+  },
+  async headers() {
+    return [
+      {
+        source: '/:path*',
+        headers: [
+          { key: 'X-Frame-Options', value: 'DENY' },
+          { key: 'X-Content-Type-Options', value: 'nosniff' },
+          { key: 'X-XSS-Protection', value: '1; mode=block' },
+          { key: 'Referrer-Policy', value: 'no-referrer' },
+        ],
+      },
+    ];
   },
 };
 
