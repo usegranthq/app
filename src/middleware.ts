@@ -8,7 +8,7 @@ import ROUTES from './constants/routes';
 import { env } from './env';
 import { generateHash } from './utils/build';
 
-const isProtectedRoute = (pathname: string) => pathname.startsWith('/u');
+const matchUserRoute = (pathname: string) => pathname.startsWith('/u');
 
 const redirectToPage = (path: string, request: NextRequest) => NextResponse.redirect(new URL(path, request.url));
 const redirectToLoginPage = (request: NextRequest) => redirectToPage(ROUTES.LOGIN, request);
@@ -21,12 +21,13 @@ const hasValidCookie = (request: NextRequest, cookieName: string) => {
   return true;
 };
 
-const next = (request: NextRequest, protectedRoute = false) => {
+const next = (request: NextRequest) => {
   const nonce = generateHash();
+  const isProtectedRoute = matchUserRoute(request.nextUrl.pathname);
 
   // see https://web.dev/strict-csp for strict CSP reference
   const cspHeader = `
-      script-src ${protectedRoute ? `'nonce-${nonce}' 'strict-dynamic'` : `http: https: 'unsafe-inline'`};
+      script-src ${isProtectedRoute ? `'nonce-${nonce}' 'strict-dynamic'` : `http: https: 'unsafe-inline'`};
       object-src 'none';
       base-uri 'none';
       upgrade-insecure-requests;
@@ -65,7 +66,7 @@ const handleProtectedRoute = async (request: NextRequest) => {
     return redirectToPage(ROUTES.PROVIDERS, request);
   }
 
-  return next(request, true);
+  return next(request);
 };
 
 const handleVerifyRoute = (request: NextRequest) => {
@@ -91,7 +92,6 @@ const handleDefaultRoute = (request: NextRequest) => {
 
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
-
   const inviteToken = env.INVITE_TOKEN;
 
   // @todo: remove this after invite code is removed
@@ -102,7 +102,7 @@ export async function middleware(request: NextRequest) {
     }
   }
 
-  if (isProtectedRoute(pathname)) {
+  if (matchUserRoute(pathname)) {
     return handleProtectedRoute(request);
   } else if (pathname.startsWith('/verify')) {
     return handleVerifyRoute(request);
