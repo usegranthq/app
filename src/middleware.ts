@@ -20,11 +20,20 @@ const hasValidCookie = (request: NextRequest, cookieName: string) => {
   return true;
 };
 
-const next = (request: NextRequest) => {
+const getScriptSrc = (protectedRoute: boolean, nonce: string) => {
+  if (!protectedRoute) {
+    return `${isDev ? 'http:' : ''} https: 'unsafe-inline'`;
+  }
+
+  return isDev ? `http: https: 'unsafe-inline'` : `'nonce-${nonce}' 'strict-dynamic'`;
+};
+
+// see https://web.dev/strict-csp for strict CSP reference
+const next = (request: NextRequest, protectedRoute = false) => {
   const nonce = Buffer.from(crypto.randomUUID()).toString('base64');
 
   const cspHeader = `
-      script-src ${isDev ? `http: https: 'unsafe-inline'` : `'nonce-${nonce}' 'strict-dynamic'`};
+      script-src ${getScriptSrc(protectedRoute, nonce)};
       object-src 'none';
       base-uri 'none';
       upgrade-insecure-requests;
@@ -62,7 +71,7 @@ const handleProtectedRoute = async (request: NextRequest) => {
     return redirectToPage(ROUTES.PROVIDERS, request);
   }
 
-  return next(request);
+  return next(request, true);
 };
 
 const handleVerifyRoute = (request: NextRequest) => {
