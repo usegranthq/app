@@ -35,7 +35,7 @@ export default async function RootLayout({ children }: Readonly<PropsWithChildre
     <html lang="en" className="dark scroll-smooth" style={{ colorScheme: 'dark' }} suppressHydrationWarning>
       <body className={`${GeistSans.variable} ${GeistMono.variable} mx-auto max-w-screen-2xl font-sans`}>
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange nonce={nonce}>
-          <ColorProvider>
+          <ColorProvider nonce={nonce}>
             <NuqsAdapter>{children}</NuqsAdapter>
             <Toaster richColors />
           </ColorProvider>

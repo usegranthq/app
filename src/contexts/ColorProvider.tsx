@@ -52,22 +52,28 @@ const script = (defaultColor: string, storageKey: string) => {
 interface ColorThemeScriptProps {
   defaultColor: string;
   storageKey: string;
+  nonce: string;
 }
 
-const ColorThemeScript = memo(({ defaultColor, storageKey }: ColorThemeScriptProps) => {
+const ColorThemeScript = memo(({ defaultColor, storageKey, nonce }: ColorThemeScriptProps) => {
   const scriptArgs = JSON.stringify([defaultColor, storageKey]).slice(1, -1);
 
   return (
-    <script suppressHydrationWarning dangerouslySetInnerHTML={{ __html: `(${script.toString()})(${scriptArgs})` }} />
+    <script
+      suppressHydrationWarning
+      nonce={nonce}
+      dangerouslySetInnerHTML={{ __html: `(${script.toString()})(${scriptArgs})` }}
+    />
   );
 });
 ColorThemeScript.displayName = 'ColorThemeScript';
 
 interface ColorProviderProps extends PropsWithChildren {
   defaultColor?: string;
+  nonce: string;
 }
 
-export const ColorProvider = ({ children, defaultColor }: ColorProviderProps) => {
+export const ColorProvider = ({ children, defaultColor, nonce }: ColorProviderProps) => {
   const [color, setColor] = useState<string>(getColorFromLocalStorage(defaultColor));
 
   useEffect(() => {
@@ -81,7 +87,7 @@ export const ColorProvider = ({ children, defaultColor }: ColorProviderProps) =>
 
   return (
     <ColorContext.Provider value={{ color, setColor }}>
-      <ColorThemeScript defaultColor={DEFAULT_COLOR} storageKey={STORAGE_KEY} />
+      <ColorThemeScript defaultColor={DEFAULT_COLOR} storageKey={STORAGE_KEY} nonce={nonce} />
       {children}
     </ColorContext.Provider>
   );
