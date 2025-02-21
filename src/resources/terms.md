@@ -8,11 +8,11 @@ Note: UseGrant is currently in early access. Signups are limited to a small grou
 
 ## Privacy and Data Security
 
-We are dedicated to safeguarding your privacy and ensuring the security of your data. UseGrant will not access any of your data without your explicit consent. The data you provide, submit, or that is collected by UseGrant from you will be stored and processed in accordance with UseGrant's online privacy policy, which can be accessed at [usegrant.dev/privacy](/privacy).
+We are dedicated to safeguarding your privacy and ensuring the security of your data. UseGrant will not access any of your data without your explicit consent. The data you provide, submit, or that is collected by UseGrant from you will be stored and processed in accordance with UseGrant's privacy policy, which can be accessed at [usegrant.dev/privacy](/privacy).
 
 ## Payment Processing
 
-Our order process is facilitated by our online reseller, [Creem.io](https://creem.io). Creem serves as the Merchant of Record for all our transactions, offering customer support and managing returns.
+Our order processing is facilitated by our online reseller, [Creem.io](https://creem.io). Creem serves as the Merchant of Record for all our transactions, offering customer support and managing returns.
 
 ## Refund Policy
 

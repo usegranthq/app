@@ -26,7 +26,7 @@ We use the following third party services:
 
 We use your email address for the following purposes:
 
-- To send you authentication tokens and other relevant information for account security
+- To send you login links/codes and other relevant information for account security
 - To contact you regarding your account
 - For payment processing
 
