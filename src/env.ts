@@ -3,6 +3,7 @@ import { z } from 'zod';
 
 export const env = createEnv({
   server: {
+    BUILD_HASH: z.string(),
     SITE_URL: z.string().url(),
     INVITE_TOKEN: z.string().optional(),
     JWT_SIGNING_SECRET: z.string().min(1),
@@ -29,6 +30,7 @@ export const env = createEnv({
     NEXT_PUBLIC_CREEM_ULTIMATE_PLAN_PRODUCT_ID: z.string(),
   },
   runtimeEnv: {
+    BUILD_HASH: process.env.BUILD_HASH,
     SITE_URL: process.env.SITE_URL,
     INVITE_TOKEN: process.env.INVITE_TOKEN,
     JWT_SIGNING_SECRET: process.env.JWT_SIGNING_SECRET,

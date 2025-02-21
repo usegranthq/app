@@ -20,24 +20,25 @@ const hasValidCookie = (request: NextRequest, cookieName: string) => {
   return true;
 };
 
-const getScriptSrc = (protectedRoute: boolean, nonce: string) => {
+const getNonce = (protectedRoute: boolean) => {
   if (!protectedRoute) {
-    return `${isDev ? 'http:' : ''} https: 'unsafe-inline'`;
+    return env.BUILD_HASH;
   }
 
-  return isDev ? `http: https: 'unsafe-inline'` : `'nonce-${nonce}' 'strict-dynamic'`;
+  return Buffer.from(crypto.randomUUID()).toString('base64');
 };
 
-// see https://web.dev/strict-csp for strict CSP reference
 const next = (request: NextRequest, protectedRoute = false) => {
-  const nonce = Buffer.from(crypto.randomUUID()).toString('base64');
+  const nonce = getNonce(protectedRoute);
 
+  // see https://web.dev/strict-csp for strict CSP reference
   const cspHeader = `
-      script-src ${getScriptSrc(protectedRoute, nonce)};
+      script-src ${isDev ? `http: https: 'unsafe-inline'` : `'nonce-${nonce}' 'strict-dynamic'`};
       object-src 'none';
       base-uri 'none';
       upgrade-insecure-requests;
   `;
+
   // Replace newline characters and spaces
   const contentSecurityPolicyHeaderValue = cspHeader.replace(/\s{2,}/g, ' ').trim();
 

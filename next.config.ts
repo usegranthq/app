@@ -1,3 +1,5 @@
+import { BUILD_HASH } from '@/utils/build';
+
 import './src/env';
 
 import { NextConfig } from 'next';
@@ -54,6 +56,9 @@ const nextConfig: NextConfig = {
         ],
       },
     ];
+  },
+  env: {
+    BUILD_HASH: BUILD_HASH,
   },
 };
 
