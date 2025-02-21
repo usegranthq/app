@@ -6,6 +6,7 @@ import * as constants from '@/constants';
 
 import ROUTES from './constants/routes';
 import { env, isDev } from './env';
+import { generateHash } from './utils/build';
 
 const isProtectedRoute = (pathname: string) => pathname.startsWith('/u');
 
@@ -20,20 +21,13 @@ const hasValidCookie = (request: NextRequest, cookieName: string) => {
   return true;
 };
 
-const getNonce = (protectedRoute: boolean) => {
-  if (!protectedRoute) {
-    return env.BUILD_HASH;
-  }
-
-  return Buffer.from(crypto.randomUUID()).toString('base64');
-};
-
 const next = (request: NextRequest, protectedRoute = false) => {
-  const nonce = getNonce(protectedRoute);
+  const isSecure = !isDev || protectedRoute;
+  const nonce = generateHash();
 
   // see https://web.dev/strict-csp for strict CSP reference
   const cspHeader = `
-      script-src ${isDev ? `http: https: 'unsafe-inline'` : `'nonce-${nonce}' 'strict-dynamic'`};
+      script-src ${isSecure ? `'nonce-${nonce}' 'strict-dynamic'` : `http: https: 'unsafe-inline'`};
       object-src 'none';
       base-uri 'none';
       upgrade-insecure-requests;
