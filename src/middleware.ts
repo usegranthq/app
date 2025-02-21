@@ -20,11 +20,7 @@ const hasValidCookie = (request: NextRequest, cookieName: string) => {
   return true;
 };
 
-const next = (request: NextRequest, isProtected = false) => {
-  if (!isProtected) {
-    return NextResponse.next();
-  }
-
+const next = (request: NextRequest) => {
   const nonce = Buffer.from(crypto.randomUUID()).toString('base64');
 
   const cspHeader = `
@@ -66,7 +62,7 @@ const handleProtectedRoute = async (request: NextRequest) => {
     return redirectToPage(ROUTES.PROVIDERS, request);
   }
 
-  return next(request, true);
+  return next(request);
 };
 
 const handleVerifyRoute = (request: NextRequest) => {
