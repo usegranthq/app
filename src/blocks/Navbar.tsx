@@ -8,8 +8,8 @@ import { ThemeSwitcher } from './ThemeSwitcher';
 
 const navItems = [
   { label: 'home', href: '/' },
-  { label: 'docs', href: '/docs', external: true },
   { label: 'pricing', href: '/#pricing' },
+  { label: 'docs', href: '/docs', external: true },
 ];
 
 export default function Navbar() {
