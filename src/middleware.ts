@@ -5,7 +5,7 @@ import { getSessionCookie } from 'better-auth';
 import * as constants from '@/constants';
 
 import ROUTES from './constants/routes';
-import { env, isDev } from './env';
+import { env } from './env';
 import { generateHash } from './utils/build';
 
 const isProtectedRoute = (pathname: string) => pathname.startsWith('/u');
@@ -22,12 +22,11 @@ const hasValidCookie = (request: NextRequest, cookieName: string) => {
 };
 
 const next = (request: NextRequest, protectedRoute = false) => {
-  const isSecure = !isDev || protectedRoute;
   const nonce = generateHash();
 
   // see https://web.dev/strict-csp for strict CSP reference
   const cspHeader = `
-      script-src ${isSecure ? `'nonce-${nonce}' 'strict-dynamic'` : `http: https: 'unsafe-inline'`};
+      script-src ${protectedRoute ? `'nonce-${nonce}' 'strict-dynamic'` : `http: https: 'unsafe-inline'`};
       object-src 'none';
       base-uri 'none';
       upgrade-insecure-requests;
