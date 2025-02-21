@@ -88,6 +88,7 @@ export const tenantProviderSchema = z.object({
     .string({ required_error: 'Please provide a provider URL.' })
     .trim()
     .url({ message: 'Please provide a valid URL.' })
+    .refine((url) => url.startsWith('https://'), 'URL must use HTTPS protocol')
     .transform((url) => url.replace(/\/$/, '')) // Remove trailing slash
     .transform(sanitize),
   fingerprints: z
