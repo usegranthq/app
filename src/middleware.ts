@@ -5,10 +5,10 @@ import { getSessionCookie } from 'better-auth';
 import * as constants from '@/constants';
 
 import ROUTES from './constants/routes';
-import { env } from './env';
+import { inviteFlag } from './flags';
 import { generateHash } from './utils/build';
 
-const matchUserRoute = (pathname: string) => pathname.startsWith('/u');
+const matchesUserRoute = (pathname: string) => pathname.startsWith('/u');
 
 const redirectToPage = (path: string, request: NextRequest) => NextResponse.redirect(new URL(path, request.url));
 const redirectToLoginPage = (request: NextRequest) => redirectToPage(ROUTES.LOGIN, request);
@@ -23,7 +23,7 @@ const hasValidCookie = (request: NextRequest, cookieName: string) => {
 
 const next = (request: NextRequest) => {
   const nonce = generateHash();
-  const isProtectedRoute = matchUserRoute(request.nextUrl.pathname);
+  const isProtectedRoute = matchesUserRoute(request.nextUrl.pathname);
 
   // see https://web.dev/strict-csp for strict CSP reference
   const cspHeader = `
@@ -92,17 +92,13 @@ const handleDefaultRoute = (request: NextRequest) => {
 
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
-  const inviteToken = env.INVITE_TOKEN;
+  const inviteEnabled = await inviteFlag();
 
-  // @todo: remove this after invite code is removed
-  if (process.env.NODE_ENV === 'production' && pathname.startsWith('/login') && inviteToken) {
-    const inviteCookie = request.cookies.get(constants.INVITE_COOKIE);
-    if (!inviteCookie || inviteCookie.value !== inviteToken) {
-      return redirectToPage(ROUTES.LANDING, request);
-    }
+  if (pathname.startsWith('/login') && !inviteEnabled) {
+    return redirectToPage(ROUTES.LANDING, request);
   }
 
-  if (matchUserRoute(pathname)) {
+  if (matchesUserRoute(pathname)) {
     return handleProtectedRoute(request);
   } else if (pathname.startsWith('/verify')) {
     return handleVerifyRoute(request);
@@ -112,5 +108,5 @@ export async function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ['/((?!api|_next/static|_next/image|.*\\.png$).*)'],
+  matcher: ['/((?!api|_next/static|_next/image|favicon.ico|.*\\.png$).*)'],
 };
