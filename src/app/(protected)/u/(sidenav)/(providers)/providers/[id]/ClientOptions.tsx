@@ -36,7 +36,8 @@ export default function ClientOptions({ providerId, client }: { providerId: stri
   const router = useRouter();
   const progress = useProgressBar();
   const [accessToken, setAccessToken] = useState<string | null>(null);
-  const [isTransitioning, startTransition] = useTransition();
+  const [isGeneratingToken, startGeneratingToken] = useTransition();
+  const [isDeleting, startDeleting] = useTransition();
 
   const [useJwtType, toggleUseJwtType] = useToggle(false);
   const [audienceAsArray, toggleAudienceAsArray] = useToggle(false);
@@ -49,7 +50,7 @@ export default function ClientOptions({ providerId, client }: { providerId: stri
       audienceAsArray,
     };
 
-    startTransition(async () => {
+    startGeneratingToken(async () => {
       const toastId = toast('GenerateToken');
       toast.loading('Generating Token...', { id: toastId });
 
@@ -67,7 +68,7 @@ export default function ClientOptions({ providerId, client }: { providerId: stri
   };
 
   const handleDelete = async () => {
-    startTransition(async () => {
+    startDeleting(async () => {
       progress.start();
 
       const [error] = await deleteClient(providerId, client.id);
@@ -129,8 +130,8 @@ export default function ClientOptions({ providerId, client }: { providerId: stri
             </Link>
           </div>
           <AlertDialogFooter>
-            <AlertDialogAction disabled={isTransitioning} onClick={generateToken}>
-              {isTransitioning ? 'Generating token...' : 'Regenerate token'}
+            <AlertDialogAction disabled={isGeneratingToken} onClick={generateToken}>
+              {isGeneratingToken ? 'Generating token...' : 'Regenerate token'}
             </AlertDialogAction>
             <AlertDialogCancel>Close</AlertDialogCancel>
           </AlertDialogFooter>
@@ -156,10 +157,12 @@ export default function ClientOptions({ providerId, client }: { providerId: stri
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
             <DropdownMenuLabel className="text-xs text-muted-foreground">Actions</DropdownMenuLabel>
-            <DropdownMenuItem onClick={generateToken}>Generate token</DropdownMenuItem>
+            <DropdownMenuItem onClick={generateToken} disabled={isGeneratingToken}>
+              {isGeneratingToken ? 'Generating token...' : 'Generate token'}
+            </DropdownMenuItem>
             <AlertDialogTrigger asChild>
-              <DropdownMenuItem className="text-destructive" disabled={isTransitioning}>
-                {isTransitioning ? 'Deleting client' : 'Delete client'}
+              <DropdownMenuItem className="text-destructive" disabled={isDeleting}>
+                {isDeleting ? 'Deleting client...' : 'Delete client'}
               </DropdownMenuItem>
             </AlertDialogTrigger>
           </DropdownMenuContent>
