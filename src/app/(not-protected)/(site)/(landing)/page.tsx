@@ -2,6 +2,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 
 import { Button } from '@/components/ui/button';
+import { isProd } from '@/env';
 
 import DynamicEnv from './DyanmicEnv';
 import landerDarkImg from './lander-dark.png';
@@ -11,8 +12,6 @@ import TrustBasedAccess from './TrustBasedAccess';
 import ZeroTrustSection from './ZeroTrust';
 
 export default async function Home() {
-  const isProduction = process.env.NODE_ENV === 'production';
-
   return (
     <>
       <div className="mx-auto flex flex-col items-center justify-center gap-8 lg:min-h-dvh">
@@ -22,12 +21,12 @@ export default async function Home() {
             Set up secure M2M authentication in minutes. Built on OAuth standards for maximum security.
           </p>
         </div>
-        {isProduction && (
+        {isProd && (
           <p className="text-center text-base font-semibold text-primary md:text-lg">
             Signups are invite-only. Stay tuned!
           </p>
         )}
-        {!isProduction && (
+        {!isProd && (
           <div className="flex flex-col items-center gap-4">
             <div className="flex gap-4">
               <Button asChild>
@@ -52,14 +51,14 @@ export default async function Home() {
       <DynamicEnv />
       <ZeroTrustSection />
       <PricingSection />
-      {isProduction && (
+      {isProd && (
         <div className="my-44 flex flex-col items-center gap-4">
           <p className="text-center text-base font-semibold text-primary md:text-lg">
             Signups are invite-only. Stay tuned!
           </p>
         </div>
       )}
-      {!isProduction && (
+      {!isProd && (
         <div className="my-44 flex flex-col items-center gap-4">
           <h2 className="text-center text-4xl font-semibold">Get started today!</h2>
           <div className="mx-auto mt-4 flex items-center gap-4">

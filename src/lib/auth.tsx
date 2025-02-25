@@ -1,22 +1,20 @@
 import { betterAuth } from 'better-auth';
 import { prismaAdapter } from 'better-auth/adapters/prisma';
-import { createAuthMiddleware } from 'better-auth/api';
 import { nextCookies } from 'better-auth/next-js';
 import { customSession, magicLink } from 'better-auth/plugins';
-
-// import { PostHog } from 'posthog-node'
+import { PostHog } from 'posthog-node';
 
 import * as constants from '@/constants/cookies';
 import { findPlanByPlanName, findPlanByProductId, PLAN, PlanDetails } from '@/utils/billing';
 import { generateLoginToken } from '@/utils/random';
-import { env } from '@/env';
+import { env, isLive } from '@/env';
 import LoginEmail from '@/templates/LoginEmail';
 
 import { prisma } from './db';
 import { sendEmail } from './email';
 import { getSiteUrl } from './site';
 
-// const posthog = new PostHog(env.POSTHOG_API_KEY);
+const posthog = new PostHog(env.POSTHOG_API_KEY);
 
 const database = prismaAdapter(prisma, {
   provider: 'postgresql',
@@ -92,10 +90,22 @@ export const auth = betterAuth({
     }),
     nextCookies(), // must be last
   ],
-  hooks: {
-    after: createAuthMiddleware(async () => {
-      // @todo: add posthog capture for signup, for magic link, github, google signups
-    }),
+  databaseHooks: {
+    user: {
+      create: {
+        after: async (user) => {
+          if (!isLive) return;
+
+          posthog.capture({
+            distinctId: user.id,
+            event: 'user_signed_up',
+            properties: {
+              email: user.email,
+            },
+          });
+        },
+      },
+    },
   },
   advanced: {
     cookiePrefix: constants.COOKIE_PREFIX,

@@ -2,17 +2,15 @@ import crypto from 'crypto';
 import ky from 'ky';
 import { z } from 'zod';
 
-import { env } from '@/env';
+import { env, isLive } from '@/env';
 import * as CreemTypes from '@/types/creem.types';
 
 import { SITE_URL } from './site';
 
-const isProduction = process.env.NODE_ENV === 'production';
-
 const CREEM_PROD_URL = 'https://api.creem.io';
 const CREEM_TEST_URL = 'https://test-api.creem.io';
 
-export const CREEMS_API_URL = isProduction ? CREEM_PROD_URL : CREEM_TEST_URL;
+export const CREEMS_API_URL = isLive ? CREEM_PROD_URL : CREEM_TEST_URL;
 const SUCCESS_URL = new URL('/api/callbacks/billing/success', SITE_URL).toString();
 
 const instance = ky.create({
