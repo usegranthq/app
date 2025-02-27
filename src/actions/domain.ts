@@ -5,6 +5,7 @@ import { z } from 'zod';
 
 import db from '@/lib/db';
 import vercel from '@/lib/vercel';
+import ROUTES from '@/constants/routes';
 import { verifySession } from '@/data/_verifySession';
 import { getApiErrorMessage, getZodErrorMessage } from '@/utils/error';
 
@@ -72,7 +73,7 @@ export async function addDomain(providerId: string, formData: FormData): ActionR
     return [errorMessage, null];
   }
 
-  revalidatePath(`/u/providers/${providerId}/settings/domain`);
+  revalidatePath(ROUTES.PROVIDERS_ID_SETTINGS_DOMAIN(providerId));
   return [null, null];
 }
 
@@ -101,7 +102,7 @@ export async function deleteDomain(providerId: string, domain: string): ActionRe
     return ['Failed to delete domain. Try again.', null];
   }
 
-  revalidatePath(`/u/providers/${providerId}/settings/domain`);
+  revalidatePath(ROUTES.PROVIDERS_ID_SETTINGS_DOMAIN(providerId));
   return [null, null];
 }
 
@@ -130,7 +131,7 @@ export async function verifyDomain(providerId: string, domain: string): ActionRe
       data: { verified: isVerified },
     });
 
-    revalidatePath(`/u/providers/${providerId}/settings/domain`);
+    revalidatePath(ROUTES.PROVIDERS_ID_SETTINGS_DOMAIN(providerId));
     return [null, isVerified];
   } catch {
     return ['Failed to verify domain. Try again.', null];

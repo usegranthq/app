@@ -4,6 +4,7 @@ import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
 
 import db from '@/lib/db';
+import ROUTES from '@/constants/routes';
 import { verifySession } from '@/data/_verifySession';
 import { getPlanDetails } from '@/data/user';
 import { getIssuerCertifcate } from '@/utils/ca';
@@ -53,7 +54,7 @@ export async function createTenant(formData: FormData): ActionResponse<Tenant> {
       },
     });
 
-    revalidatePath('/u/tenants', 'layout');
+    revalidatePath(ROUTES.TENANTS, 'layout');
     return [null, tenant];
   } catch (error) {
     const errorMessage = getApiErrorMessage(error, 'Failed to create provider');
@@ -105,7 +106,7 @@ export async function createTenantProvider(tenantId: string, formData: FormData)
       },
     });
 
-    revalidatePath(`/u/tenants`);
+    revalidatePath(ROUTES.TENANTS);
     return ['null', null];
   } catch (error) {
     const errorMessage = getApiErrorMessage(error, 'Failed to create provider');
@@ -133,7 +134,7 @@ export async function deleteTenantProvider(tenantId: string, providerId: string)
     return [errorMessage, null];
   }
 
-  revalidatePath(`/u/tenants`);
+  revalidatePath(ROUTES.TENANTS);
   return [null, null];
 }
 
@@ -154,7 +155,7 @@ export async function updateTenant(tenantId: string, formData: FormData): Action
       where: { id: tenantId },
       data: validation.data,
     });
-    revalidatePath('/u/tenants', 'layout');
+    revalidatePath(ROUTES.TENANTS, 'layout');
     return [null, null];
   } catch (error) {
     const errorMessage = getApiErrorMessage(error, 'Failed to update tenant');
@@ -170,11 +171,11 @@ export async function deleteTenant(tenantId: string): ActionResponse {
       where: { id: tenantId, userId: session.user.id },
     });
 
-    revalidatePath('/u/tenants', 'layout');
+    revalidatePath(ROUTES.TENANTS, 'layout');
   } catch (error) {
     const errorMessage = getApiErrorMessage(error, 'Failed to delete tenant');
     return [errorMessage, null];
   }
 
-  redirect('/u/tenants');
+  redirect(ROUTES.TENANTS);
 }

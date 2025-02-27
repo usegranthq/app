@@ -95,7 +95,7 @@ export async function middleware(request: NextRequest) {
   const inviteEnabled = await inviteFlag();
 
   if (pathname.startsWith('/login') && !inviteEnabled) {
-    return redirectToPage(ROUTES.LANDING, request);
+    return redirectToPage(ROUTES.ROOT, request);
   }
 
   if (matchesUserRoute(pathname)) {

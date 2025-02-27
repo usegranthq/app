@@ -4,19 +4,20 @@ import { startTransition, useActionState } from 'react';
 import { SiGithub, SiGoogle } from '@icons-pack/react-simple-icons';
 
 import { authClient } from '@/lib/auth-client';
+import ROUTES from '@/constants/routes';
 import { Button } from '@/components/ui/button';
 
 const githubLogin = async () => {
   await authClient.signIn.social({
     provider: 'github',
-    callbackURL: '/u',
+    callbackURL: ROUTES.DASHBOARD,
   });
 };
 
 const googleLogin = async () => {
   await authClient.signIn.social({
     provider: 'google',
-    callbackURL: '/u',
+    callbackURL: ROUTES.DASHBOARD,
   });
 };
 

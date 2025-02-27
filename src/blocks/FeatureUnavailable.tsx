@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { ArrowRight } from 'lucide-react';
 
 import { cn } from '@/lib/utils';
+import ROUTES from '@/constants/routes';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
@@ -27,7 +28,7 @@ export function FeatureUnavailable(props: FeatureUnavailableProps) {
           The <span className="font-semibold">{props.name}</span> feature is not available in your current plan.
         </p>
         <Button asChild>
-          <Link href={'/u/settings/billing'} className="inline-flex items-center">
+          <Link href={ROUTES.SETTINGS_BILLING} className="inline-flex items-center">
             Upgrade to use this feature
             <ArrowRight />
           </Link>

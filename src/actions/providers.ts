@@ -135,7 +135,7 @@ export async function createClient(providerId: string, formData: FormData): Acti
         providerId,
       },
     });
-    revalidatePath(ROUTES.PROVIDERS_ID.HOME(providerId), 'layout');
+    revalidatePath(ROUTES.PROVIDERS_ID(providerId), 'layout');
     return [null, null];
   } catch (error) {
     const errorMessage = getApiErrorMessage(error, 'Failed to create client');
@@ -148,7 +148,7 @@ export async function deleteClient(providerId: string, clientId: string): Action
 
   try {
     await db.client.delete({ where: { id: clientId, providerId } });
-    revalidatePath(ROUTES.PROVIDERS_ID.HOME(providerId), 'layout');
+    revalidatePath(ROUTES.PROVIDERS_ID(providerId), 'layout');
     return [null, null];
   } catch (error) {
     const errorMessage = getApiErrorMessage(error, 'Failed to delete client');
@@ -221,7 +221,7 @@ export async function generateAccessToken(
 
   try {
     const token = await createJwt(claims, signingKey, jwtOptions);
-    revalidatePath(ROUTES.PROVIDERS_ID.HOME(providerId));
+    revalidatePath(ROUTES.PROVIDERS_ID(providerId));
     return [null, token];
   } catch (error) {
     const errorMessage = getApiErrorMessage(error, 'Failed to generate client token');
@@ -275,7 +275,7 @@ export async function requestSigningKey(providerId: string): ActionResponse<stri
       },
     });
 
-    revalidatePath(ROUTES.PROVIDERS_ID.ADVANCED(providerId));
+    revalidatePath(ROUTES.PROVIDERS_ID_ADVANCED(providerId));
     return [null, key.id];
   } catch (error) {
     const errorMessage = getApiErrorMessage(error, 'Failed to generate new key');
@@ -313,7 +313,7 @@ export async function removeKey(providerId: string, id: string): ActionResponse 
 
   try {
     await db.jwks.delete({ where: { id, providerId } });
-    revalidatePath(ROUTES.PROVIDERS_ID.ADVANCED(providerId));
+    revalidatePath(ROUTES.PROVIDERS_ID_ADVANCED(providerId));
     return [null, null];
   } catch (error) {
     const errorMessage = getApiErrorMessage(error, 'Failed to remove key');
@@ -331,7 +331,7 @@ export async function toggleRotateJwks(providerId: string, rotateJwks: boolean):
 
   try {
     await db.provider.update({ where: { id: providerId }, data: { rotateJwks } });
-    revalidatePath(ROUTES.PROVIDERS_ID.ADVANCED(providerId));
+    revalidatePath(ROUTES.PROVIDERS_ID_ADVANCED(providerId));
     return [null, null];
   } catch (error) {
     const errorMessage = getApiErrorMessage(error, 'Failed to toggle rotate JWKS');

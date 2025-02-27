@@ -1,15 +1,18 @@
 export const ROUTES = {
-  LANDING: '/',
+  ROOT: '/',
   LOGIN: '/login',
+  VERIFY: '/verify',
   DASHBOARD: '/u',
-  PROVIDERS: '/u/providers',
   SETTINGS: '/u/settings',
   SETTINGS_BILLING: '/u/settings/billing',
+  SETTINGS_TOKENS: '/u/settings/tokens',
+  SETTINGS_SECURITY: '/u/settings/security',
   API_UNAUTHORIZED: '/api/unauthorized',
-  PROVIDERS_ID: {
-    HOME: (id: string) => `/u/providers/${id}`,
-    ADVANCED: (id: string) => `/u/providers/${id}/advanced`,
-  },
+  PROVIDERS: '/u/providers',
+  PROVIDERS_ID: (id: string) => `/u/providers/${id}`,
+  PROVIDERS_ID_ADVANCED: (id: string) => `/u/providers/${id}/advanced`,
+  PROVIDERS_ID_SETTINGS_DOMAIN: (id: string) => `/u/providers/${id}/settings/domain`,
+  TENANTS: '/u/tenants',
 };
 
 export default ROUTES;

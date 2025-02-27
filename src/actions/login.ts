@@ -6,6 +6,7 @@ import { SignJWT } from 'jose';
 import ky from 'ky';
 
 import { auth } from '@/lib/auth';
+import ROUTES from '@/constants/routes';
 import { getApiErrorMessage, getZodErrorMessage } from '@/utils/error';
 import constants from '@/constants';
 import { env } from '@/env';
@@ -56,7 +57,7 @@ export async function login(formData: FormData): ActionResponse {
     await auth.api.signInMagicLink({
       body: {
         email: payload.email,
-        callbackURL: `/u`,
+        callbackURL: ROUTES.DASHBOARD,
       },
       headers: headersList,
     });
@@ -74,7 +75,7 @@ export async function login(formData: FormData): ActionResponse {
     return [errorMessage, null];
   }
 
-  redirect('/verify');
+  redirect(ROUTES.VERIFY);
 }
 
 // public endpoint
@@ -103,5 +104,5 @@ export async function verify(formData: FormData): ActionResponse {
     return [errorMessage, null];
   }
 
-  redirect('/u', RedirectType.replace);
+  redirect(ROUTES.DASHBOARD, RedirectType.replace);
 }

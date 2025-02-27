@@ -8,6 +8,7 @@ import { nanoid } from 'nanoid';
 
 import { auth } from '@/lib/auth';
 import db from '@/lib/db';
+import ROUTES from '@/constants/routes';
 import { verifySession } from '@/data/_verifySession';
 import { getApiErrorMessage, getZodErrorMessage } from '@/utils/error';
 import { createTokenSchema } from '@/schema';
@@ -35,7 +36,7 @@ export async function createToken(formData: FormData): ActionResponse<string> {
         userId: session.user.id,
       },
     });
-    revalidatePath('/u/settings/tokens');
+    revalidatePath(ROUTES.SETTINGS_TOKENS);
     return [null, token.token];
   } catch (error) {
     const errorMessage = getApiErrorMessage(error, 'Failed to create token. Try again.');
@@ -53,7 +54,7 @@ export async function deleteToken(id: string): ActionResponse {
     return [errorMessage, null];
   }
 
-  revalidatePath('/u/settings/tokens');
+  revalidatePath(ROUTES.SETTINGS_TOKENS);
   return [null, null];
 }
 
@@ -69,7 +70,7 @@ export async function deleteSessions(): ActionResponse {
     return [errorMessage, null];
   }
 
-  revalidatePath('/u/settings/security');
+  revalidatePath(ROUTES.SETTINGS_SECURITY);
   return [null, null];
 }
 
@@ -88,7 +89,7 @@ export async function deleteSession(token: string): ActionResponse {
     return [errorMessage, null];
   }
 
-  revalidatePath('/u/settings/security');
+  revalidatePath(ROUTES.SETTINGS_SECURITY);
   return [null, null];
 }
 
@@ -105,6 +106,6 @@ export async function deleteAccount(): ActionResponse {
     return [errorMessage, null];
   }
 
-  revalidatePath('/', 'layout');
-  redirect('/');
+  revalidatePath(ROUTES.ROOT, 'layout');
+  redirect(ROUTES.ROOT);
 }
