@@ -35,7 +35,6 @@ export type PlanDetails = {
     request: boolean;
     autoRotate: boolean;
   };
-  apiAccess: boolean;
 };
 
 export const PLAN_LIMITS: Record<PlanName, PlanDetails> = {
@@ -59,7 +58,6 @@ export const PLAN_LIMITS: Record<PlanName, PlanDetails> = {
       request: false,
       autoRotate: false,
     },
-    apiAccess: false,
   },
   [PLAN.PRO]: {
     id: PLAN.PRO,
@@ -81,7 +79,6 @@ export const PLAN_LIMITS: Record<PlanName, PlanDetails> = {
       request: true,
       autoRotate: false,
     },
-    apiAccess: true,
   },
   [PLAN.ULTIMATE]: {
     id: PLAN.ULTIMATE,
@@ -103,7 +100,6 @@ export const PLAN_LIMITS: Record<PlanName, PlanDetails> = {
       request: true,
       autoRotate: true,
     },
-    apiAccess: true,
   },
 };
 
@@ -128,6 +124,7 @@ export const Plans: PlanData[] = [
       `${PLAN_LIMITS[PLAN.FREE].providers.clients} clients per provider`,
       `${PLAN_LIMITS[PLAN.FREE].tenants.providers} providers per tenant`,
       'Free forever',
+      'API access',
     ],
     productId: null,
   },
@@ -141,7 +138,6 @@ export const Plans: PlanData[] = [
       'Unlimited clients per provider',
       'Unlimited providers per tenant',
       'Custom domain',
-      'API access',
       'Request custom signing keys',
       'Priority support',
     ],

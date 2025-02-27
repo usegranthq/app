@@ -1,9 +1,8 @@
 import { NextRequest } from 'next/server';
 import { createRouter } from 'better-call';
 
-import { getPlanByUserId } from '@/lib/billing';
 import db from '@/lib/db';
-import { forbiddenResponse, getBearerToken, unauthorizedResponse } from '@/utils/rest';
+import { getBearerToken, unauthorizedResponse } from '@/utils/rest';
 import { User } from '@/types';
 
 import endpoints from './endpoints';
@@ -38,12 +37,6 @@ const handler = async (request: NextRequest) => {
   const user = await verifyToken(bearerToken);
   if (!user) {
     return unauthorizedResponse('Unauthorized');
-  }
-
-  const plan = await getPlanByUserId(user.id);
-
-  if (!plan.apiAccess) {
-    return forbiddenResponse('Your current plan does not include API access. Please upgrade.');
   }
 
   const router = createRouter(endpoints, {
