@@ -262,7 +262,7 @@ export async function requestSigningKey(providerId: string): ActionResponse<stri
   });
 
   if (keysCount >= 10) {
-    return ['You can only have up to 10 signing keys per provider', null];
+    return ['You can only have up to 10 custom signing keys per provider', null];
   }
 
   try {
