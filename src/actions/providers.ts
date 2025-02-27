@@ -230,7 +230,7 @@ export async function generateAccessToken(
 }
 
 export async function requestSigningKey(providerId: string): ActionResponse<string> {
-  await verifySession();
+  const session = await verifySession();
 
   const plan = await getPlanDetails();
   if (!plan.signingKeys.request) {
@@ -251,6 +251,20 @@ export async function requestSigningKey(providerId: string): ActionResponse<stri
     return [ERRORS.AUTOMATIC_ROTATION_ENABLED.message, null];
   }
 
+  // get count of keys
+  const keysCount = await db.jwks.count({
+    where: {
+      providerId,
+      Provider: {
+        userId: session.user.id,
+      },
+    },
+  });
+
+  if (keysCount >= 10) {
+    return ['You can only have up to 10 signing keys per provider', null];
+  }
+
   try {
     const [kid, jwk] = await generateJwk('RS256');
     const key = await db.jwks.create({
@@ -262,7 +276,6 @@ export async function requestSigningKey(providerId: string): ActionResponse<stri
     });
 
     revalidatePath(ROUTES.PROVIDERS_ID.ADVANCED(providerId));
-
     return [null, key.id];
   } catch (error) {
     const errorMessage = getApiErrorMessage(error, 'Failed to generate new key');

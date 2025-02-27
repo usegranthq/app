@@ -10,7 +10,7 @@ const generateKid = (): string => {
 
 export const generateJwk = async (alg: Alg): Promise<[string, JWK]> => {
   const kid = generateKid();
-  const { privateKey } = await generateKeyPair(alg);
+  const { privateKey } = await generateKeyPair(alg, { extractable: true });
 
   const jwk = await exportJWK(privateKey);
   jwk.kid = kid;
