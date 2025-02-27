@@ -72,8 +72,6 @@ export const auth = betterAuth({
         after: async (user) => {
           if (!isLive) return;
 
-          console.log('user created', user.email, isLive);
-
           posthog.capture({
             distinctId: user.id,
             event: 'user_signed_up',
