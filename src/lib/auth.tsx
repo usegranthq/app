@@ -14,7 +14,9 @@ import { prisma } from './db';
 import { sendEmail } from './email';
 import { getSiteUrl } from './site';
 
-const posthog = new PostHog(env.POSTHOG_API_KEY);
+const posthog = new PostHog(env.POSTHOG_API_KEY, {
+  host: 'https://us.i.posthog.com',
+});
 
 const database = prismaAdapter(prisma, {
   provider: 'postgresql',
@@ -68,6 +70,8 @@ export const auth = betterAuth({
       create: {
         after: async (user) => {
           if (!isLive) return;
+
+          console.log('user created', user.email, isLive);
 
           posthog.capture({
             distinctId: user.id,
