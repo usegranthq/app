@@ -24,6 +24,10 @@ export const inviteFlag = flag<boolean, Entities>({
   key: 'invite-flag',
   identify,
   decide({ entities }) {
+    if (env.INVITE_TOKEN === '') {
+      return true;
+    }
+
     return env.INVITE_TOKEN === entities?.inviteCode;
   },
 });
