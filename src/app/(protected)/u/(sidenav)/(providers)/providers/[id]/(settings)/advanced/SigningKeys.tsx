@@ -23,8 +23,8 @@ export default async function SigningKeys({ provider }: SigningKeysProps) {
         <CardTitle>Signing keys</CardTitle>
         <CardDescription>
           Manage your provider signing keys. These are the keys that will be used to sign the JWT tokens. The latest one
-          is used for signing the tokens. Old keys are still persisted in the database for compatibility with old
-          tokens.
+          is used for signing the tokens. Old keys are still persisted in the database unless deleted or rotated for
+          compatibility with old tokens.
         </CardDescription>
       </CardHeader>
       <CardContent>
