@@ -1,5 +1,3 @@
-import Link from 'next/link';
-
 export default function SupportPage() {
   return (
     <div className="flex flex-col gap-6">
@@ -7,17 +5,17 @@ export default function SupportPage() {
       <p>
         Whether you have questions about our platform or need assistance with a specific issue, we&apos;re here to help!
         You can email us at{' '}
-        <Link href="mailto:support@usegrant.dev" className="text-primary hover:underline">
+        <a href="mailto:support@usegrant.dev" className="text-primary hover:underline">
           support@usegrant.dev
-        </Link>{' '}
+        </a>{' '}
         with a detailed description of your issue.
       </p>
 
       <p>
         If you have feedback or a suggestion, please email us at{' '}
-        <Link href="mailto:feedback@usegrant.dev" className="text-primary hover:underline">
+        <a href="mailto:feedback@usegrant.dev" className="text-primary hover:underline">
           feedback@usegrant.dev
-        </Link>
+        </a>
         .
       </p>
     </div>
