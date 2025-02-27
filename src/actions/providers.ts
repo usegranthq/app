@@ -6,6 +6,7 @@ import { Prisma } from '@prisma/client';
 import { JWK } from 'jose';
 
 import db from '@/lib/db';
+import ROUTES from '@/constants/routes';
 import { verifySession } from '@/data/_verifySession';
 import { getPlanDetails } from '@/data/user';
 import ERRORS, { getApiErrorMessage, getZodErrorMessage } from '@/utils/error';
@@ -56,7 +57,7 @@ export async function createProvider(formData: FormData): ActionResponse<Provide
       },
     });
 
-    revalidatePath('/u/providers', 'layout');
+    revalidatePath(ROUTES.PROVIDERS, 'layout');
     return [null, provider];
   } catch (error) {
     const errorMessage = getApiErrorMessage(error, 'Failed to create provider');
@@ -81,7 +82,7 @@ export async function updateProvider(providerId: string, formData: FormData): Ac
       where: { id: providerId },
       data: validation.data,
     });
-    revalidatePath('/u/providers', 'layout');
+    revalidatePath(ROUTES.PROVIDERS, 'layout');
     return [null, null];
   } catch (error) {
     const errorMessage = getApiErrorMessage(error, 'Failed to update provider');
@@ -94,13 +95,13 @@ export async function deleteProvider(providerId: string): ActionResponse {
 
   try {
     await db.provider.delete({ where: { id: providerId } });
-    revalidatePath('/u/providers', 'layout');
+    revalidatePath(ROUTES.PROVIDERS, 'layout');
   } catch (error) {
     const errorMessage = getApiErrorMessage(error, 'Failed to delete provider');
     return [errorMessage, null];
   }
 
-  redirect('/u/providers');
+  redirect(ROUTES.PROVIDERS);
 }
 
 export async function createClient(providerId: string, formData: FormData): ActionResponse {
@@ -134,7 +135,7 @@ export async function createClient(providerId: string, formData: FormData): Acti
         providerId,
       },
     });
-    revalidatePath(`/u/providers/${providerId}`, 'layout');
+    revalidatePath(ROUTES.PROVIDERS_ID.HOME(providerId), 'layout');
     return [null, null];
   } catch (error) {
     const errorMessage = getApiErrorMessage(error, 'Failed to create client');
@@ -147,7 +148,7 @@ export async function deleteClient(providerId: string, clientId: string): Action
 
   try {
     await db.client.delete({ where: { id: clientId, providerId } });
-    revalidatePath(`/u/providers/${providerId}`);
+    revalidatePath(ROUTES.PROVIDERS_ID.HOME(providerId), 'layout');
     return [null, null];
   } catch (error) {
     const errorMessage = getApiErrorMessage(error, 'Failed to delete client');
@@ -220,7 +221,7 @@ export async function generateAccessToken(
 
   try {
     const token = await createJwt(claims, signingKey, jwtOptions);
-    revalidatePath(`/u/providers/${providerId}`);
+    revalidatePath(ROUTES.PROVIDERS_ID.HOME(providerId));
     return [null, token];
   } catch (error) {
     const errorMessage = getApiErrorMessage(error, 'Failed to generate client token');
@@ -232,7 +233,7 @@ export async function requestSigningKey(providerId: string): ActionResponse<stri
   await verifySession();
 
   const plan = await getPlanDetails();
-  if (!plan.rotateSigningKey) {
+  if (!plan.signingKeys.request) {
     return [ERRORS.GENERIC_FEATURE_NOT_AVAILABLE.message, null];
   }
 
@@ -260,7 +261,7 @@ export async function requestSigningKey(providerId: string): ActionResponse<stri
       },
     });
 
-    revalidatePath(`/u/providers/${providerId}/advanced`);
+    revalidatePath(ROUTES.PROVIDERS_ID.ADVANCED(providerId));
 
     return [null, key.id];
   } catch (error) {
@@ -299,7 +300,7 @@ export async function removeKey(providerId: string, id: string): ActionResponse 
 
   try {
     await db.jwks.delete({ where: { id, providerId } });
-    revalidatePath(`/u/providers/${providerId}/advanced`);
+    revalidatePath(ROUTES.PROVIDERS_ID.ADVANCED(providerId));
     return [null, null];
   } catch (error) {
     const errorMessage = getApiErrorMessage(error, 'Failed to remove key');
@@ -311,13 +312,13 @@ export async function toggleRotateJwks(providerId: string, rotateJwks: boolean):
   await verifySession();
 
   const plan = await getPlanDetails();
-  if (!plan.rotateSigningKey) {
+  if (!plan.signingKeys.autoRotate) {
     return [ERRORS.GENERIC_FEATURE_NOT_AVAILABLE.message, null];
   }
 
   try {
     await db.provider.update({ where: { id: providerId }, data: { rotateJwks } });
-    revalidatePath(`/u/providers/${providerId}/advanced`);
+    revalidatePath(ROUTES.PROVIDERS_ID.ADVANCED(providerId));
     return [null, null];
   } catch (error) {
     const errorMessage = getApiErrorMessage(error, 'Failed to toggle rotate JWKS');

@@ -5,7 +5,7 @@ import { customSession, magicLink } from 'better-auth/plugins';
 import { PostHog } from 'posthog-node';
 
 import * as constants from '@/constants/cookies';
-import { findPlanByPlanName, findPlanByProductId, PLAN, PlanDetails } from '@/utils/billing';
+import { getPlanByUserId } from '@/utils/billing';
 import { generateLoginToken } from '@/utils/random';
 import { env, isLive } from '@/env';
 import LoginEmail from '@/templates/LoginEmail';
@@ -19,33 +19,6 @@ const posthog = new PostHog(env.POSTHOG_API_KEY);
 const database = prismaAdapter(prisma, {
   provider: 'postgresql',
 });
-
-export const getPlanByUserId = async (userId: string): Promise<PlanDetails> => {
-  const customer = await prisma.customer.findUnique({
-    where: {
-      userId,
-    },
-  });
-
-  if (!customer) {
-    return findPlanByPlanName(PLAN.FREE);
-  }
-
-  const subscription = await prisma.subscription.findFirst({
-    where: {
-      customerId: customer.id,
-    },
-    orderBy: {
-      createdAt: 'desc',
-    },
-  });
-
-  if (!subscription || subscription.status !== 'active') {
-    return findPlanByPlanName(PLAN.FREE);
-  }
-
-  return findPlanByProductId(subscription.productId);
-};
 
 export const auth = betterAuth({
   baseURL: getSiteUrl(),

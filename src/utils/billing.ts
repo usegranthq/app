@@ -1,3 +1,4 @@
+import db from '@/lib/db';
 import { env } from '@/env';
 
 export const PLAN = {
@@ -31,7 +32,11 @@ export type PlanDetails = {
     available: boolean;
     limit: number;
   };
-  rotateSigningKey: boolean;
+  signingKeys: {
+    request: boolean;
+    autoRotate: boolean;
+  };
+  apiAccess: boolean;
 };
 
 export const PLAN_LIMITS: Record<PlanName, PlanDetails> = {
@@ -51,7 +56,11 @@ export const PLAN_LIMITS: Record<PlanName, PlanDetails> = {
       available: false,
       limit: 0,
     },
-    rotateSigningKey: false,
+    signingKeys: {
+      request: false,
+      autoRotate: false,
+    },
+    apiAccess: false,
   },
   [PLAN.PRO]: {
     id: PLAN.PRO,
@@ -69,7 +78,11 @@ export const PLAN_LIMITS: Record<PlanName, PlanDetails> = {
       available: true,
       limit: 1,
     },
-    rotateSigningKey: true,
+    signingKeys: {
+      request: true,
+      autoRotate: false,
+    },
+    apiAccess: true,
   },
   [PLAN.ULTIMATE]: {
     id: PLAN.ULTIMATE,
@@ -87,11 +100,15 @@ export const PLAN_LIMITS: Record<PlanName, PlanDetails> = {
       available: true,
       limit: 1,
     },
-    rotateSigningKey: true,
+    signingKeys: {
+      request: true,
+      autoRotate: true,
+    },
+    apiAccess: true,
   },
 };
 
-export type PlanData = {
+type PlanData = {
   id: PlanName;
   name: string;
   price: number;
@@ -112,7 +129,6 @@ export const Plans: PlanData[] = [
       `${PLAN_LIMITS[PLAN.FREE].providers.clients} clients per provider`,
       `${PLAN_LIMITS[PLAN.FREE].tenants.providers} providers per tenant`,
       'Free forever',
-      'API access to create clients',
     ],
     productId: null,
   },
@@ -126,8 +142,9 @@ export const Plans: PlanData[] = [
       'Unlimited clients per provider',
       'Unlimited providers per tenant',
       'Custom domain',
-      'Priority support',
+      'API access',
       'Request custom signing keys',
+      'Priority support',
     ],
     productId: env.NEXT_PUBLIC_CREEM_PRO_PLAN_PRODUCT_ID,
   },
@@ -139,7 +156,6 @@ export const Plans: PlanData[] = [
       `${PLAN_LIMITS[PLAN.ULTIMATE].providers.limit} Providers`,
       `${PLAN_LIMITS[PLAN.ULTIMATE].tenants.limit} Tenants`,
       'All in starter',
-      'API access to create providers',
       'Auto Rotate signing keys',
       'Priority support 24/5',
     ],
@@ -157,4 +173,31 @@ export const findPlanByProductId = (productId: string): PlanDetails => {
 
 export const findPlanByPlanName = (planName: PlanName): PlanDetails => {
   return PLAN_LIMITS[planName];
+};
+
+export const getPlanByUserId = async (userId: string): Promise<PlanDetails> => {
+  const customer = await db.customer.findUnique({
+    where: {
+      userId,
+    },
+  });
+
+  if (!customer) {
+    return findPlanByPlanName(PLAN.FREE);
+  }
+
+  const subscription = await db.subscription.findFirst({
+    where: {
+      customerId: customer.id,
+    },
+    orderBy: {
+      createdAt: 'desc',
+    },
+  });
+
+  if (!subscription || subscription.status !== 'active') {
+    return findPlanByPlanName(PLAN.FREE);
+  }
+
+  return findPlanByProductId(subscription.productId);
 };

@@ -4,24 +4,29 @@ import { startTransition } from 'react';
 import { useFormStatus } from 'react-dom';
 import { toast } from 'sonner';
 
+import { PlanDetails } from '@/utils/billing';
 import { requestSigningKey } from '@/actions';
 import { useProgressBar } from '@/blocks/NavProgress';
+import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Provider } from '@/types';
 
 interface RequestSigningKeyProps {
   provider: Provider;
   isLoading: boolean;
+  plan: PlanDetails;
 }
 
 const RequestButton = (props: RequestSigningKeyProps) => {
-  const { provider, isLoading } = props;
+  const { provider, isLoading, plan } = props;
   const { pending } = useFormStatus();
 
-  return <Button disabled={pending || isLoading || provider.rotateJwks}>Request new key</Button>;
+  return (
+    <Button disabled={pending || isLoading || provider.rotateJwks || !plan.signingKeys.request}>Request new key</Button>
+  );
 };
 
-export default function RequestSigningKey({ provider, isLoading }: RequestSigningKeyProps) {
+export default function RequestSigningKey({ provider, isLoading, plan }: RequestSigningKeyProps) {
   const progress = useProgressBar();
 
   const handleSubmit = async () => {
@@ -39,8 +44,15 @@ export default function RequestSigningKey({ provider, isLoading }: RequestSignin
   };
 
   return (
-    <form action={handleSubmit}>
-      <RequestButton provider={provider} isLoading={isLoading} />
+    <form action={handleSubmit} className="flex items-center gap-2">
+      <RequestButton provider={provider} isLoading={isLoading} plan={plan} />
+      {!plan.signingKeys.request && (
+        <div>
+          <Badge variant="outline" className="">
+            Upgrade to request new keys
+          </Badge>
+        </div>
+      )}
     </form>
   );
 }

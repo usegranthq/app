@@ -61,7 +61,7 @@ const processCron = async () => {
         // if there is only 1 key, we don't need to delete anything
         // but delete if the plan doesn't support rotating signing keys
         const excludeQuery: Prisma.JwksWhereInput = {};
-        if (jwks.length > 1 && !plan.rotateSigningKey) {
+        if (jwks.length > 1 && !plan.signingKeys.autoRotate) {
           excludeQuery.id = jwks[0].id;
         }
 

@@ -4,6 +4,7 @@ import { useOptimistic, useTransition } from 'react';
 import { toast } from 'sonner';
 
 import { type SigningKey } from '@/data/providers';
+import { PlanDetails } from '@/utils/billing';
 import { formatDate } from '@/utils/date';
 import { toggleRotateJwks } from '@/actions';
 import { useProgressBar } from '@/blocks/NavProgress';
@@ -18,13 +19,14 @@ import RequestSigningKey from './RequestSigningKey';
 interface KeysListProps {
   provider: Provider;
   signingKeys: SigningKey[];
+  plan: PlanDetails;
 }
 
 const updateProvider = (provider: Provider, update: Partial<Provider>) => {
   return { ...provider, ...update };
 };
 
-export default function KeysList({ signingKeys, provider }: KeysListProps) {
+export default function KeysList({ signingKeys, provider, plan }: KeysListProps) {
   const [isPending, startTransition] = useTransition();
   const progress = useProgressBar();
   const [optimisticProvider, setOptimisticProvider] = useOptimistic(provider, updateProvider);
@@ -48,9 +50,17 @@ export default function KeysList({ signingKeys, provider }: KeysListProps) {
           id="rotate-jwks"
           checked={optimisticProvider.rotateJwks}
           onCheckedChange={handleRotateJwks}
-          disabled={isPending}
+          disabled={isPending || !plan.signingKeys.autoRotate}
+          title={plan.signingKeys.autoRotate ? 'Automatically rotate keys' : 'Upgrade to rotate keys automatically'}
         />
         <Label htmlFor="rotate-jwks">Automatically rotate keys</Label>
+        {!plan.signingKeys.autoRotate && (
+          <div>
+            <Badge variant="outline" className="">
+              Upgrade to rotate keys automatically
+            </Badge>
+          </div>
+        )}
       </div>
       <p className="mt-4 text-sm text-muted-foreground">
         When automatic rotation is enabled, a new key is generated daily. The most recent old key is retained in the
@@ -86,7 +96,7 @@ export default function KeysList({ signingKeys, provider }: KeysListProps) {
           You can request a new key to rotate the signing keys. The newly generated key will be used for signing the
           tokens.
         </p>
-        <RequestSigningKey provider={optimisticProvider} isLoading={isPending} />
+        <RequestSigningKey provider={optimisticProvider} isLoading={isPending} plan={plan} />
       </div>
     </>
   );

@@ -2,14 +2,19 @@ import { NextRequest } from 'next/server';
 import { createRouter } from 'better-call';
 
 import db from '@/lib/db';
-import { getBearerToken, unauthorizedResponse } from '@/utils/rest';
+import { getPlanByUserId } from '@/utils/billing';
+import { forbiddenResponse, getBearerToken, unauthorizedResponse } from '@/utils/rest';
+import { User } from '@/types';
 
 import endpoints from './endpoints';
 
-const verifyToken = async (bearerToken: string): Promise<string | null> => {
+const verifyToken = async (bearerToken: string): Promise<User | null> => {
   const token = await db.token.findUnique({
     where: {
       token: bearerToken,
+    },
+    include: {
+      User: true,
     },
   });
 
@@ -21,7 +26,7 @@ const verifyToken = async (bearerToken: string): Promise<string | null> => {
     return null;
   }
 
-  return token.userId;
+  return token.User;
 };
 
 const handler = async (request: NextRequest) => {
@@ -30,15 +35,21 @@ const handler = async (request: NextRequest) => {
     return unauthorizedResponse('Missing api token');
   }
 
-  const userId = await verifyToken(bearerToken);
-  if (!userId) {
+  const user = await verifyToken(bearerToken);
+  if (!user) {
     return unauthorizedResponse('Unauthorized');
+  }
+
+  const plan = await getPlanByUserId(user.id);
+
+  if (!plan.apiAccess) {
+    return forbiddenResponse('Your current plan does not include API access. Please upgrade.');
   }
 
   const router = createRouter(endpoints, {
     basePath: '/sdk',
     extraContext: {
-      userId,
+      userId: user.id,
     },
     openAPI: {
       disabled: true,

@@ -9,8 +9,8 @@ export default function NewProviderPage() {
         <ContainerIcon className="size-8" />
         <h1 className="text-2xl font-medium">Create your provider</h1>
         <p className="max-w-lg text-center text-sm text-muted-foreground">
-          A provider is like a isolated realm where you can create multiple clients and get access to the API. Each
-          provider is a seperated entity.
+          A provider is an isolated entity where you can create multiple clients. Generate access tokens for your
+          clients to access your services.
         </p>
         <CreateProviderForm />
       </div>

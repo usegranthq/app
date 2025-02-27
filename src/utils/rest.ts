@@ -18,3 +18,7 @@ export const getBearerToken = (request: NextRequest): string | null => {
 export const unauthorizedResponse = (message = 'Unauthorized') => {
   return new Response(message, { status: 401 });
 };
+
+export const forbiddenResponse = (message = 'Forbidden') => {
+  return new Response(message, { status: 403 });
+};

@@ -1,8 +1,6 @@
 import { notFound } from 'next/navigation';
 
 import { getProvider } from '@/data/providers';
-import { getPlanDetails } from '@/data/user';
-import { getDefaultDomain } from '@/app/provider-helpers';
 
 import SigningKeys from './SigningKeys';
 
@@ -20,12 +18,9 @@ export default async function AdvancedPage({ params }: AdvancedPageProps) {
     return notFound();
   }
 
-  const plan = await getPlanDetails();
-  const jwksUrl = getDefaultDomain(provider.urlId, '/.well-known/jwks');
-
   return (
     <div className="flex flex-col gap-8">
-      <SigningKeys provider={provider} jwksUrl={jwksUrl} canRotateSigningKey={plan.rotateSigningKey} />
+      <SigningKeys provider={provider} />
     </div>
   );
 }

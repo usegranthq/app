@@ -1,7 +1,8 @@
 import Link from 'next/link';
 
 import { getSigningKeys } from '@/data/providers';
-import { FeatureUnavailable } from '@/blocks/FeatureUnavailable';
+import { getPlanDetails } from '@/data/user';
+import { getDefaultDomain } from '@/app/provider-helpers';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Provider } from '@/types';
 
@@ -9,12 +10,12 @@ import KeysList from './KeysList';
 
 interface SigningKeysProps {
   provider: Provider;
-  jwksUrl: string;
-  canRotateSigningKey: boolean;
 }
 
-export default async function SigningKeys({ provider, jwksUrl, canRotateSigningKey }: SigningKeysProps) {
+export default async function SigningKeys({ provider }: SigningKeysProps) {
+  const jwksUrl = getDefaultDomain(provider.urlId, '/.well-known/jwks');
   const signingKeys = await getSigningKeys(provider.id);
+  const plan = await getPlanDetails();
 
   return (
     <Card>
@@ -34,9 +35,7 @@ export default async function SigningKeys({ provider, jwksUrl, canRotateSigningK
           </Link>
         </div>
 
-        <FeatureUnavailable available={canRotateSigningKey} name="Auto rotate and request custom signing key" inline>
-          <KeysList provider={provider} signingKeys={signingKeys} />
-        </FeatureUnavailable>
+        <KeysList provider={provider} signingKeys={signingKeys} plan={plan} />
       </CardContent>
     </Card>
   );

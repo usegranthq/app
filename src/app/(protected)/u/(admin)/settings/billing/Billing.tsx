@@ -53,7 +53,8 @@ export default function Billing({ plan, showCustomerPortal }: BillingProps) {
           <p>You can upgrade to a new plan, after downgrading to free plan and then subscribing again.</p>
         )}
         <p>
-          Get in touch, if you need to create more than 100 providers or have any other questions. Contact us via{' '}
+          Get in touch, if you need to create more than provided in ultimate plan or have any other questions. Contact
+          us via{' '}
           <Link href="mailto:support@usegrant.dev" className="underline underline-offset-4 hover:text-primary">
             support@usegrant.dev
           </Link>
