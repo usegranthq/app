@@ -76,7 +76,9 @@ export const auth = betterAuth({
             distinctId: user.id,
             event: 'user_signed_up',
             properties: {
-              email: user.email,
+              $set: {
+                email: user.email,
+              },
             },
           });
         },
