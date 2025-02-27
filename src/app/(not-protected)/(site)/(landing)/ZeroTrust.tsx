@@ -7,7 +7,7 @@ const features = [
     icon: ShieldIcon,
     title: 'Secure by Design',
     description:
-      'Our authentication is built on OAuth 2.0 standards. Your services maintain full control by verifying all credentials directly, ensuring maximum security.',
+      'Rotate signing keys automatically. Your services maintain full control by verifying all credentials directly, ensuring maximum security.',
     bullets: ['Automatic key rotation', 'OAuth 2.0 standards'],
   },
   {
@@ -21,7 +21,7 @@ const features = [
     icon: BookLock,
     title: 'No Lock-in',
     description:
-      'No lock-in. We do not store any data about your services or intended usage patterns. Use the APIs to request client data at any time.',
+      'No lock-in. We do not store any data about your services or intended usage patterns. Use the APIs to take your data anywhere and anytime.',
     bullets: ['Rest API access', 'Export data anytime'],
   },
 ];

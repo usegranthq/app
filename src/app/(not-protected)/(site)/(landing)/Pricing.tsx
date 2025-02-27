@@ -10,7 +10,8 @@ export default function PricingSection() {
     <div className="mt-28 scroll-mt-28 md:mt-44" id="pricing">
       <h2 className="text-center text-3xl font-semibold md:text-4xl">Pricing</h2>
       <p className="mx-auto mt-2.5 max-w-lg text-pretty text-center text-sm font-medium text-muted-foreground">
-        Simple and transparent pricing. No calculator needed. Way more affordable than running your own service.
+        Simple and transparent pricing. No calculator needed. Way more affordable than running your own service for each
+        oauth provider.
       </p>
       <div className="mx-auto max-w-5xl">
         <div className="mt-12 grid gap-10 sm:grid-cols-1 md:gap-14 lg:grid-cols-3 lg:items-center">
