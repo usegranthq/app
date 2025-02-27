@@ -16,6 +16,7 @@ import { getSiteUrl } from './site';
 
 const posthog = new PostHog(env.POSTHOG_API_KEY, {
   host: 'https://us.i.posthog.com',
+  flushAt: 1,
 });
 
 const database = prismaAdapter(prisma, {
