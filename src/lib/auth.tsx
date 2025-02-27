@@ -5,11 +5,11 @@ import { customSession, magicLink } from 'better-auth/plugins';
 import { PostHog } from 'posthog-node';
 
 import * as constants from '@/constants/cookies';
-import { getPlanByUserId } from '@/utils/billing';
 import { generateLoginToken } from '@/utils/random';
 import { env, isLive } from '@/env';
 import LoginEmail from '@/templates/LoginEmail';
 
+import { getPlanByUserId } from './billing';
 import { prisma } from './db';
 import { sendEmail } from './email';
 import { getSiteUrl } from './site';

@@ -1,4 +1,3 @@
-import db from '@/lib/db';
 import { env } from '@/env';
 
 export const PLAN = {
@@ -108,7 +107,7 @@ export const PLAN_LIMITS: Record<PlanName, PlanDetails> = {
   },
 };
 
-type PlanData = {
+export type PlanData = {
   id: PlanName;
   name: string;
   price: number;
@@ -173,31 +172,4 @@ export const findPlanByProductId = (productId: string): PlanDetails => {
 
 export const findPlanByPlanName = (planName: PlanName): PlanDetails => {
   return PLAN_LIMITS[planName];
-};
-
-export const getPlanByUserId = async (userId: string): Promise<PlanDetails> => {
-  const customer = await db.customer.findUnique({
-    where: {
-      userId,
-    },
-  });
-
-  if (!customer) {
-    return findPlanByPlanName(PLAN.FREE);
-  }
-
-  const subscription = await db.subscription.findFirst({
-    where: {
-      customerId: customer.id,
-    },
-    orderBy: {
-      createdAt: 'desc',
-    },
-  });
-
-  if (!subscription || subscription.status !== 'active') {
-    return findPlanByPlanName(PLAN.FREE);
-  }
-
-  return findPlanByProductId(subscription.productId);
 };

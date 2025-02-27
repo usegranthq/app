@@ -1,8 +1,8 @@
 import { NextRequest } from 'next/server';
 import { createRouter } from 'better-call';
 
+import { getPlanByUserId } from '@/lib/billing';
 import db from '@/lib/db';
-import { getPlanByUserId } from '@/utils/billing';
 import { forbiddenResponse, getBearerToken, unauthorizedResponse } from '@/utils/rest';
 import { User } from '@/types';
 
