@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { DotsHorizontalIcon } from '@radix-ui/react-icons';
 import { toast } from 'sonner';
+import { useToggle } from 'usehooks-ts';
 
 import { deleteClient, generateAccessToken } from '@/actions';
 import { useProgressBar } from '@/blocks/NavProgress';
@@ -29,7 +30,6 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { Label } from '@/components/ui/label';
-import { useToggle } from '@/hooks/use-toggle';
 import { Client } from '@/types/app.types';
 
 export default function ClientOptions({ providerId, client }: { providerId: string; client: Client }) {

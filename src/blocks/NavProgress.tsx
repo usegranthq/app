@@ -11,9 +11,9 @@ import {
 } from 'react';
 import { useRouter } from 'next/navigation';
 import { AnimatePresence, domAnimation, LazyMotion, motion, useMotionTemplate, useSpring } from 'motion/react';
+import { useInterval } from 'usehooks-ts';
 
 import { cn } from '@/lib/utils';
-import { useInterval } from '@/hooks/use-interval';
 
 const ProgressBarContext = createContext<ReturnType<typeof useProgress> | null>(null);
 
