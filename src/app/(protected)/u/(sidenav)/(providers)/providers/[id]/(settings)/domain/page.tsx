@@ -35,12 +35,10 @@ export default async function DomainPage(props: DomainPageProps) {
       <h1 className="mb-10 text-2xl font-bold">Manage domain</h1>
       <div className="flex flex-col gap-8">
         <FeatureUnavailable available={isCustomDomainAvailable} name="Custom domain">
-          {domains.length === 0 && (
-            <DomainDetails provider={provider} defaultDomain={defaultDomain} domains={domains} />
-          )}
+          {domains.length === 0 && <DomainDetails provider={provider} domains={domains} />}
           <CustomDomains provider={provider} domains={domains} />
         </FeatureUnavailable>
-        <CaDetails provider={provider} defaultDomain={defaultDomainHostname} domains={domains} />
+        <CaDetails defaultDomain={defaultDomain} defaultDomainHostname={defaultDomainHostname} domains={domains} />
       </div>
     </div>
   );

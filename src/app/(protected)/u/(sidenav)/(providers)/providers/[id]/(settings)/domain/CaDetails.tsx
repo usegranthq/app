@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useMemo, useState } from 'react';
+import Link from 'next/link';
 import { useFormStatus } from 'react-dom';
 import { toast } from 'sonner';
 
@@ -11,12 +12,12 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Domain, Provider } from '@/types/app.types';
+import { Domain } from '@/types/app.types';
 
 interface CaDetailsProps {
-  provider: Provider;
-  defaultDomain: string;
   domains: Domain[];
+  defaultDomain: string;
+  defaultDomainHostname: string;
 }
 
 interface CaDetails {
@@ -41,27 +42,28 @@ const toSelectOption = (domain: string) => ({
   value: domain,
 });
 
-export default function CaDetails({ defaultDomain, domains }: CaDetailsProps) {
-  const [selectedDomain, setSelectedDomain] = useState(defaultDomain);
+export default function CaDetails(props: CaDetailsProps) {
+  const { domains, defaultDomain, defaultDomainHostname } = props;
+  const [selectedDomain, setSelectedDomain] = useState(defaultDomainHostname);
   const [caDetails, setCaDetails] = useState<CaDetails | null>(null);
 
   const domainsOptions = useMemo(() => {
     return [
-      toSelectOption(defaultDomain),
+      toSelectOption(defaultDomainHostname),
       ...domains
         .filter((domain) => domain.verified)
         .map((domain) => domain.domain)
         .map(toSelectOption),
     ];
-  }, [defaultDomain, domains]);
+  }, [defaultDomainHostname, domains]);
 
   useEffect(() => {
     const hasDomain = domainsOptions.some((domain) => domain.value === selectedDomain);
     if (!hasDomain) {
-      setSelectedDomain(defaultDomain);
+      setSelectedDomain(defaultDomainHostname);
       setCaDetails(null);
     }
-  }, [defaultDomain, domainsOptions, selectedDomain]);
+  }, [defaultDomainHostname, domainsOptions, selectedDomain]);
 
   const formAction = async () => {
     setCaDetails(null);
@@ -92,6 +94,18 @@ export default function CaDetails({ defaultDomain, domains }: CaDetailsProps) {
       </CardHeader>
       <div>
         <CardContent>
+          <div className="mb-4">
+            <p className="text-sm text-muted-foreground">
+              Your default provider&apos;s domain is{' '}
+              <Link
+                href={`${defaultDomain}/.well-known/openid-configuration`}
+                target="_blank"
+                className="font-bold hover:underline"
+              >
+                {defaultDomain}
+              </Link>
+            </p>
+          </div>
           <div className="flex flex-col gap-8">
             <p className="text-sm text-muted-foreground">Note: Self signed certificates are not supported.</p>
             <form className="flex flex-col gap-2" action={formAction}>

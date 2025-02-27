@@ -1,7 +1,6 @@
 'use client';
 
 import { startTransition } from 'react';
-import Link from 'next/link';
 import { useFormStatus } from 'react-dom';
 import { toast } from 'sonner';
 
@@ -15,7 +14,6 @@ import { Domain, Provider } from '@/types/app.types';
 
 interface DomainDetailsProps {
   provider: Provider;
-  defaultDomain: string;
   domains: Domain[];
 }
 
@@ -29,7 +27,7 @@ const AddButton = () => {
   );
 };
 
-export default function DomainDetails({ defaultDomain, provider }: DomainDetailsProps) {
+export default function DomainDetails({ provider }: DomainDetailsProps) {
   const progress = useProgressBar();
 
   const handleFormSubmit = async (formData: FormData) => {
@@ -55,7 +53,7 @@ export default function DomainDetails({ defaultDomain, provider }: DomainDetails
         </CardDescription>
       </CardHeader>
       <CardContent className="mt-4">
-        <form className="flex items-center gap-8" action={handleFormSubmit}>
+        <form className="flex items-center gap-8 mb-2" action={handleFormSubmit}>
           <div className="grid w-full gap-2">
             <Label>Domain Name</Label>
             <div className="flex w-full items-center space-x-4">
@@ -64,18 +62,6 @@ export default function DomainDetails({ defaultDomain, provider }: DomainDetails
             </div>
           </div>
         </form>
-        <div className="mt-4">
-          <p className="text-sm text-muted-foreground">
-            Your default provider&apos;s domain is{' '}
-            <Link
-              href={`${defaultDomain}/.well-known/openid-configuration`}
-              target="_blank"
-              className="font-bold hover:underline"
-            >
-              {defaultDomain}
-            </Link>
-          </p>
-        </div>
       </CardContent>
     </Card>
   );
