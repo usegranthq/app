@@ -1,4 +1,4 @@
-import { getPlanByUserId } from '@/lib/auth';
+import { getPlanByUserId } from '@/lib/billing';
 import db from '@/lib/db';
 import { tenantProviderSchema } from '@/schema';
 
