@@ -8,6 +8,7 @@ import { nanoid } from 'nanoid';
 
 import { auth } from '@/lib/auth';
 import db from '@/lib/db';
+import vercel from '@/lib/vercel';
 import ROUTES from '@/constants/routes';
 import { verifySession } from '@/data/_verifySession';
 import { getApiErrorMessage, getZodErrorMessage } from '@/utils/error';
@@ -94,7 +95,24 @@ export async function deleteSession(token: string): ActionResponse {
 }
 
 export async function deleteAccount(): ActionResponse {
-  await verifySession();
+  const session = await verifySession();
+
+  // get all domains for the user
+  const domains = await db.domain.findMany({
+    where: {
+      Provider: {
+        userId: session.user.id,
+      },
+    },
+  });
+
+  for (const domain of domains) {
+    try {
+      await vercel.domains.delete(domain.domain);
+    } catch {
+      return ['Failed to detach domain associated with your account. Try again or contact support.', null];
+    }
+  }
 
   try {
     await auth.api.deleteUser({
@@ -102,7 +120,9 @@ export async function deleteAccount(): ActionResponse {
       body: {},
     });
   } catch (error) {
-    const errorMessage = getApiErrorMessage(error, 'Unable to delete account. Try again.');
+    const defaultErrorMessage =
+      'Unable to delete account. Try with a fresh session by logging out and in again or contact support.';
+    const errorMessage = getApiErrorMessage(error, defaultErrorMessage);
     return [errorMessage, null];
   }
 
