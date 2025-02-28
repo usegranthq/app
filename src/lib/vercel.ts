@@ -4,6 +4,7 @@ import { Vercel } from '@vercel/sdk';
 
 import { env } from '@/env';
 
+const vercelTeamId = env.VERCEL_DOMINATE_TEAM_ID;
 const vercelProjectId = env.VERCEL_DOMINATE_PROJECT_ID;
 const vercelApiToken = env.VERCEL_DOMINATE_API_TOKEN;
 
@@ -22,10 +23,14 @@ const addDomain = (domain: string) => {
   });
 };
 
-const deleteDomain = (domain: string) => {
-  return vercelApi.projects.removeProjectDomain({
+const deleteDomain = async (domain: string) => {
+  await vercelApi.projects.removeProjectDomain({
     idOrName: vercelProjectId,
     domain,
+  });
+  await vercelApi.domains.deleteDomain({
+    domain,
+    teamId: vercelTeamId,
   });
 };
 
