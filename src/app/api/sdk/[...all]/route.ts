@@ -1,48 +1,40 @@
 import { NextRequest } from 'next/server';
 import { createRouter } from 'better-call';
 
-import db from '@/lib/db';
+import { auth } from '@/lib/auth';
 import { getBearerToken, unauthorizedResponse } from '@/utils/rest';
-import { User } from '@/types';
 
 import endpoints from './endpoints';
 
-const verifyToken = async (bearerToken: string): Promise<User | null> => {
-  const token = await db.token.findUnique({
-    where: {
-      token: bearerToken,
-    },
-    include: {
-      User: true,
+const verifyToken = async (bearerToken: string): Promise<string | null> => {
+  const result = await auth.api.verifyApiKey({
+    body: {
+      key: bearerToken,
     },
   });
 
-  if (!token) {
+  if (!result.valid || !result.key) {
     return null;
   }
 
-  if (token.expiresAt && token.expiresAt < new Date()) {
-    return null;
-  }
-
-  return token.User;
+  return result.key.userId;
 };
 
 const handler = async (request: NextRequest) => {
   const bearerToken = getBearerToken(request);
   if (!bearerToken) {
-    return unauthorizedResponse('Missing api token');
+    return unauthorizedResponse('Missing api key');
   }
 
-  const user = await verifyToken(bearerToken);
-  if (!user) {
+  const userId = await verifyToken(bearerToken);
+  if (!userId) {
     return unauthorizedResponse('Unauthorized');
   }
 
   const router = createRouter(endpoints, {
     basePath: '/sdk',
     extraContext: {
-      userId: user.id,
+      userId: userId,
     },
     openAPI: {
       disabled: true,

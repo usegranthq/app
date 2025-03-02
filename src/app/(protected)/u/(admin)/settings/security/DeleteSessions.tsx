@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 import { useFormStatus } from 'react-dom';
 import { toast } from 'sonner';
 
-import { deleteSessions } from '@/actions';
+import { deleteOtherSessions } from '@/actions';
 import {
   AlertDialog,
   AlertDialogAction,
@@ -36,7 +36,7 @@ export default function DeleteSessions() {
   const router = useRouter();
 
   const handleDeleteClick = async () => {
-    const [error] = await deleteSessions();
+    const [error] = await deleteOtherSessions();
 
     if (error) {
       toast.error(error);

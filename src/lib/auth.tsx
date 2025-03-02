@@ -1,7 +1,7 @@
 import { betterAuth } from 'better-auth';
 import { prismaAdapter } from 'better-auth/adapters/prisma';
 import { nextCookies } from 'better-auth/next-js';
-import { customSession, magicLink } from 'better-auth/plugins';
+import { apiKey, customSession, magicLink } from 'better-auth/plugins';
 import { PostHog } from 'posthog-node';
 
 import * as constants from '@/constants/cookies';
@@ -64,6 +64,7 @@ export const auth = betterAuth({
         plan: plan.id,
       };
     }),
+    apiKey(),
     nextCookies(), // must be last
   ],
   databaseHooks: {

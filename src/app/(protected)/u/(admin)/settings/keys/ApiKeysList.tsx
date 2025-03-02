@@ -6,24 +6,16 @@ import { formatRelative } from 'date-fns';
 import { formatDate } from '@/utils/date';
 import { isNullOrUndefined } from '@/utils/validators';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-import { Token } from '@/types/app.types';
+import { ApiKey } from '@/types/app.types';
 
-import TokenOptions from './TokenOptions';
+import ApiKeyOptions from './ApiKeyOptions';
 
-export const columns: ColumnDef<Token>[] = [
+export const columns: ColumnDef<ApiKey>[] = [
   {
     header: 'Name',
     cell: ({ row }) => {
-      const { name, expiresAt } = row.original;
-
-      return (
-        <div>
-          <div className="capitalize">{name}</div>
-          <div className="mt-0.5 text-xs text-muted-foreground">
-            {expiresAt ? formatDate(expiresAt) : 'No expiration'}
-          </div>
-        </div>
-      );
+      const { name } = row.original;
+      return <div className="capitalize">{name}</div>;
     },
   },
   {
@@ -44,28 +36,28 @@ export const columns: ColumnDef<Token>[] = [
   {
     header: 'Last Used At',
     cell: ({ row }) => {
-      const lastUsedAt = row.original.lastUsedAt;
-      if (isNullOrUndefined(lastUsedAt)) return <span className="text-muted-foreground">Never</span>;
-      return formatRelative(lastUsedAt, new Date());
+      const lastRefillAt = row.original.lastRequest;
+      if (isNullOrUndefined(lastRefillAt)) return <span className="text-muted-foreground">Never</span>;
+      return formatRelative(lastRefillAt, new Date());
     },
   },
   {
     id: 'actions',
     cell: ({ row }) => (
       <div className="flex justify-end">
-        <TokenOptions token={row.original} />
+        <ApiKeyOptions apiKey={row.original} />
       </div>
     ),
   },
 ];
 
-interface TokensListProps {
-  tokens: Token[];
+interface ApiKeysListProps {
+  apiKeys: ApiKey[];
 }
 
-export default function TokensList({ tokens }: TokensListProps) {
+export default function ApiKeysList({ apiKeys }: ApiKeysListProps) {
   const table = useReactTable({
-    data: tokens,
+    data: apiKeys,
     columns,
     getCoreRowModel: getCoreRowModel(),
   });

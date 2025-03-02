@@ -18,11 +18,11 @@ const LoadingRow = () => (
   </div>
 );
 
-interface TokensLoadingProps {
+interface ApiKeysLoadingProps {
   rows?: number;
 }
 
-export default function TokensLoading({ rows = 5 }: TokensLoadingProps) {
+export default function ApiKeysLoading({ rows = 5 }: ApiKeysLoadingProps) {
   return (
     <div role="status" className="space-y-4 divide-y divide-border rounded border border-border p-4 shadow">
       {[...Array(rows)].map((_, index) => (

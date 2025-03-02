@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 import { useFormStatus } from 'react-dom';
 import { toast } from 'sonner';
 
-import { createToken } from '@/actions/settings';
+import { createApiKey } from '@/actions';
 import CopyInput from '@/blocks/CopyInput';
 import {
   AlertDialog,
@@ -33,50 +33,52 @@ const expirationOptions = [
   { label: 'No Expiration', value: 0 },
 ];
 
-const CreateTokenButton = () => {
+const CreateApiKeyButton = () => {
   const { pending } = useFormStatus();
 
   return (
     <Button className="ml-auto" disabled={pending}>
-      {pending ? 'Creating api token...' : 'Create'}
+      {pending ? 'Creating api key...' : 'Create'}
     </Button>
   );
 };
 
-export default function CreateToken() {
+export default function CreateApiKey() {
   const formRef = useRef<HTMLFormElement>(null);
-  const [token, setToken] = useState<string | null>(null);
+  const [apiKey, setApiKey] = useState<string | null>(null);
   const router = useRouter();
+  const [selectKey, setSelectKey] = useState(new Date().getTime());
 
   const handleSubmit = async (formData: FormData) => {
-    const [error, token] = await createToken(formData);
+    const [error, apiKey] = await createApiKey(formData);
     if (error) {
       toast.error(error);
       return;
     }
 
-    toast.success('Token created successfully');
+    toast.success('Api key created successfully');
     formRef.current?.reset();
-    setToken(token);
+    setSelectKey(new Date().getTime());
+    setApiKey(apiKey);
     router.refresh();
   };
 
-  const handleTokenClose = useCallback(() => {
-    setToken(null);
+  const handleApiKeyClose = useCallback(() => {
+    setApiKey(null);
   }, []);
 
   return (
     <>
-      <AlertDialog open={token !== null} onOpenChange={handleTokenClose}>
+      <AlertDialog open={apiKey !== null} onOpenChange={handleApiKeyClose}>
         <AlertDialogContent>
           <AlertDialogHeader>
-            <AlertDialogTitle>Your API Token</AlertDialogTitle>
+            <AlertDialogTitle>Your API Key</AlertDialogTitle>
             <AlertDialogDescription>
-              Please copy this token and store it in a secure location. You will not be able to see it again.
+              Please copy this api key and store it in a secure location. You will not be able to see it again.
             </AlertDialogDescription>
           </AlertDialogHeader>
           <div>
-            <CopyInput value={token ?? ''} />
+            <CopyInput value={apiKey ?? ''} />
           </div>
           <AlertDialogFooter>
             <AlertDialogAction>I&apos;ve saved it</AlertDialogAction>
@@ -86,19 +88,19 @@ export default function CreateToken() {
       <form ref={formRef} action={handleSubmit}>
         <CardContent>
           <CardDescription>
-            Create a new token to access your account. Make sure the names are unique to differentiate them from other
-            tokens.
+            Create a new api key to access your account. Make sure the names are unique to differentiate them from other
+            api keys.
             <br />
             And keep them in a secure location.
           </CardDescription>
           <div className="mt-4 flex flex-col gap-4 md:flex-row md:gap-8">
             <div className="flex flex-col gap-2 md:flex-1">
               <Label>NAME</Label>
-              <Input name="name" required maxLength={32} minLength={3} placeholder="Token Name" />
+              <Input name="name" required maxLength={32} minLength={3} placeholder="Api Key Name" />
             </div>
             <div className="flex flex-col gap-2">
               <Label>EXPIRATION</Label>
-              <Select name="expiration">
+              <Select name="expiration" key={selectKey}>
                 <SelectTrigger className="w-[280px]">
                   <SelectValue placeholder="Select duration" />
                 </SelectTrigger>
@@ -114,7 +116,7 @@ export default function CreateToken() {
           </div>
         </CardContent>
         <CardFooter className="items-center">
-          <CreateTokenButton />
+          <CreateApiKeyButton />
         </CardFooter>
       </form>
     </>

@@ -1,10 +1,12 @@
 'use client';
 
+import { startTransition } from 'react';
 import { useRouter } from 'next/navigation';
 import { DotsHorizontalIcon } from '@radix-ui/react-icons';
 import { toast } from 'sonner';
 
-import { deleteToken } from '@/actions/settings';
+import { deleteApiKey } from '@/actions';
+import { useProgressBar } from '@/blocks/NavProgress';
 import {
   AlertDialog,
   AlertDialogAction,
@@ -24,26 +26,33 @@ import {
   DropdownMenuLabel,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { Token } from '@/types/app.types';
+import { ApiKey } from '@/types/app.types';
 
-export default function TokenOptions({ token }: { token: Token }) {
+export default function ApiKeyOptions({ apiKey }: { apiKey: ApiKey }) {
   const router = useRouter();
+  const progress = useProgressBar();
 
   const handleDelete = async () => {
-    const [error] = await deleteToken(token.id);
-    if (error) {
-      toast.error(error);
-    }
-    router.refresh();
+    startTransition(async () => {
+      progress.start();
+      const [error] = await deleteApiKey(apiKey.id);
+      if (error) {
+        toast.error(error);
+        return;
+      }
+
+      toast.success('Api key deleted successfully');
+      router.refresh();
+    });
   };
 
   return (
     <AlertDialog>
       <AlertDialogContent>
         <AlertDialogHeader>
-          <AlertDialogTitle>Are you absolutely sure to delete this token?</AlertDialogTitle>
+          <AlertDialogTitle>Are you absolutely sure to delete this api key?</AlertDialogTitle>
           <AlertDialogDescription>
-            This action will permanently delete this token and cannot be undone. Think twice before deleting it.
+            This action will permanently delete this api key and cannot be undone. Think twice before deleting it.
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
@@ -61,7 +70,7 @@ export default function TokenOptions({ token }: { token: Token }) {
         <DropdownMenuContent align="end">
           <DropdownMenuLabel className="text-xs text-muted-foreground">Actions</DropdownMenuLabel>
           <AlertDialogTrigger asChild>
-            <DropdownMenuItem className="text-destructive">Delete token</DropdownMenuItem>
+            <DropdownMenuItem className="text-destructive">Delete key</DropdownMenuItem>
           </AlertDialogTrigger>
         </DropdownMenuContent>
       </DropdownMenu>
