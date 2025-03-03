@@ -174,8 +174,8 @@ export const PLAN_FEATURES: PlanFeatures[] = [
   {
     id: PLAN.ULTIMATE,
     contents: [
-      `${PLANS[PLAN.ULTIMATE].features.providers.limit} Providers`,
-      `${PLANS[PLAN.ULTIMATE].features.tenants.limit} Tenants`,
+      `Unlimited Providers`,
+      `Unlimited Tenants`,
       'All in starter',
       'Auto Rotate signing keys',
       'Priority support 24/5',
