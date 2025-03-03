@@ -65,8 +65,8 @@ export const PLANS: Record<PlanId, PlanDetails> = {
         limit: 999,
       },
       customDomain: {
-        available: true,
-        limit: 1,
+        available: false,
+        limit: 0,
       },
       signingKeys: {
         request: false,
@@ -86,22 +86,22 @@ export const PLANS: Record<PlanId, PlanDetails> = {
       },
       providerClients: {
         available: true,
-        limit: 999,
+        limit: 9999,
       },
       tenants: {
-        available: false,
-        limit: 1,
+        available: true,
+        limit: 100,
       },
       tenantProviders: {
-        available: false,
-        limit: 999,
+        available: true,
+        limit: 9999,
       },
       customDomain: {
-        available: false,
-        limit: 0,
+        available: true,
+        limit: 1,
       },
       signingKeys: {
-        request: false,
+        request: true,
         autoRotate: false,
       },
     },
@@ -114,19 +114,19 @@ export const PLANS: Record<PlanId, PlanDetails> = {
     features: {
       providers: {
         available: true,
-        limit: 100,
+        limit: 1000,
       },
       providerClients: {
         available: true,
-        limit: 999,
+        limit: 99999,
       },
       tenants: {
         available: true,
-        limit: 100,
+        limit: 1000,
       },
       tenantProviders: {
         available: true,
-        limit: 999,
+        limit: 99999,
       },
       customDomain: {
         available: true,
