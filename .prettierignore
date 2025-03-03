@@ -1,2 +1,5 @@
+.next/
+.vercel/
+node_modules/
 src/components/ui
 src/hooks/
