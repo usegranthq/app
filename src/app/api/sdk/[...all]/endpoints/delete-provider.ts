@@ -1,5 +1,5 @@
-import db from '@/lib/db';
 import { getApiErrorMessage } from '@/utils/error';
+import db from '@/lib/db';
 
 import { createAuthEndpoint } from './utils/call';
 import ERRORS, { SdkError } from './utils/errors';

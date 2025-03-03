@@ -1,7 +1,7 @@
 import 'server-only';
 
-import db from '@/lib/db';
 import { findPlanByPlanName, PlanDetails } from '@/utils/billing';
+import db from '@/lib/db';
 import { Customer, Session, Subscription, User } from '@/types/app.types';
 
 import { verifySession } from './_verifySession';

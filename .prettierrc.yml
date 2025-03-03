@@ -11,10 +11,12 @@ importOrder:
   - '^next(.*)$'
   - <THIRD_PARTY_MODULES>
   - ''
-  - ^@/lib/(.*)$
   - ^@/constants/(.*)$
-  - ^@/data/(.*)$
   - ^@/utils/(.*)$
+  - ^@/lib/(.*)$
+  - ^@/schema/(.*)$
+  - ^@/data/(.*)$
+  - ^@/actions/(.*)$
   - '^@/(.*)$'
   - ''
   - '^../(.*)$'

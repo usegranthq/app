@@ -3,9 +3,9 @@
 import { useOptimistic, useTransition } from 'react';
 import { toast } from 'sonner';
 
-import { type SigningKey } from '@/data/providers';
 import { PlanDetails } from '@/utils/billing';
 import { formatDate } from '@/utils/date';
+import { type SigningKey } from '@/data/providers';
 import { toggleRotateJwks } from '@/actions';
 import { useProgressBar } from '@/blocks/NavProgress';
 import { Badge } from '@/components/ui/badge';

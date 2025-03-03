@@ -5,14 +5,14 @@ import { redirect } from 'next/navigation';
 import { Prisma } from '@prisma/client';
 import { JWK } from 'jose';
 
-import db from '@/lib/db';
 import ROUTES from '@/constants/routes';
-import { verifySession } from '@/data/_verifySession';
-import { getPlanDetails } from '@/data/user';
 import ERRORS, { getApiErrorMessage, getZodErrorMessage } from '@/utils/error';
 import { generateJwk } from '@/utils/jwk';
 import { createJwt, defaultJwk } from '@/utils/jwt';
 import { createUrlId, getIssuer } from '@/utils/provider';
+import db from '@/lib/db';
+import { verifySession } from '@/data/_verifySession';
+import { getPlanDetails } from '@/data/user';
 import { clientSchema, providerSchema } from '@/schema';
 import { Provider } from '@/types/app.types';
 

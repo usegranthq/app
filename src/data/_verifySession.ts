@@ -4,8 +4,8 @@ import { cache } from 'react';
 import { headers } from 'next/headers';
 import { redirect } from 'next/navigation';
 
-import { auth } from '@/lib/auth';
 import ROUTES from '@/constants/routes';
+import { auth } from '@/lib/auth';
 
 type AuthSession = NonNullable<Awaited<ReturnType<typeof auth.api.getSession>>>;
 

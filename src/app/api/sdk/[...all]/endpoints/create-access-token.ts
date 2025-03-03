@@ -1,10 +1,10 @@
 import { JWK } from 'jose';
 import { z } from 'zod';
 
-import { getPlanByUserId } from '@/lib/billing';
-import db from '@/lib/db';
 import { createJwt, defaultJwk, MAX_EXPIRY, ONE_HOUR } from '@/utils/jwt';
 import { getIssuer } from '@/utils/provider';
+import { getPlanByUserId } from '@/lib/billing';
+import db from '@/lib/db';
 
 import { createAuthEndpoint } from './utils/call';
 import ERRORS, { SdkError } from './utils/errors';

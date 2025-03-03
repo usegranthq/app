@@ -1,9 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { JWK } from 'jose';
 
-import db from '@/lib/db';
 import { defaultJwk } from '@/utils/jwt';
 import { getSubdomain } from '@/utils/url';
+import db from '@/lib/db';
 import { env } from '@/env';
 import { Provider } from '@/types/app.types';
 

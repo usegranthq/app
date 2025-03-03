@@ -5,9 +5,9 @@ import { redirect, RedirectType } from 'next/navigation';
 import { SignJWT } from 'jose';
 import ky from 'ky';
 
-import { auth } from '@/lib/auth';
 import ROUTES from '@/constants/routes';
 import { getApiErrorMessage, getZodErrorMessage } from '@/utils/error';
+import { auth } from '@/lib/auth';
 import constants from '@/constants';
 import { env } from '@/env';
 import { loginSchema, verifySchema } from '@/schema';

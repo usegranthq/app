@@ -1,8 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
 
+import ROUTES from '@/constants/routes';
 import { generateRequestSignature, getSubscription, redirectParamsSchema } from '@/lib/creem';
 import db from '@/lib/db';
-import ROUTES from '@/constants/routes';
 import { env } from '@/env';
 
 export const GET = async (request: NextRequest) => {

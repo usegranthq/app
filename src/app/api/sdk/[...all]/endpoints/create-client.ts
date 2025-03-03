@@ -1,6 +1,6 @@
+import { getApiErrorMessage } from '@/utils/error';
 import { getPlanByUserId } from '@/lib/billing';
 import db from '@/lib/db';
-import { getApiErrorMessage } from '@/utils/error';
 import { clientSchema } from '@/schema';
 
 import { createAuthEndpoint } from './utils/call';

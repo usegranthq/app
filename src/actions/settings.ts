@@ -4,12 +4,12 @@ import { revalidatePath } from 'next/cache';
 import { headers } from 'next/headers';
 import { redirect } from 'next/navigation';
 
+import ROUTES from '@/constants/routes';
+import { getApiErrorMessage } from '@/utils/error';
 import { auth } from '@/lib/auth';
 import db from '@/lib/db';
 import vercel from '@/lib/vercel';
-import ROUTES from '@/constants/routes';
 import { verifySession } from '@/data/_verifySession';
-import { getApiErrorMessage } from '@/utils/error';
 
 export async function deleteOtherSessions(): ActionResponse {
   await verifySession();

@@ -2,8 +2,8 @@ import { PropsWithChildren } from 'react';
 import Link from 'next/link';
 import { ArrowRight } from 'lucide-react';
 
-import { cn } from '@/lib/utils';
 import ROUTES from '@/constants/routes';
+import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 

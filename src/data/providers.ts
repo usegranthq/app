@@ -1,8 +1,8 @@
 import 'server-only';
 
-import db from '@/lib/db';
 import { defaultJwk } from '@/utils/jwt';
 import { toPaginatedResponse } from '@/utils/pagination';
+import db from '@/lib/db';
 import { Client, Domain, Provider } from '@/types/app.types';
 
 import { verifySession } from './_verifySession';

@@ -3,8 +3,8 @@
 import { startTransition, useActionState } from 'react';
 import { SiGithub, SiGoogle } from '@icons-pack/react-simple-icons';
 
-import { authClient } from '@/lib/auth-client';
 import ROUTES from '@/constants/routes';
+import { authClient } from '@/lib/auth-client';
 import { Button } from '@/components/ui/button';
 
 const githubLogin = async () => {

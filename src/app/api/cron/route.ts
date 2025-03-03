@@ -2,10 +2,10 @@ import type { NextRequest } from 'next/server';
 import { Prisma } from '@prisma/client';
 import { waitUntil } from '@vercel/functions';
 
-import { getPlanByUserId } from '@/lib/billing';
-import db from '@/lib/db';
 import { generateJwk } from '@/utils/jwk';
 import { validateBearerToken } from '@/utils/rest';
+import { getPlanByUserId } from '@/lib/billing';
+import db from '@/lib/db';
 import { env } from '@/env';
 
 const processCron = async () => {

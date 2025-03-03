@@ -3,10 +3,10 @@
 import { revalidatePath } from 'next/cache';
 import { headers } from 'next/headers';
 
-import { auth } from '@/lib/auth';
 import ROUTES from '@/constants/routes';
-import { verifySession } from '@/data/_verifySession';
 import { getApiErrorMessage, getZodErrorMessage } from '@/utils/error';
+import { auth } from '@/lib/auth';
+import { verifySession } from '@/data/_verifySession';
 import { createApiKeySchema } from '@/schema';
 
 const toTokenExpiration = (expiresInDays: number) => {

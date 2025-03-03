@@ -1,7 +1,7 @@
 import Link from 'next/link';
 
-import * as providersDal from '@/data/providers';
 import { normalizePaginationParams } from '@/utils/pagination';
+import * as providersDal from '@/data/providers';
 import { Button } from '@/components/ui/button';
 
 import ClientsList from './ClientsList';

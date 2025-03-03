@@ -1,8 +1,8 @@
 import { NextRequest } from 'next/server';
 import { createRouter } from 'better-call';
 
-import { auth } from '@/lib/auth';
 import { getBearerToken, unauthorizedResponse } from '@/utils/rest';
+import { auth } from '@/lib/auth';
 
 import endpoints from './endpoints';
 
