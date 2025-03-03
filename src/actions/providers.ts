@@ -12,12 +12,11 @@ import { createJwt, defaultJwk } from '@/utils/jwt';
 import { createUrlId, getIssuer } from '@/utils/provider';
 import db from '@/lib/db';
 import { verifySession } from '@/data/_verifySession';
-import { getPlanDetails } from '@/data/user';
 import { clientSchema, providerSchema } from '@/schema';
 import { Provider } from '@/types/app.types';
 
 export async function createProvider(formData: FormData): ActionResponse<Provider> {
-  const session = await verifySession();
+  const { user, plan } = await verifySession();
 
   const validation = providerSchema.safeParse({
     name: formData.get('name'),
@@ -31,17 +30,15 @@ export async function createProvider(formData: FormData): ActionResponse<Provide
   // check if the user has reached the limit for providers
   const providersCount = await db.provider.count({
     where: {
-      userId: session.user.id,
+      userId: user.id,
     },
   });
 
-  const plan = await getPlanDetails();
-
-  if (!plan.providers.available) {
+  if (!plan.features.providers.available) {
     return [ERRORS.PROVIDERS_NOT_AVAILABLE.message, null];
   }
 
-  if (providersCount >= plan.providers.limit) {
+  if (providersCount >= plan.features.providers.limit) {
     return [ERRORS.MAX_PROVIDERS_LIMIT_REACHED.message, null];
   }
 
@@ -53,7 +50,7 @@ export async function createProvider(formData: FormData): ActionResponse<Provide
         name: validation.data.name,
         description: validation.data.description,
         urlId,
-        userId: session.user.id,
+        userId: user.id,
       },
     });
 
@@ -105,7 +102,7 @@ export async function deleteProvider(providerId: string): ActionResponse {
 }
 
 export async function createClient(providerId: string, formData: FormData): ActionResponse {
-  await verifySession();
+  const { plan } = await verifySession();
 
   const validation = clientSchema.safeParse({
     name: formData.get('name'),
@@ -122,8 +119,7 @@ export async function createClient(providerId: string, formData: FormData): Acti
     },
   });
 
-  const plan = await getPlanDetails();
-  if (clientsCount >= plan.providers.clients) {
+  if (clientsCount >= plan.features.providerClients.limit) {
     return [ERRORS.MAX_CLIENTS_LIMIT_REACHED.message, null];
   }
 
@@ -166,8 +162,7 @@ export async function generateAccessToken(
   clientId: string,
   options = defaultGenerateAccessTokenOptions,
 ): ActionResponse<string> {
-  await verifySession();
-  const plan = await getPlanDetails();
+  const { plan } = await verifySession();
 
   const opts = {
     ...defaultGenerateAccessTokenOptions,
@@ -230,10 +225,9 @@ export async function generateAccessToken(
 }
 
 export async function requestSigningKey(providerId: string): ActionResponse<string> {
-  const session = await verifySession();
+  const { user, plan } = await verifySession();
 
-  const plan = await getPlanDetails();
-  if (!plan.signingKeys.request) {
+  if (!plan.features.signingKeys.request) {
     return [ERRORS.GENERIC_FEATURE_NOT_AVAILABLE.message, null];
   }
 
@@ -256,7 +250,7 @@ export async function requestSigningKey(providerId: string): ActionResponse<stri
     where: {
       providerId,
       Provider: {
-        userId: session.user.id,
+        userId: user.id,
       },
     },
   });
@@ -322,10 +316,9 @@ export async function removeKey(providerId: string, id: string): ActionResponse 
 }
 
 export async function toggleRotateJwks(providerId: string, rotateJwks: boolean): ActionResponse {
-  await verifySession();
+  const { plan } = await verifySession();
 
-  const plan = await getPlanDetails();
-  if (!plan.signingKeys.autoRotate) {
+  if (!plan.features.signingKeys.autoRotate) {
     return [ERRORS.GENERIC_FEATURE_NOT_AVAILABLE.message, null];
   }
 

@@ -22,7 +22,7 @@ const createTenantProvider = createAuthEndpoint(
       },
     });
 
-    if (tenantsCount >= plan.tenants.providers) {
+    if (tenantsCount >= plan.features.tenantProviders.limit) {
       throw new SdkError('FORBIDDEN', ERRORS.MAX_PROVIDERS_LIMIT_REACHED);
     }
 

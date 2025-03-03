@@ -28,7 +28,7 @@ export default async function DomainPage(props: DomainPageProps) {
   const defaultDomain = getDefaultDomain(provider.urlId);
   const defaultDomainHostname = getDefaultDomainHostname(provider.urlId);
 
-  const isCustomDomainAvailable = plan.customDomain.available;
+  const isCustomDomainAvailable = plan.features.customDomain.available;
 
   return (
     <div>

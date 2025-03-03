@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import { CheckIcon } from 'lucide-react';
 
-import { Plans, POPULAR_PLAN } from '@/utils/billing';
+import { PLAN_FEATURES, PLANS, POPULAR_PLAN } from '@/utils/billing';
 import { cn } from '@/lib/utils';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
@@ -15,27 +15,30 @@ export default function PricingSection() {
       </p>
       <div className="mx-auto max-w-5xl">
         <div className="mt-12 grid gap-10 sm:grid-cols-1 md:gap-14 lg:grid-cols-3 lg:items-center">
-          {Plans.map((plan) => (
-            <Card key={plan.id} className={cn('h-full', { 'border-primary': plan.id === POPULAR_PLAN })}>
-              <CardHeader className="pb-2">
-                <CardTitle className="text-lg">{plan.name}</CardTitle>
-                <div className="flex gap-0.5">
-                  <h3 className="text-3xl font-bold">${plan.price}</h3>
-                  <span className="mb-1 flex flex-col justify-end text-sm">{plan.price ? '/month' : null}</span>
-                </div>
-              </CardHeader>
-              <CardContent>
-                <ul className="mt-7 space-y-2.5 text-sm">
-                  {plan.features.map((feature, index) => (
-                    <li key={index} className="flex space-x-2">
-                      <CheckIcon className="mt-0.5 size-4 flex-shrink-0" />
-                      <span className="text-muted-foreground">{feature}</span>
-                    </li>
-                  ))}
-                </ul>
-              </CardContent>
-            </Card>
-          ))}
+          {PLAN_FEATURES.map((features) => {
+            const plan = PLANS[features.id];
+            return (
+              <Card key={features.id} className={cn('h-full', { 'border-primary': features.id === POPULAR_PLAN })}>
+                <CardHeader className="pb-2">
+                  <CardTitle className="text-lg">{plan.name}</CardTitle>
+                  <div className="flex gap-0.5">
+                    <h3 className="text-3xl font-bold">${plan.price}</h3>
+                    <span className="mb-1 flex flex-col justify-end text-sm">{plan.price ? '/month' : null}</span>
+                  </div>
+                </CardHeader>
+                <CardContent>
+                  <ul className="mt-7 space-y-2.5 text-sm">
+                    {features.contents.map((content, index) => (
+                      <li key={index} className="flex space-x-2">
+                        <CheckIcon className="mt-0.5 size-4 flex-shrink-0" />
+                        <span className="text-muted-foreground">{content}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </CardContent>
+              </Card>
+            );
+          })}
         </div>
         <p className="mt-8 text-center font-mono text-sm text-muted-foreground">All prices in USD, excl. taxes</p>
         <p className="mt-2 text-center text-sm text-muted-foreground">

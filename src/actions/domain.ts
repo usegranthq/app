@@ -9,8 +9,6 @@ import db from '@/lib/db';
 import vercel from '@/lib/vercel';
 import { verifySession } from '@/data/_verifySession';
 
-import { findPlanByPlanName } from '../utils/billing';
-
 const domainSchema = z
   .string({
     required_error: 'Please enter a domain name.',
@@ -23,11 +21,10 @@ const domainSchema = z
   .max(255, { message: 'Domain name must be less than 255 characters.' });
 
 export async function addDomain(providerId: string, formData: FormData): ActionResponse {
-  const session = await verifySession();
+  const { plan } = await verifySession();
 
   // allow based on plan
-  const planLimits = findPlanByPlanName(session.plan);
-  if (!planLimits.customDomain.available) {
+  if (!plan.features.customDomain.available) {
     return ['Custom domains are not available on your current plan. Please upgrade.', null];
   }
 
@@ -42,7 +39,7 @@ export async function addDomain(providerId: string, formData: FormData): ActionR
     where: { providerId },
   });
 
-  if (existingDomains.length >= planLimits.customDomain.limit) {
+  if (existingDomains.length >= plan.features.customDomain.limit) {
     return ['You have reached the limit for custom domains. Please upgrade.', null];
   }
 

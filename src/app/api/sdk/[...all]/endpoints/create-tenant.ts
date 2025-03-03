@@ -21,11 +21,11 @@ const createTenant = createAuthEndpoint(
       },
     });
 
-    if (!plan.tenants.available) {
+    if (!plan.features.tenants.available) {
       throw new SdkError('FORBIDDEN', ERRORS.TENANTS_NOT_AVAILABLE);
     }
 
-    if (tenantsCount >= plan.tenants.limit) {
+    if (tenantsCount >= plan.features.tenants.limit) {
       throw new SdkError('FORBIDDEN', ERRORS.MAX_TENANTS_LIMIT_REACHED);
     }
 

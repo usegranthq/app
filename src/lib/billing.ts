@@ -1,4 +1,4 @@
-import { findPlanByPlanName, findPlanByProductId, PLAN, PlanDetails } from '@/utils/billing';
+import { findPlanByProductId, PlanDetails, PLANS } from '@/utils/billing';
 
 import db from './db';
 
@@ -10,7 +10,7 @@ export const getPlanByUserId = async (userId: string): Promise<PlanDetails> => {
   });
 
   if (!customer) {
-    return findPlanByPlanName(PLAN.FREE);
+    return PLANS.free;
   }
 
   const subscription = await db.subscription.findFirst({
@@ -23,7 +23,7 @@ export const getPlanByUserId = async (userId: string): Promise<PlanDetails> => {
   });
 
   if (!subscription || subscription.status !== 'active') {
-    return findPlanByPlanName(PLAN.FREE);
+    return PLANS.free;
   }
 
   return findPlanByProductId(subscription.productId);

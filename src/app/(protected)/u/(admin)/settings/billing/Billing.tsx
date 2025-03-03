@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import { CheckIcon } from '@radix-ui/react-icons';
 
-import { PLAN, PlanDetails, Plans } from '@/utils/billing';
+import { PLAN, PLAN_FEATURES, PlanDetails, PLANS } from '@/utils/billing';
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 
 import CustomerPortal from './CustomerPortal';
@@ -22,30 +22,33 @@ export default function Billing({ plan, showCustomerPortal }: BillingProps) {
         You are currently on the <span className="font-mono font-semibold uppercase">{currentPlan}</span> plan.
       </p>
       <div className="mt-10 grid grid-cols-1 lg:grid-cols-3">
-        {Plans.map((plan) => (
-          <Card key={plan.id} className="flex h-full flex-col rounded-none first:rounded-l-md last:rounded-r-md">
-            <CardHeader className="pb-2">
-              <CardTitle className="text-lg">{plan.name}</CardTitle>
-              <div className="flex gap-0.5">
-                <h3 className="text-3xl font-bold">${plan.price}</h3>
-                <span className="mb-1 flex flex-col justify-end text-sm">{plan.price ? '/month' : null}</span>
-              </div>
-            </CardHeader>
-            <CardContent className="flex-1">
-              <ul className="mt-7 space-y-2.5 text-sm">
-                {plan.features.map((feature, index) => (
-                  <li key={index} className="flex space-x-2">
-                    <CheckIcon className="mt-0.5 size-4 flex-shrink-0" />
-                    <span className="text-muted-foreground">{feature}</span>
-                  </li>
-                ))}
-              </ul>
-            </CardContent>
-            <CardFooter className="mt-5 justify-center">
-              <PlanButton plan={plan} currentPlan={currentPlan} />
-            </CardFooter>
-          </Card>
-        ))}
+        {PLAN_FEATURES.map((features) => {
+          const plan = PLANS[features.id];
+          return (
+            <Card key={features.id} className="flex h-full flex-col rounded-none first:rounded-l-md last:rounded-r-md">
+              <CardHeader className="pb-2">
+                <CardTitle className="text-lg">{plan.name}</CardTitle>
+                <div className="flex gap-0.5">
+                  <h3 className="text-3xl font-bold">${plan.price}</h3>
+                  <span className="mb-1 flex flex-col justify-end text-sm">{plan.price ? '/month' : null}</span>
+                </div>
+              </CardHeader>
+              <CardContent className="flex-1">
+                <ul className="mt-7 space-y-2.5 text-sm">
+                  {features.contents.map((content, index) => (
+                    <li key={index} className="flex space-x-2">
+                      <CheckIcon className="mt-0.5 size-4 flex-shrink-0" />
+                      <span className="text-muted-foreground">{content}</span>
+                    </li>
+                  ))}
+                </ul>
+              </CardContent>
+              <CardFooter className="mt-5 justify-center">
+                <PlanButton features={features} currentPlan={currentPlan} />
+              </CardFooter>
+            </Card>
+          );
+        })}
       </div>
       {showCustomerPortal && <CustomerPortal />}
       <div className="my-10 flex flex-col gap-2 text-sm text-muted-foreground">

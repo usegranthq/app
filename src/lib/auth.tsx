@@ -61,7 +61,7 @@ export const auth = betterAuth({
       return {
         session,
         user,
-        plan: plan.id,
+        plan,
       };
     }),
     apiKey(),

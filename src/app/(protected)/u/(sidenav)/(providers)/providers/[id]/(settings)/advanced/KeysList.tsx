@@ -50,11 +50,13 @@ export default function KeysList({ signingKeys, provider, plan }: KeysListProps)
           id="rotate-jwks"
           checked={optimisticProvider.rotateJwks}
           onCheckedChange={handleRotateJwks}
-          disabled={isPending || !plan.signingKeys.autoRotate}
-          title={plan.signingKeys.autoRotate ? 'Automatically rotate keys' : 'Upgrade to rotate keys automatically'}
+          disabled={isPending || !plan.features.signingKeys.autoRotate}
+          title={
+            plan.features.signingKeys.autoRotate ? 'Automatically rotate keys' : 'Upgrade to rotate keys automatically'
+          }
         />
         <Label htmlFor="rotate-jwks">Automatically rotate keys</Label>
-        {!plan.signingKeys.autoRotate && (
+        {!plan.features.signingKeys.autoRotate && (
           <div>
             <Badge variant="outline" className="">
               Upgrade to rotate keys automatically

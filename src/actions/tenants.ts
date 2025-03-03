@@ -9,12 +9,11 @@ import { getApiErrorMessage, getZodErrorMessage } from '@/utils/error';
 import { isValidUrl } from '@/utils/url';
 import db from '@/lib/db';
 import { verifySession } from '@/data/_verifySession';
-import { getPlanDetails } from '@/data/user';
 import { tenantProviderSchema, tenantSchema } from '@/schema';
 import { Tenant } from '@/types/app.types';
 
 export async function createTenant(formData: FormData): ActionResponse<Tenant> {
-  const session = await verifySession();
+  const { user, plan } = await verifySession();
 
   const validation = tenantSchema.safeParse({
     name: formData.get('name'),
@@ -28,17 +27,15 @@ export async function createTenant(formData: FormData): ActionResponse<Tenant> {
   // check if the user has reached the limit for providers
   const tenantsCount = await db.tenant.count({
     where: {
-      userId: session.user.id,
+      userId: user.id,
     },
   });
 
-  const plan = await getPlanDetails();
-
-  if (!plan.tenants.available) {
+  if (!plan.features.tenants.available) {
     return ['Tenants are not available for your plan. Upgrade your plan or contact support to enable tenants.', null];
   }
 
-  if (tenantsCount >= plan.tenants.limit) {
+  if (tenantsCount >= plan.features.tenants.limit) {
     return [
       'You have reached the limit for tenants. Upgrade your plan or contact support to increase the limit.',
       null,
@@ -50,7 +47,7 @@ export async function createTenant(formData: FormData): ActionResponse<Tenant> {
       data: {
         name: validation.data.name,
         description: validation.data.description,
-        userId: session.user.id,
+        userId: user.id,
       },
     });
 
@@ -164,11 +161,14 @@ export async function updateTenant(tenantId: string, formData: FormData): Action
 }
 
 export async function deleteTenant(tenantId: string): ActionResponse {
-  const session = await verifySession();
+  const { user } = await verifySession();
 
   try {
     await db.tenant.delete({
-      where: { id: tenantId, userId: session.user.id },
+      where: {
+        id: tenantId,
+        userId: user.id,
+      },
     });
 
     revalidatePath(ROUTES.TENANTS, 'layout');

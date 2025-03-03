@@ -1,6 +1,6 @@
 import 'server-only';
 
-import { findPlanByPlanName, PlanDetails } from '@/utils/billing';
+import { PlanDetails } from '@/utils/billing';
 import db from '@/lib/db';
 import { Customer, Session, Subscription, User } from '@/types/app.types';
 
@@ -64,5 +64,5 @@ export const getSubscription = async (): Promise<Subscription | null> => {
 
 export const getPlanDetails = async (): Promise<PlanDetails> => {
   const session = await verifySession();
-  return findPlanByPlanName(session.plan);
+  return session.plan;
 };

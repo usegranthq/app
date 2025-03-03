@@ -3,7 +3,7 @@
 import { useTransition } from 'react';
 import { toast } from 'sonner';
 
-import { PLAN, PlanData, PlanName, Plans } from '@/utils/billing';
+import { PLAN, PLAN_FEATURES, PlanFeatures, PlanId, PLANS } from '@/utils/billing';
 import { checkout } from '@/actions';
 import { useProgressBar } from '@/blocks/NavProgress';
 import { Button } from '@/components/ui/button';
@@ -11,11 +11,11 @@ import { Button } from '@/components/ui/button';
 import CancelPlanButton from './CancelPlanButton';
 
 interface PlanButtonProps {
-  plan: PlanData;
-  currentPlan: PlanName;
+  features: PlanFeatures;
+  currentPlan: PlanId;
 }
 
-export default function PlanButton({ plan, currentPlan }: PlanButtonProps) {
+export default function PlanButton({ features, currentPlan }: PlanButtonProps) {
   const [isPending, startTransition] = useTransition();
   const progress = useProgressBar();
 
@@ -29,7 +29,7 @@ export default function PlanButton({ plan, currentPlan }: PlanButtonProps) {
     });
   };
 
-  if (currentPlan === plan.id) {
+  if (currentPlan === features.id) {
     return (
       <Button disabled={true} className="min-w-32">
         Current Plan
@@ -37,15 +37,15 @@ export default function PlanButton({ plan, currentPlan }: PlanButtonProps) {
     );
   }
 
-  if (plan.id === PLAN.FREE) {
+  if (features.id === PLAN.FREE) {
     return <CancelPlanButton />;
   }
 
-  const planIndex = Plans.findIndex((p) => p.id === plan.id);
-  const currentPlanIndex = Plans.findIndex((p) => p.id === currentPlan);
+  const planIndex = PLAN_FEATURES.findIndex((p) => p.id === features.id);
+  const currentPlanIndex = PLAN_FEATURES.findIndex((p) => p.id === currentPlan);
   const isDowngrade = planIndex < currentPlanIndex;
 
-  const priceId = plan.productId as string;
+  const priceId = PLANS[features.id].productId as string;
 
   if (currentPlan === PLAN.FREE) {
     return (

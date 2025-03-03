@@ -14,7 +14,6 @@
     "prepare": "husky && npm run generate"
   },
   "dependencies": {
-    "@edge-runtime/cookies": "^6.0.0",
     "@icons-pack/react-simple-icons": "^12.0.0",
     "@markdoc/markdoc": "^0.5.1",
     "@marsidev/react-turnstile": "^1.1.0",

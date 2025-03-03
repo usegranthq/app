@@ -22,7 +22,9 @@ const RequestButton = (props: RequestSigningKeyProps) => {
   const { pending } = useFormStatus();
 
   return (
-    <Button disabled={pending || isLoading || provider.rotateJwks || !plan.signingKeys.request}>Request new key</Button>
+    <Button disabled={pending || isLoading || provider.rotateJwks || !plan.features.signingKeys.request}>
+      Request new key
+    </Button>
   );
 };
 
@@ -46,7 +48,7 @@ export default function RequestSigningKey({ provider, isLoading, plan }: Request
   return (
     <form action={handleSubmit} className="flex items-center gap-2">
       <RequestButton provider={provider} isLoading={isLoading} plan={plan} />
-      {!plan.signingKeys.request && (
+      {!plan.features.signingKeys.request && (
         <div>
           <Badge variant="outline" className="">
             Upgrade to request new keys
