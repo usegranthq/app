@@ -6,10 +6,10 @@ import { auth } from '@/lib/auth';
 
 import endpoints from './endpoints';
 
-const verifyToken = async (bearerToken: string): Promise<string | null> => {
+const verifyApiKey = async (key: string): Promise<string | null> => {
   const result = await auth.api.verifyApiKey({
     body: {
-      key: bearerToken,
+      key,
     },
   });
 
@@ -26,7 +26,7 @@ const handler = async (request: NextRequest) => {
     return unauthorizedResponse('Missing api key');
   }
 
-  const userId = await verifyToken(bearerToken);
+  const userId = await verifyApiKey(bearerToken);
   if (!userId) {
     return unauthorizedResponse('Unauthorized');
   }
