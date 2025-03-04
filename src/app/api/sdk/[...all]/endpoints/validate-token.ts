@@ -41,6 +41,7 @@ const validateToken = createAuthEndpoint(
       .count({
         where: {
           id: tenantId,
+          userId: ctx.context.userId,
         },
       })
       .then(Boolean);
@@ -73,6 +74,9 @@ const validateToken = createAuthEndpoint(
       where: {
         tenantId,
         url: claims.iss,
+        Tenant: {
+          userId: ctx.context.userId,
+        },
       },
     });
 

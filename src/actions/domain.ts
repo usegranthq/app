@@ -21,7 +21,7 @@ const domainSchema = z
   .max(255, { message: 'Domain name must be less than 255 characters.' });
 
 export async function addDomain(providerId: string, formData: FormData): ActionResponse {
-  const { plan } = await verifySession();
+  const { plan, user } = await verifySession();
 
   // allow based on plan
   if (!plan.features.customDomain.available) {
@@ -36,7 +36,12 @@ export async function addDomain(providerId: string, formData: FormData): ActionR
 
   // get existing domains, don't allow more than 1
   const existingDomains = await db.domain.findMany({
-    where: { providerId },
+    where: {
+      providerId,
+      Provider: {
+        userId: user.id,
+      },
+    },
   });
 
   if (existingDomains.length >= plan.features.customDomain.limit) {
@@ -75,10 +80,16 @@ export async function addDomain(providerId: string, formData: FormData): ActionR
 }
 
 export async function deleteDomain(providerId: string, domain: string): ActionResponse {
-  await verifySession();
+  const { user } = await verifySession();
 
   const domainRecord = await db.domain.findUnique({
-    where: { domain, providerId },
+    where: {
+      domain,
+      providerId,
+      Provider: {
+        userId: user.id,
+      },
+    },
   });
 
   if (!domainRecord) {
@@ -93,7 +104,13 @@ export async function deleteDomain(providerId: string, domain: string): ActionRe
 
   try {
     await db.domain.delete({
-      where: { domain, providerId },
+      where: {
+        domain,
+        providerId,
+        Provider: {
+          userId: user.id,
+        },
+      },
     });
   } catch {
     return ['Failed to delete domain. Try again.', null];
@@ -104,10 +121,16 @@ export async function deleteDomain(providerId: string, domain: string): ActionRe
 }
 
 export async function verifyDomain(providerId: string, domain: string): ActionResponse<boolean> {
-  await verifySession();
+  const { user } = await verifySession();
 
   const domainRecord = await db.domain.findUnique({
-    where: { domain, providerId },
+    where: {
+      domain,
+      providerId,
+      Provider: {
+        userId: user.id,
+      },
+    },
   });
 
   if (!domainRecord) {
@@ -124,7 +147,13 @@ export async function verifyDomain(providerId: string, domain: string): ActionRe
     const isVerified = verifyDomainResponse.verified && !domainConfig.misconfigured;
 
     await db.domain.update({
-      where: { domain, providerId },
+      where: {
+        domain,
+        providerId,
+        Provider: {
+          userId: user.id,
+        },
+      },
       data: { verified: isVerified },
     });
 

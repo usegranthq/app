@@ -47,13 +47,13 @@ export async function deleteSession(token: string): ActionResponse {
 }
 
 export async function deleteAccount(): ActionResponse {
-  const session = await verifySession();
+  const { user } = await verifySession();
 
   // get all domains for the user
   const domains = await db.domain.findMany({
     where: {
       Provider: {
-        userId: session.user.id,
+        userId: user.id,
       },
     },
   });

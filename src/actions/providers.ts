@@ -63,7 +63,7 @@ export async function createProvider(formData: FormData): ActionResponse<Provide
 }
 
 export async function updateProvider(providerId: string, formData: FormData): ActionResponse {
-  await verifySession();
+  const { user } = await verifySession();
 
   const validation = providerSchema.safeParse({
     name: formData.get('name'),
@@ -76,7 +76,7 @@ export async function updateProvider(providerId: string, formData: FormData): Ac
 
   try {
     await db.provider.update({
-      where: { id: providerId },
+      where: { id: providerId, userId: user.id },
       data: validation.data,
     });
     revalidatePath(ROUTES.PROVIDERS, 'layout');
@@ -88,10 +88,10 @@ export async function updateProvider(providerId: string, formData: FormData): Ac
 }
 
 export async function deleteProvider(providerId: string): ActionResponse {
-  await verifySession();
+  const { user } = await verifySession();
 
   try {
-    await db.provider.delete({ where: { id: providerId } });
+    await db.provider.delete({ where: { id: providerId, userId: user.id } });
     revalidatePath(ROUTES.PROVIDERS, 'layout');
   } catch (error) {
     const errorMessage = getApiErrorMessage(error, 'Failed to delete provider');
@@ -102,7 +102,7 @@ export async function deleteProvider(providerId: string): ActionResponse {
 }
 
 export async function createClient(providerId: string, formData: FormData): ActionResponse {
-  const { plan } = await verifySession();
+  const { plan, user } = await verifySession();
 
   const validation = clientSchema.safeParse({
     name: formData.get('name'),
@@ -116,6 +116,9 @@ export async function createClient(providerId: string, formData: FormData): Acti
   const clientsCount = await db.client.count({
     where: {
       providerId,
+      Provider: {
+        userId: user.id,
+      },
     },
   });
 
@@ -140,10 +143,16 @@ export async function createClient(providerId: string, formData: FormData): Acti
 }
 
 export async function deleteClient(providerId: string, clientId: string): ActionResponse {
-  await verifySession();
+  const { user } = await verifySession();
 
   try {
-    await db.client.delete({ where: { id: clientId, providerId } });
+    await db.client.delete({
+      where: {
+        id: clientId,
+        providerId,
+        Provider: { userId: user.id },
+      },
+    });
     revalidatePath(ROUTES.PROVIDERS_ID(providerId), 'layout');
     return [null, null];
   } catch (error) {
@@ -162,7 +171,7 @@ export async function generateAccessToken(
   clientId: string,
   options = defaultGenerateAccessTokenOptions,
 ): ActionResponse<string> {
-  const { plan } = await verifySession();
+  const { plan, user } = await verifySession();
 
   const opts = {
     ...defaultGenerateAccessTokenOptions,
@@ -173,6 +182,9 @@ export async function generateAccessToken(
     where: {
       id: clientId,
       providerId,
+      Provider: {
+        userId: user.id,
+      },
     },
     include: {
       Provider: {
@@ -202,6 +214,9 @@ export async function generateAccessToken(
   const jwk = await db.jwks.findFirst({
     where: {
       providerId,
+      Provider: {
+        userId: user.id,
+      },
     },
     orderBy: {
       createdAt: 'desc',
@@ -234,6 +249,7 @@ export async function requestSigningKey(providerId: string): ActionResponse<stri
   const provider = await db.provider.findUnique({
     where: {
       id: providerId,
+      userId: user.id,
     },
   });
 
@@ -278,10 +294,10 @@ export async function requestSigningKey(providerId: string): ActionResponse<stri
 }
 
 export async function removeKey(providerId: string, id: string): ActionResponse {
-  await verifySession();
+  const { user } = await verifySession();
 
   const provider = await db.provider.findUnique({
-    where: { id: providerId },
+    where: { id: providerId, userId: user.id },
   });
 
   if (!provider) {
@@ -293,7 +309,7 @@ export async function removeKey(providerId: string, id: string): ActionResponse 
   }
 
   const latestKey = await db.jwks.findFirst({
-    where: { providerId },
+    where: { providerId, Provider: { userId: user.id } },
     orderBy: { createdAt: 'desc' },
   });
 
@@ -306,7 +322,7 @@ export async function removeKey(providerId: string, id: string): ActionResponse 
   }
 
   try {
-    await db.jwks.delete({ where: { id, providerId } });
+    await db.jwks.delete({ where: { id, providerId, Provider: { userId: user.id } } });
     revalidatePath(ROUTES.PROVIDERS_ID_ADVANCED(providerId));
     return [null, null];
   } catch (error) {
@@ -316,14 +332,17 @@ export async function removeKey(providerId: string, id: string): ActionResponse 
 }
 
 export async function toggleRotateJwks(providerId: string, rotateJwks: boolean): ActionResponse {
-  const { plan } = await verifySession();
+  const { plan, user } = await verifySession();
 
   if (!plan.features.signingKeys.autoRotate) {
     return [ERRORS.GENERIC_FEATURE_NOT_AVAILABLE.message, null];
   }
 
   try {
-    await db.provider.update({ where: { id: providerId }, data: { rotateJwks } });
+    await db.provider.update({
+      where: { id: providerId, userId: user.id },
+      data: { rotateJwks },
+    });
     revalidatePath(ROUTES.PROVIDERS_ID_ADVANCED(providerId));
     return [null, null];
   } catch (error) {

@@ -19,6 +19,9 @@ const createTenantProvider = createAuthEndpoint(
     const tenantsCount = await db.tenantProvider.count({
       where: {
         tenantId,
+        Tenant: {
+          userId: ctx.context.userId,
+        },
       },
     });
 
@@ -34,6 +37,9 @@ const createTenantProvider = createAuthEndpoint(
           url: {
             equals: url,
             mode: 'insensitive',
+          },
+          Tenant: {
+            userId: ctx.context.userId,
           },
         },
       })

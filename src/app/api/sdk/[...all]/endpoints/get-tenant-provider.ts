@@ -15,6 +15,9 @@ const getTenantProvider = createAuthEndpoint(
       where: {
         id: providerId,
         tenantId,
+        Tenant: {
+          userId: ctx.context.userId,
+        },
       },
     });
 

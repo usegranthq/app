@@ -43,6 +43,9 @@ export const cancelSubscription = async (): ActionResponse => {
     where: {
       status: 'active',
       customerId: customer.id,
+      Customer: {
+        userId: session.user.id,
+      },
     },
   });
 
@@ -56,7 +59,7 @@ export const cancelSubscription = async (): ActionResponse => {
 
     // update subscription
     await db.subscription.update({
-      where: { id: subscription.id },
+      where: { id: subscription.id, Customer: { userId: session.user.id } },
       data: { status: creemSubscription.status },
     });
   } catch {

@@ -27,6 +27,7 @@ const createToken = createAuthEndpoint(
     const provider = await db.provider.findUnique({
       where: {
         id: providerId,
+        userId: ctx.context.userId,
       },
       include: {
         Domain: {
@@ -46,6 +47,9 @@ const createToken = createAuthEndpoint(
       where: {
         id: clientId,
         providerId,
+        Provider: {
+          userId: ctx.context.userId,
+        },
       },
     });
 
@@ -65,6 +69,9 @@ const createToken = createAuthEndpoint(
     const jwk = await db.jwks.findFirst({
       where: {
         providerId,
+        Provider: {
+          userId: ctx.context.userId,
+        },
       },
       orderBy: {
         createdAt: 'desc',

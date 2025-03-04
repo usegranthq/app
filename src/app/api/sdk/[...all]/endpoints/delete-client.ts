@@ -16,6 +16,9 @@ const deleteClient = createAuthEndpoint(
       where: {
         id: clientId,
         providerId,
+        Provider: {
+          userId: ctx.context.userId,
+        },
       },
     });
 
@@ -28,6 +31,9 @@ const deleteClient = createAuthEndpoint(
         where: {
           id: clientId,
           providerId,
+          Provider: {
+            userId: ctx.context.userId,
+          },
         },
       });
 

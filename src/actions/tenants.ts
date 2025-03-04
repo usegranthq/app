@@ -112,10 +112,10 @@ export async function createTenantProvider(tenantId: string, formData: FormData)
 }
 
 export async function deleteTenantProvider(tenantId: string, providerId: string): ActionResponse {
-  await verifySession();
+  const { user } = await verifySession();
 
   const tenantProvider = await db.tenantProvider.findUnique({
-    where: { id: providerId, tenantId },
+    where: { id: providerId, tenantId, Tenant: { userId: user.id } },
   });
 
   if (!tenantProvider) {
@@ -124,7 +124,7 @@ export async function deleteTenantProvider(tenantId: string, providerId: string)
 
   try {
     await db.tenantProvider.delete({
-      where: { id: providerId, tenantId },
+      where: { id: providerId, tenantId, Tenant: { userId: user.id } },
     });
   } catch (error) {
     const errorMessage = getApiErrorMessage(error, 'Failed to delete provider');
@@ -136,7 +136,7 @@ export async function deleteTenantProvider(tenantId: string, providerId: string)
 }
 
 export async function updateTenant(tenantId: string, formData: FormData): ActionResponse {
-  await verifySession();
+  const { user } = await verifySession();
 
   const validation = tenantSchema.safeParse({
     name: formData.get('name'),
@@ -149,7 +149,7 @@ export async function updateTenant(tenantId: string, formData: FormData): Action
 
   try {
     await db.tenant.update({
-      where: { id: tenantId },
+      where: { id: tenantId, userId: user.id },
       data: validation.data,
     });
     revalidatePath(ROUTES.TENANTS, 'layout');

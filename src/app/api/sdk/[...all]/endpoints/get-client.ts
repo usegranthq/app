@@ -15,6 +15,9 @@ const getClient = createAuthEndpoint(
       where: {
         id: clientId,
         providerId,
+        Provider: {
+          userId: ctx.context.userId,
+        },
       },
       select: {
         id: true,

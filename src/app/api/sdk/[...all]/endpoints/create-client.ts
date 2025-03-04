@@ -19,6 +19,9 @@ const createClient = createAuthEndpoint(
     const clientsCount = await db.client.count({
       where: {
         providerId: ctx.params.id,
+        Provider: {
+          userId: ctx.context.userId,
+        },
       },
     });
 
