@@ -18,7 +18,7 @@ export default function PricingSection() {
           {PLAN_FEATURES.map((features) => {
             const plan = PLANS[features.id];
             return (
-              <Card key={features.id} className={cn('h-full', { 'border-primary': features.id === POPULAR_PLAN })}>
+              <Card key={features.id} className={cn('h-full', { 'border-primary/80': features.id === POPULAR_PLAN })}>
                 <CardHeader className="pb-2">
                   <CardTitle className="text-lg">{plan.name}</CardTitle>
                   <div className="flex gap-0.5">
