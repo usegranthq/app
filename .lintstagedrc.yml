@@ -1,8 +1,8 @@
-'*.{js,mjs,jsx,ts,tsx,yml,yaml,json,md,mdx,css,scss,html}':
-  - prettier --write
-
 '*.{js,mjs,jsx,ts,tsx}':
   - next lint --file
+
+'*.{js,mjs,jsx,ts,tsx,yml,yaml,json,md,mdx,css,scss,html}':
+  - prettier --write
 
 'prisma/schema.prisma':
   - prisma format --check
