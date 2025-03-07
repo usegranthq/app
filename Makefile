@@ -16,4 +16,9 @@ migrate:
 	npm run migrate:dev
 
 clear:
-	docker compose down -v --remove-orphans
+	@read -p "Are you sure you want to clear the database? (y/n): " confirm; \
+	if [ "$$confirm" = "y" ]; then \
+		docker compose down -v --remove-orphans; \
+	else \
+		echo "Operation cancelled."; \
+	fi
