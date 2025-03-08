@@ -12,6 +12,18 @@ const deleteClient = createAuthEndpoint(
   async (ctx) => {
     const { providerId, clientId } = ctx.params;
 
+    // Check if provider exists
+    const provider = await db.provider.findUnique({
+      where: {
+        id: providerId,
+        userId: ctx.context.userId,
+      },
+    });
+
+    if (!provider) {
+      throw new SdkError('NOT_FOUND', ERRORS.PROVIDER_NOT_FOUND);
+    }
+
     const client = await db.client.findUnique({
       where: {
         id: clientId,

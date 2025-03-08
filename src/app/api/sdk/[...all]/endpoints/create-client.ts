@@ -15,6 +15,18 @@ const createClient = createAuthEndpoint(
   async (ctx) => {
     const { name, audience } = ctx.body;
 
+    // Check if provider exists
+    const provider = await db.provider.findUnique({
+      where: {
+        id: ctx.params.id,
+        userId: ctx.context.userId,
+      },
+    });
+
+    if (!provider) {
+      throw new SdkError('NOT_FOUND', ERRORS.PROVIDER_NOT_FOUND);
+    }
+
     const plan = await getPlanByUserId(ctx.context.userId);
     const clientsCount = await db.client.count({
       where: {

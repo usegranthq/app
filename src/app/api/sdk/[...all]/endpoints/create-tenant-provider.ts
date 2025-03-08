@@ -15,6 +15,18 @@ const createTenantProvider = createAuthEndpoint(
     const { tenantId } = ctx.params;
     const { url, fingerprints, audience, earliestIssuanceTimeAllowed } = ctx.body;
 
+    // Check if tenant exists
+    const tenant = await db.tenant.findUnique({
+      where: {
+        id: tenantId,
+        userId: ctx.context.userId,
+      },
+    });
+
+    if (!tenant) {
+      throw new SdkError('NOT_FOUND', ERRORS.TENANT_NOT_FOUND);
+    }
+
     const plan = await getPlanByUserId(ctx.context.userId);
     const tenantsCount = await db.tenantProvider.count({
       where: {

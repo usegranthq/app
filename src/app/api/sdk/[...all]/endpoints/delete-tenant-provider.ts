@@ -11,7 +11,19 @@ const deleteTenantProvider = createAuthEndpoint(
   async (ctx) => {
     const { tenantId, providerId } = ctx.params;
 
-    const tenantProvider = await db.tenantProvider.delete({
+    // Check if tenant exists
+    const tenant = await db.tenant.findUnique({
+      where: {
+        id: tenantId,
+        userId: ctx.context.userId,
+      },
+    });
+
+    if (!tenant) {
+      throw new SdkError('NOT_FOUND', ERRORS.TENANT_NOT_FOUND);
+    }
+
+    const tenantProvider = await db.tenantProvider.findUnique({
       where: {
         id: providerId,
         tenantId,
