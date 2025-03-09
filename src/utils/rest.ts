@@ -22,3 +22,15 @@ export const unauthorizedResponse = (message = 'Unauthorized') => {
 export const forbiddenResponse = (message = 'Forbidden') => {
   return new Response(message, { status: 403 });
 };
+
+export const rateLimitedResponse = (message = 'Rate limited', retryAfter?: number | null) => {
+  const headers = new Headers();
+  if (retryAfter) {
+    headers.set('Retry-After', retryAfter.toString());
+  }
+
+  return new Response(message, {
+    status: 429,
+    headers,
+  });
+};
