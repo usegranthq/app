@@ -1,10 +1,11 @@
 'use client';
 
-import { FC, Ref, useRef } from 'react';
+import { FC, Ref, startTransition, useRef } from 'react';
 import { useFormStatus } from 'react-dom';
 import { toast } from 'sonner';
 
 import { deleteTenant } from '@/actions';
+import { useProgressBar } from '@/blocks/NavProgress';
 import {
   AlertDialog,
   AlertDialogAction,
@@ -39,12 +40,17 @@ interface DeleteTenantActionProps {
 
 export default function DeleteTenantAction(props: DeleteTenantActionProps) {
   const formRef = useRef<HTMLFormElement>(null);
+  const progress = useProgressBar();
 
   const handleDeleteClick = async () => {
-    const [error] = await deleteTenant(props.tenant.id);
-    if (error) {
-      toast.error(error);
-    }
+    startTransition(async () => {
+      progress.start();
+
+      const [error] = await deleteTenant(props.tenant.id);
+      if (error) {
+        toast.error(error);
+      }
+    });
   };
 
   return (
