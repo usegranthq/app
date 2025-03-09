@@ -102,13 +102,13 @@ export async function createTenantProvider(tenantId: string, formData: FormData)
         tenantId,
       },
     });
-
-    revalidatePath(ROUTES.TENANTS);
-    return ['null', null];
   } catch (error) {
     const errorMessage = getApiErrorMessage(error, 'Failed to create provider');
     return [errorMessage, null];
   }
+
+  revalidatePath(ROUTES.TENANTS);
+  return [null, null];
 }
 
 export async function deleteTenantProvider(tenantId: string, providerId: string): ActionResponse {
