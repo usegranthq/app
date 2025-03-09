@@ -110,6 +110,7 @@ export const tenantProviderSchema = z.object({
     .transform(sanitize),
   earliestIssuanceTimeAllowed: z
     .number({ required_error: 'Please provide the earliest issuance time allowed.', coerce: true })
+    .describe('Earliest issuance time allowed in hours')
     .min(0, { message: 'Earliest issuance time allowed must be at least 0.' })
     .max(12, { message: 'Earliest issuance time allowed must be at most 12.' }),
 });
