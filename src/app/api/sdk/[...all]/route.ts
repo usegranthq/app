@@ -33,8 +33,8 @@ const handler = async (request: NextRequest) => {
 
   const router = createRouter(endpoints, {
     basePath: '/sdk',
-    extraContext: {
-      userId: userId,
+    routerContext: {
+      userId,
     },
     openAPI: {
       disabled: true,
