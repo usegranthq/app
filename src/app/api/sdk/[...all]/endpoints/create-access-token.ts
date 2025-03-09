@@ -9,8 +9,8 @@ import db from '@/lib/db';
 import { createAuthEndpoint } from './utils/call';
 import ERRORS, { SdkError } from './utils/errors';
 
-const createToken = createAuthEndpoint(
-  '/:providers/:providerId/clients/:clientId/tokens',
+const createAccessToken = createAuthEndpoint(
+  'v1/providers/:providerId/clients/:clientId/tokens',
   {
     method: 'POST',
     body: z.object({
@@ -96,4 +96,4 @@ const createToken = createAuthEndpoint(
   },
 );
 
-export default createToken;
+export default createAccessToken;

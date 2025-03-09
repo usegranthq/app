@@ -21,7 +21,7 @@ import validateToken from './validate-token';
 
 const endpoints: Record<string, Endpoint> = {
   getAllProviders,
-  createProvider: createProvider,
+  createProvider,
   getProvider,
   deleteProvider,
   getAllClients,
