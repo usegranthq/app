@@ -8,7 +8,33 @@ export default function Footer() {
           <p className="font-mono text-sm font-medium">© 2024 useGrant. All rights reserved.</p>
           <p className="font-mono text-sm font-medium text-muted-foreground">support@usegrant.com</p>
         </div>
-        <div className="mt-14 flex gap-6 max-md:flex-col md:ml-auto md:mt-0 md:gap-12">
+        <div className="mt-14 flex gap-6 max-md:flex-col md:ml-auto md:mt-0 md:gap-16">
+          <div>
+            <p className="font-medium">Packages</p>
+            <div className="mt-3 flex flex-col gap-2 text-sm md:gap-4">
+              <Link
+                href="https://npmjs.com/package/@usegrant/sdk"
+                target="_blank"
+                className="text-muted-foreground hover:underline"
+              >
+                Javascript SDK
+              </Link>
+              <Link
+                href="https://npmjs.com/package/@usegrant/mcp"
+                target="_blank"
+                className="text-muted-foreground hover:underline"
+              >
+                MCP Server
+              </Link>
+              <Link
+                href="https://npmjs.com/package/@usegrant/ai-sdk-tools"
+                target="_blank"
+                className="text-muted-foreground hover:underline"
+              >
+                AI SDK Tools
+              </Link>
+            </div>
+          </div>
           <div>
             <p className="font-medium">Infrastructure</p>
             <div className="mt-3 flex flex-col gap-2 text-sm md:gap-4">
@@ -18,6 +44,13 @@ export default function Footer() {
                 className="text-muted-foreground hover:underline"
               >
                 Status
+              </Link>
+              <Link
+                href="https://github.com/usegranthq"
+                target="_blank"
+                className="text-muted-foreground hover:underline"
+              >
+                Github
               </Link>
             </div>
           </div>
