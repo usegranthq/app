@@ -15,14 +15,18 @@ export const getPlanByUserId = async (userId: string): Promise<PlanDetails> => {
 
   const subscription = await db.subscription.findFirst({
     where: {
+      status: 'active',
       customerId: customer.id,
+      Customer: {
+        userId,
+      },
     },
     orderBy: {
       createdAt: 'desc',
     },
   });
 
-  if (!subscription || subscription.status !== 'active') {
+  if (!subscription) {
     return PLANS.free;
   }
 
