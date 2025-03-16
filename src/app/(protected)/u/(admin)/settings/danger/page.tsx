@@ -20,7 +20,7 @@ export default function DangerPage() {
           and subscription details, to manage your subscription. Your card details will not be stored.
         </p>
       </CardContent>
-      <CardFooter className="border-t px-6 py-4">
+      <CardFooter className="border-t">
         <DeleteAccount />
       </CardFooter>
     </Card>

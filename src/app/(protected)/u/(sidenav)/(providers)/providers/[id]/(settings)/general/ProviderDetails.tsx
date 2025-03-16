@@ -38,12 +38,12 @@ export default function ProviderDetails() {
   };
 
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle>Provider details</CardTitle>
-        <CardDescription>Manage your provider settings.</CardDescription>
-      </CardHeader>
-      <form action={handleSubmit}>
+    <form action={handleSubmit}>
+      <Card>
+        <CardHeader>
+          <CardTitle>Provider details</CardTitle>
+          <CardDescription>Manage your provider settings.</CardDescription>
+        </CardHeader>
         <CardContent>
           <div className="flex flex-col gap-8">
             <div className="flex flex-col gap-2">
@@ -74,7 +74,7 @@ export default function ProviderDetails() {
         <CardFooter className="justify-end border-t pt-6">
           <SaveButton />
         </CardFooter>
-      </form>
-    </Card>
+      </Card>
+    </form>
   );
 }

@@ -30,7 +30,7 @@ export default function PricingSection() {
                   <ul className="mt-7 space-y-2.5 text-sm">
                     {features.contents.map((content, index) => (
                       <li key={index} className="flex space-x-2">
-                        <CheckIcon className="mt-0.5 size-4 flex-shrink-0" />
+                        <CheckIcon className="mt-0.5 size-4 shrink-0" />
                         <span className="text-muted-foreground">{content}</span>
                       </li>
                     ))}

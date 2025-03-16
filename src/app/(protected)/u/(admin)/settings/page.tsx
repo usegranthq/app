@@ -7,8 +7,8 @@ export default async function Settings() {
 
   return (
     <div className="grid gap-6">
-      <Card>
-        <form>
+      <form>
+        <Card>
           <CardHeader>
             <CardTitle>Email</CardTitle>
             <CardDescription className="mt-2">
@@ -22,8 +22,8 @@ export default async function Settings() {
           <CardFooter>
             <Button disabled>Save</Button>
           </CardFooter>
-        </form>
-      </Card>
+        </Card>
+      </form>
     </div>
   );
 }

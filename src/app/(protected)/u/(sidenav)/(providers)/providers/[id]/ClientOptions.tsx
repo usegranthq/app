@@ -141,7 +141,9 @@ export default function ClientOptions({ providerId, client }: { providerId: stri
         <AlertDialogContent>
           <AlertDialogHeader>
             <AlertDialogTitle>Are you absolutely sure to delete this client?</AlertDialogTitle>
-            <AlertDialogDescription>Deleting this will remove the client from the provider.</AlertDialogDescription>
+            <AlertDialogDescription>
+              This cannot be undone. Deleting this will permanently remove the client from the provider.
+            </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
             <AlertDialogCancel>Cancel</AlertDialogCancel>

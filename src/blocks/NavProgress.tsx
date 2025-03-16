@@ -111,7 +111,7 @@ function ProgressIndicator({ className }: ProgressIndicatorProps) {
           <motion.div
             style={{ width }}
             exit={{ opacity: 0 }}
-            className={cn('fixed inset-x-0 top-0 z-[100] h-[2px] bg-primary', className)}
+            className={cn('fixed inset-x-0 top-0 z-100 h-[2px] bg-primary', className)}
           />
         )}
       </AnimatePresence>

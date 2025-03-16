@@ -22,7 +22,7 @@ export default function DeleteTenant(props: DeleteTenantProps) {
           continue with caution.
         </p>
       </CardContent>
-      <CardFooter className="border-t px-6 py-4">
+      <CardFooter className="border-t">
         <DeleteTenantAction tenant={tenant} />
       </CardFooter>
     </Card>

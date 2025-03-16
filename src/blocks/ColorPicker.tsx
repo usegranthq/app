@@ -17,16 +17,16 @@ interface ColorPickerProps {
 }
 
 const colors = [
-  { label: 'Zinc', value: 'zinc' },
-  { label: 'Slate', value: 'slate' },
-  { label: 'Stone', value: 'stone' },
-  { label: 'Gray', value: 'gray' },
   { label: 'Neutral', value: 'neutral' },
-  { label: 'Orange', value: 'orange' },
-  { label: 'Green', value: 'green' },
-  { label: 'Blue', value: 'blue' },
-  { label: 'Yellow', value: 'yellow' },
-  { label: 'Violet', value: 'violet' },
+  { label: 'Stone', value: 'stone' },
+  { label: 'Zinc', value: 'zinc' },
+  { label: 'Gray', value: 'gray' },
+  { label: 'Slate', value: 'slate' },
+  // { label: 'Orange', value: 'orange' },
+  // { label: 'Green', value: 'green' },
+  // { label: 'Blue', value: 'blue' },
+  // { label: 'Yellow', value: 'yellow' },
+  // { label: 'Violet', value: 'violet' },
 ];
 
 export default function ColorPickerDropdown() {
@@ -48,7 +48,7 @@ export function ColorPicker({ className }: ColorPickerProps) {
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button variant="ghost" size="icon" className={cn('p size-8', className)}>
-          <PaletteIcon className="size-3" />
+          <PaletteIcon />
           <span className="sr-only">Set theme color</span>
         </Button>
       </DropdownMenuTrigger>

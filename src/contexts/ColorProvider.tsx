@@ -17,13 +17,13 @@ interface ColorContextType {
 }
 
 const defaultColorContext: ColorContextType = {
-  color: 'zinc',
+  color: 'neutral',
   setColor: () => {},
 };
 
 const ColorContext = createContext<ColorContextType>(defaultColorContext);
 
-const DEFAULT_COLOR = 'zinc';
+const DEFAULT_COLOR = 'neutral';
 const STORAGE_KEY = 'color';
 
 export const useColor = () => {

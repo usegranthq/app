@@ -1,6 +1,6 @@
 'use client';
 
-import { FC, Ref, startTransition, useRef } from 'react';
+import { ComponentProps, FC, startTransition, useRef } from 'react';
 import { useFormStatus } from 'react-dom';
 import { toast } from 'sonner';
 
@@ -17,18 +17,16 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from '@/components/ui/alert-dialog';
-import { Button, ButtonProps } from '@/components/ui/button';
+import { Button } from '@/components/ui/button';
 import { Tenant } from '@/types/app.types';
 
-interface DeleteButtonProps extends ButtonProps {
-  ref?: Ref<HTMLButtonElement>;
-}
+type DeleteButtonProps = ComponentProps<typeof Button>;
 
-const DeleteButton: FC<DeleteButtonProps> = ({ ref, ...props }) => {
+const DeleteButton: FC<DeleteButtonProps> = (props) => {
   const { pending } = useFormStatus();
 
   return (
-    <Button variant="destructive" ref={ref} {...props} disabled={pending}>
+    <Button variant="destructive" {...props} disabled={pending}>
       {pending ? 'Deleting your tenant...' : 'Delete tenant'}
     </Button>
   );

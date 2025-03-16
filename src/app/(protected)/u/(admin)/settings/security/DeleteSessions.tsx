@@ -1,6 +1,6 @@
 'use client';
 
-import { FC, useRef } from 'react';
+import { ComponentProps, FC, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import { useFormStatus } from 'react-dom';
 import { toast } from 'sonner';
@@ -17,9 +17,11 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from '@/components/ui/alert-dialog';
-import { Button, ButtonProps } from '@/components/ui/button';
+import { Button } from '@/components/ui/button';
 
-const DeleteButton: FC<ButtonProps> = (props) => {
+type DeleteButtonProps = ComponentProps<typeof Button>;
+
+const DeleteButton: FC<DeleteButtonProps> = (props) => {
   const { pending } = useFormStatus();
 
   return (

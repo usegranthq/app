@@ -41,12 +41,12 @@ export default function TenantDetails(props: TenantDetailsProps) {
   };
 
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle>Tenant details</CardTitle>
-        <CardDescription>Manage your tenant settings.</CardDescription>
-      </CardHeader>
-      <form action={handleSubmit}>
+    <form action={handleSubmit}>
+      <Card>
+        <CardHeader>
+          <CardTitle>Tenant details</CardTitle>
+          <CardDescription>Manage your tenant settings.</CardDescription>
+        </CardHeader>
         <CardContent>
           <div className="flex flex-col gap-8">
             <div className="flex flex-col gap-2">
@@ -74,10 +74,10 @@ export default function TenantDetails(props: TenantDetailsProps) {
             </div>
           </div>
         </CardContent>
-        <CardFooter className="justify-end border-t pt-6">
+        <CardFooter className="justify-end border-t">
           <SaveButton />
         </CardFooter>
-      </form>
-    </Card>
+      </Card>
+    </form>
   );
 }
