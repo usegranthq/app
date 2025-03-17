@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import { UserPlusIcon } from 'lucide-react';
 
-import { Button } from '@/components/ui/button';
+import { Button } from '@/shadcn/components/ui/button';
 
 export default function NoClients({ id }: { id: string }) {
   return (

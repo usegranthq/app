@@ -2,10 +2,11 @@ import { PropsWithChildren } from 'react';
 import Link from 'next/link';
 import { ArrowRight } from 'lucide-react';
 
+import { Button } from '@/shadcn/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/shadcn/components/ui/card';
+import { cn } from '@/shadcn/lib/utils';
+
 import ROUTES from '@/constants/routes';
-import { cn } from '@/lib/utils';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
 interface FeatureUnavailableProps extends PropsWithChildren {
   available: boolean;

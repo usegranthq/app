@@ -1,6 +1,7 @@
+import { Button } from '@/shadcn/components/ui/button';
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/shadcn/components/ui/card';
+
 import { getUser } from '@/data/user';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 
 export default async function Settings() {
   const user = await getUser();

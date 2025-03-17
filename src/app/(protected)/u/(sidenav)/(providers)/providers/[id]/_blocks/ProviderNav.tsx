@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import { BookOpenIcon, ChevronRight, Code2Icon, Settings2Icon, UsersIcon, type LucideIcon } from 'lucide-react';
 
-import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/shadcn/components/ui/collapsible';
 import {
   SidebarGroup,
   SidebarGroupLabel,
@@ -11,7 +11,7 @@ import {
   SidebarMenuSub,
   SidebarMenuSubButton,
   SidebarMenuSubItem,
-} from '@/components/ui/sidebar';
+} from '@/shadcn/components/ui/sidebar';
 
 interface SubItem {
   title: string;

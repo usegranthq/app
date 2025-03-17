@@ -1,7 +1,8 @@
 import { Suspense } from 'react';
 import Link from 'next/link';
 
-import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/shadcn/components/ui/card';
+
 import { env } from '@/env';
 
 import LoginForm from './LoginForm';

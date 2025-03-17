@@ -4,12 +4,13 @@ import { startTransition } from 'react';
 import { useFormStatus } from 'react-dom';
 import { toast } from 'sonner';
 
+import { Button } from '@/shadcn/components/ui/button';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/shadcn/components/ui/card';
+import { Input } from '@/shadcn/components/ui/input';
+import { Label } from '@/shadcn/components/ui/label';
+
 import { addDomain } from '@/actions';
 import { useProgressBar } from '@/blocks/NavProgress';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
 import { Domain, Provider } from '@/types/app.types';
 
 interface DomainDetailsProps {

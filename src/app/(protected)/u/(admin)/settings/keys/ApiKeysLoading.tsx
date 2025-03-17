@@ -1,4 +1,4 @@
-import { Skeleton } from '@/components/ui/skeleton';
+import { Skeleton } from '@/shadcn/components/ui/skeleton';
 
 const LoadingRow = () => (
   <div className="flex items-center justify-between pt-4">

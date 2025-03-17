@@ -2,7 +2,7 @@
 
 import { useTheme } from 'next-themes';
 
-import { DropdownMenuContent, DropdownMenuItem } from '@/components/ui/dropdown-menu';
+import { DropdownMenuContent, DropdownMenuItem } from '@/shadcn/components/ui/dropdown-menu';
 
 export function ThemeSwitcherDropdown() {
   const { setTheme, theme: currentTheme } = useTheme();

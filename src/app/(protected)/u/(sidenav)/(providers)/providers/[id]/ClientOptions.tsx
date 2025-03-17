@@ -7,8 +7,6 @@ import { DotsHorizontalIcon } from '@radix-ui/react-icons';
 import { toast } from 'sonner';
 import { useToggle } from 'usehooks-ts';
 
-import { deleteClient, generateAccessToken } from '@/actions';
-import { useProgressBar } from '@/blocks/NavProgress';
 import {
   AlertDialog,
   AlertDialogAction,
@@ -19,17 +17,20 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
   AlertDialogTrigger,
-} from '@/components/ui/alert-dialog';
-import { Button } from '@/components/ui/button';
-import { Checkbox } from '@/components/ui/checkbox';
+} from '@/shadcn/components/ui/alert-dialog';
+import { Button } from '@/shadcn/components/ui/button';
+import { Checkbox } from '@/shadcn/components/ui/checkbox';
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
-import { Label } from '@/components/ui/label';
+} from '@/shadcn/components/ui/dropdown-menu';
+import { Label } from '@/shadcn/components/ui/label';
+
+import { deleteClient, generateAccessToken } from '@/actions';
+import { useProgressBar } from '@/blocks/NavProgress';
 import { Client } from '@/types/app.types';
 
 export default function ClientOptions({ providerId, client }: { providerId: string; client: Client }) {

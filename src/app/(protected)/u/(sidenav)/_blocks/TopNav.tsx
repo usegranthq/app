@@ -1,6 +1,6 @@
 import Link from 'next/link';
 
-import { SidebarTrigger } from '@/components/ui/sidebar';
+import { SidebarTrigger } from '@/shadcn/components/ui/sidebar';
 
 import Topbar from '../../_blocks/Topbar';
 

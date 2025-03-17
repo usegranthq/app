@@ -1,7 +1,8 @@
 'use client';
 
-import { cn } from '@/lib/utils';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Avatar, AvatarFallback, AvatarImage } from '@/shadcn/components/ui/avatar';
+import { cn } from '@/shadcn/lib/utils';
+
 import { useUser } from '@/contexts/User';
 
 interface UserAvatarProps {

@@ -13,7 +13,7 @@ import { useRouter } from 'next/navigation';
 import { AnimatePresence, domAnimation, LazyMotion, motion, useMotionTemplate, useSpring } from 'motion/react';
 import { useInterval } from 'usehooks-ts';
 
-import { cn } from '@/lib/utils';
+import { cn } from '@/shadcn/lib/utils';
 
 const ProgressBarContext = createContext<ReturnType<typeof useProgress> | null>(null);
 

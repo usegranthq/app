@@ -6,9 +6,10 @@ import { TenantProvider } from '@prisma/client';
 import { ColumnDef, flexRender, getCoreRowModel, useReactTable } from '@tanstack/react-table';
 import { formatDate } from 'date-fns';
 
+import { Button } from '@/shadcn/components/ui/button';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/shadcn/components/ui/table';
+
 import PaginationControls from '@/blocks/PaginationControls';
-import { Button } from '@/components/ui/button';
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 
 import TenantOptions from './TenantOptions';
 

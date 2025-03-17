@@ -8,7 +8,7 @@ import {
   SidebarInset,
   SidebarProvider,
   SidebarRail,
-} from '@/components/ui/sidebar';
+} from '@/shadcn/components/ui/sidebar';
 
 import { NavSecondary } from './NavSecondary';
 import { NavUser } from './NavUser';

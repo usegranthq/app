@@ -1,8 +1,9 @@
 import Link from 'next/link';
 
+import { Button } from '@/shadcn/components/ui/button';
+
 import { normalizePaginationParams } from '@/utils/pagination';
 import * as providersDal from '@/data/providers';
-import { Button } from '@/components/ui/button';
 
 import ClientsList from './ClientsList';
 import NoClients from './NoClients';

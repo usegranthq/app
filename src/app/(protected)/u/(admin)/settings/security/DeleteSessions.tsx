@@ -5,7 +5,6 @@ import { useRouter } from 'next/navigation';
 import { useFormStatus } from 'react-dom';
 import { toast } from 'sonner';
 
-import { deleteOtherSessions } from '@/actions';
 import {
   AlertDialog,
   AlertDialogAction,
@@ -16,8 +15,10 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
   AlertDialogTrigger,
-} from '@/components/ui/alert-dialog';
-import { Button } from '@/components/ui/button';
+} from '@/shadcn/components/ui/alert-dialog';
+import { Button } from '@/shadcn/components/ui/button';
+
+import { deleteOtherSessions } from '@/actions';
 
 type DeleteButtonProps = ComponentProps<typeof Button>;
 

@@ -4,8 +4,6 @@ import { useTransition } from 'react';
 import { useRouter } from 'next/navigation';
 import { toast } from 'sonner';
 
-import { cancelSubscription } from '@/actions';
-import { useProgressBar } from '@/blocks/NavProgress';
 import {
   AlertDialog,
   AlertDialogAction,
@@ -16,8 +14,11 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
   AlertDialogTrigger,
-} from '@/components/ui/alert-dialog';
-import { Button } from '@/components/ui/button';
+} from '@/shadcn/components/ui/alert-dialog';
+import { Button } from '@/shadcn/components/ui/button';
+
+import { cancelSubscription } from '@/actions';
+import { useProgressBar } from '@/blocks/NavProgress';
 
 export default function CancelPlanButton() {
   const [isPending, startTransition] = useTransition();

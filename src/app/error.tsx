@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import { AlertOctagon } from 'lucide-react';
 
-import { Button } from '@/components/ui/button';
+import { Button } from '@/shadcn/components/ui/button';
 
 export default function ErrorComponent() {
   return (

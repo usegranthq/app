@@ -3,7 +3,6 @@
 import { MouseEvent, useCallback, useEffect } from 'react';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 
-import { cn } from '@/lib/utils';
 import {
   Pagination,
   PaginationContent,
@@ -12,7 +11,8 @@ import {
   PaginationLink,
   PaginationNext,
   PaginationPrevious,
-} from '@/components/ui/pagination';
+} from '@/shadcn/components/ui/pagination';
+import { cn } from '@/shadcn/lib/utils';
 
 function makePage(pageNumber: number, text: string, isActive: boolean) {
   return {

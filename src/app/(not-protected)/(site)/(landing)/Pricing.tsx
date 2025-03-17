@@ -1,9 +1,10 @@
 import Link from 'next/link';
 import { CheckIcon } from 'lucide-react';
 
+import { Card, CardContent, CardHeader, CardTitle } from '@/shadcn/components/ui/card';
+import { cn } from '@/shadcn/lib/utils';
+
 import { PLAN_FEATURES, PLANS, POPULAR_PLAN } from '@/utils/billing';
-import { cn } from '@/lib/utils';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
 export default function PricingSection() {
   return (

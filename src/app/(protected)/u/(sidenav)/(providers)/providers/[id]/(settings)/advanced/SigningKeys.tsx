@@ -1,9 +1,10 @@
 import Link from 'next/link';
 
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/shadcn/components/ui/card';
+
 import { getSigningKeys } from '@/data/providers';
 import { getPlanDetails } from '@/data/user';
 import { getDefaultDomain } from '@/app/provider-helpers';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Provider } from '@/types';
 
 import KeysList from './KeysList';

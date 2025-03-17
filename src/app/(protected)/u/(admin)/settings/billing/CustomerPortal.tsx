@@ -3,8 +3,9 @@
 import { ExternalLinkIcon } from 'lucide-react';
 import { toast } from 'sonner';
 
+import { Button } from '@/shadcn/components/ui/button';
+
 import { redirectToCustomerPortal } from '@/actions';
-import { Button } from '@/components/ui/button';
 
 export default function CustomerPortal() {
   const handleButtonClick = async () => {

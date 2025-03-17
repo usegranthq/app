@@ -1,6 +1,6 @@
 import { Suspense } from 'react';
 
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/shadcn/components/ui/card';
 
 import DeleteSessions from './DeleteSessions';
 import Sessions from './Sessions';

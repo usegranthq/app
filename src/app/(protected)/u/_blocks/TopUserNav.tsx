@@ -1,5 +1,5 @@
-import { Button } from '@/components/ui/button';
-import { DropdownMenu, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
+import { Button } from '@/shadcn/components/ui/button';
+import { DropdownMenu, DropdownMenuTrigger } from '@/shadcn/components/ui/dropdown-menu';
 
 import { UserAvatar } from './UserAvatar';
 import UserNavDropdown from './UserNavDropdown';
