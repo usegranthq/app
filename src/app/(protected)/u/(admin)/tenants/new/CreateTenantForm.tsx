@@ -11,7 +11,7 @@ import { Label } from '@/shadcn/components/ui/label';
 import { Textarea } from '@/shadcn/components/ui/textarea';
 
 import { createTenant } from '@/actions';
-import { useProgressBar } from '@/blocks/NavProgress';
+import { useProgressBar } from '@/components/NavProgress';
 
 function CreateTenantButton() {
   const { pending } = useFormStatus();

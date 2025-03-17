@@ -26,7 +26,7 @@ import {
 } from '@/shadcn/components/ui/dropdown-menu';
 
 import { deleteApiKey } from '@/actions';
-import { useProgressBar } from '@/blocks/NavProgress';
+import { useProgressBar } from '@/components/NavProgress';
 import { ApiKey } from '@/types/app.types';
 
 export default function ApiKeyOptions({ apiKey }: { apiKey: ApiKey }) {

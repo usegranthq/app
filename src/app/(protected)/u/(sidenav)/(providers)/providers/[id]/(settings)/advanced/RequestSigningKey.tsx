@@ -9,7 +9,7 @@ import { Button } from '@/shadcn/components/ui/button';
 
 import { PlanDetails } from '@/utils/billing';
 import { requestSigningKey } from '@/actions';
-import { useProgressBar } from '@/blocks/NavProgress';
+import { useProgressBar } from '@/components/NavProgress';
 import { Provider } from '@/types';
 
 interface RequestSigningKeyProps {

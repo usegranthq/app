@@ -11,7 +11,7 @@ import { Button } from '@/shadcn/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/shadcn/components/ui/card';
 
 import { deleteDomain, verifyDomain } from '@/actions';
-import { useProgressBar } from '@/blocks/NavProgress';
+import { useProgressBar } from '@/components/NavProgress';
 import { Domain, Provider } from '@/types/app.types';
 
 interface CustomDomainsProps {

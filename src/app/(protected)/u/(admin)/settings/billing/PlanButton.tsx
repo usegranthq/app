@@ -7,7 +7,7 @@ import { Button } from '@/shadcn/components/ui/button';
 
 import { PLAN, PLAN_FEATURES, PlanFeatures, PlanId, PLANS } from '@/utils/billing';
 import { checkout } from '@/actions';
-import { useProgressBar } from '@/blocks/NavProgress';
+import { useProgressBar } from '@/components/NavProgress';
 
 import CancelPlanButton from './CancelPlanButton';
 

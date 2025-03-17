@@ -1,5 +1,5 @@
-import { ColorPicker } from '@/blocks/ColorPicker';
-import { ThemeSwitcher } from '@/blocks/ThemeSwitcher';
+import { ColorPicker } from '@/components/ColorPicker';
+import { ThemeSwitcher } from '@/components/ThemeSwitcher';
 
 import { TopUserNav } from './TopUserNav';
 

@@ -9,7 +9,7 @@ import { formatDate } from 'date-fns';
 import { Button } from '@/shadcn/components/ui/button';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/shadcn/components/ui/table';
 
-import PaginationControls from '@/blocks/PaginationControls';
+import PaginationControls from '@/components/PaginationControls';
 
 import TenantOptions from './TenantOptions';
 

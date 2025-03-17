@@ -3,7 +3,7 @@ import { notFound } from 'next/navigation';
 import { getDomains, getProvider } from '@/data/providers';
 import { getPlanDetails } from '@/data/user';
 import { getDefaultDomain, getDefaultDomainHostname } from '@/app/provider-helpers';
-import { FeatureUnavailable } from '@/blocks/FeatureUnavailable';
+import { FeatureUnavailable } from '@/components/FeatureUnavailable';
 
 import CaDetails from './CaDetails';
 import DomainDetails from './DomainDetails';

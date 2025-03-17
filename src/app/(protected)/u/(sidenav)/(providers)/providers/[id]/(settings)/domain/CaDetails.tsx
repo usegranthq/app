@@ -19,7 +19,7 @@ import {
 } from '@/shadcn/components/ui/select';
 
 import { getCaDetails } from '@/actions/ca';
-import Spinner from '@/blocks/Spinner';
+import Spinner from '@/components/Spinner';
 import { Domain } from '@/types/app.types';
 
 interface CaDetailsProps {

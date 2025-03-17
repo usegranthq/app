@@ -10,7 +10,7 @@ import { Input } from '@/shadcn/components/ui/input';
 import { Label } from '@/shadcn/components/ui/label';
 
 import { createTenantProvider, fetchFingerprint } from '@/actions';
-import { useProgressBar } from '@/blocks/NavProgress';
+import { useProgressBar } from '@/components/NavProgress';
 
 function AddProviderButton() {
   const { pending } = useFormStatus();

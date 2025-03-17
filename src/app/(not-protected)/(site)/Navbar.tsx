@@ -3,8 +3,7 @@ import Link from 'next/link';
 
 import darkLogo from '@/assets/logos/dark-logo-wordmark.png';
 import lightLogo from '@/assets/logos/light-logo-wordmark.png';
-
-import { ThemeSwitcher } from './ThemeSwitcher';
+import { ThemeSwitcher } from '@/components/ThemeSwitcher';
 
 const navItems = [
   { label: 'home', href: '/' },

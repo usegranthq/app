@@ -1,4 +1,4 @@
-import Spinner from '@/blocks/Spinner';
+import Spinner from '@/components/Spinner';
 
 const loadingText = [
   'Synchronizing awesomeness...',

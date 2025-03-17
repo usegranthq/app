@@ -18,7 +18,7 @@ import {
 import { Button } from '@/shadcn/components/ui/button';
 
 import { cancelSubscription } from '@/actions';
-import { useProgressBar } from '@/blocks/NavProgress';
+import { useProgressBar } from '@/components/NavProgress';
 
 export default function CancelPlanButton() {
   const [isPending, startTransition] = useTransition();

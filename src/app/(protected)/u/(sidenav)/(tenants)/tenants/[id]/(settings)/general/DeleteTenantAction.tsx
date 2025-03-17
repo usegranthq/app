@@ -18,7 +18,7 @@ import {
 import { Button } from '@/shadcn/components/ui/button';
 
 import { deleteTenant } from '@/actions';
-import { useProgressBar } from '@/blocks/NavProgress';
+import { useProgressBar } from '@/components/NavProgress';
 import { Tenant } from '@/types/app.types';
 
 type DeleteButtonProps = ComponentProps<typeof Button>;

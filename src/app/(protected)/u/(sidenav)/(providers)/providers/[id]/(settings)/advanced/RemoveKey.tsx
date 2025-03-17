@@ -7,7 +7,7 @@ import { toast } from 'sonner';
 import { Button } from '@/shadcn/components/ui/button';
 
 import { removeKey } from '@/actions';
-import { useProgressBar } from '@/blocks/NavProgress';
+import { useProgressBar } from '@/components/NavProgress';
 
 interface RemoveKeyProps {
   id: string;

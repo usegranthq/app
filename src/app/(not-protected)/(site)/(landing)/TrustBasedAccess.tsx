@@ -1,4 +1,4 @@
-import Codeblock from '@/blocks/Codeblock';
+import Codeblock from '@/components/Codeblock';
 
 const code = `
 import { UseGrant } from '@usegranthq/sdk';

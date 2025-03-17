@@ -30,7 +30,7 @@ import {
 import { Label } from '@/shadcn/components/ui/label';
 
 import { deleteClient, generateAccessToken } from '@/actions';
-import { useProgressBar } from '@/blocks/NavProgress';
+import { useProgressBar } from '@/components/NavProgress';
 import { Client } from '@/types/app.types';
 
 export default function ClientOptions({ providerId, client }: { providerId: string; client: Client }) {

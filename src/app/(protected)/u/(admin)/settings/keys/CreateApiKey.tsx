@@ -21,7 +21,7 @@ import { Label } from '@/shadcn/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/shadcn/components/ui/select';
 
 import { createApiKey } from '@/actions';
-import CopyInput from '@/blocks/CopyInput';
+import CopyInput from '@/components/CopyInput';
 
 const expirationOptions = [
   { label: '1 day', value: 1 },

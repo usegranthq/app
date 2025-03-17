@@ -26,7 +26,7 @@ import {
 } from '@/shadcn/components/ui/dropdown-menu';
 
 import { deleteTenantProvider } from '@/actions';
-import { useProgressBar } from '@/blocks/NavProgress';
+import { useProgressBar } from '@/components/NavProgress';
 import { TenantProvider } from '@/types/app.types';
 
 interface TenantOptionsProps {

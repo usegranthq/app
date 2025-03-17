@@ -6,7 +6,7 @@ import { ColumnDef, flexRender, getCoreRowModel, useReactTable } from '@tanstack
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/shadcn/components/ui/table';
 
 import { formatDate } from '@/utils/date';
-import PaginationControls from '@/blocks/PaginationControls';
+import PaginationControls from '@/components/PaginationControls';
 import { Client } from '@/types/app.types';
 
 import ClientOptions from './ClientOptions';

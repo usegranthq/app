@@ -1,5 +1,5 @@
-import Footer from '@/blocks/Footer';
-import Navbar from '@/blocks/Navbar';
+import Footer from './Footer';
+import Navbar from './Navbar';
 
 export default function PageLayout({ children }: { children: React.ReactNode }) {
   return (

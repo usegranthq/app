@@ -11,7 +11,7 @@ import { PlanDetails } from '@/utils/billing';
 import { formatDate } from '@/utils/date';
 import { type SigningKey } from '@/data/providers';
 import { toggleRotateJwks } from '@/actions';
-import { useProgressBar } from '@/blocks/NavProgress';
+import { useProgressBar } from '@/components/NavProgress';
 import { Provider } from '@/types';
 
 import RemoveKey from './RemoveKey';
