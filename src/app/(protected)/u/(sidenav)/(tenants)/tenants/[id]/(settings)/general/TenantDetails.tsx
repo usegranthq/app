@@ -4,12 +4,13 @@ import { useRouter } from 'next/navigation';
 import { useFormStatus } from 'react-dom';
 import { toast } from 'sonner';
 
+import { Button } from '@/shadcn/components/ui/button';
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/shadcn/components/ui/card';
+import { Input } from '@/shadcn/components/ui/input';
+import { Label } from '@/shadcn/components/ui/label';
+import { Textarea } from '@/shadcn/components/ui/textarea';
+
 import { updateTenant } from '@/actions';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Textarea } from '@/components/ui/textarea';
 import { Tenant } from '@/types/app.types';
 
 const SaveButton = () => {
@@ -41,12 +42,12 @@ export default function TenantDetails(props: TenantDetailsProps) {
   };
 
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle>Tenant details</CardTitle>
-        <CardDescription>Manage your tenant settings.</CardDescription>
-      </CardHeader>
-      <form action={handleSubmit}>
+    <form action={handleSubmit}>
+      <Card>
+        <CardHeader>
+          <CardTitle>Tenant details</CardTitle>
+          <CardDescription>Manage your tenant settings.</CardDescription>
+        </CardHeader>
         <CardContent>
           <div className="flex flex-col gap-8">
             <div className="flex flex-col gap-2">
@@ -74,10 +75,10 @@ export default function TenantDetails(props: TenantDetailsProps) {
             </div>
           </div>
         </CardContent>
-        <CardFooter className="justify-end border-t pt-6">
+        <CardFooter className="justify-end border-t">
           <SaveButton />
         </CardFooter>
-      </form>
-    </Card>
+      </Card>
+    </form>
   );
 }

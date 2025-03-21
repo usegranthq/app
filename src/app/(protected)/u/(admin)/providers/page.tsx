@@ -1,9 +1,10 @@
 import Link from 'next/link';
 import { formatRelative } from 'date-fns';
 
+import { Button } from '@/shadcn/components/ui/button';
+import { Card, CardDescription, CardFooter, CardHeader, CardTitle } from '@/shadcn/components/ui/card';
+
 import { getProviders } from '@/data/providers';
-import { Button } from '@/components/ui/button';
-import { Card, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Provider } from '@/types/app.types';
 
 import NoProviders from './NoProviders';

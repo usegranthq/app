@@ -1,7 +1,5 @@
 import { Suspense } from 'react';
 
-import { Card, CardHeader, CardTitle } from '@/components/ui/card';
-
 import ApiKeys from './ApiKeys';
 import ApiKeysLoading from './ApiKeysLoading';
 import CreateApiKey from './CreateApiKey';
@@ -14,12 +12,7 @@ export default function ApiPage() {
         These api keys grant other applications full access to your account. Please exercise caution!
       </p>
       <div className="mt-6">
-        <Card>
-          <CardHeader>
-            <CardTitle>Create a new api key</CardTitle>
-          </CardHeader>
-          <CreateApiKey />
-        </Card>
+        <CreateApiKey />
       </div>
       <div className="mt-10">
         <Suspense fallback={<ApiKeysLoading />}>

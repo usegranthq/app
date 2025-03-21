@@ -21,8 +21,8 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: Readonly<PropsWithChildren>) {
   return (
-    <html lang="en" className="dark scroll-smooth" style={{ colorScheme: 'dark' }} suppressHydrationWarning>
-      <body className={`${GeistSans.variable} ${GeistMono.variable} mx-auto max-w-screen-2xl font-sans`}>
+    <html lang="en" className="dark scroll-smooth antialiased" style={{ colorScheme: 'dark' }} suppressHydrationWarning>
+      <body className={`${GeistSans.variable} ${GeistMono.variable} mx-auto max-w-(--breakpoint-2xl) font-sans`}>
         {children}
       </body>
     </html>

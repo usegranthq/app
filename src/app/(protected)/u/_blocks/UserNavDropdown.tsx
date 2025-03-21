@@ -6,8 +6,6 @@ import { useRouter } from 'next/navigation';
 import { BadgeCheckIcon, CreditCardIcon, LockIcon, LogOutIcon } from 'lucide-react';
 import { toast } from 'sonner';
 
-import { authClient } from '@/lib/auth-client';
-import { cn } from '@/lib/utils';
 import {
   AlertDialog,
   AlertDialogAction,
@@ -18,7 +16,7 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
   AlertDialogTrigger,
-} from '@/components/ui/alert-dialog';
+} from '@/shadcn/components/ui/alert-dialog';
 import {
   DropdownMenuContent,
   DropdownMenuGroup,
@@ -26,7 +24,10 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuShortcut,
-} from '@/components/ui/dropdown-menu';
+} from '@/shadcn/components/ui/dropdown-menu';
+import { cn } from '@/shadcn/lib/utils';
+
+import { authClient } from '@/lib/auth-client';
 import { useUser } from '@/contexts/User';
 
 import { UserAvatar } from './UserAvatar';

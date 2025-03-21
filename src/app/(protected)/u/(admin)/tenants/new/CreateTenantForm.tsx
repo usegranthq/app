@@ -5,12 +5,13 @@ import { useRouter } from 'next/navigation';
 import { useFormStatus } from 'react-dom';
 import { toast } from 'sonner';
 
+import { Button } from '@/shadcn/components/ui/button';
+import { Input } from '@/shadcn/components/ui/input';
+import { Label } from '@/shadcn/components/ui/label';
+import { Textarea } from '@/shadcn/components/ui/textarea';
+
 import { createTenant } from '@/actions';
-import { useProgressBar } from '@/blocks/NavProgress';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Textarea } from '@/components/ui/textarea';
+import { useProgressBar } from '@/components/NavProgress';
 
 function CreateTenantButton() {
   const { pending } = useFormStatus();

@@ -1,9 +1,10 @@
 import Link from 'next/link';
 import { CheckIcon } from 'lucide-react';
 
+import { Card, CardContent, CardHeader, CardTitle } from '@/shadcn/components/ui/card';
+import { cn } from '@/shadcn/lib/utils';
+
 import { PLAN_FEATURES, PLANS, POPULAR_PLAN } from '@/utils/billing';
-import { cn } from '@/lib/utils';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
 export default function PricingSection() {
   return (
@@ -30,7 +31,7 @@ export default function PricingSection() {
                   <ul className="mt-7 space-y-2.5 text-sm">
                     {features.contents.map((content, index) => (
                       <li key={index} className="flex space-x-2">
-                        <CheckIcon className="mt-0.5 size-4 flex-shrink-0" />
+                        <CheckIcon className="mt-0.5 size-4 shrink-0" />
                         <span className="text-muted-foreground">{content}</span>
                       </li>
                     ))}

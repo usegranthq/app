@@ -3,9 +3,10 @@
 import { useMemo } from 'react';
 import { ColumnDef, flexRender, getCoreRowModel, useReactTable } from '@tanstack/react-table';
 
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/shadcn/components/ui/table';
+
 import { formatDate } from '@/utils/date';
-import PaginationControls from '@/blocks/PaginationControls';
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
+import PaginationControls from '@/components/PaginationControls';
 import { Client } from '@/types/app.types';
 
 import ClientOptions from './ClientOptions';

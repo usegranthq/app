@@ -4,12 +4,13 @@ import { useRouter } from 'next/navigation';
 import { useFormStatus } from 'react-dom';
 import { toast } from 'sonner';
 
+import { Button } from '@/shadcn/components/ui/button';
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/shadcn/components/ui/card';
+import { Input } from '@/shadcn/components/ui/input';
+import { Label } from '@/shadcn/components/ui/label';
+import { Textarea } from '@/shadcn/components/ui/textarea';
+
 import { updateProvider } from '@/actions';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Textarea } from '@/components/ui/textarea';
 
 import { useProviderContext } from '../../_blocks/ProviderContext';
 
@@ -38,12 +39,12 @@ export default function ProviderDetails() {
   };
 
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle>Provider details</CardTitle>
-        <CardDescription>Manage your provider settings.</CardDescription>
-      </CardHeader>
-      <form action={handleSubmit}>
+    <form action={handleSubmit}>
+      <Card>
+        <CardHeader>
+          <CardTitle>Provider details</CardTitle>
+          <CardDescription>Manage your provider settings.</CardDescription>
+        </CardHeader>
         <CardContent>
           <div className="flex flex-col gap-8">
             <div className="flex flex-col gap-2">
@@ -74,7 +75,7 @@ export default function ProviderDetails() {
         <CardFooter className="justify-end border-t pt-6">
           <SaveButton />
         </CardFooter>
-      </form>
-    </Card>
+      </Card>
+    </form>
   );
 }

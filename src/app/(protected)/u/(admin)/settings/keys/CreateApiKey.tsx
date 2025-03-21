@@ -5,8 +5,6 @@ import { useRouter } from 'next/navigation';
 import { useFormStatus } from 'react-dom';
 import { toast } from 'sonner';
 
-import { createApiKey } from '@/actions';
-import CopyInput from '@/blocks/CopyInput';
 import {
   AlertDialog,
   AlertDialogAction,
@@ -15,12 +13,15 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
-} from '@/components/ui/alert-dialog';
-import { Button } from '@/components/ui/button';
-import { CardContent, CardDescription, CardFooter } from '@/components/ui/card';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+} from '@/shadcn/components/ui/alert-dialog';
+import { Button } from '@/shadcn/components/ui/button';
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/shadcn/components/ui/card';
+import { Input } from '@/shadcn/components/ui/input';
+import { Label } from '@/shadcn/components/ui/label';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/shadcn/components/ui/select';
+
+import { createApiKey } from '@/actions';
+import CopyInput from '@/components/CopyInput';
 
 const expirationOptions = [
   { label: '1 day', value: 1 },
@@ -86,38 +87,43 @@ export default function CreateApiKey() {
         </AlertDialogContent>
       </AlertDialog>
       <form ref={formRef} action={handleSubmit}>
-        <CardContent>
-          <CardDescription>
-            Create a new api key to access your account. Make sure the names are unique to differentiate them from other
-            api keys.
-            <br />
-            And keep them in a secure location.
-          </CardDescription>
-          <div className="mt-4 flex flex-col gap-4 md:flex-row md:gap-8">
-            <div className="flex flex-col gap-2 md:flex-1">
-              <Label>NAME</Label>
-              <Input name="name" required maxLength={32} minLength={3} placeholder="Api Key Name" />
+        <Card>
+          <CardHeader>
+            <CardTitle>Create a new api key</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <CardDescription>
+              Create a new api key to access your account. Make sure the names are unique to differentiate them from
+              other api keys.
+              <br />
+              And keep them in a secure location.
+            </CardDescription>
+            <div className="mt-4 flex flex-col gap-4 md:flex-row md:gap-8">
+              <div className="flex flex-col gap-2 md:flex-1">
+                <Label>NAME</Label>
+                <Input name="name" required maxLength={32} minLength={3} placeholder="Api Key Name" />
+              </div>
+              <div className="flex flex-col gap-2">
+                <Label>EXPIRATION</Label>
+                <Select name="expiration" key={selectKey}>
+                  <SelectTrigger className="w-[280px]">
+                    <SelectValue placeholder="Select duration" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {expirationOptions.map((option) => (
+                      <SelectItem key={option.value} value={option.value.toString()}>
+                        {option.label}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
             </div>
-            <div className="flex flex-col gap-2">
-              <Label>EXPIRATION</Label>
-              <Select name="expiration" key={selectKey}>
-                <SelectTrigger className="w-[280px]">
-                  <SelectValue placeholder="Select duration" />
-                </SelectTrigger>
-                <SelectContent>
-                  {expirationOptions.map((option) => (
-                    <SelectItem key={option.value} value={option.value.toString()}>
-                      {option.label}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
-          </div>
-        </CardContent>
-        <CardFooter className="items-center">
-          <CreateApiKeyButton />
-        </CardFooter>
+          </CardContent>
+          <CardFooter className="items-center">
+            <CreateApiKeyButton />
+          </CardFooter>
+        </Card>
       </form>
     </>
   );

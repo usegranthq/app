@@ -1,8 +1,9 @@
 import Link from 'next/link';
 import { CheckIcon } from '@radix-ui/react-icons';
 
+import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/shadcn/components/ui/card';
+
 import { PLAN, PLAN_FEATURES, PlanDetails, PLANS } from '@/utils/billing';
-import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 
 import CustomerPortal from './CustomerPortal';
 import PlanButton from './PlanButton';
@@ -37,7 +38,7 @@ export default function Billing({ plan, showCustomerPortal }: BillingProps) {
                 <ul className="mt-7 space-y-2.5 text-sm">
                   {features.contents.map((content, index) => (
                     <li key={index} className="flex space-x-2">
-                      <CheckIcon className="mt-0.5 size-4 flex-shrink-0" />
+                      <CheckIcon className="mt-0.5 size-4 shrink-0" />
                       <span className="text-muted-foreground">{content}</span>
                     </li>
                   ))}

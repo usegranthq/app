@@ -5,8 +5,6 @@ import { useRouter } from 'next/navigation';
 import { DotsHorizontalIcon } from '@radix-ui/react-icons';
 import { toast } from 'sonner';
 
-import { deleteTenantProvider } from '@/actions';
-import { useProgressBar } from '@/blocks/NavProgress';
 import {
   AlertDialog,
   AlertDialogAction,
@@ -17,15 +15,18 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
   AlertDialogTrigger,
-} from '@/components/ui/alert-dialog';
-import { Button } from '@/components/ui/button';
+} from '@/shadcn/components/ui/alert-dialog';
+import { Button } from '@/shadcn/components/ui/button';
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
+} from '@/shadcn/components/ui/dropdown-menu';
+
+import { deleteTenantProvider } from '@/actions';
+import { useProgressBar } from '@/components/NavProgress';
 import { TenantProvider } from '@/types/app.types';
 
 interface TenantOptionsProps {

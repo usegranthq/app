@@ -2,10 +2,11 @@
 
 import { ChevronsUpDownIcon } from 'lucide-react';
 
+import { DropdownMenu, DropdownMenuTrigger } from '@/shadcn/components/ui/dropdown-menu';
+import { SidebarMenu, SidebarMenuButton, SidebarMenuItem } from '@/shadcn/components/ui/sidebar';
+
 import { UserAvatar } from '@/app/(protected)/u/_blocks/UserAvatar';
 import UserNavDropdown from '@/app/(protected)/u/_blocks/UserNavDropdown';
-import { DropdownMenu, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
-import { SidebarMenu, SidebarMenuButton, SidebarMenuItem } from '@/components/ui/sidebar';
 import { useUser } from '@/contexts/User';
 
 export function NavUser() {
@@ -16,7 +17,7 @@ export function NavUser() {
       <SidebarMenuItem>
         <DropdownMenu>
           <DropdownMenuTrigger
-            className="w-full rounded-md outline-none ring-ring hover:bg-accent focus-visible:ring-2 data-[state=open]:bg-accent"
+            className="w-full rounded-md outline-hidden ring-ring hover:bg-accent focus-visible:ring-2 data-[state=open]:bg-accent"
             asChild
           >
             <SidebarMenuButton

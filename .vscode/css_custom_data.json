@@ -1,22 +1,42 @@
 {
   "atDirectives": [
     {
-      "name": "@tailwind",
-      "description": "Use the @tailwind directive to insert Tailwind’s `base`, `components`, `utilities`, and `screens` styles into your CSS.",
+      "name": "@apply",
+      "description": "Use the @apply directive to apply a set of Tailwind's classes to an element. This is useful when you need to write custom CSS (like to override the styles in a third-party library) but still want to work with your design tokens and use the same syntax you're used to using in your HTML.",
       "references": [
         {
           "name": "Tailwind's “Functions & Directives” documentation",
-          "url": "https://tailwindcss.com/docs/functions-and-directives/#tailwind"
+          "url": "https://tailwindcss.com/docs/functions-and-directives#apply-directive"
         }
       ]
     },
     {
-      "name": "@apply",
-      "description": "Use the @apply directive to apply a set of Tailwind’s classes to an element.",
+      "name": "@plugin",
+      "description": "Use the `@plugin` directive to load a legacy JavaScript-based plugin. The `@plugin` directive accepts either a package name or a local path.",
       "references": [
         {
           "name": "Tailwind's “Functions & Directives” documentation",
-          "url": "https://tailwindcss.com/docs/functions-and-directives/#apply"
+          "url": "https://tailwindcss.com/docs/functions-and-directives#plugin-directive"
+        }
+      ]
+    },
+    {
+      "name": "@custom-variant",
+      "description": "Use the @custom-variant directive to add a custom variant in your project. This lets you write utilities like `pointer-coarse:size-48` and `theme-midnight:bg-slate-900`.",
+      "references": [
+        {
+          "name": "Tailwind's “Functions & Directives” documentation",
+          "url": "https://tailwindcss.com/docs/functions-and-directives#custom-variant-directive"
+        }
+      ]
+    },
+    {
+      "name": "@theme",
+      "description": "Use the `@theme` directive to define your project's custom design tokens, like fonts, colors, and breakpoints.",
+      "references": [
+        {
+          "name": "Tailwind's “Functions & Directives” documentation",
+          "url": "https://tailwindcss.com/docs/functions-and-directives#theme-directive"
         }
       ]
     }

@@ -1,14 +1,15 @@
+import { Button } from '@/shadcn/components/ui/button';
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/shadcn/components/ui/card';
+
 import { getUser } from '@/data/user';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 
 export default async function Settings() {
   const user = await getUser();
 
   return (
     <div className="grid gap-6">
-      <Card>
-        <form>
+      <form>
+        <Card>
           <CardHeader>
             <CardTitle>Email</CardTitle>
             <CardDescription className="mt-2">
@@ -22,8 +23,8 @@ export default async function Settings() {
           <CardFooter>
             <Button disabled>Save</Button>
           </CardFooter>
-        </form>
-      </Card>
+        </Card>
+      </form>
     </div>
   );
 }

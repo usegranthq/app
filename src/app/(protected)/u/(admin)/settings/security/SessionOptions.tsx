@@ -4,7 +4,6 @@ import { useRouter } from 'next/navigation';
 import { DotsHorizontalIcon } from '@radix-ui/react-icons';
 import { toast } from 'sonner';
 
-import { deleteSession } from '@/actions/settings';
 import {
   AlertDialog,
   AlertDialogAction,
@@ -15,15 +14,17 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
   AlertDialogTrigger,
-} from '@/components/ui/alert-dialog';
-import { Button } from '@/components/ui/button';
+} from '@/shadcn/components/ui/alert-dialog';
+import { Button } from '@/shadcn/components/ui/button';
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
+} from '@/shadcn/components/ui/dropdown-menu';
+
+import { deleteSession } from '@/actions/settings';
 import { Session } from '@/types/app.types';
 
 export default function SessionOptions({ session }: { session: Session }) {

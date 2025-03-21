@@ -11,6 +11,8 @@ importOrder:
   - '^next(.*)$'
   - <THIRD_PARTY_MODULES>
   - ''
+  - '@/shadcn/(.*)$'
+  - ''
   - ^@/constants/(.*)$
   - ^@/utils/(.*)$
   - ^@/lib/(.*)$

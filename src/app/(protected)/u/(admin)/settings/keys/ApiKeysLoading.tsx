@@ -1,4 +1,4 @@
-import { Skeleton } from '@/components/ui/skeleton';
+import { Skeleton } from '@/shadcn/components/ui/skeleton';
 
 const LoadingRow = () => (
   <div className="flex items-center justify-between pt-4">
@@ -24,7 +24,7 @@ interface ApiKeysLoadingProps {
 
 export default function ApiKeysLoading({ rows = 5 }: ApiKeysLoadingProps) {
   return (
-    <div role="status" className="space-y-4 divide-y divide-border rounded border border-border p-4 shadow">
+    <div role="status" className="space-y-4 divide-y divide-border rounded border border-border p-4 shadow-sm">
       {[...Array(rows)].map((_, index) => (
         <LoadingRow key={`skeleton-${index}`} />
       ))}

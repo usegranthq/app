@@ -1,11 +1,10 @@
 'use client';
 
-import { FC, useRef } from 'react';
+import { ComponentProps, FC, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import { useFormStatus } from 'react-dom';
 import { toast } from 'sonner';
 
-import { deleteOtherSessions } from '@/actions';
 import {
   AlertDialog,
   AlertDialogAction,
@@ -16,10 +15,14 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
   AlertDialogTrigger,
-} from '@/components/ui/alert-dialog';
-import { Button, ButtonProps } from '@/components/ui/button';
+} from '@/shadcn/components/ui/alert-dialog';
+import { Button } from '@/shadcn/components/ui/button';
 
-const DeleteButton: FC<ButtonProps> = (props) => {
+import { deleteOtherSessions } from '@/actions';
+
+type DeleteButtonProps = ComponentProps<typeof Button>;
+
+const DeleteButton: FC<DeleteButtonProps> = (props) => {
   const { pending } = useFormStatus();
 
   return (

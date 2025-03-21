@@ -1,6 +1,6 @@
 import { Suspense } from 'react';
 
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/shadcn/components/ui/card';
 
 import DeleteSessions from './DeleteSessions';
 import Sessions from './Sessions';
@@ -16,7 +16,7 @@ export default function ApiPage() {
       <div className="mt-6">
         <Card>
           <CardHeader>
-            <CardTitle>Delete all sessions</CardTitle>
+            <CardTitle>Delete all other sessions</CardTitle>
             <CardDescription>
               Permanently remove all sessions. This will log you out of all the devices that are currently using this
               account, except the one you are currently on. This action cannot be undone, so please proceed with

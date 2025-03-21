@@ -3,7 +3,7 @@ import React, { ReactNode } from 'react';
 import Link from 'next/link';
 import Markdoc, { Config, Node } from '@markdoc/markdoc';
 
-import { cn } from '@/lib/utils';
+import { cn } from '@/shadcn/lib/utils';
 
 type HeadingProps = {
   children: ReactNode;

@@ -3,9 +3,10 @@
 import { ColumnDef, flexRender, getCoreRowModel, useReactTable } from '@tanstack/react-table';
 import { formatRelative } from 'date-fns';
 
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/shadcn/components/ui/table';
+
 import { formatDate } from '@/utils/date';
 import { isNullOrUndefined } from '@/utils/validators';
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { ApiKey } from '@/types/app.types';
 
 import ApiKeyOptions from './ApiKeyOptions';

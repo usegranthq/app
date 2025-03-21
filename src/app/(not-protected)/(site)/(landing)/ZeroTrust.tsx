@@ -1,6 +1,6 @@
 import { BookLock, CheckCircleIcon, LockIcon, ShieldIcon } from 'lucide-react';
 
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/shadcn/components/ui/card';
 
 const features = [
   {

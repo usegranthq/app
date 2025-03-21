@@ -6,11 +6,12 @@ import { ExternalLinkIcon } from 'lucide-react';
 import { useFormStatus } from 'react-dom';
 import { toast } from 'sonner';
 
+import { Badge } from '@/shadcn/components/ui/badge';
+import { Button } from '@/shadcn/components/ui/button';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/shadcn/components/ui/card';
+
 import { deleteDomain, verifyDomain } from '@/actions';
-import { useProgressBar } from '@/blocks/NavProgress';
-import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { useProgressBar } from '@/components/NavProgress';
 import { Domain, Provider } from '@/types/app.types';
 
 interface CustomDomainsProps {

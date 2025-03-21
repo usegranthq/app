@@ -1,4 +1,5 @@
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/shadcn/components/ui/card';
+
 import { Tenant } from '@/types/app.types';
 
 import DeleteTenantAction from './DeleteTenantAction';
@@ -22,7 +23,7 @@ export default function DeleteTenant(props: DeleteTenantProps) {
           continue with caution.
         </p>
       </CardContent>
-      <CardFooter className="border-t px-6 py-4">
+      <CardFooter className="border-t">
         <DeleteTenantAction tenant={tenant} />
       </CardFooter>
     </Card>
