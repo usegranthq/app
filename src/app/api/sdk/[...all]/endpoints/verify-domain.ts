@@ -67,6 +67,7 @@ const verifyDomain = createAuthEndpoint(
       });
 
       return {
+        id: domain.id,
         domain: domain.domain,
         verified: isVerified,
       };

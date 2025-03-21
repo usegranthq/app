@@ -57,6 +57,8 @@ const deleteDomain = createAuthEndpoint(
           },
         },
       });
+
+      return {};
     } catch (error) {
       const errorMessage = getApiErrorMessage(error, 'Something went wrong');
 

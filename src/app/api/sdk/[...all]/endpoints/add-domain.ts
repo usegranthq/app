@@ -18,8 +18,6 @@ const addDomain = createAuthEndpoint(
     }),
   },
   async (ctx) => {
-    const { domain } = ctx.body;
-
     const plan = await getPlanByUserId(ctx.context.userId);
 
     if (!plan.features.customDomain.available) {
@@ -53,21 +51,22 @@ const addDomain = createAuthEndpoint(
     }
 
     try {
-      const addDomainResponse = await vercel.domains.add(domain);
-      const domainConfig = await vercel.domains.getConfig(domain);
+      const addDomainResponse = await vercel.domains.add(ctx.body.domain);
+      const domainConfig = await vercel.domains.getConfig(ctx.body.domain);
       const isVerified = addDomainResponse.verified && !domainConfig.misconfigured;
 
-      await db.domain.create({
+      const domain = await db.domain.create({
         data: {
-          domain,
+          domain: ctx.body.domain,
           verified: isVerified,
           providerId: ctx.params.id,
         },
       });
 
       return {
-        domain,
-        verified: isVerified,
+        id: domain.id,
+        domain: domain.domain,
+        verified: domain.verified,
       };
     } catch (error) {
       const errorMessage = getApiErrorMessage(error, 'Something went wrong');
