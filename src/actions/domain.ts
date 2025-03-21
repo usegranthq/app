@@ -1,24 +1,13 @@
 'use server';
 
 import { revalidatePath } from 'next/cache';
-import { z } from 'zod';
 
 import ROUTES from '@/constants/routes';
 import { getApiErrorMessage, getZodErrorMessage } from '@/utils/error';
 import db from '@/lib/db';
 import vercel from '@/lib/vercel';
 import { verifySession } from '@/data/_verifySession';
-
-const domainSchema = z
-  .string({
-    required_error: 'Please enter a domain name.',
-  })
-  .regex(/^(?!:\/\/)([a-zA-Z0-9][a-zA-Z0-9-]{0,61}[a-zA-Z0-9]?\.)+[a-zA-Z]{2,}$/, {
-    message: 'Please enter a valid domain name.',
-  })
-  .regex(/^(?!www\.)/, { message: 'Domain name cannot start with www.' })
-  .min(3, { message: 'Domain name must be at least 3 characters long.' })
-  .max(255, { message: 'Domain name must be less than 255 characters.' });
+import { domainSchema } from '@/schema';
 
 export async function addDomain(providerId: string, formData: FormData): ActionResponse {
   const { plan, user } = await verifySession();

@@ -111,6 +111,18 @@ const ERRORS = {
     code: 'CANNOT_REMOVE_LATEST_KEY',
     message: 'Cannot remove the latest key',
   },
+  CUSTOM_DOMAINS_NOT_AVAILABLE: {
+    code: 'CUSTOM_DOMAINS_NOT_AVAILABLE',
+    message: 'Custom domains are not available on your current plan. Please upgrade to access this feature',
+  },
+  MAX_DOMAINS_LIMIT_REACHED: {
+    code: 'MAX_DOMAINS_LIMIT_REACHED',
+    message: 'You have reached the limit for custom domains. Please upgrade to increase the limit',
+  },
+  DOMAIN_NOT_FOUND: {
+    code: 'DOMAIN_NOT_FOUND',
+    message: 'The specified domain could not be found',
+  },
 } as const;
 
 export default ERRORS;

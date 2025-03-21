@@ -1,15 +1,18 @@
 import { Endpoint } from 'better-call';
 
+import addDomain from './add-domain';
 import createAccessToken from './create-access-token';
 import createClient from './create-client';
 import createProvider from './create-provider';
 import createTenant from './create-tenant';
 import createTenantProvider from './create-tenant-provider';
 import deleteClient from './delete-client';
+import deleteDomain from './delete-domain';
 import deleteProvider from './delete-provider';
 import deleteTenant from './delete-tenant';
 import deleteTenantProvider from './delete-tenant-provider';
 import getAllClients from './get-all-clients';
+import getAllDomains from './get-all-domains';
 import getAllProviders from './get-all-providers';
 import getAllTenantProviders from './get-all-tenant-providers';
 import getAllTenants from './get-all-tenants';
@@ -18,12 +21,17 @@ import getProvider from './get-provider';
 import getTenant from './get-tenant';
 import getTenantProvider from './get-tenant-provider';
 import validateToken from './validate-token';
+import verifyDomain from './verify-domain';
 
 const endpoints: Record<string, Endpoint> = {
   getAllProviders,
   createProvider,
   getProvider,
   deleteProvider,
+  getAllDomains,
+  addDomain,
+  deleteDomain,
+  verifyDomain,
   getAllClients,
   createClient,
   getClient,
