@@ -11,6 +11,7 @@ import { generateJwk } from '@/utils/jwk';
 import { createJwt, defaultJwk } from '@/utils/jwt';
 import { createUrlId, getIssuer } from '@/utils/provider';
 import db from '@/lib/db';
+import vercel from '@/lib/vercel';
 import { verifySession } from '@/data/_verifySession';
 import { clientSchema, providerSchema } from '@/schema';
 import { Provider } from '@/types/app.types';
@@ -91,7 +92,21 @@ export async function deleteProvider(providerId: string): ActionResponse {
   const { user } = await verifySession();
 
   try {
+    // delete all domains
+    const domains = await db.domain.findMany({
+      where: {
+        providerId,
+        Provider: { userId: user.id },
+      },
+    });
+
+    for (const domain of domains) {
+      await vercel.domains.delete(domain.domain);
+      await db.domain.delete({ where: { id: domain.id, Provider: { userId: user.id } } });
+    }
+
     await db.provider.delete({ where: { id: providerId, userId: user.id } });
+
     revalidatePath(ROUTES.PROVIDERS, 'layout');
   } catch (error) {
     const errorMessage = getApiErrorMessage(error, 'Failed to delete provider');

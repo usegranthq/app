@@ -1,5 +1,6 @@
 import { getApiErrorMessage } from '@/utils/error';
 import db from '@/lib/db';
+import vercel from '@/lib/vercel';
 
 import { createAuthEndpoint } from './utils/call';
 import ERRORS, { SdkError } from './utils/errors';
@@ -24,6 +25,19 @@ const deleteProvider = createAuthEndpoint(
     }
 
     try {
+      // delete all domains
+      const domains = await db.domain.findMany({
+        where: {
+          providerId: id,
+          Provider: { userId: ctx.context.userId },
+        },
+      });
+
+      for (const domain of domains) {
+        await vercel.domains.delete(domain.domain);
+        await db.domain.delete({ where: { id: domain.id, Provider: { userId: ctx.context.userId } } });
+      }
+
       await db.provider.delete({
         where: {
           id,
