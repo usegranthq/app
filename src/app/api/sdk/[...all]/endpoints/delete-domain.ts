@@ -1,5 +1,4 @@
 import { getApiErrorMessage } from '@/utils/error';
-import { tryDecode } from '@/utils/sanitize';
 import { getPlanByUserId } from '@/lib/billing';
 import db from '@/lib/db';
 import vercel from '@/lib/vercel';
@@ -8,7 +7,7 @@ import { createAuthEndpoint } from './utils/call';
 import ERRORS, { SdkError } from './utils/errors';
 
 const deleteDomain = createAuthEndpoint(
-  'v1/providers/:id/domains/:domain',
+  'v1/providers/:id/domains/:domainId',
   {
     method: 'DELETE',
   },
@@ -34,7 +33,7 @@ const deleteDomain = createAuthEndpoint(
     // check if domain exists
     const domain = await db.domain.findUnique({
       where: {
-        domain: tryDecode(ctx.params.domain),
+        id: ctx.params.domainId,
         providerId: ctx.params.id,
         Provider: {
           userId: ctx.context.userId,

@@ -1,5 +1,6 @@
+import { Prisma } from '@prisma/client';
+
 import { getApiErrorMessage } from '@/utils/error';
-import { tryDecode } from '@/utils/sanitize';
 import { getPlanByUserId } from '@/lib/billing';
 import db from '@/lib/db';
 import vercel from '@/lib/vercel';
@@ -7,8 +8,14 @@ import vercel from '@/lib/vercel';
 import { createAuthEndpoint } from './utils/call';
 import ERRORS, { SdkError } from './utils/errors';
 
+const domainFieldsToSelect: Prisma.DomainSelect = {
+  id: true,
+  domain: true,
+  verified: true,
+};
+
 const verifyDomain = createAuthEndpoint(
-  'v1/providers/:id/domains/:domain/verify',
+  'v1/providers/:id/domains/:domainId/verify',
   {
     method: 'POST',
   },
@@ -34,12 +41,13 @@ const verifyDomain = createAuthEndpoint(
     // check if domain exists
     const domain = await db.domain.findUnique({
       where: {
-        domain: tryDecode(ctx.params.domain),
+        id: ctx.params.domainId,
         providerId: ctx.params.id,
         Provider: {
           userId: ctx.context.userId,
         },
       },
+      select: domainFieldsToSelect,
     });
 
     if (!domain) {
@@ -55,7 +63,7 @@ const verifyDomain = createAuthEndpoint(
       const domainConfig = await vercel.domains.getConfig(domain.domain);
       const isVerified = verifyDomainResponse.verified && !domainConfig.misconfigured;
 
-      await db.domain.update({
+      const updatedDomain = await db.domain.update({
         where: {
           domain: domain.domain,
           providerId: ctx.params.id,
@@ -63,14 +71,11 @@ const verifyDomain = createAuthEndpoint(
             userId: ctx.context.userId,
           },
         },
+        select: domainFieldsToSelect,
         data: { verified: isVerified },
       });
 
-      return {
-        id: domain.id,
-        domain: domain.domain,
-        verified: isVerified,
-      };
+      return updatedDomain;
     } catch (error) {
       const errorMessage = getApiErrorMessage(error, 'Something went wrong');
 

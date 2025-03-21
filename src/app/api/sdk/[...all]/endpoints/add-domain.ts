@@ -61,13 +61,14 @@ const addDomain = createAuthEndpoint(
           verified: isVerified,
           providerId: ctx.params.id,
         },
+        select: {
+          id: true,
+          domain: true,
+          verified: true,
+        },
       });
 
-      return {
-        id: domain.id,
-        domain: domain.domain,
-        verified: domain.verified,
-      };
+      return domain;
     } catch (error) {
       const errorMessage = getApiErrorMessage(error, 'Something went wrong');
 
