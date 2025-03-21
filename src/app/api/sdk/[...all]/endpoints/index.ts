@@ -17,6 +17,7 @@ import getAllProviders from './get-all-providers';
 import getAllTenantProviders from './get-all-tenant-providers';
 import getAllTenants from './get-all-tenants';
 import getClient from './get-client';
+import getDomain from './get-domain';
 import getProvider from './get-provider';
 import getTenant from './get-tenant';
 import getTenantProvider from './get-tenant-provider';
@@ -30,6 +31,7 @@ const endpoints: Record<string, Endpoint> = {
   deleteProvider,
   getAllDomains,
   addDomain,
+  getDomain,
   deleteDomain,
   verifyDomain,
   getAllClients,
