@@ -1,57 +1,63 @@
 'use client';
 
-import { startTransition } from 'react';
+import { startTransition, useRef, useTransition } from 'react';
 import { useRouter } from 'next/navigation';
+import { zodResolver } from '@hookform/resolvers/zod';
 import { useFormStatus } from 'react-dom';
+import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
+import { z } from 'zod';
 
 import { Button } from '@/shadcn/components/ui/button';
-import { Input } from '@/shadcn/components/ui/input';
 import { Label } from '@/shadcn/components/ui/label';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/shadcn/components/ui/select';
 
 import { createTenantProvider, fetchFingerprint } from '@/actions';
+import HookForm from '@/components/HookForm';
 import { useProgressBar } from '@/components/NavProgress';
+import { tenantProviderSchema } from '@/schema';
 
 function AddProviderButton() {
   const { pending } = useFormStatus();
   return <Button disabled={pending}>Add identity provider</Button>;
 }
 
-const getFormValues = (formId: string, name: string) => {
-  const form = document.getElementById(formId) as HTMLFormElement;
-  const el = form.querySelector(`input[name="${name}"]`) as HTMLInputElement;
-  return el.value;
-};
-
-const setFormValues = (formId: string, name: string, value: string | null) => {
-  const form = document.getElementById(formId) as HTMLFormElement;
-  const el = form.querySelector(`input[name="${name}"]`) as HTMLInputElement;
-  if (!value) return;
-  el.value = value;
-};
-
-const setCustomValidity = (name: string, message: string) => {
-  const form = document.getElementById('addProviderForm') as HTMLFormElement;
-  const el = form.querySelector(`input[name="${name}"]`) as HTMLInputElement;
-  el.setCustomValidity(message);
-  el.reportValidity();
-  el.setCustomValidity('');
-};
-
 interface AddProviderFormProps {
   tenantId: string;
 }
 
+type TenantFormValues = z.infer<typeof tenantProviderSchema>;
+const TextInput = HookForm.Input<TenantFormValues>;
+const NumberInput = HookForm.Number<TenantFormValues>;
+const SelectInput = HookForm.Select<TenantFormValues>;
+
 export default function AddProviderForm({ tenantId }: AddProviderFormProps) {
   const router = useRouter();
   const progress = useProgressBar();
+  const formRef = useRef<HTMLFormElement>(null);
+  const [isFingerprintPending, startFingerprintTransition] = useTransition();
 
-  const handleSubmit = async (formData: FormData) => {
+  const form = useForm<TenantFormValues>({
+    defaultValues: {
+      url: '',
+      fingerprints: [''],
+      audience: '',
+      earliestIssuanceTimeAllowed: 1,
+      conditions: [
+        {
+          key: 'sub',
+          operator: 'stringEquals',
+          value: '',
+        },
+      ],
+    },
+    resolver: zodResolver(tenantProviderSchema),
+  });
+
+  const handleSubmit = async (data: TenantFormValues) => {
     startTransition(async () => {
       progress.start();
 
-      const [errorMessage] = await createTenantProvider(tenantId, formData);
+      const [errorMessage] = await createTenantProvider(tenantId, data);
       if (errorMessage) {
         toast.error(errorMessage);
         return;
@@ -65,113 +71,95 @@ export default function AddProviderForm({ tenantId }: AddProviderFormProps) {
   const handleFetchFingerprint = async (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
 
-    const url = getFormValues('addProviderForm', 'url');
-    if (!url) {
-      setCustomValidity('url', 'URL is required');
-      return;
-    }
+    const isValid = await form.trigger('url');
+    if (!isValid) return;
 
-    if (!url.startsWith('https://')) {
-      setCustomValidity('url', 'URL must start with https://');
-      return;
-    }
+    const url = form.getValues('url');
 
-    const [errorMessage, fingerprint] = await fetchFingerprint(url);
-    if (errorMessage) {
-      toast.error(errorMessage);
-      return;
-    }
+    startFingerprintTransition(async () => {
+      progress.start();
 
-    setFormValues('addProviderForm', 'fingerprint', fingerprint);
+      const [errorMessage, fingerprint] = await fetchFingerprint(url);
+      if (errorMessage || !fingerprint) {
+        toast.error(errorMessage);
+        return;
+      }
+
+      form.setValue('fingerprints.0', fingerprint);
+      form.clearErrors('fingerprints.0');
+    });
   };
 
   return (
-    <form className="mt-10 flex w-full flex-col items-center gap-8" id="addProviderForm" action={handleSubmit}>
-      <div className="grid w-full gap-2">
-        <Label>Provider URL</Label>
-        <Input
-          type="url"
+    <HookForm {...form}>
+      <form
+        ref={formRef}
+        className="mt-10 flex w-full flex-col items-center gap-8"
+        id="addProviderForm"
+        onSubmit={form.handleSubmit(handleSubmit)}
+      >
+        <TextInput
           name="url"
+          label="Provider URL"
           placeholder="https://"
-          required
-          minLength={3}
-          maxLength={255}
-          pattern="https://.*"
+          description={
+            <>
+              Specify the secure OpenID Connect URL for authentication requests. URL must start with{' '}
+              <code>https://</code>.
+            </>
+          }
         />
-        <span className="text-xs text-muted-foreground">
-          Specify the secure OpenID Connect URL for authentication requests. URL must start with <code>https://</code>.
-        </span>
-      </div>
-      <div className="grid w-full gap-2">
-        <Label>Fingerprint</Label>
-        <div className="flex flex-row gap-2">
-          <Input
-            name="fingerprint"
-            placeholder="Identity provider fingerprint"
-            minLength={3}
-            maxLength={32}
-            required
-            readOnly
-          />
-          <Button type="button" variant="outline" className="inline-flex" onClick={handleFetchFingerprint}>
+        <div className="flex gap-2 w-full">
+          <div className="w-full">
+            <TextInput name="fingerprints.0" label="Fingerprint" placeholder="Identity provider fingerprint" readOnly />
+          </div>
+
+          <Button
+            type="button"
+            variant="outline"
+            className="relative mt-5.5"
+            onClick={handleFetchFingerprint}
+            disabled={isFingerprintPending}
+          >
             Fetch fingerprint
           </Button>
         </div>
-      </div>
-      <div className="grid w-full gap-2">
-        <Label>Audience</Label>
-        <Input name="audience" placeholder="Identity provider audience" required minLength={3} maxLength={32} />
-      </div>
-      <div className="grid w-full gap-2">
-        <Label>Earliest Issuance Time allowed (optional - in hours)</Label>
-        <Input
-          type="number"
+
+        <TextInput name="audience" label="Audience" placeholder="Identity provider audience" />
+
+        <NumberInput
           name="earliestIssuanceTimeAllowed"
-          min={0}
-          max={12}
+          label="Earliest Issuance Time allowed (optional - in hours)"
           placeholder="Earliest issuance time allowed"
-          required
-          minLength={3}
-          maxLength={32}
+          min={1}
+          max={12}
         />
-      </div>
-      <div className="grid w-full gap-2">
-        <Label>Conditions</Label>
-        <div className="grid grid-cols-12 gap-4 mt-2 w-full">
-          <div className="grid gap-2 col-span-3">
-            <Label>Key</Label>
-            <Select name="condition.key" required defaultValue="sub">
-              <SelectTrigger className="w-full">
-                <SelectValue placeholder="Select a key" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="sub">sub</SelectItem>
-              </SelectContent>
-            </Select>
-          </div>
-          <div className="grid gap-2 col-span-4">
-            <Label>Operator</Label>
-            <Select name="condition.operator" required defaultValue="stringEquals">
-              <SelectTrigger className="w-full">
-                <SelectValue placeholder="Select an operator" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="stringEquals">StringEquals</SelectItem>
-                <SelectItem value="stringNotEquals">StringNotEquals</SelectItem>
-                <SelectItem value="stringLike">StringLike</SelectItem>
-                <SelectItem value="stringNotLike">StringNotLike</SelectItem>
-              </SelectContent>
-            </Select>
-          </div>
-          <div className="grid gap-2 col-span-5 w-full">
-            <Label>Value</Label>
-            <Input name="condition.value" placeholder="Value" required minLength={3} maxLength={32} />
+
+        <div className="grid w-full gap-2">
+          <Label>Conditions</Label>
+          <div className="grid grid-cols-12 gap-4 mt-2 w-full">
+            <div className="grid gap-2 col-span-3 items-start">
+              <SelectInput name="conditions.0.key" label="Key" placeholder="Select a key">
+                <HookForm.SelectItem value="sub">sub</HookForm.SelectItem>
+              </SelectInput>
+            </div>
+            <div className="grid gap-2 col-span-4 items-start">
+              <SelectInput name="conditions.0.operator" label="Operator" placeholder="Select an operator">
+                <HookForm.SelectItem value="stringEquals">StringEquals</HookForm.SelectItem>
+                <HookForm.SelectItem value="stringNotEquals">StringNotEquals</HookForm.SelectItem>
+                <HookForm.SelectItem value="stringLike">StringLike</HookForm.SelectItem>
+                <HookForm.SelectItem value="stringNotLike">StringNotLike</HookForm.SelectItem>
+              </SelectInput>
+            </div>
+            <div className="grid gap-2 col-span-5 w-full items-start">
+              <TextInput name="conditions.0.value" label="Value" placeholder="Value" />
+            </div>
           </div>
         </div>
-      </div>
-      <div>
-        <AddProviderButton />
-      </div>
-    </form>
+        <div>
+          <AddProviderButton />
+        </div>
+      </form>
+    </HookForm>
   );
 }

@@ -2,6 +2,7 @@
 
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
+import { z } from 'zod';
 
 import ROUTES from '@/constants/routes';
 import { getIssuerCertifcate } from '@/utils/ca';
@@ -78,22 +79,12 @@ export async function fetchFingerprint(url: string): ActionResponse<string> {
   }
 }
 
-export async function createTenantProvider(tenantId: string, formData: FormData): ActionResponse {
+type TenantProviderRequestFormValues = z.infer<typeof tenantProviderSchema>;
+
+export async function createTenantProvider(tenantId: string, payload: TenantProviderRequestFormValues): ActionResponse {
   const { user } = await verifySession();
 
-  const validation = tenantProviderSchema.safeParse({
-    url: formData.get('url'),
-    fingerprints: [formData.get('fingerprint')],
-    audience: formData.get('audience'),
-    earliestIssuanceTimeAllowed: formData.get('earliestIssuanceTimeAllowed'),
-    conditions: [
-      {
-        key: formData.get('condition.key'),
-        operator: formData.get('condition.operator'),
-        value: formData.get('condition.value'),
-      },
-    ],
-  });
+  const validation = tenantProviderSchema.safeParse(payload);
 
   if (!validation.success) {
     return [getZodErrorMessage(validation.error), null];
