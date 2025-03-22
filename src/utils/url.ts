@@ -19,3 +19,8 @@ export const isValidUrl = (url: string): boolean => {
 export const isApexDomain = (domain: string) => {
   return domain.split('.').length === 2;
 };
+
+export const domainWithoutProtocol = (domain: string) => {
+  // remove http:// or https:// and trailing slash
+  return domain.replace(/^https?:\/\//, '').replace(/\/$/, '');
+};

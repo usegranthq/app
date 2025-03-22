@@ -9,6 +9,7 @@ import { formatDate } from 'date-fns';
 import { Button } from '@/shadcn/components/ui/button';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/shadcn/components/ui/table';
 
+import { domainWithoutProtocol } from '@/utils/url';
 import PaginationControls from '@/components/PaginationControls';
 
 import TenantOptions from './TenantOptions';
@@ -24,7 +25,7 @@ function getColumns(tenantId: string): ColumnDef<TenantProvider>[] {
     {
       header: 'Name',
       cell: ({ row }) => {
-        return row.original.url;
+        return domainWithoutProtocol(row.original.url);
       },
     },
     {
