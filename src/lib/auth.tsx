@@ -64,7 +64,14 @@ export const auth = betterAuth({
         plan,
       };
     }),
-    apiKey(),
+    apiKey({
+      rateLimit: {
+        // allow 1000 requests per hour
+        enabled: true,
+        timeWindow: 1000 * 60 * 60, // 1 hour in milliseconds
+        maxRequests: 1000, // max requests in the window
+      },
+    }),
     nextCookies(), // must be last
   ],
   databaseHooks: {
