@@ -217,6 +217,7 @@ model TenantProvider {
   url                         String
   fingerprints                String[]
   audience                    String
+  conditions                  Json?
   earliestIssuanceTimeAllowed Int
   createdAt                   DateTime @default(now())
   updatedAt                   DateTime @updatedAt

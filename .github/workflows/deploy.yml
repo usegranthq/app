@@ -28,6 +28,12 @@ jobs:
         with:
           node-version: ${{ env.NODE_VERSION }}
 
+      - name: Install dependencies
+        run: npm install
+
+      - name: Run tests
+        run: npm run test
+
       - name: Install Vercel CLI
         run: npm install -g vercel
 

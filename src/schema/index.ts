@@ -83,6 +83,12 @@ export const tenantSchema = z.object({
     .transform(sanitize),
 });
 
+export const conditionsSchema = z.object({
+  key: z.string(),
+  operator: z.enum(['stringEquals', 'stringLike', 'stringNotEquals', 'stringNotLike']),
+  value: z.string(),
+});
+
 export const tenantProviderSchema = z.object({
   url: z
     .string({ required_error: 'Please provide a provider URL.' })
@@ -108,6 +114,7 @@ export const tenantProviderSchema = z.object({
     .max(100, { message: 'Provider audience must be at most 100 characters long.' })
     .trim()
     .transform(sanitize),
+  conditions: z.array(conditionsSchema).optional(),
   earliestIssuanceTimeAllowed: z
     .number({ required_error: 'Please provide the earliest issuance time allowed.', coerce: true })
     .describe('Earliest issuance time allowed in hours')

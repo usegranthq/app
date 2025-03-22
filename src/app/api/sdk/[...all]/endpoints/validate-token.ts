@@ -3,9 +3,11 @@ import ky from 'ky';
 import { z } from 'zod';
 
 import db from '@/lib/db';
+import { conditionsSchema } from '@/schema';
 
 import { createAuthEndpoint } from './utils/call';
 import ERRORS, { SdkError } from './utils/errors';
+import { validateClaimWithCondition } from './utils/token';
 
 const tokenSchema = z.object({
   token: z.string(),
@@ -102,6 +104,21 @@ const validateToken = createAuthEndpoint(
     // validate if audience is configured and matches the token audience
     if (claims.aud !== tenantProvider.audience) {
       throw new SdkError('BAD_REQUEST', ERRORS.INVALID_TOKEN);
+    }
+
+    // validate if conditions are configured and matches the token conditions
+    if (tenantProvider.conditions) {
+      const conditionsValidation = z.array(conditionsSchema).safeParse(tenantProvider.conditions);
+      if (!conditionsValidation.success) {
+        throw new SdkError('BAD_REQUEST', ERRORS.INVALID_TOKEN);
+      }
+
+      const conditions = conditionsValidation.data;
+      for (const condition of conditions) {
+        if (!validateClaimWithCondition(condition, claims)) {
+          throw new SdkError('BAD_REQUEST', ERRORS.INVALID_TOKEN);
+        }
+      }
     }
 
     // get jwks endpoint from /.well-known/openid-configuration
