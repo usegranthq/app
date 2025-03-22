@@ -79,17 +79,41 @@ export async function fetchFingerprint(url: string): ActionResponse<string> {
 }
 
 export async function createTenantProvider(tenantId: string, formData: FormData): ActionResponse {
-  await verifySession();
+  const { user } = await verifySession();
 
   const validation = tenantProviderSchema.safeParse({
     url: formData.get('url'),
     fingerprints: [formData.get('fingerprint')],
     audience: formData.get('audience'),
     earliestIssuanceTimeAllowed: formData.get('earliestIssuanceTimeAllowed'),
+    conditions: [
+      {
+        key: formData.get('condition.key'),
+        operator: formData.get('condition.operator'),
+        value: formData.get('condition.value'),
+      },
+    ],
   });
 
   if (!validation.success) {
     return [getZodErrorMessage(validation.error), null];
+  }
+
+  // check if url is already added to the tenant
+  const tenantProvider = await db.tenantProvider.findUnique({
+    where: {
+      url_tenantId: {
+        url: validation.data.url,
+        tenantId,
+      },
+      Tenant: {
+        userId: user.id,
+      },
+    },
+  });
+
+  if (tenantProvider) {
+    return ['Provider with this URL already added to the tenant', null];
   }
 
   try {

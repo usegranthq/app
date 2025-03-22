@@ -8,6 +8,7 @@ import { toast } from 'sonner';
 import { Button } from '@/shadcn/components/ui/button';
 import { Input } from '@/shadcn/components/ui/input';
 import { Label } from '@/shadcn/components/ui/label';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/shadcn/components/ui/select';
 
 import { createTenantProvider, fetchFingerprint } from '@/actions';
 import { useProgressBar } from '@/components/NavProgress';
@@ -134,7 +135,40 @@ export default function AddProviderForm({ tenantId }: AddProviderFormProps) {
           maxLength={32}
         />
       </div>
-      <div></div>
+      <div className="grid w-full gap-2">
+        <Label>Conditions</Label>
+        <div className="grid grid-cols-12 gap-4 mt-2 w-full">
+          <div className="grid gap-2 col-span-3">
+            <Label>Key</Label>
+            <Select name="condition.key" required defaultValue="sub">
+              <SelectTrigger className="w-full">
+                <SelectValue placeholder="Select a key" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="sub">sub</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+          <div className="grid gap-2 col-span-4">
+            <Label>Operator</Label>
+            <Select name="condition.operator" required defaultValue="stringEquals">
+              <SelectTrigger className="w-full">
+                <SelectValue placeholder="Select an operator" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="stringEquals">StringEquals</SelectItem>
+                <SelectItem value="stringNotEquals">StringNotEquals</SelectItem>
+                <SelectItem value="stringLike">StringLike</SelectItem>
+                <SelectItem value="stringNotLike">StringNotLike</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+          <div className="grid gap-2 col-span-5 w-full">
+            <Label>Value</Label>
+            <Input name="condition.value" placeholder="Value" required minLength={3} maxLength={32} />
+          </div>
+        </div>
+      </div>
       <div>
         <AddProviderButton />
       </div>

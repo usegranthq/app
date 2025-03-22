@@ -84,9 +84,15 @@ export const tenantSchema = z.object({
 });
 
 export const conditionsSchema = z.object({
-  key: z.string(),
+  key: z
+    .string({ required_error: 'Please provide a condition key.' })
+    .min(1, { message: 'Please provide a condition key.' })
+    .max(10, { message: 'Condition key must be at most 10 characters long.' }),
   operator: z.enum(['stringEquals', 'stringLike', 'stringNotEquals', 'stringNotLike']),
-  value: z.string(),
+  value: z
+    .string({ required_error: 'Please provide a condition value.' })
+    .min(1, { message: 'Please provide a condition value.' })
+    .max(100, { message: 'Condition value must be at most 100 characters long.' }),
 });
 
 export const tenantProviderSchema = z.object({
