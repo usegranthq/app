@@ -13,13 +13,12 @@ import { verifySession } from '@/data/_verifySession';
 import { tenantProviderSchema, tenantSchema } from '@/schema';
 import { Tenant } from '@/types/app.types';
 
-export async function createTenant(formData: FormData): ActionResponse<Tenant> {
+type TenantFormValues = z.infer<typeof tenantSchema>;
+
+export async function createTenant(data: TenantFormValues): ActionResponse<Tenant> {
   const { user, plan } = await verifySession();
 
-  const validation = tenantSchema.safeParse({
-    name: formData.get('name'),
-    description: formData.get('description'),
-  });
+  const validation = tenantSchema.safeParse(data);
 
   if (!validation.success) {
     return [getZodErrorMessage(validation.error), null];
@@ -150,14 +149,10 @@ export async function deleteTenantProvider(tenantId: string, providerId: string)
   return [null, null];
 }
 
-export async function updateTenant(tenantId: string, formData: FormData): ActionResponse {
+export async function updateTenant(tenantId: string, data: TenantFormValues): ActionResponse {
   const { user } = await verifySession();
 
-  const validation = tenantSchema.safeParse({
-    name: formData.get('name'),
-    description: formData.get('description'),
-  });
-
+  const validation = tenantSchema.safeParse(data);
   if (!validation.success) {
     return [getZodErrorMessage(validation.error), null];
   }

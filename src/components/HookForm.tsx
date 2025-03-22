@@ -11,6 +11,7 @@ import {
 } from '@/shadcn/components/ui/form';
 import { Input } from '@/shadcn/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/shadcn/components/ui/select';
+import { Textarea } from '@/shadcn/components/ui/textarea';
 
 interface HookFormInputProps<
   TFieldValues extends FieldValues = FieldValues,
@@ -85,6 +86,40 @@ export const HookFormNumber = <
   );
 };
 
+interface HookFormTextareaProps<
+  TFieldValues extends FieldValues = FieldValues,
+  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
+> extends HookFormInputProps<TFieldValues, TName> {
+  rows?: number;
+}
+
+export const HookFormTextarea = <
+  TFieldValues extends FieldValues = FieldValues,
+  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
+>(
+  props: HookFormTextareaProps<TFieldValues, TName>,
+) => {
+  const { name, label, description, placeholder, readOnly, rows } = props;
+  const form = useFormContext<TFieldValues>();
+
+  return (
+    <FormField
+      control={form.control}
+      name={name}
+      render={({ field }) => (
+        <FormItem className="w-full">
+          <FormLabel>{label}</FormLabel>
+          <FormControl>
+            <Textarea placeholder={placeholder} {...field} readOnly={readOnly} rows={rows} />
+          </FormControl>
+          {description && <FormDescription className="text-xs">{description}</FormDescription>}
+          <FormMessage className="text-xs" />
+        </FormItem>
+      )}
+    />
+  );
+};
+
 interface HookFormSelectProps<
   TFieldValues extends FieldValues = FieldValues,
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
@@ -133,6 +168,7 @@ export const HookFormSelect = <
 
 const HookForm = Object.assign(Form, {
   Input: HookFormInput,
+  Textarea: HookFormTextarea,
   Number: HookFormNumber,
   Select: HookFormSelect,
   SelectItem: SelectItem,

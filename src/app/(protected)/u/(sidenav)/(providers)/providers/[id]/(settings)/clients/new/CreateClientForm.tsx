@@ -1,49 +1,61 @@
 'use client';
 
+import { useTransition } from 'react';
 import { useRouter } from 'next/navigation';
-import { useFormStatus } from 'react-dom';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { SubmitHandler, useForm } from 'react-hook-form';
 import { toast } from 'sonner';
+import { z } from 'zod';
 
 import { Button } from '@/shadcn/components/ui/button';
-import { Input } from '@/shadcn/components/ui/input';
-import { Label } from '@/shadcn/components/ui/label';
 
 import { createClient } from '@/actions';
+import HookForm from '@/components/HookForm';
+import { useProgressBar } from '@/components/NavProgress';
+import { clientSchema } from '@/schema';
 
-function CreateClientButton() {
-  const { pending } = useFormStatus();
-
-  return <Button disabled={pending}>Create client</Button>;
-}
+type ClientFormValues = z.infer<typeof clientSchema>;
 
 export default function CreateClientForm({ id }: { id: string }) {
   const router = useRouter();
+  const progress = useProgressBar();
+  const [isSubmitting, startFormTransition] = useTransition();
 
-  const handleSubmit = async (formData: FormData) => {
-    const [error] = await createClient(id, formData);
+  const form = useForm<ClientFormValues>({
+    defaultValues: {
+      name: '',
+      audience: '',
+    },
+    resolver: zodResolver(clientSchema),
+  });
 
-    if (error) {
-      toast.error(error);
-      return;
-    }
+  const handleSubmit: SubmitHandler<ClientFormValues> = async (data) => {
+    startFormTransition(async () => {
+      progress.start();
 
-    toast.success(`Client created successfully`);
-    router.push(`/u/providers/${id}`);
+      const [error] = await createClient(id, data);
+      if (error) {
+        toast.error(error);
+        return;
+      }
+
+      toast.success(`Client created successfully`);
+      router.push(`/u/providers/${id}`);
+    });
   };
 
   return (
-    <form className="mt-10 flex w-full max-w-sm flex-col items-center gap-8" action={handleSubmit}>
-      <div className="grid w-full gap-2">
-        <Label>Name</Label>
-        <Input name="name" placeholder="Client name" required minLength={3} maxLength={32} />
-      </div>
-      <div className="grid w-full gap-2">
-        <Label>Audience</Label>
-        <Input name="audience" placeholder="sts.amazonaws.com" required minLength={3} />
-      </div>
-      <div>
-        <CreateClientButton />
-      </div>
-    </form>
+    <HookForm {...form}>
+      <form
+        className="mt-10 flex w-full max-w-sm flex-col items-center gap-8"
+        onSubmit={form.handleSubmit(handleSubmit)}
+      >
+        <HookForm.Input name="name" label="Name" placeholder="Client name" />
+        <HookForm.Input name="audience" label="Audience" placeholder="sts.amazonaws.com" />
+        <div>
+          <Button disabled={isSubmitting}>Create client</Button>
+        </div>
+      </form>
+    </HookForm>
   );
 }

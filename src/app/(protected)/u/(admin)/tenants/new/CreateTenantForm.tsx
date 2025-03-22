@@ -1,31 +1,38 @@
 'use client';
 
-import { startTransition } from 'react';
+import { useTransition } from 'react';
 import { useRouter } from 'next/navigation';
-import { useFormStatus } from 'react-dom';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { SubmitHandler, useForm } from 'react-hook-form';
 import { toast } from 'sonner';
+import { z } from 'zod';
 
 import { Button } from '@/shadcn/components/ui/button';
-import { Input } from '@/shadcn/components/ui/input';
-import { Label } from '@/shadcn/components/ui/label';
-import { Textarea } from '@/shadcn/components/ui/textarea';
 
 import { createTenant } from '@/actions';
+import HookForm from '@/components/HookForm';
 import { useProgressBar } from '@/components/NavProgress';
+import { tenantSchema } from '@/schema';
 
-function CreateTenantButton() {
-  const { pending } = useFormStatus();
-  return <Button disabled={pending}>Create tenant</Button>;
-}
+type TenantFormValues = z.infer<typeof tenantSchema>;
 
 export default function CreateTenantForm() {
   const router = useRouter();
   const progress = useProgressBar();
+  const [isPending, startTransition] = useTransition();
 
-  const handleSubmit = async (formData: FormData) => {
+  const form = useForm<TenantFormValues>({
+    defaultValues: {
+      name: '',
+      description: '',
+    },
+    resolver: zodResolver(tenantSchema),
+  });
+
+  const handleSubmit: SubmitHandler<TenantFormValues> = async (data) => {
     startTransition(async () => {
       progress.start();
-      const [error, tenant] = await createTenant(formData);
+      const [error, tenant] = await createTenant(data);
 
       if (error || !tenant) {
         toast.error(error);
@@ -38,18 +45,17 @@ export default function CreateTenantForm() {
   };
 
   return (
-    <form className="mt-10 flex w-full max-w-lg flex-col items-center gap-8" action={handleSubmit}>
-      <div className="grid w-full gap-2">
-        <Label>Name</Label>
-        <Input name="name" placeholder="Tenant name" required minLength={3} maxLength={32} />
-      </div>
-      <div className="grid w-full gap-2">
-        <Label>Description</Label>
-        <Textarea name="description" placeholder="Tenant description" required minLength={3} maxLength={100} rows={3} />
-      </div>
-      <div>
-        <CreateTenantButton />
-      </div>
-    </form>
+    <HookForm {...form}>
+      <form
+        className="mt-10 flex w-full max-w-lg flex-col items-center gap-8"
+        onSubmit={form.handleSubmit(handleSubmit)}
+      >
+        <HookForm.Input name="name" label="Name" placeholder="Tenant name" />
+        <HookForm.Textarea name="description" label="Description" placeholder="Tenant description" rows={3} />
+        <div>
+          <Button disabled={isPending}>Create tenant</Button>
+        </div>
+      </form>
+    </HookForm>
   );
 }

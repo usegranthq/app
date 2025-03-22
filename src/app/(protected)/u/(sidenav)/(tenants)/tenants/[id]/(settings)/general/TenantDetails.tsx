@@ -1,84 +1,79 @@
 'use client';
 
+import { useTransition } from 'react';
 import { useRouter } from 'next/navigation';
-import { useFormStatus } from 'react-dom';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { SubmitHandler, useForm } from 'react-hook-form';
 import { toast } from 'sonner';
+import { z } from 'zod';
 
 import { Button } from '@/shadcn/components/ui/button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/shadcn/components/ui/card';
-import { Input } from '@/shadcn/components/ui/input';
-import { Label } from '@/shadcn/components/ui/label';
-import { Textarea } from '@/shadcn/components/ui/textarea';
 
 import { updateTenant } from '@/actions';
+import HookForm from '@/components/HookForm';
+import { useProgressBar } from '@/components/NavProgress';
+import { tenantSchema } from '@/schema';
 import { Tenant } from '@/types/app.types';
-
-const SaveButton = () => {
-  const { pending } = useFormStatus();
-
-  return (
-    <Button type="submit" disabled={pending}>
-      Save
-    </Button>
-  );
-};
 
 interface TenantDetailsProps {
   tenant: Tenant;
 }
 
+type TenantFormValues = z.infer<typeof tenantSchema>;
+const TextInput = HookForm.Input<TenantFormValues>;
+const TextareaInput = HookForm.Textarea<TenantFormValues>;
+
 export default function TenantDetails(props: TenantDetailsProps) {
   const router = useRouter();
   const { tenant } = props;
 
-  const handleSubmit = async (formData: FormData) => {
-    const [error] = await updateTenant(tenant.id, formData);
-    if (error) {
-      toast.error(error);
-      return;
-    }
-    toast.success('Tenant details updated');
-    router.refresh();
+  const progress = useProgressBar();
+  const [isPending, startTransition] = useTransition();
+
+  const form = useForm<TenantFormValues>({
+    defaultValues: {
+      name: tenant.name,
+      description: tenant.description,
+    },
+    resolver: zodResolver(tenantSchema),
+  });
+
+  const handleSubmit: SubmitHandler<TenantFormValues> = async (data) => {
+    startTransition(async () => {
+      progress.start();
+
+      const [error] = await updateTenant(tenant.id, data);
+      if (error) {
+        toast.error(error);
+        return;
+      }
+      toast.success('Tenant details updated');
+      router.refresh();
+    });
   };
 
   return (
-    <form action={handleSubmit}>
-      <Card>
-        <CardHeader>
-          <CardTitle>Tenant details</CardTitle>
-          <CardDescription>Manage your tenant settings.</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <div className="flex flex-col gap-8">
-            <div className="flex flex-col gap-2">
-              <Label>Tenant name</Label>
-              <Input
-                name="name"
-                defaultValue={tenant.name}
-                required
-                minLength={3}
-                maxLength={32}
-                placeholder="Tenant name"
-              />
+    <HookForm {...form}>
+      <form onSubmit={form.handleSubmit(handleSubmit)}>
+        <Card>
+          <CardHeader>
+            <CardTitle>Tenant details</CardTitle>
+            <CardDescription>Manage your tenant settings.</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="grid gap-8">
+              <TextInput name="name" label="Tenant name" placeholder="Tenant name" />
+              <TextareaInput name="description" label="Tenant description" placeholder="Tenant description" rows={3} />
             </div>
-            <div className="flex flex-col gap-2">
-              <Label>Tenant description</Label>
-              <Textarea
-                rows={3}
-                name="description"
-                defaultValue={tenant.description}
-                required
-                minLength={3}
-                maxLength={100}
-                placeholder="Tenant description"
-              />
-            </div>
-          </div>
-        </CardContent>
-        <CardFooter className="justify-end border-t">
-          <SaveButton />
-        </CardFooter>
-      </Card>
-    </form>
+          </CardContent>
+          <CardFooter className="justify-end border-t">
+            <Button type="submit" disabled={isPending}>
+              Save
+            </Button>
+          </CardFooter>
+        </Card>
+      </form>
+    </HookForm>
   );
 }

@@ -4,6 +4,7 @@ import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
 import { Prisma } from '@prisma/client';
 import { JWK } from 'jose';
+import { z } from 'zod';
 
 import ROUTES from '@/constants/routes';
 import ERRORS, { getApiErrorMessage, getZodErrorMessage } from '@/utils/error';
@@ -16,13 +17,13 @@ import { verifySession } from '@/data/_verifySession';
 import { clientSchema, providerSchema } from '@/schema';
 import { Provider } from '@/types/app.types';
 
-export async function createProvider(formData: FormData): ActionResponse<Provider> {
+type ProviderFormValues = z.infer<typeof providerSchema>;
+type ClientFormValues = z.infer<typeof clientSchema>;
+
+export async function createProvider(data: ProviderFormValues): ActionResponse<Provider> {
   const { user, plan } = await verifySession();
 
-  const validation = providerSchema.safeParse({
-    name: formData.get('name'),
-    description: formData.get('description'),
-  });
+  const validation = providerSchema.safeParse(data);
 
   if (!validation.success) {
     return [getZodErrorMessage(validation.error), null];
@@ -63,13 +64,10 @@ export async function createProvider(formData: FormData): ActionResponse<Provide
   }
 }
 
-export async function updateProvider(providerId: string, formData: FormData): ActionResponse {
+export async function updateProvider(providerId: string, data: ProviderFormValues): ActionResponse {
   const { user } = await verifySession();
 
-  const validation = providerSchema.safeParse({
-    name: formData.get('name'),
-    description: formData.get('description'),
-  });
+  const validation = providerSchema.safeParse(data);
 
   if (!validation.success) {
     return [getZodErrorMessage(validation.error), null];
@@ -116,13 +114,10 @@ export async function deleteProvider(providerId: string): ActionResponse {
   redirect(ROUTES.PROVIDERS);
 }
 
-export async function createClient(providerId: string, formData: FormData): ActionResponse {
+export async function createClient(providerId: string, data: ClientFormValues): ActionResponse {
   const { plan, user } = await verifySession();
 
-  const validation = clientSchema.safeParse({
-    name: formData.get('name'),
-    audience: formData.get('audience'),
-  });
+  const validation = clientSchema.safeParse(data);
 
   if (!validation.success) {
     return [getZodErrorMessage(validation.error), null];

@@ -1,9 +1,8 @@
 'use client';
 
-import { startTransition, useRef, useTransition } from 'react';
+import { useRef, useTransition } from 'react';
 import { useRouter } from 'next/navigation';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useFormStatus } from 'react-dom';
 import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 import { z } from 'zod';
@@ -15,11 +14,6 @@ import { createTenantProvider, fetchFingerprint } from '@/actions';
 import HookForm from '@/components/HookForm';
 import { useProgressBar } from '@/components/NavProgress';
 import { tenantProviderSchema } from '@/schema';
-
-function AddProviderButton() {
-  const { pending } = useFormStatus();
-  return <Button disabled={pending}>Add identity provider</Button>;
-}
 
 interface AddProviderFormProps {
   tenantId: string;
@@ -35,6 +29,7 @@ export default function AddProviderForm({ tenantId }: AddProviderFormProps) {
   const progress = useProgressBar();
   const formRef = useRef<HTMLFormElement>(null);
   const [isFingerprintPending, startFingerprintTransition] = useTransition();
+  const [isSubmitting, startFormTransition] = useTransition();
 
   const form = useForm<TenantFormValues>({
     defaultValues: {
@@ -54,7 +49,7 @@ export default function AddProviderForm({ tenantId }: AddProviderFormProps) {
   });
 
   const handleSubmit = async (data: TenantFormValues) => {
-    startTransition(async () => {
+    startFormTransition(async () => {
       progress.start();
 
       const [errorMessage] = await createTenantProvider(tenantId, data);
@@ -157,7 +152,7 @@ export default function AddProviderForm({ tenantId }: AddProviderFormProps) {
           </div>
         </div>
         <div>
-          <AddProviderButton />
+          <Button disabled={isSubmitting}>Add identity provider</Button>
         </div>
       </form>
     </HookForm>
