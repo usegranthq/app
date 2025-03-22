@@ -58,18 +58,6 @@ const validateToken = createAuthEndpoint(
       throw new SdkError('BAD_REQUEST', ERRORS.INVALID_TOKEN);
     }
 
-    // decode protected header
-    let headerType: string | undefined;
-    try {
-      const protectedHeader = jose.decodeProtectedHeader(token);
-      if (!protectedHeader.typ || !allowedHeaderTypes.includes(protectedHeader.typ)) {
-        throw new Error('Invalid header type');
-      }
-      headerType = protectedHeader.typ;
-    } catch {
-      throw new SdkError('BAD_REQUEST', ERRORS.INVALID_TOKEN_HEADERS);
-    }
-
     const tenantProvider = await db.tenantProvider.findFirst({
       where: {
         tenantId,
@@ -82,6 +70,18 @@ const validateToken = createAuthEndpoint(
 
     if (!tenantProvider) {
       throw new SdkError('NOT_FOUND', ERRORS.INVALID_ISSUER);
+    }
+
+    // decode protected header
+    let headerType: string | undefined;
+    try {
+      const protectedHeader = jose.decodeProtectedHeader(token);
+      if (!protectedHeader.typ || !allowedHeaderTypes.includes(protectedHeader.typ)) {
+        throw new Error('Invalid header type');
+      }
+      headerType = protectedHeader.typ;
+    } catch {
+      throw new SdkError('BAD_REQUEST', ERRORS.INVALID_TOKEN_HEADERS);
     }
 
     // check if token expiry remaining is less than tenant.earliestIssuanceTimeAllowed
@@ -97,6 +97,11 @@ const validateToken = createAuthEndpoint(
     const issuerTimeInHours = toHours(currentTimeInSecs - issuerTimeInSecs);
     if (issuerTimeInHours > tenantProvider.earliestIssuanceTimeAllowed) {
       throw new SdkError('BAD_REQUEST', ERRORS.EXPIRED_TOKEN);
+    }
+
+    // validate if audience is configured and matches the token audience
+    if (claims.aud !== tenantProvider.audience) {
+      throw new SdkError('BAD_REQUEST', ERRORS.INVALID_TOKEN);
     }
 
     // get jwks endpoint from /.well-known/openid-configuration
