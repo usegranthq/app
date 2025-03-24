@@ -10,6 +10,7 @@ import ERRORS, { SdkError } from './utils/errors';
 import { validateClaimWithCondition } from './utils/token';
 
 const tokenSchema = z.object({
+  tenantProviderPolicyId: z.string(),
   token: z.string(),
 });
 
@@ -37,7 +38,7 @@ const validateToken = createAuthEndpoint(
   },
   async (ctx) => {
     const { tenantId } = ctx.params;
-    const { token } = ctx.body;
+    const { token, tenantProviderPolicyId } = ctx.body;
 
     const tenantExists = await db.tenant
       .count({
@@ -74,6 +75,17 @@ const validateToken = createAuthEndpoint(
       throw new SdkError('NOT_FOUND', ERRORS.INVALID_ISSUER);
     }
 
+    const tenantProviderPolicy = await db.tenantProviderPolicy.findFirst({
+      where: {
+        id: tenantProviderPolicyId,
+        tenantProviderId: tenantProvider.id,
+      },
+    });
+
+    if (!tenantProviderPolicy) {
+      throw new SdkError('NOT_FOUND', ERRORS.INVALID_ISSUER);
+    }
+
     // decode protected header
     let headerType: string | undefined;
     try {
@@ -102,13 +114,14 @@ const validateToken = createAuthEndpoint(
     }
 
     // validate if audience is configured and matches the token audience
-    if (claims.aud !== tenantProvider.audience) {
+    const audience = tenantProviderPolicy.audience ?? tenantProvider.audience;
+    if (claims.aud !== audience) {
       throw new SdkError('BAD_REQUEST', ERRORS.INVALID_TOKEN);
     }
 
     // validate if conditions are configured and matches the token conditions
-    if (tenantProvider.conditions) {
-      const conditionsValidation = z.array(conditionsSchema).safeParse(tenantProvider.conditions);
+    if (tenantProviderPolicy.conditions) {
+      const conditionsValidation = z.array(conditionsSchema).safeParse(tenantProviderPolicy.conditions);
       if (!conditionsValidation.success) {
         throw new SdkError('BAD_REQUEST', ERRORS.INVALID_TOKEN);
       }
@@ -141,7 +154,7 @@ const validateToken = createAuthEndpoint(
       const JWKS = jose.createRemoteJWKSet(new URL(jwksEndpoint));
       await jose.jwtVerify(token, JWKS, {
         issuer: tenantProvider.url,
-        audience: tenantProvider.audience,
+        audience,
         requiredClaims: ['sub', 'exp', 'iat', 'iss', 'aud'],
         typ: headerType,
         subject: claims.sub,

@@ -87,12 +87,14 @@ export const conditionsSchema = z.object({
   key: z
     .string({ required_error: 'Please provide a condition key.' })
     .min(1, { message: 'Please provide a condition key.' })
-    .max(10, { message: 'Condition key must be at most 10 characters long.' }),
+    .max(10, { message: 'Condition key must be at most 10 characters long.' })
+    .transform(sanitize),
   operator: z.enum(['stringEquals', 'stringLike', 'stringNotEquals', 'stringNotLike']),
   value: z
     .string({ required_error: 'Please provide a condition value.' })
     .min(1, { message: 'Please provide a condition value.' })
-    .max(100, { message: 'Condition value must be at most 100 characters long.' }),
+    .max(100, { message: 'Condition value must be at most 100 characters long.' })
+    .transform(sanitize),
 });
 
 export const tenantProviderSchema = z.object({
@@ -120,12 +122,33 @@ export const tenantProviderSchema = z.object({
     .max(100, { message: 'Provider audience must be at most 100 characters long.' })
     .trim()
     .transform(sanitize),
-  conditions: z.array(conditionsSchema).optional(),
   earliestIssuanceTimeAllowed: z
     .number({ required_error: 'Please provide the earliest issuance time allowed.', coerce: true })
     .describe('Earliest issuance time allowed in hours')
     .min(0, { message: 'Earliest issuance time allowed must be at least 0.' })
     .max(12, { message: 'Earliest issuance time allowed must be at most 12.' }),
+});
+
+export const tenantProviderPolicySchema = z.object({
+  name: z
+    .string({ required_error: 'Please provide a policy name.' })
+    .min(3, { message: 'Policy name must be at least 3 characters long.' })
+    .max(50, { message: 'Policy name must be at most 50 characters long.' })
+    .trim()
+    .transform(sanitize),
+  description: z
+    .string({ required_error: 'Please provide a policy description.' })
+    .min(10, { message: 'Policy description must be at least 10 characters long.' })
+    .max(200, { message: 'Policy description must be at most 200 characters long.' })
+    .trim()
+    .transform(sanitize),
+  audience: z
+    .string({ required_error: 'Please provide the provider audience.' })
+    .min(3, { message: 'Provider audience must be at least 3 characters long.' })
+    .max(100, { message: 'Provider audience must be at most 100 characters long.' })
+    .trim()
+    .transform(sanitize),
+  conditions: z.array(conditionsSchema).optional(),
 });
 
 export const domainSchema = z

@@ -1,6 +1,6 @@
 import { toPaginatedResponse } from '@/utils/pagination';
 import db from '@/lib/db';
-import { Tenant, TenantProvider } from '@/types/app.types';
+import { Tenant, TenantProvider, TenantProviderPolicy } from '@/types/app.types';
 
 import { verifySession } from './_verifySession';
 
@@ -58,4 +58,60 @@ export const getTenantProviders = async (
   ]);
 
   return toPaginatedResponse(providers, total, page, limit);
+};
+
+export const getTenantProvider = async (tenantId: string, tenantProviderId: string): Promise<TenantProvider | null> => {
+  const session = await verifySession();
+
+  return await db.tenantProvider.findUnique({
+    where: {
+      id: tenantProviderId,
+      tenantId,
+      Tenant: {
+        userId: session.user.id,
+      },
+    },
+  });
+};
+
+export const getTenantProviderPolicies = async (
+  tenantId: string,
+  tenantProviderId: string,
+  page: number,
+  limit: number,
+): Promise<PaginatedResponse<TenantProviderPolicy>> => {
+  const session = await verifySession();
+
+  const skip = (page - 1) * limit;
+  const take = limit;
+
+  const [policies, total] = await db.$transaction([
+    db.tenantProviderPolicy.findMany({
+      where: {
+        tenantProviderId,
+        TenantProvider: {
+          tenantId,
+          Tenant: {
+            userId: session.user.id,
+          },
+        },
+      },
+      orderBy: {
+        createdAt: 'desc',
+      },
+      skip,
+      take,
+    }),
+    db.tenantProviderPolicy.count({
+      where: {
+        tenantProviderId,
+        TenantProvider: {
+          tenantId,
+          Tenant: { userId: session.user.id },
+        },
+      },
+    }),
+  ]);
+
+  return toPaginatedResponse(policies, total, page, limit);
 };

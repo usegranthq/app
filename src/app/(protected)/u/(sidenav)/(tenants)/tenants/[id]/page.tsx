@@ -27,5 +27,5 @@ export default async function TenantPage({ params, searchParams }: TenantPagePro
     return <NoIdp id={tenant.id} />;
   }
 
-  return <TenantProviders providers={providers} id={tenant.id} pagination={pagination} />;
+  return <TenantProviders providers={providers} id={tenant.id} pagination={pagination} tenant={tenant} />;
 }

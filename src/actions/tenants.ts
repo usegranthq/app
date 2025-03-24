@@ -10,10 +10,11 @@ import { getApiErrorMessage, getZodErrorMessage } from '@/utils/error';
 import { isValidUrl } from '@/utils/url';
 import db from '@/lib/db';
 import { verifySession } from '@/data/_verifySession';
-import { tenantProviderSchema, tenantSchema } from '@/schema';
+import { tenantProviderPolicySchema, tenantProviderSchema, tenantSchema } from '@/schema';
 import { Tenant } from '@/types/app.types';
 
 type TenantFormValues = z.infer<typeof tenantSchema>;
+type TenantPolicyFormValues = z.infer<typeof tenantProviderPolicySchema>;
 
 export async function createTenant(data: TenantFormValues): ActionResponse<Tenant> {
   const { user, plan } = await verifySession();
@@ -188,4 +189,68 @@ export async function deleteTenant(tenantId: string): ActionResponse {
   }
 
   redirect(ROUTES.TENANTS);
+}
+
+export async function createTenantProviderPolicy(
+  tenantId: string,
+  tenantProviderId: string,
+  data: TenantPolicyFormValues,
+): ActionResponse {
+  const { user } = await verifySession();
+
+  const validation = tenantProviderPolicySchema.safeParse(data);
+
+  if (!validation.success) {
+    return [getZodErrorMessage(validation.error), null];
+  }
+
+  try {
+    await db.tenantProviderPolicy.create({
+      data: {
+        name: validation.data.name,
+        description: validation.data.description,
+        audience: validation.data.audience,
+        conditions: validation.data.conditions,
+        TenantProvider: {
+          connect: {
+            id: tenantProviderId,
+            Tenant: {
+              userId: user.id,
+            },
+          },
+        },
+      },
+    });
+  } catch (error) {
+    return [getApiErrorMessage(error, 'Failed to create policy'), null];
+  }
+
+  revalidatePath(ROUTES.TENANTS_ID_PROVIDERS_ID(tenantId, tenantProviderId));
+  redirect(ROUTES.TENANTS_ID_PROVIDERS_ID(tenantId, tenantProviderId));
+}
+
+export async function deleteTenantProviderPolicy(
+  tenantId: string,
+  tenantProviderId: string,
+  policyId: string,
+): ActionResponse {
+  const { user } = await verifySession();
+
+  try {
+    await db.tenantProviderPolicy.delete({
+      where: {
+        id: policyId,
+        TenantProvider: {
+          tenantId,
+          id: tenantProviderId,
+          Tenant: { userId: user.id },
+        },
+      },
+    });
+  } catch (error) {
+    return [getApiErrorMessage(error, 'Failed to delete policy'), null];
+  }
+
+  revalidatePath(ROUTES.TENANTS_ID_PROVIDERS_ID(tenantId, tenantProviderId));
+  redirect(ROUTES.TENANTS_ID_PROVIDERS_ID(tenantId, tenantProviderId));
 }

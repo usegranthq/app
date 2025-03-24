@@ -8,7 +8,6 @@ import { toast } from 'sonner';
 import { z } from 'zod';
 
 import { Button } from '@/shadcn/components/ui/button';
-import { Label } from '@/shadcn/components/ui/label';
 
 import { createTenantProvider, fetchFingerprint } from '@/actions';
 import HookForm from '@/components/HookForm';
@@ -22,7 +21,6 @@ interface AddProviderFormProps {
 type TenantFormValues = z.infer<typeof tenantProviderSchema>;
 const TextInput = HookForm.Input<TenantFormValues>;
 const NumberInput = HookForm.Number<TenantFormValues>;
-const SelectInput = HookForm.Select<TenantFormValues>;
 
 export default function AddProviderForm({ tenantId }: AddProviderFormProps) {
   const router = useRouter();
@@ -37,13 +35,6 @@ export default function AddProviderForm({ tenantId }: AddProviderFormProps) {
       fingerprints: [''],
       audience: '',
       earliestIssuanceTimeAllowed: 1,
-      conditions: [
-        {
-          key: 'sub',
-          operator: 'stringEquals',
-          value: '',
-        },
-      ],
     },
     resolver: zodResolver(tenantProviderSchema),
   });
@@ -129,28 +120,6 @@ export default function AddProviderForm({ tenantId }: AddProviderFormProps) {
           min={1}
           max={12}
         />
-
-        <div className="grid w-full gap-2">
-          <Label>Conditions</Label>
-          <div className="grid grid-cols-12 gap-4 mt-2 w-full">
-            <div className="grid gap-2 col-span-3 items-start">
-              <SelectInput name="conditions.0.key" label="Key" placeholder="Select a key">
-                <HookForm.SelectItem value="sub">sub</HookForm.SelectItem>
-              </SelectInput>
-            </div>
-            <div className="grid gap-2 col-span-4 items-start">
-              <SelectInput name="conditions.0.operator" label="Operator" placeholder="Select an operator">
-                <HookForm.SelectItem value="stringEquals">StringEquals</HookForm.SelectItem>
-                <HookForm.SelectItem value="stringNotEquals">StringNotEquals</HookForm.SelectItem>
-                <HookForm.SelectItem value="stringLike">StringLike</HookForm.SelectItem>
-                <HookForm.SelectItem value="stringNotLike">StringNotLike</HookForm.SelectItem>
-              </SelectInput>
-            </div>
-            <div className="grid gap-2 col-span-5 w-full items-start">
-              <TextInput name="conditions.0.value" label="Value" placeholder="Value" />
-            </div>
-          </div>
-        </div>
         <div>
           <Button disabled={isSubmitting}>Add identity provider</Button>
         </div>

@@ -9,11 +9,23 @@ import {
   Subscription,
   Tenant,
   TenantProvider,
+  TenantProviderPolicy,
 } from '@prisma/client';
 
 import { auth } from '@/lib/auth';
 
-export type { Provider, Account, Session, Client, Domain, Customer, Subscription, Tenant, TenantProvider };
+export type {
+  Provider,
+  Account,
+  Session,
+  Client,
+  Domain,
+  Customer,
+  Subscription,
+  Tenant,
+  TenantProvider,
+  TenantProviderPolicy,
+};
 
 export type User = typeof auth.$Infer.Session.user;
 export type ApiKey = Omit<PrismaApikey, 'key'>;

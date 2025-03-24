@@ -217,14 +217,29 @@ model TenantProvider {
   url                         String
   fingerprints                String[]
   audience                    String
-  conditions                  Json?
   earliestIssuanceTimeAllowed Int
   createdAt                   DateTime @default(now())
   updatedAt                   DateTime @updatedAt
 
-  tenantId String
-  Tenant   Tenant @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  tenantId             String
+  Tenant               Tenant                 @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  TenantProviderPolicy TenantProviderPolicy[]
 
   @@unique([url, tenantId])
   @@map("tenant_provider")
+}
+
+model TenantProviderPolicy {
+  id          String   @id @default(cuid(2))
+  name        String
+  description String
+  audience    String
+  conditions  Json?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  tenantProviderId String
+  TenantProvider   TenantProvider @relation(fields: [tenantProviderId], references: [id], onDelete: Cascade)
+
+  @@map("tenant_provider_policy")
 }
