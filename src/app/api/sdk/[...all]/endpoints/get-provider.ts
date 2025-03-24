@@ -2,6 +2,7 @@ import db from '@/lib/db';
 
 import { createAuthEndpoint } from './utils/call';
 import ERRORS, { SdkError } from './utils/errors';
+import { providerFields } from './utils/return-fields';
 
 const getProvider = createAuthEndpoint(
   'v1/providers/:id',
@@ -16,12 +17,7 @@ const getProvider = createAuthEndpoint(
         id,
         userId: ctx.context.userId,
       },
-      select: {
-        id: true,
-        name: true,
-        description: true,
-        urlId: true,
-      },
+      select: providerFields,
     });
 
     if (!provider) {

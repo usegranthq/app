@@ -1,5 +1,3 @@
-import { Prisma } from '@prisma/client';
-
 import { getApiErrorMessage } from '@/utils/error';
 import { getPlanByUserId } from '@/lib/billing';
 import db from '@/lib/db';
@@ -7,12 +5,7 @@ import vercel from '@/lib/vercel';
 
 import { createAuthEndpoint } from './utils/call';
 import ERRORS, { SdkError } from './utils/errors';
-
-const domainFieldsToSelect: Prisma.DomainSelect = {
-  id: true,
-  domain: true,
-  verified: true,
-};
+import { domainFields } from './utils/return-fields';
 
 const verifyDomain = createAuthEndpoint(
   'v1/providers/:id/domains/:domainId/verify',
@@ -47,7 +40,7 @@ const verifyDomain = createAuthEndpoint(
           userId: ctx.context.userId,
         },
       },
-      select: domainFieldsToSelect,
+      select: domainFields,
     });
 
     if (!domain) {
@@ -71,7 +64,7 @@ const verifyDomain = createAuthEndpoint(
             userId: ctx.context.userId,
           },
         },
-        select: domainFieldsToSelect,
+        select: domainFields,
         data: { verified: isVerified },
       });
 

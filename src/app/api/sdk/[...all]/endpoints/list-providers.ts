@@ -1,6 +1,7 @@
 import db from '@/lib/db';
 
 import { createAuthEndpoint } from './utils/call';
+import { providerFields } from './utils/return-fields';
 
 const listProviders = createAuthEndpoint(
   'v1/providers',
@@ -12,12 +13,7 @@ const listProviders = createAuthEndpoint(
       where: {
         userId: ctx.context.userId,
       },
-      select: {
-        id: true,
-        name: true,
-        description: true,
-        urlId: true,
-      },
+      select: providerFields,
     });
 
     return providers;

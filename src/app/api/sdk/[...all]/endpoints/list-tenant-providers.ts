@@ -2,6 +2,7 @@ import db from '@/lib/db';
 
 import { createAuthEndpoint } from './utils/call';
 import ERRORS, { SdkError } from './utils/errors';
+import { tenantProviderFields } from './utils/return-fields';
 
 const listTenantProviders = createAuthEndpoint(
   'v1/tenants/:tenantId/providers',
@@ -30,6 +31,7 @@ const listTenantProviders = createAuthEndpoint(
           userId: ctx.context.userId,
         },
       },
+      select: tenantProviderFields,
     });
 
     return tenantProviders;

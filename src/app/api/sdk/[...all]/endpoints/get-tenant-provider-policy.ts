@@ -2,6 +2,7 @@ import db from '@/lib/db';
 
 import { createAuthEndpoint } from './utils/call';
 import ERRORS, { SdkError } from './utils/errors';
+import { tokenProviderPolicyFields } from './utils/return-fields';
 
 const getTenantProviderPolicy = createAuthEndpoint(
   'v1/tenants/:tenantId/providers/:tenantProviderId/policies/:policyId',
@@ -50,13 +51,7 @@ const getTenantProviderPolicy = createAuthEndpoint(
           },
         },
       },
-      select: {
-        id: true,
-        name: true,
-        description: true,
-        audience: true,
-        conditions: true,
-      },
+      select: tokenProviderPolicyFields,
     });
 
     if (!tenantProviderPolicy) {

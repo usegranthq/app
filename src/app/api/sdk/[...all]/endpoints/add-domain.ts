@@ -8,6 +8,7 @@ import { domainSchema } from '@/schema';
 
 import { createAuthEndpoint } from './utils/call';
 import ERRORS, { SdkError } from './utils/errors';
+import { domainFields } from './utils/return-fields';
 
 const addDomain = createAuthEndpoint(
   'v1/providers/:id/domains',
@@ -61,11 +62,7 @@ const addDomain = createAuthEndpoint(
           verified: isVerified,
           providerId: ctx.params.id,
         },
-        select: {
-          id: true,
-          domain: true,
-          verified: true,
-        },
+        select: domainFields,
       });
 
       return domain;

@@ -4,6 +4,7 @@ import { tenantSchema } from '@/schema';
 
 import { createAuthEndpoint } from './utils/call';
 import ERRORS, { SdkError } from './utils/errors';
+import { tenantFields } from './utils/return-fields';
 
 const createTenant = createAuthEndpoint(
   'v1/tenants',
@@ -52,6 +53,7 @@ const createTenant = createAuthEndpoint(
         description,
         userId: ctx.context.userId,
       },
+      select: tenantFields,
     });
 
     return tenant;

@@ -2,6 +2,7 @@ import db from '@/lib/db';
 
 import { createAuthEndpoint } from './utils/call';
 import ERRORS, { SdkError } from './utils/errors';
+import { domainFields } from './utils/return-fields';
 
 const listDomains = createAuthEndpoint(
   'v1/providers/:providerId/domains',
@@ -30,11 +31,7 @@ const listDomains = createAuthEndpoint(
           userId: ctx.context.userId,
         },
       },
-      select: {
-        id: true,
-        domain: true,
-        verified: true,
-      },
+      select: domainFields,
     });
 
     return domains;

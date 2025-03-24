@@ -1,6 +1,7 @@
 import db from '@/lib/db';
 
 import { createAuthEndpoint } from './utils/call';
+import { tenantFields } from './utils/return-fields';
 
 const listTenants = createAuthEndpoint(
   'v1/tenants',
@@ -12,11 +13,7 @@ const listTenants = createAuthEndpoint(
       where: {
         userId: ctx.context.userId,
       },
-      select: {
-        id: true,
-        name: true,
-        description: true,
-      },
+      select: tenantFields,
     });
 
     return tenants;

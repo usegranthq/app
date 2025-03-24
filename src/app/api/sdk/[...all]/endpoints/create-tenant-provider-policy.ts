@@ -4,6 +4,7 @@ import { tenantProviderPolicySchema } from '@/schema';
 
 import { createAuthEndpoint } from './utils/call';
 import ERRORS, { SdkError } from './utils/errors';
+import { tokenProviderPolicyFields } from './utils/return-fields';
 
 const createTenantProviderPolicy = createAuthEndpoint(
   'v1/tenants/:tenantId/providers/:tenantProviderId/policies',
@@ -105,13 +106,7 @@ const createTenantProviderPolicy = createAuthEndpoint(
         audience: ctx.body.audience,
         conditions: ctx.body.conditions,
       },
-      select: {
-        id: true,
-        name: true,
-        description: true,
-        audience: true,
-        conditions: true,
-      },
+      select: tokenProviderPolicyFields,
     });
 
     return tenantProviderPolicy;

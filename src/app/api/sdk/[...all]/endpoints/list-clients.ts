@@ -2,6 +2,7 @@ import db from '@/lib/db';
 
 import { createAuthEndpoint } from './utils/call';
 import ERRORS, { SdkError } from './utils/errors';
+import { clientFields } from './utils/return-fields';
 
 const listClients = createAuthEndpoint(
   'v1/providers/:providerId/clients',
@@ -30,11 +31,7 @@ const listClients = createAuthEndpoint(
           userId: ctx.context.userId,
         },
       },
-      select: {
-        id: true,
-        name: true,
-        audience: true,
-      },
+      select: clientFields,
     });
 
     return clients;

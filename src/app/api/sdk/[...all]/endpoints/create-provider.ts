@@ -6,6 +6,7 @@ import { providerSchema } from '@/schema';
 
 import { createAuthEndpoint } from './utils/call';
 import ERRORS, { SdkError } from './utils/errors';
+import { providerFields } from './utils/return-fields';
 
 const createProvider = createAuthEndpoint(
   'v1/providers',
@@ -39,12 +40,7 @@ const createProvider = createAuthEndpoint(
           urlId: createUrlId(name),
           userId: ctx.context.userId,
         },
-        select: {
-          id: true,
-          name: true,
-          description: true,
-          urlId: true,
-        },
+        select: providerFields,
       });
 
       return provider;

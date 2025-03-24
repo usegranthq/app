@@ -4,6 +4,7 @@ import { tenantProviderSchema } from '@/schema';
 
 import { createAuthEndpoint } from './utils/call';
 import ERRORS, { SdkError } from './utils/errors';
+import { tenantProviderFields } from './utils/return-fields';
 
 const createTenantProvider = createAuthEndpoint(
   'v1/tenants/:tenantId/providers',
@@ -69,6 +70,7 @@ const createTenantProvider = createAuthEndpoint(
         audience,
         earliestIssuanceTimeAllowed,
       },
+      select: tenantProviderFields,
     });
 
     return tenantProvider;

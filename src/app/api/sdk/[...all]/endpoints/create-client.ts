@@ -5,6 +5,7 @@ import { clientSchema } from '@/schema';
 
 import { createAuthEndpoint } from './utils/call';
 import ERRORS, { SdkError } from './utils/errors';
+import { clientFields } from './utils/return-fields';
 
 const createClient = createAuthEndpoint(
   'v1/providers/:id/clients',
@@ -48,11 +49,7 @@ const createClient = createAuthEndpoint(
           audience,
           providerId: ctx.params.id,
         },
-        select: {
-          id: true,
-          name: true,
-          audience: true,
-        },
+        select: clientFields,
       });
 
       return client;
