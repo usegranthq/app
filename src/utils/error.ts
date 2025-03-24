@@ -59,6 +59,10 @@ const ERRORS = {
     code: 'MAX_TENANTS_LIMIT_REACHED',
     message: 'You have reached the maximum number of tenants allowed by your current plan',
   },
+  MAX_TENANT_PROVIDERS_LIMIT_REACHED: {
+    code: 'MAX_TENANT_PROVIDERS_LIMIT_REACHED',
+    message: 'You have reached the maximum number of tenant providers allowed by your current plan',
+  },
   TENANT_ALREADY_EXISTS: {
     code: 'TENANT_ALREADY_EXISTS',
     message: 'A tenant with this name already exists',
@@ -74,6 +78,14 @@ const ERRORS = {
   PROVIDER_ALREADY_EXISTS: {
     code: 'PROVIDER_ALREADY_EXISTS',
     message: 'A provider with this URL already exists',
+  },
+  PROVIDER_POLICY_ALREADY_EXISTS: {
+    code: 'PROVIDER_POLICY_ALREADY_EXISTS',
+    message: 'A provider policy with this name already exists',
+  },
+  TENANT_PROVIDER_POLICY_NOT_FOUND: {
+    code: 'TENANT_PROVIDER_POLICY_NOT_FOUND',
+    message: 'The specified tenant provider policy could not be found',
   },
   INVALID_TOKEN: {
     code: 'INVALID_TOKEN',
