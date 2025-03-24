@@ -41,7 +41,7 @@ export default async function ProviderPage(props: ProviderPageProps) {
     <div>
       <div className="mx-auto max-w-4xl px-4 py-10">
         {hasClients && (
-          <div className="flex">
+          <div className="flex items-center">
             <div className="grid gap-2">
               <Breadcrumb>
                 <BreadcrumbList>
