@@ -13,48 +13,61 @@ import deleteProvider from './delete-provider';
 import deleteTenant from './delete-tenant';
 import deleteTenantProvider from './delete-tenant-provider';
 import deleteTenantProviderPolicy from './delete-tenant-provider-policy';
-import getAllClients from './get-all-clients';
-import getAllDomains from './get-all-domains';
-import getAllProviders from './get-all-providers';
-import getAllTenantProviders from './get-all-tenant-providers';
-import getAllTenants from './get-all-tenants';
 import getClient from './get-client';
 import getDomain from './get-domain';
 import getProvider from './get-provider';
 import getTenant from './get-tenant';
 import getTenantProvider from './get-tenant-provider';
 import getTenantProviderPolicy from './get-tenant-provider-policy';
+import listClients from './list-clients';
+import listDomains from './list-domains';
+import listProviders from './list-providers';
 import listTenantProviderPolicies from './list-tenant-provider-policy';
+import listTenantProviders from './list-tenant-providers';
+import listTenants from './list-tenants';
 import validateToken from './validate-token';
 import verifyDomain from './verify-domain';
 
 const endpoints: Record<string, Endpoint> = {
-  getAllProviders,
-  createProvider,
+  // Provider endpoints
+  listProviders,
   getProvider,
+  createProvider,
   deleteProvider,
-  getAllDomains,
-  addDomain,
+
+  // Domain endpoints
+  listDomains,
   getDomain,
-  deleteDomain,
+  addDomain,
   verifyDomain,
-  getAllClients,
-  createClient,
+  deleteDomain,
+
+  // Client endpoints
+  listClients,
   getClient,
+  createClient,
   deleteClient,
-  createAccessToken,
-  getAllTenants,
-  createTenant,
+
+  // Tenant endpoints
+  listTenants,
   getTenant,
+  createTenant,
   deleteTenant,
-  getAllTenantProviders,
-  createTenantProvider,
+
+  // Tenant provider endpoints
+  listTenantProviders,
   getTenantProvider,
+  createTenantProvider,
   deleteTenantProvider,
+
+  // Tenant provider policy endpoints
+  listTenantProviderPolicies,
+  getTenantProviderPolicy,
   createTenantProviderPolicy,
   deleteTenantProviderPolicy,
-  getTenantProviderPolicy,
-  listTenantProviderPolicies,
+
+  // Token endpoints
+  createAccessToken,
   validateToken,
 };
 

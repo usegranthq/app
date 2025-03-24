@@ -3,7 +3,7 @@ import db from '@/lib/db';
 import { createAuthEndpoint } from './utils/call';
 import ERRORS, { SdkError } from './utils/errors';
 
-const getAllClients = createAuthEndpoint(
+const listClients = createAuthEndpoint(
   'v1/providers/:providerId/clients',
   {
     method: 'GET',
@@ -41,4 +41,4 @@ const getAllClients = createAuthEndpoint(
   },
 );
 
-export default getAllClients;
+export default listClients;

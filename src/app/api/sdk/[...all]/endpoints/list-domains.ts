@@ -3,7 +3,7 @@ import db from '@/lib/db';
 import { createAuthEndpoint } from './utils/call';
 import ERRORS, { SdkError } from './utils/errors';
 
-const getAllDomains = createAuthEndpoint(
+const listDomains = createAuthEndpoint(
   'v1/providers/:providerId/domains',
   {
     method: 'GET',
@@ -41,4 +41,4 @@ const getAllDomains = createAuthEndpoint(
   },
 );
 
-export default getAllDomains;
+export default listDomains;

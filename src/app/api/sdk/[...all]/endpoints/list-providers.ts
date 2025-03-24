@@ -2,13 +2,13 @@ import db from '@/lib/db';
 
 import { createAuthEndpoint } from './utils/call';
 
-const getAllTenants = createAuthEndpoint(
-  'v1/tenants',
+const listProviders = createAuthEndpoint(
+  'v1/providers',
   {
     method: 'GET',
   },
   async (ctx) => {
-    const tenants = await db.tenant.findMany({
+    const providers = await db.provider.findMany({
       where: {
         userId: ctx.context.userId,
       },
@@ -16,11 +16,12 @@ const getAllTenants = createAuthEndpoint(
         id: true,
         name: true,
         description: true,
+        urlId: true,
       },
     });
 
-    return tenants;
+    return providers;
   },
 );
 
-export default getAllTenants;
+export default listProviders;
