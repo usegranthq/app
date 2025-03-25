@@ -1,10 +1,12 @@
 import { getApiErrorMessage } from '@/utils/error';
+import { STATUS_CODES } from '@/utils/rest';
 import { getPlanByUserId } from '@/lib/billing';
 import db from '@/lib/db';
 import { clientSchema } from '@/schema';
 
 import { createAuthEndpoint } from './utils/call';
 import ERRORS, { SdkError } from './utils/errors';
+import { toSdkJsonResponse } from './utils/response';
 import { clientFields } from './utils/return-fields';
 
 const createClient = createAuthEndpoint(
@@ -52,7 +54,7 @@ const createClient = createAuthEndpoint(
         select: clientFields,
       });
 
-      return client;
+      return toSdkJsonResponse(client, STATUS_CODES.CREATED);
     } catch (error) {
       const errorMessage = getApiErrorMessage(error, 'Something went wrong');
 

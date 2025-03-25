@@ -1,1 +1,4 @@
+echo 'Loading environment variables...'
+set -a && source .env.development && set +a
+
 lint-staged --concurrent=false

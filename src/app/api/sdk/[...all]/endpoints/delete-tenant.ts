@@ -1,8 +1,10 @@
 import { getApiErrorMessage } from '@/utils/error';
+import { STATUS_CODES } from '@/utils/rest';
 import db from '@/lib/db';
 
 import { createAuthEndpoint } from './utils/call';
 import ERRORS, { SdkError } from './utils/errors';
+import { toSdkJsonResponse } from './utils/response';
 
 const deleteTenant = createAuthEndpoint(
   'v1/tenants/:id',
@@ -30,15 +32,14 @@ const deleteTenant = createAuthEndpoint(
           userId: ctx.context.userId,
         },
       });
-
-      return {};
     } catch (error) {
       const errorMessage = getApiErrorMessage(error, 'Something went wrong');
-
       throw new SdkError('INTERNAL_SERVER_ERROR', {
         message: errorMessage,
       });
     }
+
+    return toSdkJsonResponse({}, STATUS_CODES.NO_CONTENT);
   },
 );
 

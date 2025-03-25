@@ -1,9 +1,12 @@
+import { getApiErrorMessage } from '@/utils/error';
+import { STATUS_CODES } from '@/utils/rest';
 import { getPlanByUserId } from '@/lib/billing';
 import db from '@/lib/db';
 import { tenantProviderPolicySchema } from '@/schema';
 
 import { createAuthEndpoint } from './utils/call';
 import ERRORS, { SdkError } from './utils/errors';
+import { toSdkJsonResponse } from './utils/response';
 import { tokenProviderPolicyFields } from './utils/return-fields';
 
 const createTenantProviderPolicy = createAuthEndpoint(
@@ -98,19 +101,26 @@ const createTenantProviderPolicy = createAuthEndpoint(
       throw new SdkError('CONFLICT', ERRORS.PROVIDER_POLICY_ALREADY_EXISTS);
     }
 
-    const tenantProviderPolicy = await db.tenantProviderPolicy.create({
-      data: {
-        tenantProviderId,
-        name: ctx.body.name,
-        description: ctx.body.description,
-        audience: ctx.body.audience,
-        conditions: ctx.body.conditions,
-      },
-      select: tokenProviderPolicyFields,
-    });
+    try {
+      const tenantProviderPolicy = await db.tenantProviderPolicy.create({
+        data: {
+          tenantProviderId,
+          name: ctx.body.name,
+          description: ctx.body.description,
+          audience: ctx.body.audience,
+          conditions: ctx.body.conditions,
+        },
+        select: tokenProviderPolicyFields,
+      });
 
-    return tenantProviderPolicy;
+      return toSdkJsonResponse(tenantProviderPolicy, STATUS_CODES.CREATED);
+    } catch (error) {
+      const errorMessage = getApiErrorMessage(error, 'Something went wrong');
+
+      throw new SdkError('INTERNAL_SERVER_ERROR', {
+        message: errorMessage,
+      });
+    }
   },
 );
-
 export default createTenantProviderPolicy;

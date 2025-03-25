@@ -9,7 +9,7 @@ import { domainSchema } from '@/schema';
 
 import { createAuthEndpoint } from './utils/call';
 import ERRORS, { SdkError } from './utils/errors';
-import { toJsonResponse } from './utils/response';
+import { toSdkJsonResponse } from './utils/response';
 import { domainFields } from './utils/return-fields';
 
 const addDomain = createAuthEndpoint(
@@ -73,7 +73,7 @@ const addDomain = createAuthEndpoint(
         select: domainFields,
       });
 
-      return toJsonResponse(domain, STATUS_CODES.CREATED);
+      return toSdkJsonResponse(domain, STATUS_CODES.CREATED);
     } catch (error) {
       const errorMessage = getApiErrorMessage(error, 'Something went wrong');
 

@@ -1,10 +1,12 @@
 import { getApiErrorMessage } from '@/utils/error';
+import { STATUS_CODES } from '@/utils/rest';
 import { getPlanByUserId } from '@/lib/billing';
 import db from '@/lib/db';
 import vercel from '@/lib/vercel';
 
 import { createAuthEndpoint } from './utils/call';
 import ERRORS, { SdkError } from './utils/errors';
+import { toSdkJsonResponse } from './utils/response';
 
 const deleteDomain = createAuthEndpoint(
   'v1/providers/:id/domains/:domainId',
@@ -56,15 +58,14 @@ const deleteDomain = createAuthEndpoint(
           },
         },
       });
-
-      return {};
     } catch (error) {
       const errorMessage = getApiErrorMessage(error, 'Something went wrong');
-
-      return new SdkError('INTERNAL_SERVER_ERROR', {
+      throw new SdkError('INTERNAL_SERVER_ERROR', {
         message: errorMessage,
       });
     }
+
+    return toSdkJsonResponse({}, STATUS_CODES.NO_CONTENT);
   },
 );
 

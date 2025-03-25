@@ -1,9 +1,11 @@
+import { STATUS_CODES } from '@/utils/rest';
 import { getPlanByUserId } from '@/lib/billing';
 import db from '@/lib/db';
 import { tenantProviderSchema } from '@/schema';
 
 import { createAuthEndpoint } from './utils/call';
 import ERRORS, { SdkError } from './utils/errors';
+import { toSdkJsonResponse } from './utils/response';
 import { tenantProviderFields } from './utils/return-fields';
 
 const createTenantProvider = createAuthEndpoint(
@@ -73,7 +75,7 @@ const createTenantProvider = createAuthEndpoint(
       select: tenantProviderFields,
     });
 
-    return tenantProvider;
+    return toSdkJsonResponse(tenantProvider, STATUS_CODES.CREATED);
   },
 );
 

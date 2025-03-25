@@ -71,7 +71,6 @@ const verifyDomain = createAuthEndpoint(
       return updatedDomain;
     } catch (error) {
       const errorMessage = getApiErrorMessage(error, 'Something went wrong');
-
       return new SdkError('INTERNAL_SERVER_ERROR', {
         message: errorMessage,
       });
