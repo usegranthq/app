@@ -1,4 +1,3 @@
-import { getPlanByUserId } from '@/lib/billing';
 import db from '@/lib/db';
 
 import { createAuthEndpoint } from './utils/call';
@@ -11,12 +10,6 @@ const getDomain = createAuthEndpoint(
     method: 'GET',
   },
   async (ctx) => {
-    const plan = await getPlanByUserId(ctx.context.userId);
-
-    if (!plan.features.customDomain.available) {
-      throw new SdkError('FORBIDDEN', ERRORS.CUSTOM_DOMAINS_NOT_AVAILABLE);
-    }
-
     // Check if provider exists
     const provider = await db.provider.findUnique({
       where: {
