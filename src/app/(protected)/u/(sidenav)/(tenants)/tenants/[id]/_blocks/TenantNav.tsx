@@ -72,6 +72,11 @@ const items: NavGroup[] = [
             external: true,
           },
           {
+            title: 'Add Tenant Provider Policy',
+            path: '/docs/api/tenant-provider-policies/create-tenant-provider-policy',
+            external: true,
+          },
+          {
             title: 'Validate Access Token',
             path: '/docs/api/tenants/validate-access-token',
             external: true,
