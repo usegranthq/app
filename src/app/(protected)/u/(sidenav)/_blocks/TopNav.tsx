@@ -16,6 +16,9 @@ export function TopNav() {
           <Link href="/u/tenants" className="text-sm font-medium text-muted-foreground hover:text-foreground">
             Tenants
           </Link>
+          <a href="/docs" className="text-sm font-medium text-muted-foreground hover:text-foreground">
+            Docs
+          </a>
         </div>
       </div>
     </Topbar>
