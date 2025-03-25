@@ -9,7 +9,7 @@ interface ModifiedRequestInit extends Omit<RequestInit, 'body'> {
 const createRequest = (path: string, requestInit: ModifiedRequestInit = {}) => {
   const body = requestInit.body ? JSON.stringify(requestInit.body) : undefined;
 
-  const request = new Request(`http://localhost:3000/${path}`, {
+  const request = new Request(`http://localhost:3000/sdk/${path}`, {
     ...requestInit,
     body,
   });

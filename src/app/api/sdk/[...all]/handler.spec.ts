@@ -9,7 +9,7 @@ import handler from './handler';
 
 describe('SDK: Router', () => {
   it('should return 401 if the request doesnt have an api key', async () => {
-    const request = createRequest('sdk/v1/providers/1/domains');
+    const request = createRequest('v1/providers/1/domains');
     const response = await handler(request);
     expect(response.status).toBe(STATUS_CODES.UNAUTHORIZED);
   });
@@ -37,7 +37,7 @@ describe('SDK: Router', () => {
       },
     });
 
-    const request = createRequest('sdk/v1/providers/1/domains');
+    const request = createRequest('v1/providers/1/domains');
     request.headers.set('Authorization', 'Bearer test-key');
     const response = await handler(request);
     expect(response.status).toBe(STATUS_CODES.UNAUTHORIZED);
@@ -56,7 +56,7 @@ describe('SDK: Router', () => {
       },
     });
 
-    const request = createRequest('sdk/v1/providers/1/domains');
+    const request = createRequest('v1/providers/1/domains');
     request.headers.set('Authorization', 'Bearer test-key');
     const response = await handler(request);
     expect(response.status).toBe(STATUS_CODES.TOO_MANY_REQUESTS);

@@ -13,7 +13,7 @@ import { mockProPlanSubscription } from './test-utils/subscription';
 
 describe('SDK: Add Domain', () => {
   it('should throw if the domain is not valid', async () => {
-    const request = authorizedRequest('sdk/v1/providers/1/domains', {
+    const request = authorizedRequest('v1/providers/1/domains', {
       body: {
         domain: '123',
       },
@@ -27,7 +27,7 @@ describe('SDK: Add Domain', () => {
   it('should not allow to add domain if the user does not have a plan', async () => {
     mockDb.customer.findUnique.mockResolvedValue(null);
 
-    const request = authorizedRequest('sdk/v1/providers/1/domains', {
+    const request = authorizedRequest('v1/providers/1/domains', {
       body: {
         domain: 'test.com',
       },
@@ -43,7 +43,7 @@ describe('SDK: Add Domain', () => {
     mockProPlanSubscription();
     mockDb.provider.findUnique.mockResolvedValue(null);
 
-    const request = authorizedRequest('sdk/v1/providers/1/domains', {
+    const request = authorizedRequest('v1/providers/1/domains', {
       body: { domain: 'test.com' },
       method: 'POST',
     });
@@ -59,7 +59,7 @@ describe('SDK: Add Domain', () => {
     mockDb.provider.findUnique.mockResolvedValue(fakeDbProvider);
     mockDb.domain.findMany.mockResolvedValue([fakeDbDomain]);
 
-    const request = authorizedRequest('sdk/v1/providers/1/domains', {
+    const request = authorizedRequest('v1/providers/1/domains', {
       body: { domain: fakeDbDomain.domain },
       method: 'POST',
     });
@@ -75,7 +75,7 @@ describe('SDK: Add Domain', () => {
     mockDb.provider.findUnique.mockResolvedValue(fakeDbProvider);
     mockDb.domain.findMany.mockResolvedValue([fakeDbDomain]);
 
-    const request = authorizedRequest('sdk/v1/providers/1/domains', {
+    const request = authorizedRequest('v1/providers/1/domains', {
       body: { domain: 'test2.com' },
       method: 'POST',
     });
@@ -104,7 +104,7 @@ describe('SDK: Add Domain', () => {
 
     mockDb.domain.create.mockResolvedValue(fakeDbDomain);
 
-    const request = authorizedRequest('sdk/v1/providers/1/domains', {
+    const request = authorizedRequest('v1/providers/1/domains', {
       body: { domain: 'test.com' },
       method: 'POST',
     });
