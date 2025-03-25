@@ -103,7 +103,7 @@ export default function TenantProviderPolicies({
             </BreadcrumbList>
           </Breadcrumb>
           <h1 className="text-2xl font-medium flex items-center gap-2">
-            <span className="inline-block max-w-sm truncate">{domainWithoutProtocol(tenantProvider.url)}</span>
+            <span className="inline-block max-w-md truncate">{domainWithoutProtocol(tenantProvider.url)}</span>
           </h1>
         </div>
         <Button asChild className="ml-auto">
