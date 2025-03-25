@@ -1,4 +1,4 @@
-import { Domain, Provider } from '@/types/app.types';
+import { Client, Domain, Provider } from '@/types/app.types';
 
 export const fakeDbApiKey = {
   id: '1',
@@ -38,6 +38,21 @@ export const fakeDbProvider: Provider = {
   description: 'test-description',
   urlId: 'test-url-id',
   rotateJwks: true,
+  createdAt: new Date(),
+  updatedAt: new Date(),
+};
+
+export const fakeDbProviderWithDomain: Provider & { Domain: Domain[] } = {
+  ...fakeDbProvider,
+  Domain: [fakeDbDomain],
+};
+
+export const fakeDbClient: Client = {
+  id: '1',
+  name: 'test-client',
+  providerId: '1',
+  audience: 'test-audience',
+  subject: 'test-subject',
   createdAt: new Date(),
   updatedAt: new Date(),
 };

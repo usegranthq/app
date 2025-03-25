@@ -57,7 +57,7 @@ const createAccessToken = createAuthEndpoint(
       throw new SdkError('NOT_FOUND', ERRORS.CLIENT_NOT_FOUND);
     }
 
-    const plan = await getPlanByUserId(provider.User.id);
+    const plan = await getPlanByUserId(ctx.context.userId);
     const customDomain = provider.Domain[0];
 
     const claims = {
