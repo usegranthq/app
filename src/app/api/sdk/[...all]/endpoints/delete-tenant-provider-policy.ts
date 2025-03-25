@@ -1,8 +1,10 @@
 import { getApiErrorMessage } from '@/utils/error';
+import { STATUS_CODES } from '@/utils/rest';
 import db from '@/lib/db';
 
 import { createAuthEndpoint } from './utils/call';
 import ERRORS, { SdkError } from './utils/errors';
+import { toSdkJsonResponse } from './utils/response';
 
 const deleteTenantProviderPolicy = createAuthEndpoint(
   'v1/tenants/:tenantId/providers/:tenantProviderId/policies/:policyId',
@@ -78,7 +80,7 @@ const deleteTenantProviderPolicy = createAuthEndpoint(
       });
     }
 
-    return {};
+    return toSdkJsonResponse(null, STATUS_CODES.NO_CONTENT);
   },
 );
 

@@ -39,7 +39,7 @@ const deleteTenant = createAuthEndpoint(
       });
     }
 
-    return toSdkJsonResponse({}, STATUS_CODES.NO_CONTENT);
+    return toSdkJsonResponse(null, STATUS_CODES.NO_CONTENT);
   },
 );
 
