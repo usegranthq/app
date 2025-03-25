@@ -9,7 +9,7 @@ import { fakeDbClient, fakeDbProvider } from './test-utils/fake-data';
 import { authorizedRequest } from './test-utils/request';
 
 describe('SDK: Delete Client', () => {
-  it('should throw if the provider does not exist', async () => {
+  it('throw if the provider does not exist', async () => {
     const request = authorizedRequest('v1/providers/1/clients/1', {
       method: 'DELETE',
     });
@@ -18,7 +18,7 @@ describe('SDK: Delete Client', () => {
     await expect(response.json()).resolves.toEqual(ERRORS.PROVIDER_NOT_FOUND);
   });
 
-  it('should throw if the client does not exist', async () => {
+  it('throw if the client does not exist', async () => {
     mockDb.provider.findUnique.mockResolvedValue(fakeDbProvider);
     const request = authorizedRequest('v1/providers/1/clients/1', {
       method: 'DELETE',
@@ -28,7 +28,7 @@ describe('SDK: Delete Client', () => {
     await expect(response.json()).resolves.toEqual(ERRORS.CLIENT_NOT_FOUND);
   });
 
-  it('should delete the client', async () => {
+  it('delete the client', async () => {
     mockDb.provider.findUnique.mockResolvedValue(fakeDbProvider);
     mockDb.client.findUnique.mockResolvedValue(fakeDbClient);
 

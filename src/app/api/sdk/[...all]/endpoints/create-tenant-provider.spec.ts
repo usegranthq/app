@@ -11,7 +11,7 @@ import { fakeDbTenant, fakeDbTenantProvider } from './test-utils/fake-data';
 import { authorizedRequest } from './test-utils/request';
 
 describe('SDK: Create Tenant Provider', () => {
-  it('should throw if the request is not valid', async () => {
+  it('throw if the request is not valid', async () => {
     const request = authorizedRequest('v1/tenants/1/providers', {
       body: {
         notWhatIs: 'expected',
@@ -23,7 +23,7 @@ describe('SDK: Create Tenant Provider', () => {
     await expect(response.json()).resolves.toEqual(ERRORS.GENERIC_SCHEMA_VALIDATION_ERROR);
   });
 
-  it('should throw if tenant does not exist', async () => {
+  it('throw if tenant does not exist', async () => {
     const request = authorizedRequest('v1/tenants/1/providers', {
       body: {
         url: 'https://example.com',
@@ -39,7 +39,7 @@ describe('SDK: Create Tenant Provider', () => {
     await expect(response.json()).resolves.toEqual(ERRORS.TENANT_NOT_FOUND);
   });
 
-  it('should throw if plan does not allow more tenant providers', async () => {
+  it('throw if plan does not allow more tenant providers', async () => {
     mockDb.tenant.findUnique.mockResolvedValue(fakeDbTenant);
     mockDb.tenantProvider.count.mockResolvedValue(PLANS.free.features.tenantProviders.limit);
 
@@ -58,7 +58,7 @@ describe('SDK: Create Tenant Provider', () => {
     await expect(response.json()).resolves.toEqual(ERRORS.MAX_TENANT_PROVIDERS_LIMIT_REACHED);
   });
 
-  it('should throw if tenant provider already exists', async () => {
+  it('throw if tenant provider already exists', async () => {
     mockDb.tenant.findUnique.mockResolvedValue(fakeDbTenant);
     mockDb.tenantProvider.count.mockResolvedValue(1);
 
@@ -77,7 +77,7 @@ describe('SDK: Create Tenant Provider', () => {
     await expect(response.json()).resolves.toEqual(ERRORS.TENANT_PROVIDER_ALREADY_EXISTS);
   });
 
-  it('should create a tenant provider', async () => {
+  it('create a tenant provider', async () => {
     mockDb.tenant.findUnique.mockResolvedValue(fakeDbTenant);
     mockDb.tenantProvider.count.mockResolvedValue(0);
     mockDb.tenantProvider.create.mockResolvedValue(fakeDbTenantProvider);

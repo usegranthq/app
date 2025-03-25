@@ -12,7 +12,7 @@ import { authorizedRequest } from './test-utils/request';
 import { mockProPlanSubscription } from './test-utils/subscription';
 
 describe('SDK: Add Domain', () => {
-  it('should throw if the domain is not valid', async () => {
+  it('throw if the domain is not valid', async () => {
     const request = authorizedRequest('v1/providers/1/domains', {
       body: {
         domain: '123',
@@ -24,7 +24,7 @@ describe('SDK: Add Domain', () => {
     await expect(response.json()).resolves.toEqual(ERRORS.GENERIC_SCHEMA_VALIDATION_ERROR);
   });
 
-  it('should not allow to add domain if the user does not have a plan', async () => {
+  it('not allow to add domain if the user does not have a plan', async () => {
     mockDb.customer.findUnique.mockResolvedValue(null);
 
     const request = authorizedRequest('v1/providers/1/domains', {
@@ -39,7 +39,7 @@ describe('SDK: Add Domain', () => {
     await expect(response.json()).resolves.toEqual(ERRORS.CUSTOM_DOMAINS_NOT_AVAILABLE);
   });
 
-  it('should throw if the provider does not exist', async () => {
+  it('throw if the provider does not exist', async () => {
     mockProPlanSubscription();
     mockDb.provider.findUnique.mockResolvedValue(null);
 
@@ -53,7 +53,7 @@ describe('SDK: Add Domain', () => {
     await expect(response.json()).resolves.toEqual(ERRORS.PROVIDER_NOT_FOUND);
   });
 
-  it('should add the domain if the domain is already added', async () => {
+  it('add the domain if the domain is already added', async () => {
     mockProPlanSubscription();
 
     mockDb.provider.findUnique.mockResolvedValue(fakeDbProvider);
@@ -69,7 +69,7 @@ describe('SDK: Add Domain', () => {
     await expect(response.json()).resolves.toEqual(ERRORS.DOMAIN_ALREADY_ADDED);
   });
 
-  it('should throw if the user has reached the max domains limit', async () => {
+  it('throw if the user has reached the max domains limit', async () => {
     mockProPlanSubscription();
 
     mockDb.provider.findUnique.mockResolvedValue(fakeDbProvider);
@@ -85,7 +85,7 @@ describe('SDK: Add Domain', () => {
     await expect(response.json()).resolves.toEqual(ERRORS.MAX_DOMAINS_LIMIT_REACHED);
   });
 
-  it('should add the domain if the domain is not added', async () => {
+  it('add the domain if the domain is not added', async () => {
     mockProPlanSubscription();
 
     mockDb.provider.findUnique.mockResolvedValue(fakeDbProvider);

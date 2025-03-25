@@ -10,7 +10,7 @@ import { fakeDbDomain, fakeDbProvider } from './test-utils/fake-data';
 import { authorizedRequest } from './test-utils/request';
 
 describe('SDK: Delete Provider', () => {
-  it('should throw if the provider does not exist', async () => {
+  it('throw if the provider does not exist', async () => {
     const request = authorizedRequest('v1/providers/1', {
       method: 'DELETE',
     });
@@ -19,7 +19,7 @@ describe('SDK: Delete Provider', () => {
     await expect(response.json()).resolves.toEqual(ERRORS.PROVIDER_NOT_FOUND);
   });
 
-  it('should delete the provider', async () => {
+  it('delete the provider', async () => {
     mockDb.provider.findUnique.mockResolvedValue(fakeDbProvider);
     mockDb.domain.findMany.mockResolvedValue([fakeDbDomain]);
 

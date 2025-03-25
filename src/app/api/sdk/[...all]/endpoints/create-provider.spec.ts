@@ -11,7 +11,7 @@ import { fakeDbProvider } from './test-utils/fake-data';
 import { authorizedRequest } from './test-utils/request';
 
 describe('SDK: Create Provider', () => {
-  it('should throw if the request is not valid', async () => {
+  it('throw if the request is not valid', async () => {
     const request = authorizedRequest('v1/providers', {
       body: {
         notWhatIs: 'expected',
@@ -23,7 +23,7 @@ describe('SDK: Create Provider', () => {
     await expect(response.json()).resolves.toEqual(ERRORS.GENERIC_SCHEMA_VALIDATION_ERROR);
   });
 
-  it('should throw if max providers limit is reached', async () => {
+  it('throw if max providers limit is reached', async () => {
     mockDb.provider.count.mockResolvedValue(PLANS.free.features.providers.limit);
 
     const request = authorizedRequest('v1/providers', {
@@ -39,7 +39,7 @@ describe('SDK: Create Provider', () => {
     await expect(response.json()).resolves.toEqual(ERRORS.MAX_PROVIDERS_LIMIT_REACHED);
   });
 
-  it('should create a new provider', async () => {
+  it('create a new provider', async () => {
     mockDb.provider.create.mockResolvedValue(fakeDbProvider);
 
     const request = authorizedRequest('v1/providers', {

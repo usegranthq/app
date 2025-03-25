@@ -77,7 +77,7 @@ describe('SDK: Token', () => {
     expect(validateClaimWithCondition(mock, mockClaims)).toBe(mock.expect);
   });
 
-  it('should return false when the claim key is does not exist in the token', () => {
+  it('return false when the claim key is does not exist in the token', () => {
     expect(validateClaimWithCondition({ key: 'nonexistent', operator: 'stringEquals', value: 'any' }, mockClaims)).toBe(
       false,
     );

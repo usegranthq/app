@@ -11,7 +11,7 @@ import { fakeDbClient, fakeDbProvider } from './test-utils/fake-data';
 import { authorizedRequest } from './test-utils/request';
 
 describe('SDK: Create Client', () => {
-  it('should throw if the request is not valid', async () => {
+  it('throw if the request is not valid', async () => {
     const request = authorizedRequest('v1/providers/1/clients', {
       body: {
         notWhatIs: 'expected',
@@ -23,7 +23,7 @@ describe('SDK: Create Client', () => {
     await expect(response.json()).resolves.toEqual(ERRORS.GENERIC_SCHEMA_VALIDATION_ERROR);
   });
 
-  it('should throw if provider is not found', async () => {
+  it('throw if provider is not found', async () => {
     mockDb.provider.findUnique.mockResolvedValue(null);
     const request = authorizedRequest('v1/providers/1/clients', {
       body: {
@@ -37,7 +37,7 @@ describe('SDK: Create Client', () => {
     await expect(response.json()).resolves.toEqual(ERRORS.PROVIDER_NOT_FOUND);
   });
 
-  it('should throw forbidden if max clients limit is reached', async () => {
+  it('throw forbidden if max clients limit is reached', async () => {
     mockDb.provider.findUnique.mockResolvedValue(fakeDbProvider);
     mockDb.client.count.mockResolvedValue(PLANS.free.features.providerClients.limit);
 
@@ -54,7 +54,7 @@ describe('SDK: Create Client', () => {
     await expect(response.json()).resolves.toEqual(ERRORS.MAX_CLIENTS_LIMIT_REACHED);
   });
 
-  it('should throw if client already exists', async () => {
+  it('throw if client already exists', async () => {
     mockDb.provider.findUnique.mockResolvedValue(fakeDbProvider);
     mockDb.client.findFirst.mockResolvedValue(fakeDbClient);
 
@@ -71,7 +71,7 @@ describe('SDK: Create Client', () => {
     await expect(response.json()).resolves.toEqual(ERRORS.CLIENT_ALREADY_EXISTS);
   });
 
-  it('should create a new client', async () => {
+  it('create a new client', async () => {
     mockDb.provider.findUnique.mockResolvedValue(fakeDbProvider);
     mockDb.client.findFirst.mockResolvedValue(null);
     mockDb.client.create.mockResolvedValue(fakeDbClient);

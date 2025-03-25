@@ -11,7 +11,7 @@ import { fakeDbTenant, fakeDbTenantProvider, fakeDbTenantProviderPolicy } from '
 import { authorizedRequest } from './test-utils/request';
 
 describe('SDK: Create Tenant Provider Policy', () => {
-  it('should throw if the request is not valid', async () => {
+  it('throw if the request is not valid', async () => {
     const request = authorizedRequest('v1/tenants/1/providers/1_1/policies', {
       body: {
         notWhatIs: 'expected',
@@ -23,7 +23,7 @@ describe('SDK: Create Tenant Provider Policy', () => {
     await expect(response.json()).resolves.toEqual(ERRORS.GENERIC_SCHEMA_VALIDATION_ERROR);
   });
 
-  it('should throw if tenant does not exist', async () => {
+  it('throw if tenant does not exist', async () => {
     const request = authorizedRequest('v1/tenants/1/providers/1.1/policies', {
       body: {
         name: 'test-policy',
@@ -45,7 +45,7 @@ describe('SDK: Create Tenant Provider Policy', () => {
     await expect(response.json()).resolves.toEqual(ERRORS.TENANT_NOT_FOUND);
   });
 
-  it('should throw if plan does not allow more tenant provider policies', async () => {
+  it('throw if plan does not allow more tenant provider policies', async () => {
     mockDb.tenant.findUnique.mockResolvedValue(fakeDbTenant);
     mockDb.tenantProvider.findUnique.mockResolvedValue(fakeDbTenantProvider);
     mockDb.tenantProviderPolicy.count.mockResolvedValue(PLANS.free.features.tenantProviderPolicies.limit);
@@ -71,7 +71,7 @@ describe('SDK: Create Tenant Provider Policy', () => {
     await expect(response.json()).resolves.toEqual(ERRORS.MAX_TENANT_PROVIDER_POLICIES_LIMIT_REACHED);
   });
 
-  it('should throw if tenant provider does not exist', async () => {
+  it('throw if tenant provider does not exist', async () => {
     mockDb.tenant.findUnique.mockResolvedValue(fakeDbTenant);
 
     const request = authorizedRequest('v1/tenants/1/providers/1.1/policies', {
@@ -95,7 +95,7 @@ describe('SDK: Create Tenant Provider Policy', () => {
     await expect(response.json()).resolves.toEqual(ERRORS.TENANT_PROVIDER_NOT_FOUND);
   });
 
-  it('should throw if tenant provider policy already exists', async () => {
+  it('throw if tenant provider policy already exists', async () => {
     mockDb.tenant.findUnique.mockResolvedValue(fakeDbTenant);
     mockDb.tenantProvider.findUnique.mockResolvedValue(fakeDbTenantProvider);
     mockDb.tenantProviderPolicy.count.mockResolvedValue(1);
@@ -115,7 +115,7 @@ describe('SDK: Create Tenant Provider Policy', () => {
     await expect(response.json()).resolves.toEqual(ERRORS.TENANT_PROVIDER_POLICY_ALREADY_EXISTS);
   });
 
-  it('should create a tenant provider policy', async () => {
+  it('create a tenant provider policy', async () => {
     mockDb.tenant.findUnique.mockResolvedValue(fakeDbTenant);
     mockDb.tenantProvider.findUnique.mockResolvedValue(fakeDbTenantProvider);
     mockDb.tenantProviderPolicy.count.mockResolvedValue(0);

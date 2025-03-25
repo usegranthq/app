@@ -8,13 +8,13 @@ import createRequest from './endpoints/test-utils/request';
 import handler from './handler';
 
 describe('SDK: Router', () => {
-  it('should return 401 if the request doesnt have an api key', async () => {
+  it('return 401 if the request doesnt have an api key', async () => {
     const request = createRequest('v1/providers/1/domains');
     const response = await handler(request);
     expect(response.status).toBe(STATUS_CODES.UNAUTHORIZED);
   });
 
-  it('should return 404 if the request is not found', async () => {
+  it('return 404 if the request is not found', async () => {
     mockAuth.api.verifyApiKey.mockResolvedValue({
       valid: true,
       key: fakeDbApiKey,
@@ -27,7 +27,7 @@ describe('SDK: Router', () => {
     expect(response.status).toBe(STATUS_CODES.NOT_FOUND);
   });
 
-  it('should return 401 if the api key doesnt match the given path', async () => {
+  it('return 401 if the api key doesnt match the given path', async () => {
     mockAuth.api.verifyApiKey.mockResolvedValue({
       valid: true,
       key: null,
@@ -43,7 +43,7 @@ describe('SDK: Router', () => {
     expect(response.status).toBe(STATUS_CODES.UNAUTHORIZED);
   });
 
-  it('should return 429 if the api key is rate limited', async () => {
+  it('return 429 if the api key is rate limited', async () => {
     mockAuth.api.verifyApiKey.mockResolvedValue({
       valid: true,
       key: null,
