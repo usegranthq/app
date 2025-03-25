@@ -1,0 +1,56 @@
+import { afterAll, vi } from 'vitest';
+
+import '@/lib/__mocks__/db';
+import '@/lib/__mocks__/auth';
+import '@/lib/__mocks__/vercel';
+
+const mockEnvs = {
+  SITE_URL: 'http://localhost:7500',
+  POSTGRES_DATABASE: 'backend',
+  POSTGRES_USER: 'postgres',
+  POSTGRES_PASSWORD: 'postgres',
+  POSTGRES_PORT: 5432,
+  POSTGRES_HOST: 'localhost',
+  POSTGRES_PRISMA_URL:
+    'postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@${POSTGRES_HOST}:${POSTGRES_PORT}/${POSTGRES_DATABASE}?pgbouncer=true&connect_timeout=15',
+  POSTGRES_URL_NON_POOLING:
+    'postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@${POSTGRES_HOST}:${POSTGRES_PORT}/${POSTGRES_DATABASE}',
+  INVITE_TOKEN: 'zpm69-xxxx',
+  JWT_SIGNING_SECRET: 'xxxx',
+  TURNSTILE_SITE_KEY: '3x00000000000000000000FF',
+  TURNSTILE_SECRET_KEY: '1x0000000000000000000000000000000AA',
+  GITHUB_OAUTH_CLIENT_ID: '0vxxxx',
+  GITHUB_OAUTH_CLIENT_SECRET: 'xxxx',
+  GOOGLE_OAUTH_CLIENT_ID: '0vxxxx',
+  GOOGLE_OAUTH_CLIENT_SECRET: 'xxxx',
+  BETTER_AUTH_SECRET: 'xxxx',
+  PROVIDER_DOMAIN: '{urlId}.auth.usegrant.local',
+  NODEMAILER_SMTP_URL: 'smtp://john.doe@ethereal.email:xxxx@smtp.ethereal.email:587',
+  EMAIL_FROM: 'Usegrant <onboarding@usegrant.local>',
+  RESEND_API_KEY: 're_xxxx',
+  VERCEL_DOMINATE_TEAM_ID: 'vercel_team_xxxx',
+  VERCEL_DOMINATE_PROJECT_ID: 'vercel_prj_xxxx',
+  VERCEL_DOMINATE_API_TOKEN: 'xxxx',
+  CRON_SECRET: 'xxxx',
+  CREEM_API_KEY: 'xxxx',
+  CREEM_WEBHOOK_SECRET: 'whsec_xxxx',
+  NEXT_PUBLIC_CREEM_PRO_PLAN_PRODUCT_ID: 'prod_pro_xxxx',
+  NEXT_PUBLIC_CREEM_ULTIMATE_PLAN_PRODUCT_ID: 'prod_ultimate_xxxx',
+  POSTHOG_API_KEY: 'phc_xxxx',
+};
+
+for (const [key, value] of Object.entries(mockEnvs)) {
+  vi.stubEnv(key, value as string);
+}
+
+afterAll(() => {
+  for (const key of Object.keys(mockEnvs)) {
+    vi.stubEnv(key, undefined);
+  }
+});
+
+vi.mock('server-only', () => {
+  return {
+    // do nothing
+  };
+});

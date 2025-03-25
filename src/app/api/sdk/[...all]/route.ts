@@ -1,4 +1,3 @@
-import { NextRequest } from 'next/server';
 import { createRouter } from 'better-call';
 
 import { getBearerToken, rateLimitedResponse, unauthorizedResponse } from '@/utils/rest';
@@ -42,7 +41,7 @@ const verifyApiKey = async (key: string): Promise<VerifyApiKeyResult> => {
   return [null, result.key.userId];
 };
 
-const handler = async (request: NextRequest) => {
+export const handler = async (request: Request) => {
   const bearerToken = getBearerToken(request);
   if (!bearerToken) {
     return unauthorizedResponse('Missing api key');

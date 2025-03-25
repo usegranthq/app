@@ -7,11 +7,10 @@ import { PostHog } from 'posthog-node';
 import * as constants from '@/constants/cookies';
 import { generateLoginToken } from '@/utils/random';
 import { env, isLive } from '@/env';
-import LoginEmail from '@/templates/LoginEmail';
 
 import { getPlanByUserId } from './billing';
 import { prisma } from './db';
-import { sendEmail } from './email';
+import { sendLoginEmail } from './email';
 import { getSiteUrl } from './site';
 
 const posthog = new PostHog(env.POSTHOG_API_KEY, {
@@ -48,11 +47,7 @@ export const auth = betterAuth({
       generateToken: () => generateLoginToken(),
       expiresIn: 5 * 60, // 5 minutes,
       async sendMagicLink(data) {
-        await sendEmail({
-          to: data.email,
-          subject: 'Login to Usergrant',
-          template: <LoginEmail token={data.token} url={data.url} />,
-        });
+        await sendLoginEmail(data);
       },
     }),
     customSession(async ({ user, session }) => {

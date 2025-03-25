@@ -31,6 +31,10 @@ export const getZodErrorMessage = (error: ZodError) => {
 };
 
 const ERRORS = {
+  GENERIC_SCHEMA_VALIDATION_ERROR: {
+    code: 'VALIDATION_ERROR',
+    message: 'Invalid body parameters',
+  },
   PROVIDERS_NOT_AVAILABLE: {
     code: 'PROVIDERS_NOT_AVAILABLE',
     message: 'Providers are not available under your current plan. Please upgrade to access this feature',
@@ -130,6 +134,10 @@ const ERRORS = {
   MAX_DOMAINS_LIMIT_REACHED: {
     code: 'MAX_DOMAINS_LIMIT_REACHED',
     message: 'You have reached the limit for custom domains. Please upgrade to increase the limit',
+  },
+  DOMAIN_ALREADY_ADDED: {
+    code: 'DOMAIN_ALREADY_ADDED',
+    message: 'The domain is already added',
   },
   DOMAIN_NOT_FOUND: {
     code: 'DOMAIN_NOT_FOUND',

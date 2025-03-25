@@ -1,6 +1,7 @@
 import { z } from 'zod';
 
 import { getApiErrorMessage } from '@/utils/error';
+import { STATUS_CODES } from '@/utils/rest';
 import { getPlanByUserId } from '@/lib/billing';
 import db from '@/lib/db';
 import vercel from '@/lib/vercel';
@@ -8,6 +9,7 @@ import { domainSchema } from '@/schema';
 
 import { createAuthEndpoint } from './utils/call';
 import ERRORS, { SdkError } from './utils/errors';
+import { toJsonResponse } from './utils/response';
 import { domainFields } from './utils/return-fields';
 
 const addDomain = createAuthEndpoint(
@@ -46,6 +48,12 @@ const addDomain = createAuthEndpoint(
       },
     });
 
+    // check if domain is already added
+    const isDomainAlreadyAdded = existingDomains.some((domain) => domain.domain === ctx.body.domain);
+    if (isDomainAlreadyAdded) {
+      throw new SdkError('CONFLICT', ERRORS.DOMAIN_ALREADY_ADDED);
+    }
+
     // get existing domains, don't allow more than plan limit
     if (existingDomains.length >= plan.features.customDomain.limit) {
       throw new SdkError('FORBIDDEN', ERRORS.MAX_DOMAINS_LIMIT_REACHED);
@@ -65,7 +73,7 @@ const addDomain = createAuthEndpoint(
         select: domainFields,
       });
 
-      return domain;
+      return toJsonResponse(domain, STATUS_CODES.CREATED);
     } catch (error) {
       const errorMessage = getApiErrorMessage(error, 'Something went wrong');
 

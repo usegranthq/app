@@ -4,6 +4,7 @@ import nodemailer from 'nodemailer';
 import { Resend } from 'resend';
 
 import { env } from '@/env';
+import LoginEmail from '@/templates/LoginEmail';
 
 interface SendEmailParams {
   to: string;
@@ -33,5 +34,19 @@ export const sendEmail = async (data: SendEmailParams) => {
     to: data.to,
     subject: data.subject,
     react: data.template,
+  });
+};
+
+interface SendLoginEmailParams {
+  email: string;
+  token: string;
+  url: string;
+}
+
+export const sendLoginEmail = async (data: SendLoginEmailParams) => {
+  await sendEmail({
+    to: data.email,
+    subject: 'Login to Usergrant',
+    template: <LoginEmail token={data.token} url={data.url} />,
   });
 };
