@@ -91,6 +91,10 @@ const ERRORS = {
     code: 'PROVIDER_ALREADY_EXISTS',
     message: 'A provider with this URL already exists',
   },
+  TENANT_PROVIDER_ALREADY_EXISTS: {
+    code: 'TENANT_PROVIDER_ALREADY_EXISTS',
+    message: 'A tenant provider with this URL already exists',
+  },
   TENANT_PROVIDER_POLICY_ALREADY_EXISTS: {
     code: 'TENANT_PROVIDER_POLICY_ALREADY_EXISTS',
     message: 'A tenant provider policy with this name already exists',

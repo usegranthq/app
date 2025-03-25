@@ -41,11 +41,11 @@ const createTenantProvider = createAuthEndpoint(
     });
 
     if (tenantsCount >= plan.features.tenantProviders.limit) {
-      throw new SdkError('FORBIDDEN', ERRORS.MAX_PROVIDERS_LIMIT_REACHED);
+      throw new SdkError('FORBIDDEN', ERRORS.MAX_TENANT_PROVIDERS_LIMIT_REACHED);
     }
 
     // check if tenant already exists
-    const tenantExists = await db.tenantProvider
+    const tenantProviderExists = await db.tenantProvider
       .count({
         where: {
           tenantId,
@@ -60,8 +60,8 @@ const createTenantProvider = createAuthEndpoint(
       })
       .then(Boolean);
 
-    if (tenantExists) {
-      throw new SdkError('CONFLICT', ERRORS.PROVIDER_ALREADY_EXISTS);
+    if (tenantProviderExists) {
+      throw new SdkError('CONFLICT', ERRORS.TENANT_PROVIDER_ALREADY_EXISTS);
     }
 
     const tenantProvider = await db.tenantProvider.create({
