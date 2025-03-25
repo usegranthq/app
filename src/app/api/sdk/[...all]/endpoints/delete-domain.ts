@@ -1,6 +1,5 @@
 import { getApiErrorMessage } from '@/utils/error';
 import { STATUS_CODES } from '@/utils/rest';
-import { getPlanByUserId } from '@/lib/billing';
 import db from '@/lib/db';
 import vercel from '@/lib/vercel';
 
@@ -14,12 +13,6 @@ const deleteDomain = createAuthEndpoint(
     method: 'DELETE',
   },
   async (ctx) => {
-    const plan = await getPlanByUserId(ctx.context.userId);
-
-    if (!plan.features.customDomain.available) {
-      throw new SdkError('FORBIDDEN', ERRORS.CUSTOM_DOMAINS_NOT_AVAILABLE);
-    }
-
     // Check if provider exists
     const provider = await db.provider.findUnique({
       where: {
