@@ -20,15 +20,15 @@ const createProvider = createAuthEndpoint(
     const { name, description } = ctx.body;
 
     const plan = await getPlanByUserId(ctx.context.userId);
+    if (!plan.features.providers.available) {
+      throw new SdkError('FORBIDDEN', ERRORS.PROVIDERS_NOT_AVAILABLE);
+    }
+
     const providersCount = await db.provider.count({
       where: {
         userId: ctx.context.userId,
       },
     });
-
-    if (!plan.features.providers.available) {
-      throw new SdkError('FORBIDDEN', ERRORS.PROVIDERS_NOT_AVAILABLE);
-    }
 
     if (providersCount >= plan.features.providers.limit) {
       throw new SdkError('FORBIDDEN', ERRORS.MAX_PROVIDERS_LIMIT_REACHED);
