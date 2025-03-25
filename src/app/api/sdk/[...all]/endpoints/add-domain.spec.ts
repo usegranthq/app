@@ -6,7 +6,7 @@ import { STATUS_CODES } from '@/utils/rest';
 import mockDb from '@/lib/__mocks__/db';
 import mockVercel from '@/lib/__mocks__/vercel';
 
-import { handler } from '../route';
+import handler from '../handler';
 import { fakeDbDomain, fakeDbProvider } from './test-utils/fake-data';
 import { authorizedRequest } from './test-utils/request';
 import { mockProPlanSubscription } from './test-utils/subscription';

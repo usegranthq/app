@@ -5,7 +5,7 @@ import mockAuth from '@/lib/__mocks__/auth';
 
 import { fakeDbApiKey } from './endpoints/test-utils/fake-data';
 import createRequest from './endpoints/test-utils/request';
-import { handler } from './route';
+import handler from './handler';
 
 describe('SDK: Router', () => {
   it('should return 401 if the request doesnt have an api key', async () => {
