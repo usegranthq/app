@@ -1,2 +1,8 @@
+echo 'Running tests...'
 npm run test -- --run
+
+echo 'Loading environment variables...'
+set -a && source .env.development && set +a
+
+echo 'Building...'
 npm run build
