@@ -76,5 +76,3 @@ const handler = async (request: NextRequest) => {
 export const GET = handler;
 export const POST = handler;
 export const DELETE = handler;
-
-verifyApiKey('uga_daVIxFbxCMoAZvUQOmnCLWZswFKbpcjKgRJcnVpTJLpIqMfdYQfGRMQklCljWxhJ');
