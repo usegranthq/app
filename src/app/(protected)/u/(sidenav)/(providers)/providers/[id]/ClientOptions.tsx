@@ -124,7 +124,7 @@ export default function ClientOptions({ providerId, client }: { providerId: stri
           <div>
             <Link
               target="_blank"
-              href={`https://jwt.io/?value=${accessToken}`}
+              href={`https://jwt.io#token=${accessToken}`}
               className="text-sm underline underline-offset-2"
             >
               Open in jwt.io
