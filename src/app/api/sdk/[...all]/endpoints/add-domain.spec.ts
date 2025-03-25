@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 
 import ERRORS from '@/utils/error';
-import sillyClone from '@/utils/object';
+import { sillyClone } from '@/utils/object';
 import { STATUS_CODES } from '@/utils/rest';
 import mockDb from '@/lib/__mocks__/db';
 import mockVercel from '@/lib/__mocks__/vercel';

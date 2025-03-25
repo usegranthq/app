@@ -44,6 +44,20 @@ const createClient = createAuthEndpoint(
       throw new SdkError('FORBIDDEN', ERRORS.MAX_CLIENTS_LIMIT_REACHED);
     }
 
+    // check if client already exists
+    const existingClient = await db.client.findFirst({
+      where: {
+        name,
+        providerId: ctx.params.id,
+        Provider: {
+          userId: ctx.context.userId,
+        },
+      },
+    });
+    if (existingClient) {
+      throw new SdkError('BAD_REQUEST', ERRORS.CLIENT_ALREADY_EXISTS);
+    }
+
     try {
       const client = await db.client.create({
         data: {

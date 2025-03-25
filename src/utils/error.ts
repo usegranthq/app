@@ -51,6 +51,10 @@ const ERRORS = {
     code: 'CLIENT_NOT_FOUND',
     message: 'The specified client could not be found. Please verify the client ID and try again',
   },
+  CLIENT_ALREADY_EXISTS: {
+    code: 'CLIENT_ALREADY_EXISTS',
+    message: 'A client with this name already exists',
+  },
   MAX_CLIENTS_LIMIT_REACHED: {
     code: 'MAX_CLIENTS_LIMIT_REACHED',
     message: 'You have reached the maximum number of clients allowed by your current plan',
