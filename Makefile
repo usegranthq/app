@@ -1,5 +1,9 @@
 # make file for development
 
+# load environment variables
+include .env.development
+export
+
 dev:
 	npm run dev
 
