@@ -70,18 +70,16 @@ const mocks: Mock[] = [
     value: 'ri0m0mthf03pfr8oo4w6**567',
     expect: true,
   },
-
-  // Non-existent key test
-  {
-    key: 'nonexistent',
-    operator: 'stringEquals',
-    value: 'any',
-    expect: false,
-  },
 ];
 
 describe('SDK: Token', () => {
-  it.each(mocks)('should return $expect if the claim $key $operator $value', (mock) => {
+  it.each(mocks)(`should return $expect when the claim key $key ${mockClaims.sub} is $operator=$value`, (mock) => {
     expect(validateClaimWithCondition(mock, mockClaims)).toBe(mock.expect);
+  });
+
+  it('should return false when the claim key is does not exist in the token', () => {
+    expect(validateClaimWithCondition({ key: 'nonexistent', operator: 'stringEquals', value: 'any' }, mockClaims)).toBe(
+      false,
+    );
   });
 });
