@@ -50,7 +50,11 @@ const verifyDomain = createAuthEndpoint(
     try {
       const verifyDomainResponse = await vercel.domains.verify(domain.domain);
       if (!verifyDomainResponse.verified) {
-        return ['Failed to verify domain. Potentially configured with a different provider.', null];
+        return {
+          verified: false,
+          message: 'Failed to verify domain. Potentially configured with a different provider.',
+          domain: null,
+        };
       }
 
       const domainConfig = await vercel.domains.getConfig(domain.domain);
@@ -68,7 +72,11 @@ const verifyDomain = createAuthEndpoint(
         data: { verified: isVerified },
       });
 
-      return updatedDomain;
+      return {
+        verified: isVerified,
+        message: 'Domain verified successfully',
+        domain: updatedDomain,
+      };
     } catch (error) {
       const errorMessage = getApiErrorMessage(error, 'Something went wrong');
       return new SdkError('INTERNAL_SERVER_ERROR', {
