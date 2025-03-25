@@ -30,20 +30,6 @@ const createTenantProviderPolicy = createAuthEndpoint(
       throw new SdkError('NOT_FOUND', ERRORS.TENANT_NOT_FOUND);
     }
 
-    const plan = await getPlanByUserId(ctx.context.userId);
-    const tenantsCount = await db.tenantProvider.count({
-      where: {
-        tenantId,
-        Tenant: {
-          userId: ctx.context.userId,
-        },
-      },
-    });
-
-    if (tenantsCount >= plan.features.tenantProviders.limit) {
-      throw new SdkError('FORBIDDEN', ERRORS.MAX_PROVIDERS_LIMIT_REACHED);
-    }
-
     // get tenant provider
     const tenantProvider = await db.tenantProvider.findUnique({
       where: {
@@ -59,6 +45,7 @@ const createTenantProviderPolicy = createAuthEndpoint(
       throw new SdkError('NOT_FOUND', ERRORS.TENANT_PROVIDER_NOT_FOUND);
     }
 
+    const plan = await getPlanByUserId(ctx.context.userId);
     // get tenant provider count
     const tenantProviderPoliciesCount = await db.tenantProviderPolicy.count({
       where: {
@@ -72,8 +59,8 @@ const createTenantProviderPolicy = createAuthEndpoint(
       },
     });
 
-    if (tenantProviderPoliciesCount >= plan.features.tenantProviders.limit) {
-      throw new SdkError('FORBIDDEN', ERRORS.MAX_TENANT_PROVIDERS_LIMIT_REACHED);
+    if (tenantProviderPoliciesCount >= plan.features.tenantProviderPolicies.limit) {
+      throw new SdkError('FORBIDDEN', ERRORS.MAX_TENANT_PROVIDER_POLICIES_LIMIT_REACHED);
     }
 
     // check if tenant already exists
@@ -98,7 +85,7 @@ const createTenantProviderPolicy = createAuthEndpoint(
       .then(Boolean);
 
     if (tenantProviderPolicyExists) {
-      throw new SdkError('CONFLICT', ERRORS.PROVIDER_POLICY_ALREADY_EXISTS);
+      throw new SdkError('CONFLICT', ERRORS.TENANT_PROVIDER_POLICY_ALREADY_EXISTS);
     }
 
     try {

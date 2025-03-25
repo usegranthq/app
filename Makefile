@@ -4,6 +4,9 @@
 include .env.development
 export
 
+lint-staged:
+	npx lint-staged
+
 dev:
 	npm run dev
 

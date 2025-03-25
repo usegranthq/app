@@ -1,4 +1,4 @@
-import { Client, Domain, Provider } from '@/types/app.types';
+import { Client, Domain, Provider, Tenant, TenantProvider, TenantProviderPolicy } from '@/types/app.types';
 
 export const fakeDbApiKey = {
   id: '1',
@@ -53,6 +53,43 @@ export const fakeDbClient: Client = {
   providerId: '1',
   audience: 'test-audience',
   subject: 'test-subject',
+  createdAt: new Date(),
+  updatedAt: new Date(),
+};
+
+export const fakeDbTenant: Tenant = {
+  id: '1',
+  name: 'test-tenant',
+  description: 'test-description',
+  createdAt: new Date(),
+  updatedAt: new Date(),
+  userId: '1',
+};
+
+export const fakeDbTenantProvider: TenantProvider = {
+  id: '1',
+  earliestIssuanceTimeAllowed: 1,
+  fingerprints: ['test-fingerprint'],
+  url: 'https://test.com',
+  audience: 'test-audience',
+  tenantId: '1',
+  createdAt: new Date(),
+  updatedAt: new Date(),
+};
+
+export const fakeDbTenantProviderPolicy: TenantProviderPolicy = {
+  id: '1',
+  name: 'test-tenant-provider-policy',
+  description: 'test-description',
+  audience: 'test-audience',
+  conditions: [
+    {
+      key: 'sub',
+      operator: 'stringLike',
+      value: 'test-value',
+    },
+  ],
+  tenantProviderId: '1',
   createdAt: new Date(),
   updatedAt: new Date(),
 };

@@ -30,6 +30,10 @@ export type PlanDetails = {
       available: boolean;
       limit: number;
     };
+    tenantProviderPolicies: {
+      available: boolean;
+      limit: number;
+    };
     customDomain: {
       available: boolean;
       limit: number;
@@ -61,6 +65,10 @@ export const PLANS: Record<PlanId, PlanDetails> = {
         limit: 1,
       },
       tenantProviders: {
+        available: true,
+        limit: 999,
+      },
+      tenantProviderPolicies: {
         available: true,
         limit: 999,
       },
@@ -96,6 +104,10 @@ export const PLANS: Record<PlanId, PlanDetails> = {
         available: true,
         limit: 9999,
       },
+      tenantProviderPolicies: {
+        available: true,
+        limit: 9999,
+      },
       customDomain: {
         available: true,
         limit: 1,
@@ -125,6 +137,10 @@ export const PLANS: Record<PlanId, PlanDetails> = {
         limit: 1000,
       },
       tenantProviders: {
+        available: true,
+        limit: 99999,
+      },
+      tenantProviderPolicies: {
         available: true,
         limit: 99999,
       },
