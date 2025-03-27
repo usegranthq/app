@@ -90,9 +90,9 @@ export const auth = betterAuth({
   },
   advanced: {
     cookiePrefix: constants.COOKIE_PREFIX,
-    cookieOptions: {
+    defaultCookieAttributes: {
       httpOnly: true,
-      sameSite: 'strict',
+      sameSite: 'Strict',
     },
   },
   rateLimit: {
