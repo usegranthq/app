@@ -90,6 +90,10 @@ export const auth = betterAuth({
   },
   advanced: {
     cookiePrefix: constants.COOKIE_PREFIX,
+    cookieOptions: {
+      httpOnly: true,
+      sameSite: 'strict',
+    },
   },
   rateLimit: {
     window: 10, // time window in seconds
