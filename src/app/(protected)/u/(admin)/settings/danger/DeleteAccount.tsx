@@ -1,6 +1,6 @@
 'use client';
 
-import { ComponentProps, FC, useRef } from 'react';
+import { ComponentProps, FC, useRef, useState } from 'react';
 import { useFormStatus } from 'react-dom';
 import { toast } from 'sonner';
 
@@ -16,6 +16,8 @@ import {
   AlertDialogTrigger,
 } from '@/shadcn/components/ui/alert-dialog';
 import { Button } from '@/shadcn/components/ui/button';
+import { Input } from '@/shadcn/components/ui/input';
+import { Label } from '@/shadcn/components/ui/label';
 
 import { deleteAccount } from '@/actions/settings';
 
@@ -35,6 +37,7 @@ DeleteButton.displayName = 'DeleteButton';
 
 export default function DeleteAccount() {
   const formRef = useRef<HTMLFormElement>(null);
+  const [confirm, setConfirm] = useState('');
 
   const handleDeleteClick = async () => {
     const [error] = await deleteAccount();
@@ -58,9 +61,22 @@ export default function DeleteAccount() {
                 servers.
               </AlertDialogDescription>
             </AlertDialogHeader>
+            <div className="grid gap-2 my-2">
+              <Label>Type &quot;DELETE&quot; to confirm</Label>
+              <Input
+                placeholder="DELETE"
+                className="font-mono tracking-widest placeholder:font-bold"
+                value={confirm}
+                onChange={(e) => setConfirm(e.target.value)}
+              />
+            </div>
             <AlertDialogFooter>
               <AlertDialogCancel>Cancel</AlertDialogCancel>
-              <AlertDialogAction type="button" onClick={() => formRef.current?.requestSubmit()}>
+              <AlertDialogAction
+                type="button"
+                onClick={() => formRef.current?.requestSubmit()}
+                disabled={confirm.toLowerCase() !== 'delete'}
+              >
                 Continue
               </AlertDialogAction>
             </AlertDialogFooter>
