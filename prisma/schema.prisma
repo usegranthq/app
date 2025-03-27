@@ -8,16 +8,6 @@ generator client {
   provider = "prisma-client-js"
 }
 
-// just a empty table to make the schema valid for better-auth
-
-model Root {
-  id        String   @id
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  @@map("_root")
-}
-
 model User {
   id            String    @id
   name          String
