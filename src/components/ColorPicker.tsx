@@ -22,6 +22,7 @@ const colors = [
   { label: 'Slate', value: 'slate' },
   { label: 'Neo Brutal', value: 'neo' },
   { label: 'Vintage Paper', value: 'vintage' },
+  { label: 'Claude', value: 'claude' },
 ];
 
 export default function ColorPickerDropdown() {
