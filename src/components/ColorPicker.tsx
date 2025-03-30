@@ -19,15 +19,9 @@ interface ColorPickerProps {
 
 const colors = [
   { label: 'Neutral', value: 'neutral' },
-  { label: 'Stone', value: 'stone' },
-  { label: 'Zinc', value: 'zinc' },
-  { label: 'Gray', value: 'gray' },
   { label: 'Slate', value: 'slate' },
-  // { label: 'Orange', value: 'orange' },
-  // { label: 'Green', value: 'green' },
-  // { label: 'Blue', value: 'blue' },
-  // { label: 'Yellow', value: 'yellow' },
-  // { label: 'Violet', value: 'violet' },
+  { label: 'Neo Brutal', value: 'neo' },
+  { label: 'Vintage Paper', value: 'vintage' },
 ];
 
 export default function ColorPickerDropdown() {
