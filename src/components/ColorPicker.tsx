@@ -19,8 +19,7 @@ interface ColorPickerProps {
 
 const colors = [
   { label: 'Neutral', value: 'neutral' },
-  { label: 'Slate', value: 'slate' },
-  { label: 'Neo Brutal', value: 'neo' },
+  { label: 'Orange', value: 'orange' },
   { label: 'Vintage Paper', value: 'vintage' },
   { label: 'Claude', value: 'claude' },
 ];
