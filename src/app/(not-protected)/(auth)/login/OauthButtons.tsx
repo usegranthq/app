@@ -11,14 +11,14 @@ import { authClient } from '@/lib/auth-client';
 const githubLogin = async () => {
   await authClient.signIn.social({
     provider: 'github',
-    callbackURL: ROUTES.DASHBOARD,
+    callbackURL: ROUTES.LOGIN_CALLBACK,
   });
 };
 
 const googleLogin = async () => {
   await authClient.signIn.social({
     provider: 'google',
-    callbackURL: ROUTES.DASHBOARD,
+    callbackURL: ROUTES.LOGIN_CALLBACK,
   });
 };
 

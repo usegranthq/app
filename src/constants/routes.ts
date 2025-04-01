@@ -2,6 +2,7 @@ export const ROUTES = {
   ROOT: '/',
   LOGIN: '/login',
   VERIFY: '/verify',
+  LOGIN_CALLBACK: '/login-callback',
   DASHBOARD: '/u',
   SETTINGS: '/u/settings',
   SETTINGS_BILLING: '/u/settings/billing',
