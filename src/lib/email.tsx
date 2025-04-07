@@ -46,7 +46,7 @@ interface SendLoginEmailParams {
 export const sendLoginEmail = async (data: SendLoginEmailParams) => {
   await sendEmail({
     to: data.email,
-    subject: 'Login to Usergrant',
+    subject: 'Login to UseGrant',
     template: <LoginEmail token={data.token} url={data.url} />,
   });
 };
