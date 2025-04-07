@@ -53,8 +53,7 @@ export default function UserNavDropdown(props: UserNavDropdownProps) {
         <AlertDialogHeader>
           <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
           <AlertDialogDescription>
-            This action cannot be undone. This will permanently delete your account and remove your data from our
-            servers.
+            You are about to sign out of your account. You will need to log in again to access your data and settings.
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
