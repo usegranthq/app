@@ -6,6 +6,7 @@ import { headers } from 'next/headers';
 import ROUTES from '@/constants/routes';
 import { getApiErrorMessage, getZodErrorMessage } from '@/utils/error';
 import { auth } from '@/lib/auth';
+import db from '@/lib/db';
 import { verifySession } from '@/data/_verifySession';
 import { createApiKeySchema } from '@/schema';
 
@@ -26,6 +27,19 @@ export async function createApiKey(formData: FormData): ActionResponse<string> {
   }
 
   const expiresInDays = Number(validation.data.expiration) || 0;
+
+  // check if the api key name is already taken
+  const existingApiKey = await db.apikey.findFirst({
+    where: {
+      name: {
+        equals: validation.data.name,
+        mode: 'insensitive',
+      },
+    },
+  });
+  if (existingApiKey) {
+    return ['API key name already taken', null];
+  }
 
   try {
     const token = await auth.api.createApiKey({
