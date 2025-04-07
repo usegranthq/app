@@ -56,14 +56,14 @@ export const clientSchema = z.object({
 export const createApiKeySchema = z.object({
   name: z
     .string()
-    .min(3, { message: 'Api key name must be at least 3 characters long.' })
-    .max(50, { message: 'Api key name must be at most 50 characters long.' })
+    .min(3, { message: 'API key name must be at least 3 characters long.' })
+    .max(50, { message: 'API key name must be at most 50 characters long.' })
     .trim()
     .transform(sanitize),
   expiration: z
     .number({ coerce: true })
-    .min(0, { message: 'Api key expiration must be at least 1 day.' })
-    .max(365, { message: 'Api key expiration must be at most 365 days.' })
+    .min(0, { message: 'API key expiration must be at least 1 day.' })
+    .max(365, { message: 'API key expiration must be at most 365 days.' })
     .nullable()
     .optional(),
 });

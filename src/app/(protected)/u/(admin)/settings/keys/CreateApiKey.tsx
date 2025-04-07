@@ -57,7 +57,7 @@ export default function CreateApiKey() {
       return;
     }
 
-    toast.success('Api key created successfully');
+    toast.success('API key created successfully');
     formRef.current?.reset();
     setSelectKey(new Date().getTime());
     setApiKey(apiKey);
@@ -101,7 +101,7 @@ export default function CreateApiKey() {
             <div className="mt-4 flex flex-col gap-4 md:flex-row md:gap-8">
               <div className="flex flex-col gap-2 md:flex-1">
                 <Label>NAME</Label>
-                <Input name="name" required maxLength={32} minLength={3} placeholder="Api Key Name" />
+                <Input name="name" required maxLength={32} minLength={3} placeholder="API Key Name" />
               </div>
               <div className="flex flex-col gap-2">
                 <Label>EXPIRATION</Label>

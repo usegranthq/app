@@ -7,7 +7,7 @@ import CreateApiKey from './CreateApiKey';
 export default function ApiPage() {
   return (
     <div>
-      <h1 className="text-2xl font-semibold">Api Keys</h1>
+      <h1 className="text-2xl font-semibold">API Keys</h1>
       <p className="mt-1 text-sm text-muted-foreground">
         These api keys grant other applications full access to your account. Please exercise caution!
       </p>

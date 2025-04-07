@@ -51,7 +51,7 @@ const handler = async (request: Request) => {
   if (error) {
     switch (error.code) {
       case 'RATE_LIMITED':
-        return rateLimitedResponse('Api key rate limit reached', error.tryAgainIn);
+        return rateLimitedResponse('API key rate limit reached', error.tryAgainIn);
       default:
         break;
     }

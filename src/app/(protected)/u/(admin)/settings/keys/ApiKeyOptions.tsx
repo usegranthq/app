@@ -42,7 +42,7 @@ export default function ApiKeyOptions({ apiKey }: { apiKey: ApiKey }) {
         return;
       }
 
-      toast.success('Api key deleted successfully');
+      toast.success('API key deleted successfully');
       router.refresh();
     });
   };
