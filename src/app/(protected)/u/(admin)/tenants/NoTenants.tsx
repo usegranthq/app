@@ -10,8 +10,8 @@ export default function NoTenants() {
         <KanbanIcon className="size-8" />
         <h1 className="text-2xl font-medium">Create your first tenant</h1>
         <p className="max-w-lg text-center text-sm text-muted-foreground">
-          A tenant is an organizational unit where you can configure multiple OIDC providers. Each tenant can have
-          multiple unique identity providers configured to validate your authorization requests.
+          A tenant is an organizational unit where you can configure multiple OIDC providers, each with unique identity
+          providers to validate your authorization requests.
         </p>
         <Button className="mt-4" asChild>
           <Link href="/u/tenants/new">Create tenant</Link>

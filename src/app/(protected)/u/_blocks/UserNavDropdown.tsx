@@ -43,7 +43,7 @@ export default function UserNavDropdown(props: UserNavDropdownProps) {
       await authClient.signOut();
       router.push('/login');
     } catch {
-      toast.error('Failed to logout. Try again.');
+      toast.error('Failed to log out. Please try again.');
     }
   };
 

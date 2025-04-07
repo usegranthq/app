@@ -51,7 +51,7 @@ export default function CancelPlanButton() {
         <AlertDialogHeader>
           <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
           <AlertDialogDescription>
-            This will cancel your subscription immediately and your will lose access to all paid features.
+            This will cancel your subscription immediately and you will lose access to all paid features.
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>

@@ -21,7 +21,7 @@ const features = [
     icon: BookLock,
     title: 'No Lock-in',
     description:
-      'No lock-in. We do not store any data about your services or intended usage patterns. Use the APIs to take your data anywhere and anytime.',
+      'There is no lock-in. We do not store any data about your services or intended usage patterns. Use our APIs to take your data anywhere at any time.',
     bullets: ['Rest API access', 'Export data anytime'],
   },
 ];

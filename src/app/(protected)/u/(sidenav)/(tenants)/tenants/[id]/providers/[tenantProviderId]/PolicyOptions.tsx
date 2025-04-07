@@ -86,7 +86,7 @@ export default function PolicyOptions({ tenantId, tenantProviderId, policy }: Po
       <AlertDialog>
         <AlertDialogContent>
           <AlertDialogHeader>
-            <AlertDialogTitle>Are you absolutely sure to delete this policy?</AlertDialogTitle>
+            <AlertDialogTitle>Are you absolutely sure you want to delete this policy?</AlertDialogTitle>
             <AlertDialogDescription>
               You are about to delete policy <span className="font-bold">{policy.name}</span>. Deleting this will
               permanently remove the policy from the tenant provider.
