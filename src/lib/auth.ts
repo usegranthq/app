@@ -1,5 +1,6 @@
 import { betterAuth } from 'better-auth';
 import { prismaAdapter } from 'better-auth/adapters/prisma';
+import { APIError } from 'better-auth/api';
 import { nextCookies } from 'better-auth/next-js';
 import { apiKey, customSession, magicLink } from 'better-auth/plugins';
 import { PostHog } from 'posthog-node';
@@ -21,6 +22,8 @@ const posthog = new PostHog(env.POSTHOG_API_KEY, {
 const database = prismaAdapter(prisma, {
   provider: 'postgresql',
 });
+
+export { APIError as BetterAuthAPIError };
 
 export const auth = betterAuth({
   baseURL: getSiteUrl(),

@@ -100,7 +100,7 @@ export async function verify(formData: FormData): ActionResponse {
 
     cookieStore.delete(constants.VERIFY_COOKIE);
   } catch (error) {
-    const errorMessage = getApiErrorMessage(error, 'Unable to verify code. Try again.');
+    const errorMessage = getApiErrorMessage(error, 'Invalid/expired code. Try again.');
     return [errorMessage, null];
   }
 
