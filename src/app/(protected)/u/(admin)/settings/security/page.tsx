@@ -6,7 +6,7 @@ import DeleteSessions from './DeleteSessions';
 import Sessions from './Sessions';
 import SessionsLoading from './SessionsLoading';
 
-export default function ApiPage() {
+export default function SecurityPage() {
   return (
     <div>
       <h1 className="text-2xl font-semibold">Security</h1>
