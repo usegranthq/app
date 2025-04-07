@@ -89,22 +89,20 @@ export default function CreateApiKey() {
       <form ref={formRef} action={handleSubmit}>
         <Card>
           <CardHeader>
-            <CardTitle>Create a new api key</CardTitle>
+            <CardTitle>Create a new API key</CardTitle>
           </CardHeader>
           <CardContent>
             <CardDescription>
-              Create a new api key to access your account. Make sure the names are unique to differentiate them from
-              other api keys.
-              <br />
-              And keep them in a secure location.
+              Create a new API key to access your account. Make sure the names are unique to differentiate them from
+              other API keys and keep them in a secure location.
             </CardDescription>
-            <div className="mt-4 flex flex-col gap-4 md:flex-row md:gap-8">
+            <div className="mt-8 flex flex-col gap-4 md:flex-row md:gap-8">
               <div className="flex flex-col gap-2 md:flex-1">
-                <Label>NAME</Label>
+                <Label>Name</Label>
                 <Input name="name" required maxLength={32} minLength={3} placeholder="API Key Name" />
               </div>
               <div className="flex flex-col gap-2">
-                <Label>EXPIRATION</Label>
+                <Label>Expiration</Label>
                 <Select name="expiration" key={selectKey}>
                   <SelectTrigger className="w-[280px]">
                     <SelectValue placeholder="Select duration" />
