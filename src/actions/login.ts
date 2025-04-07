@@ -57,7 +57,7 @@ export async function login(formData: FormData): ActionResponse {
     await auth.api.signInMagicLink({
       body: {
         email: payload.email,
-        callbackURL: ROUTES.DASHBOARD,
+        callbackURL: ROUTES.LOGIN_CALLBACK,
       },
       headers: headersList,
     });
