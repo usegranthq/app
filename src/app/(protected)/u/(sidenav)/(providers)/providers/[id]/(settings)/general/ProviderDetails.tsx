@@ -44,6 +44,7 @@ export default function ProviderDetails() {
         return;
       }
       toast.success('Provider details updated');
+      form.reset({}, { keepValues: true });
       router.refresh();
     });
   };
@@ -68,7 +69,7 @@ export default function ProviderDetails() {
             </div>
           </CardContent>
           <CardFooter className="justify-end border-t pt-6">
-            <Button type="submit" disabled={isPending}>
+            <Button type="submit" disabled={isPending || !form.formState.isDirty}>
               Save
             </Button>
           </CardFooter>

@@ -49,6 +49,7 @@ export default function TenantDetails(props: TenantDetailsProps) {
         return;
       }
       toast.success('Tenant details updated');
+      form.reset({}, { keepValues: true });
       router.refresh();
     });
   };
@@ -68,7 +69,7 @@ export default function TenantDetails(props: TenantDetailsProps) {
             </div>
           </CardContent>
           <CardFooter className="justify-end border-t">
-            <Button type="submit" disabled={isPending}>
+            <Button type="submit" disabled={isPending || !form.formState.isDirty}>
               Save
             </Button>
           </CardFooter>
