@@ -1,4 +1,4 @@
-import { Prisma } from '@prisma/client';
+import { Prisma } from '@root/prisma/client';
 
 const commonFields = {
   createdAt: true,

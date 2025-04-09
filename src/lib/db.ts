@@ -1,4 +1,4 @@
-import { PrismaClient } from '@prisma/client';
+import { PrismaClient } from '@root/prisma/client';
 
 let db: PrismaClient;
 

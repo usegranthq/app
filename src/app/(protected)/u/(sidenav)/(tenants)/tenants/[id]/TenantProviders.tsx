@@ -3,7 +3,6 @@
 import { useMemo } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { TenantProvider } from '@prisma/client';
 import { ColumnDef, flexRender, getCoreRowModel, useReactTable } from '@tanstack/react-table';
 import { formatDate } from 'date-fns';
 
@@ -21,7 +20,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import { ROUTES } from '@/constants/routes';
 import { domainWithoutProtocol } from '@/utils/url';
 import PaginationControls from '@/components/PaginationControls';
-import { Tenant } from '@/types/app.types';
+import { Tenant, TenantProvider } from '@/types/app.types';
 
 import TenantOptions from './TenantOptions';
 

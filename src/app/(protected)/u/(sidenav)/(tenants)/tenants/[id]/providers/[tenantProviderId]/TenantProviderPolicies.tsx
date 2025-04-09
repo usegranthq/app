@@ -2,7 +2,6 @@
 
 import { useMemo } from 'react';
 import Link from 'next/link';
-import { TenantProvider, TenantProviderPolicy } from '@prisma/client';
 import { ColumnDef, flexRender, getCoreRowModel, useReactTable } from '@tanstack/react-table';
 import { formatDate } from 'date-fns';
 
@@ -20,6 +19,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import { ROUTES } from '@/constants/routes';
 import { domainWithoutProtocol } from '@/utils/url';
 import PaginationControls from '@/components/PaginationControls';
+import { TenantProvider, TenantProviderPolicy } from '@/types/app.types';
 
 import PolicyOptions from './PolicyOptions';
 

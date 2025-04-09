@@ -39,3 +39,6 @@ next-env.d.ts
 
 # cloudflare
 .worker-next
+
+# prisma
+prisma/client

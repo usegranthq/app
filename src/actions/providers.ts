@@ -2,10 +2,10 @@
 
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
-import { Prisma } from '@prisma/client';
 import { JWK } from 'jose';
 import { z } from 'zod';
 
+import { Prisma } from '@root/prisma/client';
 import ROUTES from '@/constants/routes';
 import ERRORS, { getApiErrorMessage, getZodErrorMessage } from '@/utils/error';
 import { generateJwk } from '@/utils/jwk';

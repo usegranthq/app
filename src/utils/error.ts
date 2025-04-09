@@ -1,5 +1,6 @@
-import { Prisma } from '@prisma/client';
 import { ZodError } from 'zod';
+
+import { Prisma } from '@root/prisma/client';
 
 type MessageHandler = (errorCode: string) => string;
 

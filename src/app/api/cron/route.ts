@@ -1,7 +1,7 @@
 import type { NextRequest } from 'next/server';
-import { Prisma } from '@prisma/client';
 import { waitUntil } from '@vercel/functions';
 
+import { Prisma } from '@root/prisma/client';
 import { generateJwk } from '@/utils/jwk';
 import { validateBearerToken } from '@/utils/rest';
 import { getPlanByUserId } from '@/lib/billing';

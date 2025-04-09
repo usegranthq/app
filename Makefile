@@ -25,6 +25,9 @@ dbd:
 migrate:
 	npm run migrate:dev
 
+test:
+	npm run test
+
 clear:
 	@read -p "Are you sure you want to clear the database? (y/n): " confirm; \
 	if [ "$$confirm" = "y" ]; then \
