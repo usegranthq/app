@@ -13,8 +13,14 @@ export default async function Settings() {
           <CardHeader>
             <CardTitle>Email</CardTitle>
             <CardDescription className="mt-2">
-              Enter the email addresses you want to use to log in with useGrant. Your primary email will be used for
-              account-related notifications.
+              <p>
+                This is the email address associated with your useGrant account. It is used for authentication over web
+                and sending account-related notifications.
+              </p>
+              <p className="mt-4">
+                Note: Currently changing the email is not supported as a self-service operation. Please contact support
+                if you need to change your email.
+              </p>
             </CardDescription>
           </CardHeader>
           <CardContent>
