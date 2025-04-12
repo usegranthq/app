@@ -11,6 +11,9 @@ export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: 'useGrant',
   description: 'Effortless machine to machine grant setup',
+  pinterest: {
+    richPin: true,
+  },
   openGraph: {
     title: 'useGrant',
     description: 'Effortless machine to machine grant setup',
