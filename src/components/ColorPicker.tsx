@@ -7,6 +7,8 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/shadcn/components/ui/dropdown-menu';
 import { cn } from '@/shadcn/lib/utils';
@@ -17,11 +19,31 @@ interface ColorPickerProps {
   className?: string;
 }
 
-const colors = [
-  { label: 'Neutral', value: 'neutral' },
-  { label: 'Orange', value: 'orange' },
-  { label: 'Vintage Paper', value: 'vintage' },
-  { label: 'Claude', value: 'claude' },
+type ColorPickerItemColor = {
+  label: string;
+  value: string;
+  type: 'color';
+};
+
+type ColorPickerItemSeparator = {
+  type: 'separator';
+};
+
+type ColorPickerItemLabel = {
+  type: 'label';
+  label: string;
+};
+
+type ColorPickerItem = ColorPickerItemColor | ColorPickerItemSeparator | ColorPickerItemLabel;
+
+const colors: ColorPickerItem[] = [
+  { type: 'color', label: 'Neutral', value: 'neutral' },
+  { type: 'color', label: 'Orange', value: 'orange' },
+  { type: 'separator' },
+  { type: 'label', label: 'Modern' },
+  { type: 'color', label: 'Vintage Paper', value: 'vintage' },
+  { type: 'color', label: 'Claude', value: 'claude' },
+  { type: 'color', label: 'Vercel', value: 'vercel' },
 ];
 
 export default function ColorPickerDropdown() {
@@ -29,11 +51,25 @@ export default function ColorPickerDropdown() {
 
   return (
     <DropdownMenuContent align="end">
-      {colors.map((color) => (
-        <DropdownMenuItem key={`color-${color.value}`} onClick={() => setColor(color.value)}>
-          {color.label}
-        </DropdownMenuItem>
-      ))}
+      {colors.map((color) => {
+        if (color.type === 'separator') {
+          return <DropdownMenuSeparator key={`separator-${color.type}`} />;
+        }
+
+        if (color.type === 'label') {
+          return (
+            <DropdownMenuLabel key={`label-${color.type}`} className="font-medium text-xs text-muted-foreground">
+              {color.label}
+            </DropdownMenuLabel>
+          );
+        }
+
+        return (
+          <DropdownMenuItem key={`color-${color.value}`} onClick={() => setColor(color.value)}>
+            {color.label}
+          </DropdownMenuItem>
+        );
+      })}
     </DropdownMenuContent>
   );
 }
