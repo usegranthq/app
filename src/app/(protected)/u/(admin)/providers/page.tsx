@@ -13,9 +13,9 @@ import ProviderDomain from './ProviderDomain';
 const ProviderCard = ({ provider }: { provider: Provider }) => {
   return (
     <Card className="relative flex h-44 flex-col hover:cursor-pointer hover:bg-muted/15">
-      <CardHeader className="space-y-3">
+      <CardHeader className="space-y-1">
         <CardTitle>{provider.name}</CardTitle>
-        <CardDescription className="line-clamp-2 text-sm">{provider.description}</CardDescription>
+        <CardDescription className="line-clamp-2">{provider.description}</CardDescription>
       </CardHeader>
       <CardFooter className="mt-auto flex flex-col items-start gap-0.5">
         <ProviderDomain provider={provider} />

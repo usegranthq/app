@@ -16,7 +16,7 @@ export default async function ProviderDomain({ provider }: ProviderDomainProps) 
     <Link
       href={getWellKnownOpenIdUrl(domain)}
       target="_blank"
-      className="z-10 text-sm text-sky-400 underline-offset-2 hover:underline"
+      className="z-10 text-sm underline-offset-2 hover:underline"
     >
       {domain}
     </Link>
