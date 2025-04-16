@@ -63,7 +63,33 @@ describe('SDK: Verify Domain', () => {
     expect(response.status).toBe(STATUS_CODES.OK);
     await expect(response.json()).resolves.toEqual({
       verified: false,
-      message: 'Failed to verify domain. Potentially configured with a different provider.',
+      message: 'Failed to verify domain. Invalid Configuration.',
+      domain: null,
+    });
+  });
+
+  it('throw if the domain is not verified and misconfigured', async () => {
+    mockProPlanSubscription();
+    mockDb.provider.findUnique.mockResolvedValue(fakeDbProvider);
+    mockDb.domain.findUnique.mockResolvedValue(fakeDbDomain);
+
+    mockVercel.domains.verify.mockResolvedValue({
+      name: 'test.com',
+      verified: false,
+      apexName: 'test.com',
+      projectId: '1',
+    });
+    mockVercel.domains.getConfig.mockResolvedValue({ misconfigured: true });
+
+    const request = authorizedRequest('v1/providers/1/domains/1/verify', {
+      method: 'POST',
+    });
+
+    const response = await handler(request);
+    expect(response.status).toBe(STATUS_CODES.OK);
+    await expect(response.json()).resolves.toEqual({
+      verified: false,
+      message: 'Failed to verify domain. Invalid Configuration.',
       domain: null,
     });
   });

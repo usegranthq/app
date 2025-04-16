@@ -1,7 +1,7 @@
 import { getApiErrorMessage } from '@/utils/error';
 import { getPlanByUserId } from '@/lib/billing';
 import db from '@/lib/db';
-import vercel from '@/lib/vercel';
+import customDomain from '@/lib/domain';
 
 import { createAuthEndpoint } from './utils/call';
 import ERRORS, { SdkError } from './utils/errors';
@@ -48,29 +48,30 @@ const verifyDomain = createAuthEndpoint(
     }
 
     try {
-      const verifyDomainResponse = await vercel.domains.verify(domain.domain);
-      if (!verifyDomainResponse.verified) {
+      const [isVerified, verificationStatus] = await customDomain.verify(domain.domain);
+
+      let updatedDomain = domain;
+      if (domain.verified !== isVerified) {
+        updatedDomain = await db.domain.update({
+          where: {
+            domain: domain.domain,
+            providerId: ctx.params.id,
+            Provider: {
+              userId: ctx.context.userId,
+            },
+          },
+          select: domainFields,
+          data: { verified: isVerified },
+        });
+      }
+
+      if (!isVerified) {
         return {
           verified: false,
-          message: 'Failed to verify domain. Potentially configured with a different provider.',
+          message: `Failed to verify domain. ${verificationStatus}.`,
           domain: null,
         };
       }
-
-      const domainConfig = await vercel.domains.getConfig(domain.domain);
-      const isVerified = verifyDomainResponse.verified && !domainConfig.misconfigured;
-
-      const updatedDomain = await db.domain.update({
-        where: {
-          domain: domain.domain,
-          providerId: ctx.params.id,
-          Provider: {
-            userId: ctx.context.userId,
-          },
-        },
-        select: domainFields,
-        data: { verified: isVerified },
-      });
 
       return {
         verified: isVerified,

@@ -5,6 +5,7 @@ import { revalidatePath } from 'next/cache';
 import ROUTES from '@/constants/routes';
 import { getApiErrorMessage, getZodErrorMessage } from '@/utils/error';
 import db from '@/lib/db';
+import customDomain from '@/lib/domain';
 import vercel from '@/lib/vercel';
 import { verifySession } from '@/data/_verifySession';
 import { domainSchema } from '@/schema';
@@ -127,13 +128,10 @@ export async function verifyDomain(providerId: string, domain: string): ActionRe
   }
 
   try {
-    const verifyDomainResponse = await vercel.domains.verify(domain);
-    if (!verifyDomainResponse.verified) {
-      return ['Failed to verify domain. Potentially configured with a different provider.', null];
+    const [isVerified, verificationStatus] = await customDomain.verify(domain);
+    if (!isVerified) {
+      return [`Failed to verify domain. ${verificationStatus}`, null];
     }
-
-    const domainConfig = await vercel.domains.getConfig(domain);
-    const isVerified = verifyDomainResponse.verified && !domainConfig.misconfigured;
 
     await db.domain.update({
       where: {
