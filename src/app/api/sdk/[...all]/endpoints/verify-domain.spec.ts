@@ -4,7 +4,7 @@ import ERRORS from '@/utils/error';
 import { sillyClone } from '@/utils/object';
 import { STATUS_CODES } from '@/utils/rest';
 import mockDb from '@/lib/__mocks__/db';
-import mockVercel from '@/lib/__mocks__/vercel';
+import mockCustomDomain from '@/lib/__mocks__/domain';
 
 import handler from '../handler';
 import { fakeDbDomain, fakeDbProvider } from './test-utils/fake-data';
@@ -46,40 +46,7 @@ describe('SDK: Verify Domain', () => {
     mockProPlanSubscription();
     mockDb.provider.findUnique.mockResolvedValue(fakeDbProvider);
     mockDb.domain.findUnique.mockResolvedValue(fakeDbDomain);
-
-    mockVercel.domains.verify.mockResolvedValue({
-      name: 'test.com',
-      verified: false,
-      apexName: 'test.com',
-      projectId: '1',
-    });
-    mockVercel.domains.getConfig.mockResolvedValue({ misconfigured: false });
-
-    const request = authorizedRequest('v1/providers/1/domains/1/verify', {
-      method: 'POST',
-    });
-
-    const response = await handler(request);
-    expect(response.status).toBe(STATUS_CODES.OK);
-    await expect(response.json()).resolves.toEqual({
-      verified: false,
-      message: 'Failed to verify domain. Invalid Configuration.',
-      domain: null,
-    });
-  });
-
-  it('throw if the domain is not verified and misconfigured', async () => {
-    mockProPlanSubscription();
-    mockDb.provider.findUnique.mockResolvedValue(fakeDbProvider);
-    mockDb.domain.findUnique.mockResolvedValue(fakeDbDomain);
-
-    mockVercel.domains.verify.mockResolvedValue({
-      name: 'test.com',
-      verified: false,
-      apexName: 'test.com',
-      projectId: '1',
-    });
-    mockVercel.domains.getConfig.mockResolvedValue({ misconfigured: true });
+    mockCustomDomain.verify.mockResolvedValue([false, 'Invalid Configuration']);
 
     const request = authorizedRequest('v1/providers/1/domains/1/verify', {
       method: 'POST',
@@ -98,15 +65,7 @@ describe('SDK: Verify Domain', () => {
     mockProPlanSubscription();
     mockDb.provider.findUnique.mockResolvedValue(fakeDbProvider);
     mockDb.domain.findUnique.mockResolvedValue(fakeDbDomain);
-
-    mockVercel.domains.verify.mockResolvedValue({
-      name: 'test.com',
-      verified: true,
-      apexName: 'test.com',
-      projectId: '1',
-    });
-    mockVercel.domains.getConfig.mockResolvedValue({ misconfigured: false });
-
+    mockCustomDomain.verify.mockResolvedValue([true, 'Valid Configuration']);
     mockDb.domain.update.mockResolvedValue(fakeDbDomain);
 
     const request = authorizedRequest('v1/providers/1/domains/1/verify', {

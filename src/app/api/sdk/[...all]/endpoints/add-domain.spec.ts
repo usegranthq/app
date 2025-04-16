@@ -4,7 +4,7 @@ import ERRORS from '@/utils/error';
 import { sillyClone } from '@/utils/object';
 import { STATUS_CODES } from '@/utils/rest';
 import mockDb from '@/lib/__mocks__/db';
-import mockVercel from '@/lib/__mocks__/vercel';
+import mockCustomDomain from '@/lib/__mocks__/domain';
 
 import handler from '../handler';
 import { fakeDbDomain, fakeDbProvider } from './test-utils/fake-data';
@@ -90,18 +90,7 @@ describe('SDK: Add Domain', () => {
 
     mockDb.provider.findUnique.mockResolvedValue(fakeDbProvider);
     mockDb.domain.findMany.mockResolvedValue([]);
-
-    mockVercel.domains.add.mockResolvedValue({
-      name: 'test.com',
-      verified: true,
-      apexName: 'test.com',
-      projectId: '1',
-    });
-
-    mockVercel.domains.getConfig.mockResolvedValue({
-      misconfigured: false,
-    });
-
+    mockCustomDomain.add.mockResolvedValue([true, 'Valid Configuration']);
     mockDb.domain.create.mockResolvedValue(fakeDbDomain);
 
     const request = authorizedRequest('v1/providers/1/domains', {

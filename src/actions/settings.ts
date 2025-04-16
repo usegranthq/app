@@ -8,7 +8,7 @@ import ROUTES from '@/constants/routes';
 import { getApiErrorMessage } from '@/utils/error';
 import { auth } from '@/lib/auth';
 import db from '@/lib/db';
-import vercel from '@/lib/vercel';
+import customDomain from '@/lib/domain';
 import { verifySession } from '@/data/_verifySession';
 
 export async function deleteOtherSessions(): ActionResponse {
@@ -60,7 +60,7 @@ export async function deleteAccount(): ActionResponse {
 
   for (const domain of domains) {
     try {
-      await vercel.domains.delete(domain.domain);
+      await customDomain.remove(domain.domain);
     } catch {
       return ['Failed to detach domain associated with your account. Try again or contact support.', null];
     }

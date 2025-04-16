@@ -1,7 +1,7 @@
 import { getApiErrorMessage } from '@/utils/error';
 import { STATUS_CODES } from '@/utils/rest';
 import db from '@/lib/db';
-import vercel from '@/lib/vercel';
+import customDomain from '@/lib/domain';
 
 import { createAuthEndpoint } from './utils/call';
 import ERRORS, { SdkError } from './utils/errors';
@@ -36,7 +36,7 @@ const deleteProvider = createAuthEndpoint(
       });
 
       for (const domain of domains) {
-        await vercel.domains.delete(domain.domain);
+        await customDomain.remove(domain.domain);
         await db.domain.delete({ where: { id: domain.id, Provider: { userId: ctx.context.userId } } });
       }
 

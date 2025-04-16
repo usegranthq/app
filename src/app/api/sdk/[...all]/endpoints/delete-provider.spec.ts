@@ -3,7 +3,7 @@ import { describe, expect, it } from 'vitest';
 import ERRORS from '@/utils/error';
 import { STATUS_CODES } from '@/utils/rest';
 import mockDb from '@/lib/__mocks__/db';
-import mockVercel from '@/lib/__mocks__/vercel';
+import mockCustomDomain from '@/lib/__mocks__/domain';
 
 import handler from '../handler';
 import { fakeDbDomain, fakeDbProvider } from './test-utils/fake-data';
@@ -28,7 +28,7 @@ describe('SDK: Delete Provider', () => {
     });
 
     const response = await handler(request);
-    expect(mockVercel.domains.delete).toHaveBeenCalledWith(fakeDbDomain.domain);
+    expect(mockCustomDomain.remove).toHaveBeenCalledWith(fakeDbDomain.domain);
     expect(response.status).toBe(STATUS_CODES.NO_CONTENT);
     expect(response.body).toBeNull();
   });

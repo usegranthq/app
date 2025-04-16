@@ -12,7 +12,7 @@ import { generateJwk } from '@/utils/jwk';
 import { createJwt, defaultJwk } from '@/utils/jwt';
 import { createUrlId, getIssuer } from '@/utils/provider';
 import db from '@/lib/db';
-import vercel from '@/lib/vercel';
+import customDomain from '@/lib/domain';
 import { verifySession } from '@/data/_verifySession';
 import { clientSchema, providerSchema } from '@/schema';
 import { Provider } from '@/types/app.types';
@@ -99,7 +99,7 @@ export async function deleteProvider(providerId: string): ActionResponse {
     });
 
     for (const domain of domains) {
-      await vercel.domains.delete(domain.domain);
+      await customDomain.remove(domain.domain);
       await db.domain.delete({ where: { id: domain.id, Provider: { userId: user.id } } });
     }
 

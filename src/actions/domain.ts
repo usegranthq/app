@@ -6,7 +6,6 @@ import ROUTES from '@/constants/routes';
 import { getApiErrorMessage, getZodErrorMessage } from '@/utils/error';
 import db from '@/lib/db';
 import customDomain from '@/lib/domain';
-import vercel from '@/lib/vercel';
 import { verifySession } from '@/data/_verifySession';
 import { domainSchema } from '@/schema';
 
@@ -41,9 +40,7 @@ export async function addDomain(providerId: string, formData: FormData): ActionR
   const domain = validation.data;
 
   try {
-    const addDomainResponse = await vercel.domains.add(domain);
-    const domainConfig = await vercel.domains.getConfig(domain);
-    const isVerified = addDomainResponse.verified && !domainConfig.misconfigured;
+    const [isVerified] = await customDomain.add(domain);
 
     await db.domain.create({
       data: {
@@ -87,9 +84,9 @@ export async function deleteDomain(providerId: string, domain: string): ActionRe
   }
 
   try {
-    await vercel.domains.delete(domain);
+    await customDomain.remove(domain);
   } catch {
-    return ['Failed to delete domain. Try again.', null];
+    return ['Failed to remove domain. Try again.', null];
   }
 
   try {

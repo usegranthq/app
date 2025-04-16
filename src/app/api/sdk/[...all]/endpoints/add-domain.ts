@@ -4,7 +4,7 @@ import { getApiErrorMessage } from '@/utils/error';
 import { STATUS_CODES } from '@/utils/rest';
 import { getPlanByUserId } from '@/lib/billing';
 import db from '@/lib/db';
-import vercel from '@/lib/vercel';
+import customDomain from '@/lib/domain';
 import { domainSchema } from '@/schema';
 
 import { createAuthEndpoint } from './utils/call';
@@ -60,10 +60,7 @@ const addDomain = createAuthEndpoint(
     }
 
     try {
-      const addDomainResponse = await vercel.domains.add(ctx.body.domain);
-      const domainConfig = await vercel.domains.getConfig(ctx.body.domain);
-      const isVerified = addDomainResponse.verified && !domainConfig.misconfigured;
-
+      const [isVerified] = await customDomain.add(ctx.body.domain);
       const domain = await db.domain.create({
         data: {
           domain: ctx.body.domain,

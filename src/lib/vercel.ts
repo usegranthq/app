@@ -14,16 +14,7 @@ const vercelApi = new Vercel({
 
 // ref: https://vercel.com/docs/rest-api/endpoints/projects
 
-const blackListedDomains = ['usegrant.dev', 'vercel.app'];
-const verifyBlackListedDomain = (domain: string) => {
-  if (blackListedDomains.includes(domain)) {
-    throw new Error('Domain is blacklisted');
-  }
-};
-
 const addDomain = (domain: string) => {
-  verifyBlackListedDomain(domain);
-
   return vercelApi.projects.addProjectDomain({
     idOrName: vercelProjectId,
     requestBody: {
@@ -32,9 +23,14 @@ const addDomain = (domain: string) => {
   });
 };
 
-const deleteDomain = async (domain: string) => {
-  verifyBlackListedDomain(domain);
+const getDomain = (domain: string) => {
+  return vercelApi.projects.getProjectDomain({
+    idOrName: vercelProjectId,
+    domain,
+  });
+};
 
+const removeDomain = async (domain: string) => {
   await vercelApi.projects.removeProjectDomain({
     idOrName: vercelProjectId,
     domain,
@@ -46,8 +42,6 @@ const deleteDomain = async (domain: string) => {
 };
 
 const verifyDomain = (domain: string) => {
-  verifyBlackListedDomain(domain);
-
   return vercelApi.projects.verifyProjectDomain({
     idOrName: vercelProjectId,
     domain,
@@ -55,17 +49,14 @@ const verifyDomain = (domain: string) => {
 };
 
 const getDomainConfig = (domain: string) => {
-  verifyBlackListedDomain(domain);
-
-  return vercelApi.domains.getDomainConfig({
-    domain,
-  });
+  return vercelApi.domains.getDomainConfig({ domain });
 };
 
 const vercel = {
   domains: {
     add: addDomain,
-    delete: deleteDomain,
+    get: getDomain,
+    remove: removeDomain,
     verify: verifyDomain,
     getConfig: getDomainConfig,
   },

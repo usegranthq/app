@@ -1,7 +1,7 @@
 import { getApiErrorMessage } from '@/utils/error';
 import { STATUS_CODES } from '@/utils/rest';
 import db from '@/lib/db';
-import vercel from '@/lib/vercel';
+import customDomain from '@/lib/domain';
 
 import { createAuthEndpoint } from './utils/call';
 import ERRORS, { SdkError } from './utils/errors';
@@ -41,7 +41,7 @@ const deleteDomain = createAuthEndpoint(
     }
 
     try {
-      await vercel.domains.delete(domain.domain);
+      await customDomain.remove(domain.domain);
       await db.domain.delete({
         where: {
           domain: domain.domain,
