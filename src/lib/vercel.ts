@@ -35,6 +35,9 @@ const removeDomain = async (domain: string) => {
     idOrName: vercelProjectId,
     domain,
   });
+};
+
+const deleteDomain = async (domain: string) => {
   await vercelApi.domains.deleteDomain({
     domain,
     teamId: vercelTeamId,
@@ -57,6 +60,7 @@ const vercel = {
     add: addDomain,
     get: getDomain,
     remove: removeDomain,
+    delete: deleteDomain,
     verify: verifyDomain,
     getConfig: getDomainConfig,
   },

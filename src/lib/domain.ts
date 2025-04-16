@@ -31,7 +31,8 @@ const removeDomain = async (domain: string) => {
   verifyBlackListedDomain(domain);
 
   try {
-    await vercel.domains.remove(domain);
+    await vercel.domains.remove(domain); // removes from project
+    await vercel.domains.delete(domain); // deletes from vercel
   } catch (err) {
     throw err;
   }
