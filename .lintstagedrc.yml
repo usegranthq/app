@@ -1,5 +1,5 @@
 '*.{js,mjs,jsx,ts,tsx}':
-  - next lint --file
+  - oxlint --fix
 
 '*.{js,mjs,jsx,ts,tsx,yml,yaml,json,md,mdx,css,scss,html}':
   - prettier --write

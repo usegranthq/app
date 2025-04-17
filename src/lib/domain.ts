@@ -30,12 +30,8 @@ const addDomain = async (domain: string): Promise<[boolean, DomainVerificationSt
 const removeDomain = async (domain: string) => {
   verifyBlackListedDomain(domain);
 
-  try {
-    await vercel.domains.remove(domain); // removes from project
-    await vercel.domains.delete(domain); // deletes from vercel
-  } catch (err) {
-    throw err;
-  }
+  await vercel.domains.remove(domain); // removes from project
+  await vercel.domains.delete(domain); // deletes from vercel
 };
 
 const verifyDomain = async (domain: string): Promise<[boolean, DomainVerificationStatus]> => {

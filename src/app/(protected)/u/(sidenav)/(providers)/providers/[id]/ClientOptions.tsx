@@ -36,7 +36,7 @@ import { Client } from '@/types/app.types';
 export default function ClientOptions({ providerId, client }: { providerId: string; client: Client }) {
   const router = useRouter();
   const progress = useProgressBar();
-  const [accessToken, setAccessToken] = useState<string | null>(null);
+  const [accessToken, setAccessToken] = useState<string | null>('');
   const [isGeneratingToken, startGeneratingToken] = useTransition();
   const [isDeleting, startDeleting] = useTransition();
 
@@ -83,7 +83,7 @@ export default function ClientOptions({ providerId, client }: { providerId: stri
 
   return (
     <>
-      <AlertDialog open={!!accessToken} onOpenChange={() => setAccessToken(null)}>
+      <AlertDialog open={!!accessToken} onOpenChange={() => setAccessToken('')}>
         <AlertDialogContent>
           <AlertDialogHeader>
             <AlertDialogTitle>Access token</AlertDialogTitle>
@@ -92,20 +92,15 @@ export default function ClientOptions({ providerId, client }: { providerId: stri
               a new one.
             </AlertDialogDescription>
           </AlertDialogHeader>
-          <div className="rounded-md bg-muted p-2">
-            <div
-              className="break-all font-mono text-xs"
+          <div className="rounded-md bg-muted h-52 overflow-hidden">
+            <textarea
+              className="break-all font-mono text-xs resize-none h-full w-full p-2 rounded-md"
+              readOnly
+              value={accessToken ?? ''}
               onClick={(e) => {
-                const range = document.createRange();
-                range.selectNodeContents(e.target as HTMLDivElement);
-                const sel = window.getSelection();
-                if (!sel) return;
-                sel.removeAllRanges();
-                sel.addRange(range);
+                (e.target as HTMLTextAreaElement).select();
               }}
-            >
-              {accessToken}
-            </div>
+            />
           </div>
           <div className="grid gap-2">
             <div className="flex items-center space-x-2">
