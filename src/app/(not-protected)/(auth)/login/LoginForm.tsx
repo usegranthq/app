@@ -14,9 +14,11 @@ import SubmitButton from './SubmitButton';
 
 interface LoginFormProps {
   turnstileSiteKey: string;
+  submitButtonText?: string;
 }
 
-export default function LoginForm({ turnstileSiteKey }: LoginFormProps) {
+export default function LoginForm(props: LoginFormProps) {
+  const { turnstileSiteKey, submitButtonText = 'Sign in' } = props;
   const turnstileRef = useRef<TurnstileInstance>(null);
 
   const handleFormSubmit = async (formData: FormData) => {
@@ -45,11 +47,17 @@ export default function LoginForm({ turnstileSiteKey }: LoginFormProps) {
         <Label htmlFor="email">Email address</Label>
         <Input id="email" name="email" type="email" required placeholder="user@example.com" />
         <div className="mt-4 h-20">
-          <Turnstile siteKey={turnstileSiteKey} ref={turnstileRef} />
+          <Turnstile
+            siteKey={turnstileSiteKey}
+            ref={turnstileRef}
+            options={{
+              size: 'flexible',
+            }}
+          />
         </div>
       </div>
       <div>
-        <SubmitButton />
+        <SubmitButton text={submitButtonText} />
       </div>
     </Form>
   );

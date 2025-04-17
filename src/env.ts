@@ -57,3 +57,5 @@ export const env = createEnv({
 });
 
 export const isLive = process.env.VERCEL_ENV === 'production';
+
+export default env;
