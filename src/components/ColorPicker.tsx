@@ -41,7 +41,8 @@ const colors: ColorPickerItem[] = [
   { type: 'color', label: 'Orange', value: 'orange' },
   { type: 'separator' },
   { type: 'label', label: 'Modern' },
-  { type: 'color', label: 'Vintage Paper', value: 'vintage' },
+  { type: 'color', label: 'Solar Dusk', value: 'solar-dusk' },
+  { type: 'color', label: 'Caffine', value: 'caffine' },
   { type: 'color', label: 'Claude', value: 'claude' },
   { type: 'color', label: 'Vercel', value: 'vercel' },
 ];
