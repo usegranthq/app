@@ -45,6 +45,7 @@ const colors: ColorPickerItem[] = [
   { type: 'color', label: 'Caffine', value: 'caffine' },
   { type: 'color', label: 'Claude', value: 'claude' },
   { type: 'color', label: 'Vercel', value: 'vercel' },
+  { type: 'color', label: 'Cosmic Night', value: 'cosmic-night' },
 ];
 
 export default function ColorPickerDropdown() {
