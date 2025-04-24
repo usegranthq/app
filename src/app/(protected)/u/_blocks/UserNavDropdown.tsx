@@ -77,21 +77,21 @@ export default function UserNavDropdown(props: UserNavDropdownProps) {
             <Link href="/u/settings">
               <BadgeCheckIcon className="text-muted-foreground" />
               Account
-              <DropdownMenuShortcut>⇧⌘P</DropdownMenuShortcut>
+              <DropdownMenuShortcut>⇧⌘A</DropdownMenuShortcut>
             </Link>
           </DropdownMenuItem>
           <DropdownMenuItem asChild>
             <Link href="/u/settings/billing">
               <CreditCardIcon className="text-muted-foreground" />
               Billing
-              <DropdownMenuShortcut>⌘B</DropdownMenuShortcut>
+              <DropdownMenuShortcut>⇧⌘B</DropdownMenuShortcut>
             </Link>
           </DropdownMenuItem>
           <DropdownMenuItem asChild>
             <Link href="/u/settings/security">
               <LockIcon className="text-muted-foreground" />
               Security
-              <DropdownMenuShortcut>⌘S</DropdownMenuShortcut>
+              <DropdownMenuShortcut>⇧⌘S</DropdownMenuShortcut>
             </Link>
           </DropdownMenuItem>
         </DropdownMenuGroup>
