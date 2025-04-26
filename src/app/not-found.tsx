@@ -1,0 +1,30 @@
+import { headers } from 'next/headers';
+import { getSessionCookie } from 'better-auth/cookies';
+
+import { Button } from '@/shadcn/components/ui/button';
+import { Separator } from '@/shadcn/components/ui/separator';
+
+import ROUTES from '@/constants/routes';
+import * as constants from '@/constants';
+
+export default async function NotFound() {
+  const headersList = new Headers(await headers());
+  const sessionCookie = getSessionCookie(headersList, { cookiePrefix: constants.COOKIE_PREFIX });
+
+  const isLoggedIn = !!sessionCookie;
+
+  return (
+    <div className="flex flex-col h-dvh items-center justify-center">
+      <div className="flex items-center gap-4 h-8">
+        <h1 className="text-2xl font-medium">404</h1>
+        <Separator orientation="vertical" />
+        <p className="text-sm">The page you are looking for does not exist.</p>
+      </div>
+      <div className="mt-8">
+        <Button variant="outline" asChild>
+          <a href={isLoggedIn ? ROUTES.DASHBOARD : ROUTES.ROOT}>{isLoggedIn ? 'Back to dashboard' : 'Back to home'}</a>
+        </Button>
+      </div>
+    </div>
+  );
+}
