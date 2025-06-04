@@ -37,6 +37,7 @@ const mockEnvs = {
   NEXT_PUBLIC_POLAR_PRO_PLAN_PRODUCT_ID: 'prod_pro_xxxx',
   NEXT_PUBLIC_POLAR_ULTIMATE_PLAN_PRODUCT_ID: 'prod_ultimate_xxxx',
   POSTHOG_API_KEY: 'phc_xxxx',
+  STATE_HMAC_SECRET_KEY: 'xxx',
 };
 
 for (const [key, value] of Object.entries(mockEnvs)) {
