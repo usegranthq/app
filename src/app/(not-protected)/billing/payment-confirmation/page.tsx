@@ -10,7 +10,7 @@ import { verifyHMACState } from '@/utils/callbacks';
 import polarClient from '@/lib/polar';
 import env from '@/env';
 
-export const redirectParamsSchema = z.object({
+const redirectParamsSchema = z.object({
   checkout_id: z.string(),
   customer_session_token: z.string(),
   state: z.string(),
