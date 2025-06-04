@@ -8,7 +8,7 @@
     "start": "next start",
     "test": "vitest",
     "lint": "oxlint",
-    "generate": "prisma generate",
+    "generate": "prisma generate --no-hints",
     "migrate": "prisma migrate deploy",
     "migrate:dev": "prisma migrate dev",
     "studio": "prisma studio",
