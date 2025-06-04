@@ -9,20 +9,20 @@ import NavLink from '@/components/NavLink';
 export default function Header() {
   return (
     <header className="flex h-fit items-center gap-4">
-      <nav className="hidden flex-col gap-6 text-lg font-medium md:flex md:flex-row md:items-center md:gap-5 md:text-sm lg:gap-6">
-        <Link href="/u/providers" className="flex items-center gap-2">
-          <KanbanIcon className="size-6" />
-          <span className="sr-only">useGrant</span>
-        </Link>
+      <Link href="/u/providers" className="flex items-center gap-2">
+        <KanbanIcon className="size-6" />
+        <span className="sr-only">useGrant</span>
+      </Link>
+      <nav className="ml-auto hidden mr-4 flex-col gap-6 text-lg font-medium md:flex md:flex-row md:items-center md:gap-5 md:text-sm lg:gap-6">
         <NavLink href="/u/providers" className="text-muted-foreground transition-colors hover:text-foreground">
           Providers
         </NavLink>
         <NavLink href="/u/tenants" className="text-muted-foreground transition-colors hover:text-foreground">
           Tenants
         </NavLink>
-        <NavLink href="/u/settings" className="text-muted-foreground transition-colors hover:text-foreground">
-          Settings
-        </NavLink>
+        <a href="/docs" target="_blank" className="text-muted-foreground transition-colors hover:text-foreground">
+          Docs
+        </a>
       </nav>
       <Sheet>
         <SheetTrigger asChild>
