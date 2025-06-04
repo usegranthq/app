@@ -52,8 +52,8 @@ export default async function PaymentConfirmation({ searchParams }: PaymentConfi
         <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-green-800/20">
           <CheckCircle2Icon className="size-8 text-green-600" />
         </div>
-        <h1 className="text-xl font-medium">Payment successful</h1>
-        <p className="mt-0.5 text-sm max-w-md text-muted-foreground">
+        <h1 className="text-xl font-medium">Transaction successful</h1>
+        <p className="mt-1 text-sm max-w-md text-muted-foreground">
           Payment processed. Your transaction was successful and your subscription will be updated shortly
         </p>
         <Button asChild className="mt-6">
