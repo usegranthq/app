@@ -12,7 +12,7 @@ We are dedicated to safeguarding your privacy and ensuring the security of your 
 
 ## Payment Processing
 
-Our order processing is facilitated by our online reseller, [Creem.io](https://creem.io). Creem serves as the Merchant of Record for all our transactions, offering customer support and managing returns.
+Our order processing is facilitated by our online reseller, [Polar.sh](https://polar.sh). Polar serves as the Merchant of Record for all our transactions, offering customer support and managing returns.
 
 ## Refund Policy
 

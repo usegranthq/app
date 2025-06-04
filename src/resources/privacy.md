@@ -20,7 +20,7 @@ We do not set any tracking cookies. We only use a few functional cookies to keep
 
 We use the following third party services:
 
-- Creem for payment processing. Please refer to their [Privacy Policy](https://creem.io/privacy) for more information.
+- Polar for payment processing. Please refer to their [Privacy Policy](https://polar.sh/legal/privacy) for more information.
 
 ## How We Use Your Information
 
@@ -40,7 +40,7 @@ We do not use passwords; instead, we use magic links or one-time codes for enhan
 
 We will retain your information for as long as your account is active or as needed to provide you services. If you wish to delete your account, you can do so by contacting us at [support@usegrant.com](mailto:support@usegrant.com) or by deleting your account in the app. When you delete your account, we will delete(wipe) your personal information from our systems. However, we may retain payment data for accounting purposes.
 
-Payment data is retained for accounting purposes and is securely managed by our payment processor, Creem, in accordance with their Privacy Policy.
+Payment data is retained for accounting purposes and is securely managed by our payment processor, Polar, in accordance with their Privacy Policy.
 
 We may also delete your information on the following occasions:
 

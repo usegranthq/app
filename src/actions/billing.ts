@@ -1,20 +1,51 @@
 'use server';
 
+import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
 
+import ROUTES from '@/constants/routes';
+import { PlanId, PLANS } from '@/utils/billing';
+import { generateHMACState } from '@/utils/callbacks';
 import { getApiErrorMessage } from '@/utils/error';
-import * as creem from '@/lib/creem';
 import db from '@/lib/db';
+import polarClient from '@/lib/polar';
+import { getSiteUrl } from '@/lib/site';
 import { verifySession } from '@/data/_verifySession';
-import { getCustomer } from '@/data/user';
+import { getCustomer, getSubscription } from '@/data/user';
+import env from '@/env';
 
-export const checkout = async (productId: string): ActionResponse => {
+export const checkout = async (planId: PlanId): ActionResponse => {
   const session = await verifySession();
+
+  if (planId === 'free') {
+    return ["You can't upgrade to free plan. You can cancel the subscription instead", null];
+  }
+
+  const plan = PLANS[planId];
+
+  if (!plan || !plan.productId) {
+    return ['Invalid product', null];
+  }
+
+  const customer = await getCustomer();
+
+  const state = generateHMACState(env.STATE_HMAC_SECRET_KEY);
+
+  const successUrl = new URL(
+    `${ROUTES.API_BILLING_SUCCESS_URL}?checkout_id={CHECKOUT_ID}&state=${state}`,
+    getSiteUrl(),
+  );
   let sessionURL = '';
 
   try {
-    const checkoutSession = await creem.createCheckoutSession(session.user.email, productId);
-    sessionURL = checkoutSession.checkout_url;
+    const checkoutSession = await polarClient.checkouts.create({
+      customerExternalId: session.user.id,
+      products: [plan.productId],
+      customerId: customer?.customerRefId,
+      customerEmail: session.user.email,
+      successUrl: successUrl.toString(),
+    });
+    sessionURL = checkoutSession.url;
   } catch (error) {
     const errorMessage = getApiErrorMessage(error, 'Failed to create a checkout session');
     return [errorMessage, null];
@@ -22,6 +53,52 @@ export const checkout = async (productId: string): ActionResponse => {
 
   // redirect to checkout session
   redirect(sessionURL);
+};
+
+export const upgradePlan = async (planId: PlanId): ActionResponse => {
+  const session = await verifySession();
+
+  if (planId === 'free') {
+    return ["You can't upgrade to free plan. You can cancel the subscription instead", null];
+  }
+
+  const plan = PLANS[planId];
+
+  if (!plan || !plan.productId) {
+    return ['Invalid product', null];
+  }
+
+  const activeSubscription = await getSubscription();
+  if (!activeSubscription) {
+    return ['No active subscription found', null];
+  }
+
+  if (activeSubscription.productId === plan.productId) {
+    return ['You are already on the same plan', null];
+  }
+
+  try {
+    const subscription = await polarClient.subscriptions.update({
+      id: activeSubscription.subscriptionRefId,
+      subscriptionUpdate: {
+        productId: plan.productId,
+        prorationBehavior: 'prorate',
+      },
+    });
+
+    // update subscription
+    await db.subscription.update({
+      where: { id: activeSubscription.id, Customer: { userId: session.user.id } },
+      data: { status: subscription.status, productId: subscription.productId },
+    });
+  } catch (error) {
+    console.log(error);
+    const errorMessage = getApiErrorMessage(error, 'Failed to create a checkout session');
+    return [errorMessage, null];
+  }
+
+  revalidatePath(ROUTES.SETTINGS_BILLING);
+  return [null, null];
 };
 
 export const cancelSubscription = async (): ActionResponse => {
@@ -55,14 +132,17 @@ export const cancelSubscription = async (): ActionResponse => {
 
   // cancel subscription
   try {
-    const creemSubscription = await creem.cancelSubscription(subscription.subscriptionRefId);
+    const polarSubscription = await polarClient.subscriptions.revoke({
+      id: subscription.subscriptionRefId,
+    });
 
     // update subscription
     await db.subscription.update({
       where: { id: subscription.id, Customer: { userId: session.user.id } },
-      data: { status: creemSubscription.status },
+      data: { status: polarSubscription.status },
     });
-  } catch {
+  } catch (err) {
+    console.log(err);
     return ['Failed to cancel subscription', null];
   }
 
@@ -78,8 +158,10 @@ export const redirectToCustomerPortal = async (): ActionResponse<string | null> 
   }
 
   try {
-    const url = await creem.getCustomerPortalUrl(customer.customerRefId);
-    return [null, url];
+    const url = await polarClient.customerSessions.create({
+      customerId: customer.customerRefId,
+    });
+    return [null, url.customerPortalUrl];
   } catch (error) {
     const errorMessage = getApiErrorMessage(error, 'Failed to redirect to customer portal');
     return [errorMessage, null];

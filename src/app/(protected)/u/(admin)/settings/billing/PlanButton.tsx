@@ -6,28 +6,47 @@ import { toast } from 'sonner';
 import { Button } from '@/shadcn/components/ui/button';
 
 import { PLAN, PLAN_FEATURES, PlanFeatures, PlanId, PLANS } from '@/utils/billing';
-import { checkout } from '@/actions';
+import { checkout, upgradePlan } from '@/actions';
 import { useProgressBar } from '@/components/NavProgress';
 
 import CancelPlanButton from './CancelPlanButton';
 
 interface PlanButtonProps {
-  features: PlanFeatures;
+  id: PlanId;
   currentPlan: PlanId;
+  features: PlanFeatures;
 }
 
-export default function PlanButton({ features, currentPlan }: PlanButtonProps) {
+export default function PlanButton({ id, features, currentPlan }: PlanButtonProps) {
   const [isPending, startTransition] = useTransition();
   const progress = useProgressBar();
 
-  const handleCheckoutClick = (productId: string) => {
+  const handleCheckout = (planId: PlanId) => {
     startTransition(async () => {
       progress.start();
-      const [errorMessage] = await checkout(productId);
+      const [errorMessage] = await checkout(planId);
       if (errorMessage) {
         toast.error(errorMessage);
       }
     });
+  };
+
+  const handleUpgrade = (planId: PlanId) => {
+    startTransition(async () => {
+      progress.start();
+      const [errorMessage] = await upgradePlan(planId);
+      if (errorMessage) {
+        toast.error(errorMessage);
+      }
+    });
+  };
+
+  const handleCheckoutClick = (planId: PlanId) => {
+    if (currentPlan === PLAN.FREE) {
+      return handleCheckout(planId);
+    }
+
+    handleUpgrade(planId);
   };
 
   if (currentPlan === features.id) {
@@ -46,18 +65,8 @@ export default function PlanButton({ features, currentPlan }: PlanButtonProps) {
   const currentPlanIndex = PLAN_FEATURES.findIndex((p) => p.id === currentPlan);
   const isDowngrade = planIndex < currentPlanIndex;
 
-  const priceId = PLANS[features.id].productId as string;
-
-  if (currentPlan === PLAN.FREE) {
-    return (
-      <Button className="min-w-32" onClick={() => handleCheckoutClick(priceId)} disabled={isPending}>
-        Upgrade
-      </Button>
-    );
-  }
-
   return (
-    <Button disabled={!isDowngrade || isPending} className="min-w-32" onClick={() => handleCheckoutClick(priceId)}>
+    <Button disabled={isPending} className="min-w-32" onClick={() => handleCheckoutClick(id)}>
       {isDowngrade ? 'Downgrade' : 'Upgrade'}
     </Button>
   );

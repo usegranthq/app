@@ -85,7 +85,7 @@ export const PLANS: Record<PlanId, PlanDetails> = {
   [PLAN.PRO]: {
     id: PLAN.PRO,
     name: 'Pro',
-    productId: env.NEXT_PUBLIC_CREEM_PRO_PLAN_PRODUCT_ID,
+    productId: env.NEXT_PUBLIC_POLAR_PRO_PLAN_PRODUCT_ID,
     price: 9,
     features: {
       providers: {
@@ -121,7 +121,7 @@ export const PLANS: Record<PlanId, PlanDetails> = {
   [PLAN.ULTIMATE]: {
     id: PLAN.ULTIMATE,
     name: 'Ultimate',
-    productId: env.NEXT_PUBLIC_CREEM_ULTIMATE_PLAN_PRODUCT_ID,
+    productId: env.NEXT_PUBLIC_POLAR_ULTIMATE_PLAN_PRODUCT_ID,
     price: 49,
     features: {
       providers: {

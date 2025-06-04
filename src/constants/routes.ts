@@ -19,6 +19,8 @@ export const ROUTES = {
   TENANTS_ID: (id: string) => `/u/tenants/${id}`,
   TENANTS_ID_PROVIDERS_ID: (id: string, tid: string) => `/u/tenants/${id}/providers/${tid}`,
   TENANTS_ID_PROVIDERS_ID_ADD: (id: string, tid: string) => `/u/tenants/${id}/providers/${tid}/add`,
+
+  API_BILLING_SUCCESS_URL: `/billing/payment-confirmation`,
 };
 
 export default ROUTES;

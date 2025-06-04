@@ -4,7 +4,7 @@
 include .env.development
 export
 
-auth-generate:
+auth-gen:
 	npx @better-auth/cli@latest generate
 
 lint-staged:

@@ -32,10 +32,10 @@ const mockEnvs = {
   VERCEL_DOMINATE_PROJECT_ID: 'vercel_prj_xxxx',
   VERCEL_DOMINATE_API_TOKEN: 'xxxx',
   CRON_SECRET: 'xxxx',
-  CREEM_API_KEY: 'xxxx',
-  CREEM_WEBHOOK_SECRET: 'whsec_xxxx',
-  NEXT_PUBLIC_CREEM_PRO_PLAN_PRODUCT_ID: 'prod_pro_xxxx',
-  NEXT_PUBLIC_CREEM_ULTIMATE_PLAN_PRODUCT_ID: 'prod_ultimate_xxxx',
+  POLAR_ACCESS_TOKEN: 'xxxx',
+  POLAR_WEBHOOK_SECRET: 'whsec_xxxx',
+  NEXT_PUBLIC_POLAR_PRO_PLAN_PRODUCT_ID: 'prod_pro_xxxx',
+  NEXT_PUBLIC_POLAR_ULTIMATE_PLAN_PRODUCT_ID: 'prod_ultimate_xxxx',
   POSTHOG_API_KEY: 'phc_xxxx',
 };
 

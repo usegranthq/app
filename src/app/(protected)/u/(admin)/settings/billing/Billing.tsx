@@ -3,7 +3,7 @@ import { CheckIcon } from '@radix-ui/react-icons';
 
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/shadcn/components/ui/card';
 
-import { PLAN, PLAN_FEATURES, PlanDetails, PLANS } from '@/utils/billing';
+import { PLAN_FEATURES, PlanDetails, PLANS } from '@/utils/billing';
 
 import CustomerPortal from './CustomerPortal';
 import PlanButton from './PlanButton';
@@ -45,7 +45,7 @@ export default function Billing({ plan, showCustomerPortal }: BillingProps) {
                 </ul>
               </CardContent>
               <CardFooter className="mt-5 justify-center">
-                <PlanButton features={features} currentPlan={currentPlan} />
+                <PlanButton id={plan.id} features={features} currentPlan={currentPlan} />
               </CardFooter>
             </Card>
           );
@@ -53,9 +53,10 @@ export default function Billing({ plan, showCustomerPortal }: BillingProps) {
       </div>
       {showCustomerPortal && <CustomerPortal />}
       <div className="my-10 flex flex-col gap-2 text-sm text-muted-foreground">
-        {currentPlan !== PLAN.FREE && (
-          <p>You can upgrade to a new plan by first downgrading to the free plan and then subscribing again.</p>
-        )}
+        <p>
+          Note: If you change your subscription plan while an active subscription is in place, any upgrade or downgrade
+          will be prorated automatically.
+        </p>
         <p>
           Get in touch if you need to create more than what&apos;s provided in the ultimate plan or have any other
           questions. Contact us via{' '}
