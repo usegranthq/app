@@ -39,7 +39,7 @@ export const checkout = async (planId: PlanId): ActionResponse => {
 
   try {
     const checkoutSession = await polarClient.checkouts.create({
-      customerExternalId: session.user.id,
+      externalCustomerId: session.user.id,
       products: [plan.productId],
       customerId: customer?.customerRefId,
       customerEmail: session.user.email,
