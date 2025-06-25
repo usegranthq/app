@@ -13,7 +13,7 @@ export default function Header() {
         <KanbanIcon className="size-6" />
         <span className="sr-only">useGrant</span>
       </Link>
-      <nav className="ml-auto hidden mr-4 flex-col gap-6 text-lg font-medium md:flex md:flex-row md:items-center md:gap-5 md:text-sm lg:gap-6">
+      <nav className="mr-4 ml-auto hidden flex-col gap-6 text-lg font-medium md:flex md:flex-row md:items-center md:gap-5 md:text-sm lg:gap-6">
         <NavLink href="/u/providers" className="text-muted-foreground transition-colors hover:text-foreground">
           Providers
         </NavLink>

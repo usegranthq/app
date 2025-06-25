@@ -24,7 +24,7 @@ export default function Signup() {
           <CardDescription className="sr-only">Create an account</CardDescription>
           <p className="text-sm">
             <span className="text-muted-foreground">Already have an account?</span>{' '}
-            <Link href="/login" className="hover:underline underline-offset-4">
+            <Link href="/login" className="underline-offset-4 hover:underline">
               Login
             </Link>
           </p>

@@ -12,7 +12,7 @@ interface NoPoliciesProps {
 
 export default async function NoPolicies({ id, tenantProviderId }: NoPoliciesProps) {
   return (
-    <div className="flex h-96 mt-20 flex-1 items-center justify-center">
+    <div className="mt-20 flex h-96 flex-1 items-center justify-center">
       <div className="flex flex-col items-center gap-2">
         <KanbanIcon className="size-8" />
         <h1 className="text-2xl font-medium">Create your first policy</h1>

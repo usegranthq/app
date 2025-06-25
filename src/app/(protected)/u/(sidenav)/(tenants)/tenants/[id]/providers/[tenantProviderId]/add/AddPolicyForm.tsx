@@ -78,13 +78,13 @@ export default function AddPolicyForm({ tenantId, tenantProvider }: AddPolicyFor
 
         <div className="grid w-full gap-2">
           <Label>Conditions</Label>
-          <div className="grid grid-cols-12 gap-4 mt-2 w-full">
-            <div className="grid gap-2 col-span-3 items-start">
+          <div className="mt-2 grid w-full grid-cols-12 gap-4">
+            <div className="col-span-3 grid items-start gap-2">
               <SelectInput name="conditions.0.key" label="Key" placeholder="Select a key">
                 <HookForm.SelectItem value="sub">sub</HookForm.SelectItem>
               </SelectInput>
             </div>
-            <div className="grid gap-2 col-span-4 items-start">
+            <div className="col-span-4 grid items-start gap-2">
               <SelectInput name="conditions.0.operator" label="Operator" placeholder="Select an operator">
                 <HookForm.SelectItem value="stringEquals">StringEquals</HookForm.SelectItem>
                 <HookForm.SelectItem value="stringNotEquals">StringNotEquals</HookForm.SelectItem>
@@ -92,7 +92,7 @@ export default function AddPolicyForm({ tenantId, tenantProvider }: AddPolicyFor
                 <HookForm.SelectItem value="stringNotLike">StringNotLike</HookForm.SelectItem>
               </SelectInput>
             </div>
-            <div className="grid gap-2 col-span-5 w-full items-start">
+            <div className="col-span-5 grid w-full items-start gap-2">
               <TextInput name="conditions.0.value" label="Value" placeholder="Value" />
             </div>
           </div>

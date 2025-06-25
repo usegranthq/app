@@ -2,7 +2,7 @@ import Link from 'next/link';
 
 export default function Terms() {
   return (
-    <p className="leading-relaxed font-mono text-center text-xs">
+    <p className="text-center font-mono text-xs leading-relaxed">
       By continuing, you agree to our{' '}
       <Link href="/terms" className="underline underline-offset-4">
         Terms of Service

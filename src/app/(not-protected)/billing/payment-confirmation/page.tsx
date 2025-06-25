@@ -33,7 +33,7 @@ export default async function PaymentConfirmation({ searchParams }: PaymentConfi
 
   const isValidState = verifyHMACState(env.STATE_HMAC_SECRET_KEY, params.state);
   if (!isValidState) {
-    return <div className="h-dvh flex flex-col items-center justify-center text-sm">Invalid/Expired state</div>;
+    return <div className="flex h-dvh flex-col items-center justify-center text-sm">Invalid/Expired state</div>;
   }
 
   try {
@@ -43,17 +43,17 @@ export default async function PaymentConfirmation({ searchParams }: PaymentConfi
       throw new Error('Unsucessfull payment');
     }
   } catch {
-    return <div className="h-dvh flex flex-col items-center justify-center text-sm">Invalid payment information</div>;
+    return <div className="flex h-dvh flex-col items-center justify-center text-sm">Invalid payment information</div>;
   }
 
   return (
-    <div className="h-dvh flex flex-col items-center justify-center">
-      <div className="text-center -mt-4">
+    <div className="flex h-dvh flex-col items-center justify-center">
+      <div className="-mt-4 text-center">
         <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-green-800/20">
           <CheckCircle2Icon className="size-8 text-green-600" />
         </div>
         <h1 className="text-xl font-medium">Transaction successful</h1>
-        <p className="mt-1 text-sm max-w-md text-muted-foreground">
+        <p className="mt-1 max-w-md text-sm text-muted-foreground">
           Payment processed. Your transaction was successful and your subscription will be updated shortly
         </p>
         <Button asChild className="mt-6">

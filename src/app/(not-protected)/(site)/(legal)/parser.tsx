@@ -18,7 +18,7 @@ function Heading({ children, level }: HeadingProps) {
   switch (level) {
     case 2:
       return (
-        <h2 id={String(children)} className="mb-2 mt-12 text-2xl font-bold">
+        <h2 id={String(children)} className="mt-12 mb-2 text-2xl font-bold">
           {children}
         </h2>
       );
@@ -62,7 +62,7 @@ type Components = {
 
 const components: Components = {
   Paragraph: ({ children }) => {
-    return <p className="mb-5 mt-2">{children}</p>;
+    return <p className="mt-2 mb-5">{children}</p>;
   },
   Heading: Heading,
   Link: ({ href, children }) => {
@@ -75,7 +75,7 @@ const components: Components = {
   },
   List: ({ ordered, children }) => {
     const Tag = ordered ? 'ol' : 'ul';
-    return <Tag className={cn('ml-2 mt-1 list-inside', ordered ? 'list-decimal' : 'list-disc')}>{children}</Tag>;
+    return <Tag className={cn('mt-1 ml-2 list-inside', ordered ? 'list-decimal' : 'list-disc')}>{children}</Tag>;
   },
 };
 

@@ -69,7 +69,7 @@ export default function KeysList({ signingKeys, provider, plan }: KeysListProps)
         When automatic rotation is enabled, a new key is generated daily. The most recent old key is retained in the
         database for compatibility with existing tokens, while all other keys are removed. This process repeats.
       </p>
-      <p className="mb-2 mt-10">The following keys are available:</p>
+      <p className="mt-10 mb-2">The following keys are available:</p>
       <ol className="flex list-decimal flex-col gap-3 pl-5">
         {signingKeys.map((key, index) => {
           const isFirst = index === 0;

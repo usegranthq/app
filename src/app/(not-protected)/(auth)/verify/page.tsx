@@ -34,7 +34,7 @@ export default async function Login() {
     <div className="flex h-dvh flex-col items-center justify-center">
       <div className="max-w-sm">
         <h1 className="text-center text-2xl font-bold">Verification</h1>
-        <p className="mb-10 mt-2 text-center text-sm">
+        <p className="mt-2 mb-10 text-center text-sm">
           We have sent you a verification code to <span className="font-medium text-muted-foreground">{email}.</span>{' '}
           Enter it below
         </p>

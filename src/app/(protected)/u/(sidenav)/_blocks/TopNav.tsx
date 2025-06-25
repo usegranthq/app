@@ -9,7 +9,7 @@ export function TopNav() {
     <Topbar>
       <div className="flex w-full items-center">
         <SidebarTrigger />
-        <div className="ml-auto mr-4 flex gap-6">
+        <div className="mr-4 ml-auto flex gap-6">
           <Link href="/u/providers" className="text-sm font-medium text-muted-foreground hover:text-foreground">
             Providers
           </Link>

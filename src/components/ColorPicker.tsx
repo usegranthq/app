@@ -60,7 +60,7 @@ export default function ColorPickerDropdown() {
 
         if (color.type === 'label') {
           return (
-            <DropdownMenuLabel key={`label-${color.type}`} className="font-medium text-xs text-muted-foreground">
+            <DropdownMenuLabel key={`label-${color.type}`} className="text-xs font-medium text-muted-foreground">
               {color.label}
             </DropdownMenuLabel>
           );

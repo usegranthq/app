@@ -95,7 +95,7 @@ export default function AddProviderForm({ tenantId }: AddProviderFormProps) {
             </>
           }
         />
-        <div className="flex gap-2 w-full">
+        <div className="flex w-full gap-2">
           <div className="w-full">
             <TextInput name="fingerprints.0" label="Fingerprint" placeholder="Identity provider fingerprint" readOnly />
           </div>

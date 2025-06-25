@@ -71,8 +71,8 @@ export default function PolicyOptions({ tenantId, tenantProviderId, policy }: Po
             <DialogTitle>{policy.name}</DialogTitle>
             <DialogDescription>Conditions set for this policy are:</DialogDescription>
           </DialogHeader>
-          <div className="text-sm mt-2">
-            <pre className="bg-muted p-2 rounded-md">
+          <div className="mt-2 text-sm">
+            <pre className="rounded-md bg-muted p-2">
               <code>{JSON.stringify(policy.conditions, null, 2)}</code>
             </pre>
           </div>

@@ -61,7 +61,7 @@ export default function DeleteAccount() {
                 servers.
               </AlertDialogDescription>
             </AlertDialogHeader>
-            <div className="grid gap-2 my-2">
+            <div className="my-2 grid gap-2">
               <Label>Type &quot;DELETE&quot; to confirm</Label>
               <Input
                 placeholder="DELETE"

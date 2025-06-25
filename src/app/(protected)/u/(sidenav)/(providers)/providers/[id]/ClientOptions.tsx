@@ -92,9 +92,9 @@ export default function ClientOptions({ providerId, client }: { providerId: stri
               a new one.
             </AlertDialogDescription>
           </AlertDialogHeader>
-          <div className="rounded-md bg-muted h-52 overflow-hidden">
+          <div className="h-52 overflow-hidden rounded-md bg-muted">
             <textarea
-              className="break-all font-mono text-xs resize-none h-full w-full p-2 rounded-md"
+              className="h-full w-full resize-none rounded-md p-2 font-mono text-xs break-all"
               readOnly
               value={accessToken ?? ''}
               onClick={(e) => {

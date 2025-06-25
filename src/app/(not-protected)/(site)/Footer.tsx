@@ -10,7 +10,7 @@ export default function Footer() {
           <p className="font-mono text-sm font-medium">© {currentYear} useGrant. All rights reserved.</p>
           <p className="font-mono text-sm font-medium text-muted-foreground">support@usegrant.com</p>
         </div>
-        <div className="mt-14 flex gap-6 max-md:flex-col md:ml-auto md:mt-0 md:gap-16">
+        <div className="mt-14 flex gap-6 max-md:flex-col md:mt-0 md:ml-auto md:gap-16">
           <div>
             <p className="font-medium">Packages</p>
             <div className="mt-3 flex flex-col gap-2 text-sm md:gap-4">

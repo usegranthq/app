@@ -41,7 +41,7 @@ function getColumns(tenantId: string, tenantProviderId: string): ColumnDef<Tenan
     {
       header: 'Description',
       cell: ({ row }) => {
-        return <span className="max-w-72 truncate inline-block">{row.original.description}</span>;
+        return <span className="inline-block max-w-72 truncate">{row.original.description}</span>;
       },
     },
     {
@@ -102,7 +102,7 @@ export default function TenantProviderPolicies({
               </BreadcrumbItem>
             </BreadcrumbList>
           </Breadcrumb>
-          <h1 className="text-2xl font-medium flex items-center gap-2">
+          <h1 className="flex items-center gap-2 text-2xl font-medium">
             <span className="inline-block max-w-md truncate">{domainWithoutProtocol(tenantProvider.url)}</span>
           </h1>
         </div>

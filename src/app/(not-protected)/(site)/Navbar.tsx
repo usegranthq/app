@@ -16,12 +16,12 @@ export default function Navbar() {
     <header className="top-0 z-50 flex border-b bg-background shadow-xs md:sticky">
       <div className="ml-4 flex items-center">
         <Link href="/">
-          <div className="left-4 top-8 md:left-10 md:top-10">
+          <div className="top-8 left-4 md:top-10 md:left-10">
             <Image
               src={darkLogo}
               alt="logo"
               style={{ width: '120px', height: 'auto' }}
-              className=" hidden shrink-0 dark:block"
+              className="hidden shrink-0 dark:block"
             />
             <Image
               src={lightLogo}
@@ -45,7 +45,7 @@ export default function Navbar() {
                     href={item.href}
                   >
                     {item.label}
-                    <span className="absolute bottom-0 left-0 right-0 h-[1.5px] w-0 bg-foreground transition-all duration-500 group-hover:w-full" />
+                    <span className="absolute right-0 bottom-0 left-0 h-[1.5px] w-0 bg-foreground transition-all duration-500 group-hover:w-full" />
                   </LinkComponent>
                 </li>
               );

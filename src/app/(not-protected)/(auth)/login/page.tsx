@@ -24,7 +24,7 @@ export default function Login() {
           <CardDescription className="sr-only">Login to your account</CardDescription>
           <p className="text-sm">
             <span className="text-muted-foreground">Don&apos;t have an account?</span>{' '}
-            <Link href="/signup" className="hover:underline underline-offset-4">
+            <Link href="/signup" className="underline-offset-4 hover:underline">
               Sign up
             </Link>
           </p>

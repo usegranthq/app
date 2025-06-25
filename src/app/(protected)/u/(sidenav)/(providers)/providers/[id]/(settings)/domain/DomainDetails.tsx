@@ -54,7 +54,7 @@ export default function DomainDetails({ provider }: DomainDetailsProps) {
         </CardDescription>
       </CardHeader>
       <CardContent className="mt-4">
-        <form className="flex items-center gap-8 mb-2" action={handleFormSubmit}>
+        <form className="mb-2 flex items-center gap-8" action={handleFormSubmit}>
           <div className="grid w-full gap-2">
             <Label>Domain Name</Label>
             <div className="flex w-full items-center space-x-4">

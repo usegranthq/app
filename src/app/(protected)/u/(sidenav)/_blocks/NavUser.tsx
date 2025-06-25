@@ -17,7 +17,7 @@ export function NavUser() {
       <SidebarMenuItem>
         <DropdownMenu>
           <DropdownMenuTrigger
-            className="w-full rounded-md outline-hidden ring-ring hover:bg-accent focus-visible:ring-2 data-[state=open]:bg-accent"
+            className="w-full rounded-md ring-ring outline-hidden hover:bg-accent focus-visible:ring-2 data-[state=open]:bg-accent"
             asChild
           >
             <SidebarMenuButton
