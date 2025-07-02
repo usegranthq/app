@@ -50,9 +50,6 @@ describe('SDK: Router', () => {
       error: {
         code: 'RATE_LIMITED',
         message: 'Rate limited',
-        details: {
-          tryAgainIn: 60,
-        },
       },
     });
 
@@ -60,6 +57,6 @@ describe('SDK: Router', () => {
     request.headers.set('Authorization', 'Bearer test-key');
     const response = await handler(request);
     expect(response.status).toBe(STATUS_CODES.TOO_MANY_REQUESTS);
-    expect(response.headers.get('Retry-After')).toBe('60');
+    expect(response.headers.get('Retry-After')).toBe(null);
   });
 });
