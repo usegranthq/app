@@ -5,7 +5,7 @@ import { toast } from 'sonner';
 
 import { Button } from '@/shadcn/components/ui/button';
 
-import { PLAN, PLAN_FEATURES, PlanFeatures, PlanId, PLANS } from '@/utils/billing';
+import { PLAN, PLAN_FEATURES, PlanFeatures, PlanId } from '@/utils/billing';
 import { checkout, upgradePlan } from '@/actions';
 import { useProgressBar } from '@/components/NavProgress';
 
