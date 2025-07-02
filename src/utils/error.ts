@@ -1,4 +1,4 @@
-import { ZodError } from 'zod';
+import { ZodError } from 'zod/v4';
 
 import { Prisma } from '@root/prisma/client';
 
@@ -27,8 +27,8 @@ export const getApiErrorMessage = (error: unknown, defaultMessage: string | Mess
   return typeof defaultMessage === 'function' ? defaultMessage(getErrorCodes(error)) : defaultMessage;
 };
 
-export const getZodErrorMessage = (error: ZodError) => {
-  return error.errors[0].message;
+export const getZodErrorMessage = (error: ZodError): string => {
+  return error.issues[0].message;
 };
 
 const ERRORS = {

@@ -1,9 +1,9 @@
 import { createEnv } from '@t3-oss/env-nextjs';
-import { z } from 'zod';
+import { z } from 'zod/v4';
 
 export const env = createEnv({
   server: {
-    SITE_URL: z.string().url(),
+    SITE_URL: z.url(),
     INVITE_TOKEN: z.string().optional(),
     JWT_SIGNING_SECRET: z.string().min(1),
     TURNSTILE_SITE_KEY: z.string(),

@@ -1,5 +1,5 @@
 import { JWK } from 'jose';
-import { z } from 'zod';
+import { z } from 'zod/v4';
 
 import { createJwt, defaultJwk, MAX_EXPIRY, ONE_HOUR } from '@/utils/jwt';
 import { getIssuer } from '@/utils/provider';

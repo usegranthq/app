@@ -3,7 +3,7 @@
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
 import { JWK } from 'jose';
-import { z } from 'zod';
+import { z } from 'zod/v4';
 
 import { Prisma } from '@root/prisma/client';
 import ROUTES from '@/constants/routes';
