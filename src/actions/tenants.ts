@@ -55,7 +55,7 @@ export async function createTenant(data: TenantFormValues): ActionResponse<Tenan
     revalidatePath(ROUTES.TENANTS, 'layout');
     return [null, tenant];
   } catch (error) {
-    const errorMessage = getApiErrorMessage(error, 'Failed to create provider');
+    const errorMessage = getApiErrorMessage(error, 'Failed to create tenant');
     return [errorMessage, null];
   }
 }
