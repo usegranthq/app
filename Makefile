@@ -28,6 +28,9 @@ migrate:
 test:
 	npm run test
 
+studio:
+	npm run studio
+
 clear:
 	@read -p "Are you sure you want to clear the database? (y/n): " confirm; \
 	if [ "$$confirm" = "y" ]; then \

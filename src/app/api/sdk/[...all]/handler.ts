@@ -7,7 +7,7 @@ import endpoints from './endpoints';
 
 type VerifyApiRateLimitedError = {
   code: 'RATE_LIMITED';
-  tryAgainIn: number | null;
+  tryAgainIn: string | null;
 };
 
 type VerifyApiKeyNotFoundError = {
@@ -26,7 +26,7 @@ const verifyApiKey = async (key: string): Promise<VerifyApiKeyResult> => {
   if (result.error?.code === 'RATE_LIMITED') {
     const error: VerifyApiRateLimitedError = {
       code: 'RATE_LIMITED',
-      tryAgainIn: result.error.details.tryAgainIn,
+      tryAgainIn: null,
     };
     return [error, null];
   }

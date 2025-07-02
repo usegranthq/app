@@ -21,10 +21,10 @@ export const forbiddenResponse = (message = 'Forbidden') => {
   return new Response(message, { status: 403 });
 };
 
-export const rateLimitedResponse = (message = 'Rate limited', retryAfter?: number | null) => {
+export const rateLimitedResponse = (message = 'Rate limited', retryAfter?: string | null) => {
   const headers = new Headers();
   if (retryAfter) {
-    headers.set('Retry-After', retryAfter.toString());
+    headers.set('Retry-After', retryAfter);
   }
 
   return new Response(message, {
