@@ -147,19 +147,19 @@
 
   @keyframes reveal-dark {
     from {
-      clip-path: polygon(50% -71%, -50% 71%, -50% 71%, 50% -71%);
+      clip-path: polygon(100% 0%, 100% 0%, 100% 0%, 100% 0%);
     }
     to {
-      clip-path: polygon(50% -71%, -50% 71%, 50% 171%, 171% 50%);
+      clip-path: polygon(100% 0%, 0% 0%, 0% 100%, 100% 100%);
     }
   }
 
   @keyframes reveal-light {
     from {
-      clip-path: polygon(171% 50%, 50% 171%, 50% 171%, 171% 50%);
+      clip-path: polygon(0% 100%, 0% 100%, 0% 100%, 0% 100%);
     }
     to {
-      clip-path: polygon(171% 50%, 50% 171%, -50% 71%, 50% -71%);
+      clip-path: polygon(100% 0%, 0% 0%, 0% 100%, 100% 100%);
     }
   }
 }
