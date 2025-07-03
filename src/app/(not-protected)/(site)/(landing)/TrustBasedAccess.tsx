@@ -24,7 +24,7 @@ await stsClient.send(command);
 
 export default function TrustBasedAccess() {
   return (
-    <div className="mx-auto mt-28 grid max-w-6xl grid-cols-1 gap-10 md:mt-44 lg:grid-cols-2">
+    <div className="mx-auto grid max-w-6xl grid-cols-1 gap-10 lg:grid-cols-2">
       <div className="col-span-1 flex flex-col items-center justify-center">
         <div className="max-sm:text-center">
           <h2 className="text-3xl font-bold md:text-4xl">Trust-based Access</h2>

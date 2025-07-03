@@ -1,6 +1,7 @@
 import Link from 'next/link';
 
 import { Button } from '@/shadcn/components/ui/button';
+import { cn } from '@/shadcn/lib/utils';
 
 import { env } from '@/env';
 
@@ -14,34 +15,46 @@ export default async function Home() {
 
   return (
     <>
-      <div className="mx-auto mt-44 flex flex-col items-center justify-center gap-8 lg:mt-52">
-        <div>
-          <h1 className="text-center text-3xl font-bold md:text-5xl">Automate Machine-to-Machine Auth</h1>
-          <p className="mx-auto mt-2.5 max-w-xl text-center text-base font-medium text-gray-400">
-            Set up secure M2M authentication that scales in seconds. Built on OAuth standards for maximum security.
-          </p>
-        </div>
-        {isInviteOnly && (
-          <p className="text-center text-base font-semibold text-primary md:text-lg">
-            Signups are invite-only. Stay tuned!
-          </p>
-        )}
-        {!isInviteOnly && (
-          <div className="flex flex-col items-center gap-4">
-            <div className="flex gap-4">
-              <Button asChild>
-                <Link href="/login">🚀 Get started</Link>
-              </Button>
-              <Button variant="outline" asChild>
-                <Link href="/docs">Read the docs</Link>
-              </Button>
-            </div>
-            <p className="text-center text-sm text-muted-foreground">
-              Early Access Now Available for limited users - <br className="block md:hidden" /> Be Among the First to
-              Try!
+      <div className="relative flex h-[30rem] w-full items-center justify-center bg-white md:h-[36rem] dark:bg-black">
+        <div
+          className={cn(
+            'absolute inset-0 z-0',
+            '[background-size:20px_20px]',
+            '[background-image:radial-gradient(#e8e8e8_1px,transparent_1px)]',
+            'dark:[background-image:radial-gradient(#202020_1px,transparent_1px)]',
+          )}
+        />
+        {/* Radial gradient for the container to give a faded look */}
+        <div className="pointer-events-none absolute inset-0 flex items-center justify-center bg-background [mask-image:radial-gradient(ellipse_at_center,transparent_20%,black)]" />
+        <div className="z-10 mx-auto flex flex-col items-center justify-center gap-8">
+          <div>
+            <h1 className="text-center text-3xl font-bold md:text-5xl">Automate Machine-to-Machine Auth</h1>
+            <p className="mx-auto mt-2.5 max-w-xl text-center text-base font-medium text-gray-400">
+              Set up secure M2M authentication that scales in seconds. Built on OAuth standards for maximum security.
             </p>
           </div>
-        )}
+          {isInviteOnly && (
+            <p className="text-center text-base font-semibold text-primary md:text-lg">
+              Signups are invite-only. Stay tuned!
+            </p>
+          )}
+          {!isInviteOnly && (
+            <div className="flex flex-col items-center gap-4">
+              <div className="flex gap-4">
+                <Button asChild>
+                  <Link href="/login">🚀 Get started</Link>
+                </Button>
+                <Button variant="outline" asChild>
+                  <Link href="/docs">Read the docs</Link>
+                </Button>
+              </div>
+              <p className="text-center text-sm text-muted-foreground">
+                Early Access Now Available for limited users - <br className="block md:hidden" /> Be Among the First to
+                Try!
+              </p>
+            </div>
+          )}
+        </div>
       </div>
       <TrustBasedAccess />
       <DynamicEnv />
