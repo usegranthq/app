@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { CheckIcon } from 'lucide-react';
 
+import GlowingCardBorder from '@/shadcn/components/external/glowing-border';
 import { Card, CardContent, CardHeader, CardTitle } from '@/shadcn/components/ui/card';
 import { cn } from '@/shadcn/lib/utils';
 
@@ -19,7 +20,11 @@ export default function PricingSection() {
           {PLAN_FEATURES.map((features) => {
             const plan = PLANS[features.id];
             return (
-              <Card key={features.id} className={cn('h-full', { 'border-primary/80': features.id === POPULAR_PLAN })}>
+              <Card
+                key={features.id}
+                className={cn('relative h-full', { 'border-primary/30': features.id === POPULAR_PLAN })}
+              >
+                <GlowingCardBorder spread={40} glow={true} disabled={false} proximity={50} inactiveZone={0.01} />
                 <CardHeader className="pb-2">
                   <CardTitle className="text-lg">{plan.name}</CardTitle>
                   <div className="flex gap-0.5">

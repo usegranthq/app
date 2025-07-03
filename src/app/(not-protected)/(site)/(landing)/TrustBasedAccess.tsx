@@ -1,3 +1,5 @@
+import GlowingCardBorder from '@/shadcn/components/external/glowing-border';
+
 import Codeblock from '@/components/Codeblock';
 
 const code = `
@@ -36,7 +38,8 @@ export default function TrustBasedAccess() {
           </p>
         </div>
       </div>
-      <div className="col-span-1">
+      <div className="relative col-span-1 rounded-xl">
+        <GlowingCardBorder spread={40} glow={true} disabled={false} proximity={64} inactiveZone={0.01} />
         <Codeblock code={code} />
       </div>
     </div>

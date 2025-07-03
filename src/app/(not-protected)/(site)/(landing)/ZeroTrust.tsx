@@ -1,5 +1,6 @@
 import { BookLock, CheckCircleIcon, LockIcon, ShieldIcon } from 'lucide-react';
 
+import GlowingCardBorder from '@/shadcn/components/external/glowing-border';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/shadcn/components/ui/card';
 
 const features = [
@@ -38,7 +39,8 @@ export default function ZeroTrustSection() {
         </div>
         <div className="mx-auto grid max-w-5xl items-center gap-6 pt-10 md:pt-20 lg:grid-cols-3 lg:gap-12">
           {features.map((feature, index) => (
-            <Card className="relative overflow-hidden" key={`feature-${index}`}>
+            <Card className="relative" key={`feature-${index}`}>
+              <GlowingCardBorder spread={40} glow={true} disabled={false} proximity={64} inactiveZone={0.01} />
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
                   <feature.icon className="size-5 text-primary" />
