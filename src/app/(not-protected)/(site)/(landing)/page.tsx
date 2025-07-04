@@ -16,16 +16,7 @@ export default async function Home() {
 
   return (
     <>
-      <div className="relative flex h-[30rem] w-full items-center justify-center bg-white md:h-[36rem] dark:bg-black">
-        <div
-          className={cn(
-            'absolute inset-0 z-0',
-            '[background-size:20px_20px]',
-            '[background-image:radial-gradient(#e8e8e8_1px,transparent_1px)]',
-            'dark:[background-image:radial-gradient(#202020_1px,transparent_1px)]',
-          )}
-        />
-        {/* Radial gradient for the container to give a faded look */}
+      <div className="relative flex h-[30rem] w-full items-center justify-center md:h-[36rem]">
         <div className="pointer-events-none absolute inset-0 flex items-center justify-center bg-background [mask-image:radial-gradient(ellipse_at_center,transparent_20%,black)]" />
         <div className="z-10 mx-auto flex flex-col items-center justify-center gap-8">
           <div>
