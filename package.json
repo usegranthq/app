@@ -3,6 +3,7 @@
   "private": true,
   "type": "module",
   "scripts": {
+    "db": "prisma dev -n usegrant",
     "dev": "rm -rf .next && next dev --turbopack",
     "build": "next build",
     "start": "next start",

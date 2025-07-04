@@ -9,13 +9,15 @@
 
 ## Getting Started
 
-First, copy the `.env.example` file to `.env` and set the correct values:
+First, copy the `.env.example` file to `.env.development` and set the correct values:
 
 Then, start the db server:
 
 ```bash
 make db
 ```
+
+this will run a [local postgres prisma dev server](https://www.prisma.io/docs/orm/reference/prisma-cli-reference#dev). Also copy the connection urls provided to the `.env.development` file.
 
 and then start the app:
 
