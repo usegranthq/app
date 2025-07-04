@@ -2,7 +2,6 @@ import Link from 'next/link';
 
 import PointerHighlight from '@/shadcn/components/external/pointer-highlight';
 import { Button } from '@/shadcn/components/ui/button';
-import { cn } from '@/shadcn/lib/utils';
 
 import { env } from '@/env';
 
