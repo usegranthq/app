@@ -20,6 +20,9 @@ const verifyApiKey = async (key: string): Promise<VerifyApiKeyResult> => {
   const result = await auth.api.verifyApiKey({
     body: {
       key,
+      permissions: {
+        sdk: ['read', 'write'],
+      },
     },
   });
 

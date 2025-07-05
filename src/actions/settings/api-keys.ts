@@ -47,6 +47,9 @@ export async function createApiKey(formData: FormData): ActionResponse<string> {
         name: validation.data.name,
         expiresIn: expiresInDays > 0 ? toTokenExpiration(expiresInDays) : null,
         prefix: 'uga_',
+        permissions: {
+          sdk: ['read', 'write'],
+        },
       },
       headers: await headers(),
     });
