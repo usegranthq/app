@@ -69,6 +69,9 @@ export const auth = betterAuth({
         timeWindow: 1000 * 60 * 60, // 1 hour in milliseconds
         maxRequests: 1000, // max requests in the window
       },
+      customAPIKeyValidator: ({ key }) => {
+        return key.startsWith('uga_');
+      },
     }),
     nextCookies(), // must be last
   ],
