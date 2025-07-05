@@ -63,6 +63,7 @@ export const auth = betterAuth({
       };
     }),
     apiKey({
+      apiKeyHeaders: [],
       rateLimit: {
         // allow 1000 requests per hour
         enabled: true,
