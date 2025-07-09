@@ -20,7 +20,9 @@ export const isApexDomain = (domain: string) => {
   return domain.split('.').length === 2;
 };
 
-export const domainWithoutProtocol = (domain: string) => {
+export const withoutProtocol = (domain: string) => {
   // remove http:// or https:// and trailing slash
   return domain.replace(/^https?:\/\//, '').replace(/\/$/, '');
 };
+
+export const withProtocol = (domain: string) => (domain.startsWith('http') ? domain : `https://${domain}`);

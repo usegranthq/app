@@ -2,7 +2,7 @@ import { notFound } from 'next/navigation';
 
 import { getDomains, getProvider } from '@/data/providers';
 import { getPlanDetails } from '@/data/user';
-import { getDefaultDomain, getDefaultDomainHostname } from '@/app/provider-helpers';
+import { getWellKnownHostname, getWellKnownURL } from '@/app/provider-helpers';
 import { FeatureUnavailable } from '@/components/FeatureUnavailable';
 
 import CaDetails from './CaDetails';
@@ -25,8 +25,8 @@ export default async function DomainPage(props: DomainPageProps) {
     return notFound();
   }
 
-  const defaultDomain = getDefaultDomain(provider.urlId);
-  const defaultDomainHostname = getDefaultDomainHostname(provider.urlId);
+  const defaultDomain = getWellKnownURL(provider.urlId);
+  const defaultDomainHostname = getWellKnownHostname(provider.urlId);
 
   const isCustomDomainAvailable = plan.features.customDomain.available;
 

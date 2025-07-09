@@ -6,7 +6,7 @@ const mockClaims = {
   sub: 'ri0m0mthf03pfr8oo4w6no5z',
   exp: 1716441600,
   iat: 1716441600,
-  iss: 'https://auth.usegrant.dev',
+  iss: 'https://mockauth.usegrant.dev',
   aud: 'usegrant',
 };
 

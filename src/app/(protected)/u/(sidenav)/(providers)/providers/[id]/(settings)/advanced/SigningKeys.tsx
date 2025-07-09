@@ -4,7 +4,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/sha
 
 import { getSigningKeys } from '@/data/providers';
 import { getPlanDetails } from '@/data/user';
-import { getDefaultDomain } from '@/app/provider-helpers';
+import { getWellKnownURL } from '@/app/provider-helpers';
 import { Provider } from '@/types';
 
 import KeysList from './KeysList';
@@ -14,7 +14,7 @@ interface SigningKeysProps {
 }
 
 export default async function SigningKeys({ provider }: SigningKeysProps) {
-  const jwksUrl = getDefaultDomain(provider.urlId, '/.well-known/jwks');
+  const jwksUrl = getWellKnownURL(provider.urlId, '/.well-known/jwks');
   const signingKeys = await getSigningKeys(provider.id);
   const plan = await getPlanDetails();
 

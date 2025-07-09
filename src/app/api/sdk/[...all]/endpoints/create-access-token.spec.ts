@@ -75,7 +75,7 @@ describe('SDK: Create Access Token', () => {
     expect(body.expiresAt).toBeDefined();
 
     const claims = jose.decodeJwt(body.accessToken);
-    expect(claims.iss).toBe(`https://${fakeDbProviderWithDomain.urlId}.auth.usegrant.dev`);
+    expect(claims.iss).toBe(`https://mockauth.usegrant.local/${fakeDbProviderWithDomain.urlId}`);
     expect(claims.aud).toBe(fakeDbClient.audience);
     expect(claims.sub).toBe(fakeDbClient.subject);
     expect(claims.exp).toBe(Date.now() / 1000 + 1020);

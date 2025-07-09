@@ -11,6 +11,20 @@ const nextConfig: NextConfig = {
     return {
       beforeFiles: [
         {
+          source: '/avatar/:path*',
+          destination: 'https://avatar.iran.liara.run/public/boy/:path*',
+        },
+        {
+          has: [
+            {
+              type: 'host',
+              value: 'tokens.usegrant.dev',
+            },
+          ],
+          source: '/:providerUrlId/.well-known/:segment',
+          destination: '/api/well-known/:segment',
+        },
+        {
           source: '/:path*',
           has: [
             {
@@ -18,11 +32,7 @@ const nextConfig: NextConfig = {
               value: 'sdk.usegrant.dev',
             },
           ],
-          destination: '/sdk/:path*',
-        },
-        {
-          source: '/avatar/:path*',
-          destination: 'https://avatar.iran.liara.run/public/boy/:path*',
+          destination: '/api/sdk/:path*',
         },
       ],
       afterFiles: [

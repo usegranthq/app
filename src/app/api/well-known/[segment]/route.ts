@@ -2,14 +2,9 @@ import { NextRequest, NextResponse } from 'next/server';
 import { JWK } from 'jose';
 
 import { defaultJwk } from '@/utils/jwt';
-import { getSubdomain } from '@/utils/url';
+import { withProtocol } from '@/utils/url';
+import { getPlanByUserId } from '@/lib/billing';
 import db from '@/lib/db';
-import { env } from '@/env';
-import { Provider } from '@/types/app.types';
-
-const addProtocol = (host: string): string => {
-  return host.startsWith('http') ? host : `https://${host}`;
-};
 
 const getHostFromRequest = (request: NextRequest): string | null => {
   const ugHost = request.headers.get('x-ug-host');
@@ -20,38 +15,45 @@ const getHostFromRequest = (request: NextRequest): string | null => {
     return null;
   }
 
-  const hostWithProtocol = addProtocol(incomingHost);
+  const hostWithProtocol = withProtocol(incomingHost);
 
   try {
     const url = new URL(hostWithProtocol);
-    return url.hostname;
+    return url.host;
   } catch {
     return null;
   }
 };
 
-const getDefaultProviderId = (hostname: string) => {
-  const defaultProviderDomain = env.PROVIDER_DOMAIN;
-  const defaultProviderDomainSuffix = defaultProviderDomain.replace(/^(\{urlId}\.)/, '');
+interface ProviderDomain {
+  id: string;
+  issuer: string;
+}
 
-  if (!hostname.endsWith(defaultProviderDomainSuffix)) {
-    return null;
-  }
-
-  return getSubdomain(hostname);
-};
-
-const getProvider = async (hostname: string, urlId: string | null): Promise<Provider | null> => {
+const getProviderDomain = async (hostname: string, urlId: string | null): Promise<ProviderDomain | null> => {
   if (urlId) {
-    return db.provider.findUnique({
+    const provider = await db.provider.findUnique({
       where: { urlId },
     });
+
+    if (!provider) {
+      return null;
+    }
+
+    return {
+      id: provider.id,
+      issuer: new URL(urlId, withProtocol(hostname)).href,
+    };
   }
 
   const domain = await db.domain.findUnique({
     where: { domain: hostname },
     include: {
-      Provider: true,
+      Provider: {
+        include: {
+          User: true,
+        },
+      },
     },
   });
 
@@ -59,12 +61,16 @@ const getProvider = async (hostname: string, urlId: string | null): Promise<Prov
     return null;
   }
 
-  return domain.Provider;
-};
+  const plan = await getPlanByUserId(domain.Provider.User.id);
+  if (plan.id === 'free') {
+    return null;
+  }
 
-interface Params {
-  segment: string;
-}
+  return {
+    id: domain.Provider.id,
+    issuer: domain.domain,
+  };
+};
 
 const validSegments = ['openid-configuration', 'jwks'];
 
@@ -98,7 +104,36 @@ const jwksResponse = async (providerId: string): Promise<NextResponse> => {
   return response;
 };
 
-export async function GET(request: NextRequest, { params }: { params: Promise<Params> }) {
+const openIdConfigurationResponse = (issuer: string) => {
+  return {
+    issuer,
+    jwks_uri: `${issuer}/.well-known/jwks`,
+    grant_types_supported: ['client_credentials'],
+    subject_types_supported: ['public'],
+    response_types_supported: ['code'], // alibaba validation fails without this
+    id_token_signing_alg_values_supported: ['RS256'],
+    claims_supported: ['jti', 'iss', 'aud', 'sub', 'iat', 'nbf', 'exp'],
+    scopes_supported: ['openid'],
+  };
+};
+
+interface OpenIdConfigurationParams {
+  params: Promise<{
+    segment: string;
+  }>;
+}
+
+function extractUrlIdFromRequest(request: NextRequest): string | null {
+  const parts = request.nextUrl.pathname.replace(/^\//, '').replace(/\/$/, '').split('/');
+
+  if (parts.length === 3) {
+    return parts[0];
+  }
+
+  return null; // Extract the URL ID from the path
+}
+
+export async function GET(request: NextRequest, { params }: OpenIdConfigurationParams) {
   const { segment } = await params;
 
   if (!validSegments.includes(segment)) {
@@ -110,9 +145,8 @@ export async function GET(request: NextRequest, { params }: { params: Promise<Pa
     return NextResponse.json({ error: 'Invalid host' }, { status: 400 });
   }
 
-  const urlId = getDefaultProviderId(hostname);
-  const provider = await getProvider(hostname, urlId);
-
+  const urlId = extractUrlIdFromRequest(request);
+  const provider = await getProviderDomain(hostname, urlId);
   if (!provider) {
     return NextResponse.json({ error: 'Invalid host' }, { status: 400 });
   }
@@ -121,14 +155,5 @@ export async function GET(request: NextRequest, { params }: { params: Promise<Pa
     return jwksResponse(provider.id);
   }
 
-  return NextResponse.json({
-    issuer: `https://${hostname}`,
-    jwks_uri: `https://${hostname}/.well-known/jwks`,
-    grant_types_supported: ['client_credentials'],
-    subject_types_supported: ['public'],
-    response_types_supported: ['code'], // alibaba validation fails without this
-    id_token_signing_alg_values_supported: ['RS256'],
-    claims_supported: ['jti', 'iss', 'aud', 'sub', 'iat', 'nbf', 'exp'],
-    scopes_supported: ['openid'],
-  });
+  return NextResponse.json(openIdConfigurationResponse(provider.issuer));
 }

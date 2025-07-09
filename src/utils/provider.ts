@@ -1,9 +1,11 @@
 import slugify from 'slugify';
 import Sqids from 'sqids';
 
+import env from '@/env';
 import { Domain } from '@/types/app.types';
 
 import { PlanDetails } from './billing';
+import { withProtocol } from './url';
 
 const sqids = new Sqids({
   alphabet: 'abcdefghijklmnopqrstuvwxyz0123456789',
@@ -24,5 +26,5 @@ export const getIssuer = (
     return `https://${customDomain.domain}`;
   }
 
-  return `https://${urlId}.auth.usegrant.dev`;
+  return new URL(urlId, withProtocol(env.PROVIDER_DOMAIN)).href;
 };

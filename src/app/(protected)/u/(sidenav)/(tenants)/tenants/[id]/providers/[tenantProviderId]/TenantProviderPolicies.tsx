@@ -17,7 +17,7 @@ import { Button } from '@/shadcn/components/ui/button';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/shadcn/components/ui/table';
 
 import { ROUTES } from '@/constants/routes';
-import { domainWithoutProtocol } from '@/utils/url';
+import { withoutProtocol } from '@/utils/url';
 import PaginationControls from '@/components/PaginationControls';
 import { TenantProvider, TenantProviderPolicy } from '@/types/app.types';
 
@@ -103,7 +103,7 @@ export default function TenantProviderPolicies({
             </BreadcrumbList>
           </Breadcrumb>
           <h1 className="flex items-center gap-2 text-2xl font-medium">
-            <span className="inline-block max-w-md truncate">{domainWithoutProtocol(tenantProvider.url)}</span>
+            <span className="inline-block max-w-md truncate">{withoutProtocol(tenantProvider.url)}</span>
           </h1>
         </div>
         <Button asChild className="ml-auto">

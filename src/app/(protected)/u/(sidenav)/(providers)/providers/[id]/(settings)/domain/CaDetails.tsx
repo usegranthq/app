@@ -18,6 +18,7 @@ import {
   SelectValue,
 } from '@/shadcn/components/ui/select';
 
+import { withoutProtocol } from '@/utils/url';
 import { getCaDetails } from '@/actions/ca';
 import Spinner from '@/components/Spinner';
 import { Domain } from '@/types/app.types';
@@ -110,7 +111,7 @@ export default function CaDetails(props: CaDetailsProps) {
                 target="_blank"
                 className="font-bold hover:underline"
               >
-                {defaultDomain}
+                {withoutProtocol(defaultDomain)}
               </Link>
             </p>
           </div>
@@ -120,7 +121,7 @@ export default function CaDetails(props: CaDetailsProps) {
               <Label>Select Domain</Label>
               <div className="flex items-center gap-4">
                 <Select value={selectedDomain ?? ''} onValueChange={setSelectedDomain}>
-                  <SelectTrigger className="max-w-lg">
+                  <SelectTrigger className="max-w-lg min-w-64">
                     <SelectValue placeholder="Select a domain" />
                   </SelectTrigger>
                   <SelectContent>

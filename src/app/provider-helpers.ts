@@ -1,7 +1,6 @@
+import { withProtocol } from '@/utils/url';
 import { env } from '@/env';
 import { Domain, Provider } from '@/types/app.types';
-
-const withProtocol = (domain: string) => (domain.startsWith('http') ? domain : `https://${domain}`);
 
 export function getProviderDomain(provider: Provider, domains: Domain[]) {
   const domain = domains[0]?.domain ?? env.PROVIDER_DOMAIN.replace('{urlId}', provider.urlId);
@@ -16,12 +15,12 @@ export function getWellKnownJwksUrl(domain: string) {
   return `${withProtocol(domain)}/.well-known/jwks`;
 }
 
-export function getDefaultDomain(urlId: string, path: string = '/') {
-  const domain = withProtocol(env.PROVIDER_DOMAIN.replace('{urlId}', urlId));
-  return new URL(path, domain).toString().replace(/\/$/, '');
+export function getWellKnownURL(urlId: string, path: string = '/') {
+  const providerDomain = new URL(urlId, withProtocol(env.PROVIDER_DOMAIN));
+  return (providerDomain.href + path).toString().replace(/\/$/, '');
 }
 
-export function getDefaultDomainHostname(urlId: string) {
-  const domain = getDefaultDomain(urlId);
+export function getWellKnownHostname(urlId: string) {
+  const domain = getWellKnownURL(urlId);
   return new URL(domain).hostname;
 }

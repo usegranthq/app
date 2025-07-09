@@ -18,7 +18,7 @@ import { Button } from '@/shadcn/components/ui/button';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/shadcn/components/ui/table';
 
 import { ROUTES } from '@/constants/routes';
-import { domainWithoutProtocol } from '@/utils/url';
+import { withoutProtocol } from '@/utils/url';
 import PaginationControls from '@/components/PaginationControls';
 import { Tenant, TenantProvider } from '@/types/app.types';
 
@@ -36,7 +36,7 @@ function getColumns(tenantId: string): ColumnDef<TenantProvider>[] {
     {
       header: 'Name',
       cell: ({ row }) => {
-        return domainWithoutProtocol(row.original.url);
+        return withoutProtocol(row.original.url);
       },
     },
     {

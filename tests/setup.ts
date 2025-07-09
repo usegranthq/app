@@ -24,7 +24,7 @@ const mockEnvs = {
   GOOGLE_OAUTH_CLIENT_ID: '0vxxxx',
   GOOGLE_OAUTH_CLIENT_SECRET: 'xxxx',
   BETTER_AUTH_SECRET: 'xxxx',
-  PROVIDER_DOMAIN: '{urlId}.auth.usegrant.local',
+  PROVIDER_DOMAIN: 'mockauth.usegrant.local',
   NODEMAILER_SMTP_URL: 'smtp://john.doe@ethereal.email:xxxx@smtp.ethereal.email:587',
   EMAIL_FROM: 'Usegrant <onboarding@usegrant.local>',
   RESEND_API_KEY: 're_xxxx',
