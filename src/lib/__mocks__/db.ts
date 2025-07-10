@@ -1,9 +1,9 @@
 import { beforeEach, vi } from 'vitest';
 import { mockDeep, mockReset } from 'vitest-mock-extended';
 
-import { PrismaClient } from '@/prisma/client';
+import db from '../db';
 
-const mockDb = mockDeep<PrismaClient>();
+const mockDb = mockDeep<typeof db>();
 
 beforeEach(() => {
   mockReset(mockDb);

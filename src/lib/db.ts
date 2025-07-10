@@ -1,4 +1,4 @@
-import { PrismaClient } from '@/prisma/client';
+import { Prisma, PrismaClient } from '@/prisma/client';
 
 let db: PrismaClient;
 
@@ -16,4 +16,5 @@ if (process.env.NODE_ENV === 'production') {
 }
 
 export { db as prisma };
+
 export default db;
