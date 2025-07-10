@@ -34,8 +34,8 @@ const mockEnvs = {
   CRON_SECRET: 'xxxx',
   POLAR_ACCESS_TOKEN: 'xxxx',
   POLAR_WEBHOOK_SECRET: 'whsec_xxxx',
-  NEXT_PUBLIC_POLAR_PRO_PLAN_PRODUCT_ID: 'prod_pro_xxxx',
-  NEXT_PUBLIC_POLAR_ULTIMATE_PLAN_PRODUCT_ID: 'prod_ultimate_xxxx',
+  POLAR_PRO_PLAN_PRODUCT_ID: 'prod_pro_xxxx',
+  POLAR_ULTIMATE_PLAN_PRODUCT_ID: 'prod_ultimate_xxxx',
   POSTHOG_API_KEY: 'phc_xxxx',
   STATE_HMAC_SECRET_KEY: 'xxx',
 };

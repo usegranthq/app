@@ -7,6 +7,7 @@ import ROUTES from '@/constants/routes';
 import { PlanId, PLANS } from '@/utils/billing';
 import { generateHMACState } from '@/utils/callbacks';
 import { getApiErrorMessage } from '@/utils/error';
+import { getPlanProductId } from '@/lib/billing';
 import db from '@/lib/db';
 import polarClient from '@/lib/polar';
 import { getSiteUrl } from '@/lib/site';
@@ -22,8 +23,9 @@ export const checkout = async (planId: PlanId): ActionResponse => {
   }
 
   const plan = PLANS[planId];
+  const planProductId = getPlanProductId(planId);
 
-  if (!plan || !plan.productId) {
+  if (!plan || !planProductId) {
     return ['Invalid product', null];
   }
 
@@ -40,7 +42,7 @@ export const checkout = async (planId: PlanId): ActionResponse => {
   try {
     const checkoutSession = await polarClient.checkouts.create({
       externalCustomerId: session.user.id,
-      products: [plan.productId],
+      products: [planProductId],
       customerId: customer?.customerRefId,
       customerEmail: session.user.email,
       successUrl: successUrl.toString(),
@@ -63,8 +65,9 @@ export const upgradePlan = async (planId: PlanId): ActionResponse => {
   }
 
   const plan = PLANS[planId];
+  const planProductId = getPlanProductId(planId);
 
-  if (!plan || !plan.productId) {
+  if (!plan || !planProductId) {
     return ['Invalid product', null];
   }
 
@@ -73,7 +76,7 @@ export const upgradePlan = async (planId: PlanId): ActionResponse => {
     return ['No active subscription found', null];
   }
 
-  if (activeSubscription.productId === plan.productId) {
+  if (activeSubscription.productId === planProductId) {
     return ['You are already on the same plan', null];
   }
 
@@ -81,7 +84,7 @@ export const upgradePlan = async (planId: PlanId): ActionResponse => {
     const subscription = await polarClient.subscriptions.update({
       id: activeSubscription.subscriptionRefId,
       subscriptionUpdate: {
-        productId: plan.productId,
+        productId: planProductId,
         prorationBehavior: 'prorate',
       },
     });

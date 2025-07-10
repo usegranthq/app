@@ -1,5 +1,3 @@
-import env from '@/env/client';
-
 export const PLAN = {
   FREE: 'free',
   PRO: 'pro',
@@ -11,7 +9,6 @@ export type PlanId = (typeof PLAN)[keyof typeof PLAN];
 export type PlanDetails = {
   id: PlanId;
   name: string;
-  productId: string | null;
   price: number;
   features: {
     providers: {
@@ -49,7 +46,6 @@ export const PLANS: Record<PlanId, PlanDetails> = {
   [PLAN.FREE]: {
     id: PLAN.FREE,
     name: 'Free',
-    productId: null,
     price: 0,
     features: {
       providers: {
@@ -85,7 +81,6 @@ export const PLANS: Record<PlanId, PlanDetails> = {
   [PLAN.PRO]: {
     id: PLAN.PRO,
     name: 'Pro',
-    productId: env.NEXT_PUBLIC_POLAR_PRO_PLAN_PRODUCT_ID,
     price: 9,
     features: {
       providers: {
@@ -121,7 +116,6 @@ export const PLANS: Record<PlanId, PlanDetails> = {
   [PLAN.ULTIMATE]: {
     id: PLAN.ULTIMATE,
     name: 'Ultimate',
-    productId: env.NEXT_PUBLIC_POLAR_ULTIMATE_PLAN_PRODUCT_ID,
     price: 49,
     features: {
       providers: {
@@ -200,11 +194,3 @@ export const PLAN_FEATURES: PlanFeatures[] = [
 ];
 
 export const POPULAR_PLAN = PLANS.pro.id;
-
-export const findPlanByProductId = (productId: string): PlanDetails => {
-  const plan = Object.values(PLANS).find((plan) => plan.productId === productId);
-  if (!plan) {
-    return PLANS[PLAN.FREE];
-  }
-  return plan;
-};

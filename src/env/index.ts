@@ -24,6 +24,8 @@ const env = createEnv({
     POSTHOG_API_KEY: z.string(),
     POLAR_ACCESS_TOKEN: z.string(),
     POLAR_WEBHOOK_SECRET: z.string(),
+    POLAR_PRO_PLAN_PRODUCT_ID: z.string(),
+    POLAR_ULTIMATE_PLAN_PRODUCT_ID: z.string(),
     STATE_HMAC_SECRET_KEY: z.string(),
   },
   runtimeEnv: {
@@ -48,6 +50,8 @@ const env = createEnv({
     POSTHOG_API_KEY: process.env.POSTHOG_API_KEY,
     POLAR_ACCESS_TOKEN: process.env.POLAR_ACCESS_TOKEN,
     POLAR_WEBHOOK_SECRET: process.env.POLAR_WEBHOOK_SECRET,
+    POLAR_PRO_PLAN_PRODUCT_ID: process.env.POLAR_PRO_PLAN_PRODUCT_ID,
+    POLAR_ULTIMATE_PLAN_PRODUCT_ID: process.env.POLAR_ULTIMATE_PLAN_PRODUCT_ID,
     STATE_HMAC_SECRET_KEY: process.env.STATE_HMAC_SECRET_KEY,
   },
   emptyStringAsUndefined: true,
