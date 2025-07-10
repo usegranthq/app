@@ -5,11 +5,11 @@
   "scripts": {
     "db": "prisma dev -n usegrant",
     "dev": "rm -rf .next && next dev --turbopack",
-    "build": "next build",
+    "build": "next build --turbopack",
     "start": "next start",
     "test": "vitest",
     "lint": "oxlint",
-    "generate": "prisma generate --no-hints --no-engine",
+    "generate": "prisma generate --no-hints",
     "migrate": "prisma migrate deploy",
     "migrate:dev": "prisma migrate dev",
     "studio": "prisma studio",

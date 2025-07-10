@@ -1,3 +1,4 @@
+import { auth } from '@/lib/auth';
 import {
   Account,
   Client,
@@ -10,8 +11,7 @@ import {
   Tenant,
   TenantProvider,
   TenantProviderPolicy,
-} from '@root/prisma/client';
-import { auth } from '@/lib/auth';
+} from '@/prisma/client';
 
 export type {
   Provider,

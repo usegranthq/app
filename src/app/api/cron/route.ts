@@ -1,12 +1,12 @@
 import type { NextRequest } from 'next/server';
 import { waitUntil } from '@vercel/functions';
 
-import { Prisma } from '@root/prisma/client';
 import { generateJwk } from '@/utils/jwk';
 import { validateBearerToken } from '@/utils/rest';
 import { getPlanByUserId } from '@/lib/billing';
 import db from '@/lib/db';
 import { env } from '@/env';
+import { Prisma } from '@/prisma/client';
 
 const processCron = async () => {
   const now = new Date();

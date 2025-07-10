@@ -5,7 +5,6 @@ import { redirect } from 'next/navigation';
 import { JWK } from 'jose';
 import { z } from 'zod';
 
-import { Prisma } from '@root/prisma/client';
 import ROUTES from '@/constants/routes';
 import ERRORS, { getApiErrorMessage, getZodErrorMessage } from '@/utils/error';
 import { generateJwk } from '@/utils/jwk';
@@ -14,6 +13,7 @@ import { createUrlId, getIssuer } from '@/utils/provider';
 import db from '@/lib/db';
 import customDomain from '@/lib/domain';
 import { verifySession } from '@/data/_verifySession';
+import { Prisma } from '@/prisma/client';
 import { clientSchema, providerSchema } from '@/schema';
 import { Provider } from '@/types/app.types';
 
