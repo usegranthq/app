@@ -19,12 +19,14 @@ export default function Navbar() {
           <div className="top-8 left-4 md:top-10 md:left-10">
             <Image
               src={darkLogo}
+              unoptimized
               alt="logo"
               style={{ width: '120px', height: 'auto' }}
               className="hidden shrink-0 dark:block"
             />
             <Image
               src={lightLogo}
+              unoptimized
               alt="logo"
               style={{ width: '120px', height: 'auto' }}
               className="shrink-0 dark:hidden"
