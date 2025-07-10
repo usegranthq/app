@@ -10,11 +10,12 @@ import { z } from 'zod';
 import { Button } from '@/shadcn/components/ui/button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/shadcn/components/ui/card';
 
+import { Tenant } from '@/types/app.types';
+
 import { updateTenant } from '@/actions';
 import HookForm from '@/components/HookForm';
 import { useProgressBar } from '@/components/NavProgress';
 import { tenantSchema } from '@/schema';
-import { Tenant } from '@/types/app.types';
 
 interface TenantDetailsProps {
   tenant: Tenant;

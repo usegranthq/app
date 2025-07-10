@@ -5,9 +5,10 @@ import { formatRelative } from 'date-fns';
 
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/shadcn/components/ui/table';
 
+import { ApiKey } from '@/types/app.types';
+
 import { formatDate } from '@/utils/date';
 import { isNullOrUndefined } from '@/utils/validators';
-import { ApiKey } from '@/types/app.types';
 
 import ApiKeyOptions from './ApiKeyOptions';
 

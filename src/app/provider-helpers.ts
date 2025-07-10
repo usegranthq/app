@@ -1,6 +1,7 @@
+import { Domain, Provider } from '@/types/app.types';
+
 import { withProtocol } from '@/utils/url';
 import { env } from '@/env';
-import { Domain, Provider } from '@/types/app.types';
 
 export function getProviderDomain(provider: Provider, domains: Domain[]) {
   const domain = domains[0]?.domain ?? env.PROVIDER_DOMAIN.replace('{urlId}', provider.urlId);

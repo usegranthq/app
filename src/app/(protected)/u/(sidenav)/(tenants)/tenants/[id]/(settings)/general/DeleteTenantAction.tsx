@@ -17,9 +17,10 @@ import {
 } from '@/shadcn/components/ui/alert-dialog';
 import { Button } from '@/shadcn/components/ui/button';
 
+import { Tenant } from '@/types/app.types';
+
 import { deleteTenant } from '@/actions';
 import { useProgressBar } from '@/components/NavProgress';
-import { Tenant } from '@/types/app.types';
 
 type DeleteButtonProps = ComponentProps<typeof Button>;
 

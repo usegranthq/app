@@ -1,8 +1,9 @@
 import Link from 'next/link';
 
+import { Provider } from '@/types/app.types';
+
 import { getDomains } from '@/data/providers';
 import { getProviderDomain, getWellKnownOpenIdUrl } from '@/app/provider-helpers';
-import { Provider } from '@/types/app.types';
 
 interface ProviderDomainProps {
   provider: Provider;

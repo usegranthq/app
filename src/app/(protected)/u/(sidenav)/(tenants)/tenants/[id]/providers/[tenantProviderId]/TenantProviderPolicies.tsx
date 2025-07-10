@@ -16,10 +16,11 @@ import {
 import { Button } from '@/shadcn/components/ui/button';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/shadcn/components/ui/table';
 
+import { TenantProvider, TenantProviderPolicy } from '@/types/app.types';
+
 import { ROUTES } from '@/constants/routes';
 import { withoutProtocol } from '@/utils/url';
 import PaginationControls from '@/components/PaginationControls';
-import { TenantProvider, TenantProviderPolicy } from '@/types/app.types';
 
 import PolicyOptions from './PolicyOptions';
 

@@ -10,12 +10,13 @@ import { z } from 'zod';
 import { Button } from '@/shadcn/components/ui/button';
 import { Label } from '@/shadcn/components/ui/label';
 
+import { TenantProvider } from '@/types/app.types';
+
 import ROUTES from '@/constants/routes';
 import { createTenantProviderPolicy } from '@/actions';
 import HookForm from '@/components/HookForm';
 import { useProgressBar } from '@/components/NavProgress';
 import { tenantProviderPolicySchema } from '@/schema';
-import { TenantProvider } from '@/types/app.types';
 
 interface AddPolicyFormProps {
   tenantId: string;

@@ -15,11 +15,12 @@ importOrder:
   - ''
   - '@/shadcn/(.*)$'
   - ''
-  - ^@root/(.*)$
+  - ^@/types/(.*)$
+  - ''
   - ^@/constants/(.*)$
   - ^@/utils/(.*)$
-  - ^@/lib/(.*)$
   - ^@/schema/(.*)$
+  - ^@/lib/(.*)$
   - ^@/data/(.*)$
   - ^@/actions/(.*)$
   - '^@/(.*)$'

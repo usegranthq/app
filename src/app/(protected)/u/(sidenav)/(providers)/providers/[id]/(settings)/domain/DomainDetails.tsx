@@ -9,9 +9,10 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/sha
 import { Input } from '@/shadcn/components/ui/input';
 import { Label } from '@/shadcn/components/ui/label';
 
+import { Domain, Provider } from '@/types/app.types';
+
 import { addDomain } from '@/actions';
 import { useProgressBar } from '@/components/NavProgress';
-import { Domain, Provider } from '@/types/app.types';
 
 interface DomainDetailsProps {
   provider: Provider;

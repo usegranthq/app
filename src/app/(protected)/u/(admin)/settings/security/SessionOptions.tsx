@@ -24,8 +24,9 @@ import {
   DropdownMenuTrigger,
 } from '@/shadcn/components/ui/dropdown-menu';
 
-import { deleteSession } from '@/actions/settings';
 import { Session } from '@/types/app.types';
+
+import { deleteSession } from '@/actions/settings';
 
 export default function SessionOptions({ session }: { session: Session }) {
   const router = useRouter();

@@ -21,7 +21,6 @@
     ],
     "paths": {
       "@/*": ["./src/*"],
-      "@root/*": ["./*"],
       "@/prisma/client": ["./prisma/client/client"]
     }
   },

@@ -4,8 +4,9 @@ import { formatRelative } from 'date-fns';
 import { Button } from '@/shadcn/components/ui/button';
 import { Card, CardDescription, CardFooter, CardHeader, CardTitle } from '@/shadcn/components/ui/card';
 
-import { getTenants } from '@/data/tenants';
 import { Tenant } from '@/types/app.types';
+
+import { getTenants } from '@/data/tenants';
 
 import NoTenants from './NoTenants';
 

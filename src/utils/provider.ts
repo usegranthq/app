@@ -1,8 +1,9 @@
 import slugify from 'slugify';
 import Sqids from 'sqids';
 
-import env from '@/env';
 import { Domain } from '@/types/app.types';
+
+import env from '@/env';
 
 import { PlanDetails } from './billing';
 import { withProtocol } from './url';

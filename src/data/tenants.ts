@@ -1,6 +1,7 @@
+import { Tenant, TenantProvider, TenantProviderPolicy } from '@/types/app.types';
+
 import { toPaginatedResponse } from '@/utils/pagination';
 import db from '@/lib/db';
-import { Tenant, TenantProvider, TenantProviderPolicy } from '@/types/app.types';
 
 import { verifySession } from './_verifySession';
 

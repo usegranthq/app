@@ -25,9 +25,10 @@ import {
   DropdownMenuTrigger,
 } from '@/shadcn/components/ui/dropdown-menu';
 
+import { TenantProvider } from '@/types/app.types';
+
 import { deleteTenantProvider } from '@/actions';
 import { useProgressBar } from '@/components/NavProgress';
-import { TenantProvider } from '@/types/app.types';
 
 interface TenantOptionsProps {
   tenantId: string;

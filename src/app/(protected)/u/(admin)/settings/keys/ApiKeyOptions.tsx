@@ -25,9 +25,10 @@ import {
   DropdownMenuTrigger,
 } from '@/shadcn/components/ui/dropdown-menu';
 
+import { ApiKey } from '@/types/app.types';
+
 import { deleteApiKey } from '@/actions';
 import { useProgressBar } from '@/components/NavProgress';
-import { ApiKey } from '@/types/app.types';
 
 export default function ApiKeyOptions({ apiKey }: { apiKey: ApiKey }) {
   const router = useRouter();

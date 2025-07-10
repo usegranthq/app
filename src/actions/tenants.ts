@@ -4,6 +4,8 @@ import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
 import { z } from 'zod';
 
+import { Tenant } from '@/types/app.types';
+
 import ROUTES from '@/constants/routes';
 import { getIssuerCertifcate } from '@/utils/ca';
 import { getApiErrorMessage, getZodErrorMessage } from '@/utils/error';
@@ -11,7 +13,6 @@ import { isValidUrl } from '@/utils/url';
 import db from '@/lib/db';
 import { verifySession } from '@/data/_verifySession';
 import { tenantProviderPolicySchema, tenantProviderSchema, tenantSchema } from '@/schema';
-import { Tenant } from '@/types/app.types';
 
 type TenantFormValues = z.infer<typeof tenantSchema>;
 type TenantPolicyFormValues = z.infer<typeof tenantProviderPolicySchema>;

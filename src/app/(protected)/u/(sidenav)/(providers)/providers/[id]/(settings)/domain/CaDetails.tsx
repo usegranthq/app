@@ -18,10 +18,11 @@ import {
   SelectValue,
 } from '@/shadcn/components/ui/select';
 
+import { Domain } from '@/types/app.types';
+
 import { withoutProtocol } from '@/utils/url';
 import { getCaDetails } from '@/actions/ca';
 import Spinner from '@/components/Spinner';
-import { Domain } from '@/types/app.types';
 
 interface CaDetailsProps {
   domains: Domain[];
