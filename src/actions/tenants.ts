@@ -2,7 +2,7 @@
 
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
-import { z } from 'zod/v4';
+import { z } from 'zod';
 
 import ROUTES from '@/constants/routes';
 import { getIssuerCertifcate } from '@/utils/ca';

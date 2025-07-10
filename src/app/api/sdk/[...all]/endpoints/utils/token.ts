@@ -1,6 +1,6 @@
 import * as jose from 'jose';
 import wildcard from 'wildcard-match';
-import { z } from 'zod/v4';
+import { z } from 'zod';
 
 import { conditionsSchema } from '@/schema';
 

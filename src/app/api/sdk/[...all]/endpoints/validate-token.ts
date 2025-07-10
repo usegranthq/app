@@ -1,6 +1,6 @@
 import * as jose from 'jose';
 import ky from 'ky';
-import { z } from 'zod/v4';
+import { z } from 'zod';
 
 import db from '@/lib/db';
 import { conditionsSchema } from '@/schema';
