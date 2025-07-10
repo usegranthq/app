@@ -1,7 +1,7 @@
 import { createEnv } from '@t3-oss/env-nextjs';
 import { z } from 'zod';
 
-export const env = createEnv({
+const env = createEnv({
   server: {
     SITE_URL: z.url(),
     INVITE_TOKEN: z.string().optional(),
@@ -26,10 +26,6 @@ export const env = createEnv({
     POLAR_WEBHOOK_SECRET: z.string(),
     STATE_HMAC_SECRET_KEY: z.string(),
   },
-  client: {
-    NEXT_PUBLIC_POLAR_PRO_PLAN_PRODUCT_ID: z.string(),
-    NEXT_PUBLIC_POLAR_ULTIMATE_PLAN_PRODUCT_ID: z.string(),
-  },
   runtimeEnv: {
     SITE_URL: process.env.SITE_URL,
     INVITE_TOKEN: process.env.INVITE_TOKEN,
@@ -52,10 +48,9 @@ export const env = createEnv({
     POSTHOG_API_KEY: process.env.POSTHOG_API_KEY,
     POLAR_ACCESS_TOKEN: process.env.POLAR_ACCESS_TOKEN,
     POLAR_WEBHOOK_SECRET: process.env.POLAR_WEBHOOK_SECRET,
-    NEXT_PUBLIC_POLAR_PRO_PLAN_PRODUCT_ID: process.env.NEXT_PUBLIC_POLAR_PRO_PLAN_PRODUCT_ID,
-    NEXT_PUBLIC_POLAR_ULTIMATE_PLAN_PRODUCT_ID: process.env.NEXT_PUBLIC_POLAR_ULTIMATE_PLAN_PRODUCT_ID,
     STATE_HMAC_SECRET_KEY: process.env.STATE_HMAC_SECRET_KEY,
   },
+  emptyStringAsUndefined: true,
 });
 
 export const isLive = process.env.VERCEL_ENV === 'production';

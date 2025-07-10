@@ -3,7 +3,7 @@ import Link from 'next/link';
 import PointerHighlight from '@/shadcn/components/external/pointer-highlight';
 import { Button } from '@/shadcn/components/ui/button';
 
-import { env } from '@/env';
+import env from '@/env';
 
 import DynamicEnv from './DyanmicEnv';
 import PricingSection from './Pricing';

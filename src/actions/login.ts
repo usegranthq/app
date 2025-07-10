@@ -9,7 +9,7 @@ import ROUTES from '@/constants/routes';
 import { getApiErrorMessage, getZodErrorMessage } from '@/utils/error';
 import { auth } from '@/lib/auth';
 import constants from '@/constants';
-import { env } from '@/env';
+import env from '@/env';
 import { loginSchema, verifySchema } from '@/schema';
 
 interface TurnstileResponse {

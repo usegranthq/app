@@ -2,7 +2,7 @@ import 'server-only';
 
 import { Vercel } from '@vercel/sdk';
 
-import { env } from '@/env';
+import env from '@/env';
 
 const vercelTeamId = env.VERCEL_DOMINATE_TEAM_ID;
 const vercelProjectId = env.VERCEL_DOMINATE_PROJECT_ID;

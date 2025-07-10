@@ -3,7 +3,7 @@ import { render } from '@react-email/components';
 import nodemailer from 'nodemailer';
 import { Resend } from 'resend';
 
-import { env } from '@/env';
+import env from '@/env';
 import LoginEmail from '@/templates/LoginEmail';
 
 interface SendEmailParams {

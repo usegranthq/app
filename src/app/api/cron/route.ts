@@ -7,7 +7,7 @@ import { generateJwk } from '@/utils/jwk';
 import { validateBearerToken } from '@/utils/rest';
 import { getPlanByUserId } from '@/lib/billing';
 import db from '@/lib/db';
-import { env } from '@/env';
+import env from '@/env';
 
 const processCron = async () => {
   const now = new Date();

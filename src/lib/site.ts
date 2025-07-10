@@ -1,6 +1,6 @@
 import 'server-only';
 
-import { env } from '@/env';
+import env from '@/env';
 
 export const getSiteUrl = (): string => {
   // if it is running in vercel preview, use the vercel preview url

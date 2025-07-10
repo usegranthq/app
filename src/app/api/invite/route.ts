@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 
 import ROUTES from '@/constants/routes';
 import constants from '@/constants';
-import { env } from '@/env';
+import env from '@/env';
 
 export const GET = async (request: NextRequest) => {
   // get invite code from request query params

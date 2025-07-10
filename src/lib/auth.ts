@@ -7,7 +7,7 @@ import { PostHog } from 'posthog-node';
 
 import * as constants from '@/constants/cookies';
 import { generateLoginToken } from '@/utils/random';
-import { env, isLive } from '@/env';
+import env, { isLive } from '@/env';
 
 import { getPlanByUserId } from './billing';
 import { prisma } from './db';

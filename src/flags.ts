@@ -2,7 +2,7 @@ import type { ReadonlyRequestCookies } from 'flags';
 import { dedupe, flag } from 'flags/next';
 
 import constants from '@/constants';
-import { env } from '@/env';
+import env from '@/env';
 
 type DedupeParams = {
   cookies: ReadonlyRequestCookies;
