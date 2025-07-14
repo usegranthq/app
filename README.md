@@ -17,7 +17,9 @@ Then, start the db server:
 make db
 ```
 
-this will run a [local postgres prisma dev server](https://www.prisma.io/docs/orm/reference/prisma-cli-reference#dev). Also copy the connection urls provided to the `.env.development` file.
+this will run a
+[local postgres prisma dev server](https://www.prisma.io/docs/orm/reference/prisma-cli-reference#dev).
+Also copy the connection urls provided to the `.env.development` file.
 
 and then start the app:
 
@@ -25,7 +27,8 @@ and then start the app:
 make dev
 ```
 
-Open [http://localhost:7500](http://localhost:7500) in your browser to see the result. If you have specific port settings, you can override them by setting the `PORT` environment variable.
+Open [http://localhost:7500](http://localhost:7500) in your browser to see the result. If you have
+specific port settings, you can override them by setting the `PORT` environment variable.
 
 ## Tooling docs
 
@@ -34,11 +37,13 @@ To learn more about Next.js, take a look at the following resources:
 - [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
 - [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback
+and contributions are welcome!
 
 ## Testing webhooks
 
-To test webhooks locally, you can use [smee.io](https://smee.io) to forward webhook events from external services to your local development server.
+To test webhooks locally, you can use [smee.io](https://smee.io) to forward webhook events from
+external services to your local development server.
 
 Install and start smee client globally if you haven't already:
 
