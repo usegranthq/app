@@ -4,8 +4,9 @@ import nodemailer from 'nodemailer';
 import { Resend } from 'resend';
 
 import env from '@/env';
-import ChangeEmail from '@/templates/ChangeEmail';
+import ChangeEmailVerification from '@/templates/ChangeEmailVerification';
 import LoginEmail from '@/templates/LoginEmail';
+import VerifyEmail from '@/templates/VerifyEmail';
 
 interface SendEmailParams {
   to: string;
@@ -44,10 +45,17 @@ interface SendLoginEmailParams {
   url: string;
 }
 
+interface SendEmailVerificationParams {
+  email: string;
+  token: string;
+  url: string;
+}
+
 interface SendChangeEmailVerificationParams {
   email: string;
   token: string;
   url: string;
+  newEmail: string;
 }
 
 export const sendLoginEmail = async (data: SendLoginEmailParams) => {
@@ -58,10 +66,18 @@ export const sendLoginEmail = async (data: SendLoginEmailParams) => {
   });
 };
 
+export const sendEmailVerification = async (data: SendEmailVerificationParams) => {
+  await sendEmail({
+    to: data.email,
+    subject: 'Verify your email address',
+    template: <VerifyEmail token={data.token} url={data.url} />,
+  });
+};
+
 export const sendChangeEmailVerification = async (data: SendChangeEmailVerificationParams) => {
   await sendEmail({
     to: data.email,
     subject: 'Verify your email address',
-    template: <ChangeEmail token={data.token} url={data.url} />,
+    template: <ChangeEmailVerification token={data.token} url={data.url} newEmail={data.newEmail} />,
   });
 };

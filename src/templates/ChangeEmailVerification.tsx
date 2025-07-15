@@ -1,18 +1,23 @@
 import * as React from 'react';
-import { Body, Container, Head, Heading, Html, Link, Preview, Text } from '@react-email/components';
+import { Body, CodeInline, Container, Head, Heading, Html, Link, Preview, Text } from '@react-email/components';
 
 interface LoginEmailProps {
   token: string;
   url: string;
+  newEmail: string;
 }
 
-export const ChangeEmail = ({ url }: LoginEmailProps) => (
+export const ChangeEmailVerification = ({ url, newEmail }: LoginEmailProps) => (
   <Html>
     <Head />
     <Preview>Verify your email address</Preview>
     <Body style={main}>
       <Container style={container}>
-        <Heading style={h1}>Verify Email</Heading>
+        <Heading style={h1}>Verify email change request</Heading>
+        <Text style={text}>
+          You have requested to change your email address to{' '}
+          <CodeInline className="rounded-[6px] bg-gray-300 px-[4px] py-[2px]">{newEmail}</CodeInline>. address.
+        </Text>
         <Link
           href={url}
           target="_blank"
@@ -22,7 +27,7 @@ export const ChangeEmail = ({ url }: LoginEmailProps) => (
             marginBottom: '16px',
           }}
         >
-          Click here to verify your email address
+          Click here to verify your email address change request.
         </Link>
         <Text
           style={{
@@ -32,14 +37,14 @@ export const ChangeEmail = ({ url }: LoginEmailProps) => (
             marginBottom: '16px',
           }}
         >
-          If you didn&apos;t try to change your email address, you can safely ignore this email.
+          If you didn&apos;t request to change your email address, you can safely ignore this email.
         </Text>
       </Container>
     </Body>
   </Html>
 );
 
-export default ChangeEmail;
+export default ChangeEmailVerification;
 
 const main = {
   backgroundColor: '#ffffff',

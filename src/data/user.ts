@@ -1,8 +1,11 @@
 import 'server-only';
 
+import { headers } from 'next/headers';
+
 import { Customer, Session, Subscription, User } from '@/types/app.types';
 
 import { PlanDetails } from '@/utils/billing';
+import { auth } from '@/lib/auth';
 import db from '@/lib/db';
 
 import { verifySession } from './_verifySession';
@@ -25,6 +28,15 @@ export const getSessions = async (): Promise<Session[]> => {
   });
 
   return sessions;
+};
+
+const socialProviders = ['github', 'google'];
+export const getSocialAccounts = async () => {
+  const accounts = await auth.api.listUserAccounts({
+    headers: await headers(),
+  });
+
+  return accounts.filter((account) => socialProviders.includes(account.provider));
 };
 
 export const getCustomer = async (): Promise<Customer | null> => {

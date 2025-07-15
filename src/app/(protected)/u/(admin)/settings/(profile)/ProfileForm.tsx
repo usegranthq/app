@@ -44,7 +44,12 @@ export default function ProfileForm({ user }: ProfileFormProps) {
       }
 
       form.reset(undefined, { keepDefaultValues: true });
-      toast.success(`An email verification link has been sent to ${data.email}.`);
+      toast.success(
+        `An email verification link has been sent to ${user.email}. Kindly check your inbox to approve the request`,
+        {
+          duration: 30_000,
+        },
+      );
     });
   };
 
@@ -64,6 +69,13 @@ export default function ProfileForm({ user }: ProfileFormProps) {
             </CardHeader>
             <CardContent>
               <TextInput name="email" label="Email" placeholder="user@example.com" />
+              {!user.emailVerified && (
+                <div className="mt-2">
+                  <p className="text-sm text-muted-foreground">
+                    This email is not verified. Please check your inbox for a verification email.
+                  </p>
+                </div>
+              )}
             </CardContent>
             <CardFooter>
               <Button>Save</Button>
