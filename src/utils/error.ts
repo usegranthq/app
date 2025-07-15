@@ -1,3 +1,4 @@
+import { APIError } from 'better-auth/api';
 import { ZodError } from 'zod/v4';
 
 import { Prisma } from '@/prisma/client';
@@ -23,8 +24,17 @@ const getErrorCodes = (error: unknown): ErrorCode => {
   return 'UNKNOWN';
 };
 
+const getErrorMessage = (error: unknown, defaultMessage: string): string => {
+  if (error instanceof APIError) {
+    return error.message;
+  }
+  return defaultMessage;
+};
+
 export const getApiErrorMessage = (error: unknown, defaultMessage: string | MessageHandler) => {
-  return typeof defaultMessage === 'function' ? defaultMessage(getErrorCodes(error)) : defaultMessage;
+  return typeof defaultMessage === 'function'
+    ? defaultMessage(getErrorCodes(error))
+    : getErrorMessage(error, defaultMessage);
 };
 
 export const getZodErrorMessage = (error: ZodError): string => {

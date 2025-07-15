@@ -11,7 +11,7 @@ import env, { isLive } from '@/env';
 
 import { getPlanByUserId } from './billing';
 import { prisma } from './db';
-import { sendLoginEmail } from './email';
+import { sendChangeEmailVerification, sendLoginEmail } from './email';
 import { getSiteUrl } from './site';
 
 const posthog = new PostHog(env.POSTHOG_API_KEY, {
@@ -36,6 +36,12 @@ export const auth = betterAuth({
     },
   },
   user: {
+    changeEmail: {
+      enabled: true,
+      async sendChangeEmailVerification(data) {
+        await sendChangeEmailVerification({ ...data, email: data.newEmail });
+      },
+    },
     deleteUser: {
       enabled: true,
     },

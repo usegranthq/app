@@ -12,6 +12,10 @@ export const verifySchema = z.object({
   code: z.string().trim().min(1, 'Please enter the code sent to your email.'),
 });
 
+export const profileSchema = z.object({
+  email: z.email('Please enter a valid email address.').trim(),
+});
+
 export const providerSchema = z.object({
   name: z
     .string('Please enter a provider name.')
