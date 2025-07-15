@@ -9,6 +9,7 @@
     "start": "next start",
     "test": "vitest",
     "lint": "oxlint",
+    "format": "prettier --write .",
     "generate": "prisma generate --no-hints",
     "migrate": "prisma migrate deploy",
     "migrate:dev": "prisma migrate dev",

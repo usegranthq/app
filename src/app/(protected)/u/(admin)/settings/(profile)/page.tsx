@@ -1,9 +1,18 @@
-import { getUser } from '@/data/user';
+import { getSocialAccounts, getUser } from '@/data/user';
 
+import ConnectedAccounts from './ConnectedAccounts';
 import ProfileForm from './ProfileForm';
 
 export default async function Settings() {
-  const user = await getUser();
+  const userPromise = getUser();
+  const connectedAccountsPromise = getSocialAccounts();
 
-  return <ProfileForm user={user} />;
+  const [user, connectedAccounts] = await Promise.all([userPromise, connectedAccountsPromise]);
+
+  return (
+    <div className="grid gap-10">
+      <ProfileForm user={user} />
+      <ConnectedAccounts accounts={connectedAccounts} />
+    </div>
+  );
 }
