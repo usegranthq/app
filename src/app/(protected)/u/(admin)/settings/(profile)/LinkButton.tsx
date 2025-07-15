@@ -1,5 +1,6 @@
 'use client';
 
+import { useTransition } from 'react';
 import { toast } from 'sonner';
 
 import {
@@ -17,6 +18,7 @@ import { Button } from '@/shadcn/components/ui/button';
 
 import ROUTES from '@/constants/routes';
 import { authClient } from '@/lib/auth-client';
+import { useProgressBar } from '@/components/NavProgress';
 
 interface LinkButtonProps {
   provider: {
@@ -26,24 +28,33 @@ interface LinkButtonProps {
 }
 
 export default function LinkButton({ provider }: LinkButtonProps) {
+  const [isPending, startTransition] = useTransition();
+
+  const progress = useProgressBar();
   const handleLink = () => {
-    authClient.linkSocial({
-      provider: provider.provider,
-      callbackURL: ROUTES.SETTINGS,
-      fetchOptions: {
-        onError: ({ error }) => {
-          if (typeof error === 'object' && 'message' in error) {
-            toast.error('Failed to link account: ' + error.message);
-          }
+    startTransition(async () => {
+      progress.start();
+
+      await authClient.linkSocial({
+        provider: provider.provider,
+        callbackURL: ROUTES.SETTINGS,
+        fetchOptions: {
+          onError: ({ error }) => {
+            if (typeof error === 'object' && 'message' in error) {
+              toast.error('Failed to link account: ' + error.message);
+            }
+          },
         },
-      },
+      });
     });
   };
 
   return (
     <AlertDialog>
       <AlertDialogTrigger asChild>
-        <Button size="sm">Link</Button>
+        <Button size="sm" disabled={isPending}>
+          Link
+        </Button>
       </AlertDialogTrigger>
       <AlertDialogContent>
         <AlertDialogHeader>
