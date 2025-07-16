@@ -77,8 +77,14 @@ export default function ProfileForm({ user }: ProfileFormProps) {
                 </div>
               )}
             </CardContent>
-            <CardFooter>
-              <Button>Save</Button>
+            <CardFooter className="grid gap-2">
+              <div>
+                <Button>Save</Button>
+              </div>
+              <p className="text-sm text-muted-foreground">
+                Note: When you change your email, a verification link will be sent to your current email address. You
+                must approve first to send a verification email to the new address.
+              </p>
             </CardFooter>
           </Card>
         </form>
