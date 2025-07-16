@@ -6,6 +6,7 @@ import { Button } from '@/shadcn/components/ui/button';
 import env from '@/env';
 
 import DynamicEnv from './DyanmicEnv';
+import PlatformsSection from './Platforms';
 import PricingSection from './Pricing';
 import TrustBasedAccess from './TrustBasedAccess';
 import ZeroTrustSection from './ZeroTrust';
@@ -51,6 +52,7 @@ export default async function Home() {
       <TrustBasedAccess />
       <DynamicEnv />
       <ZeroTrustSection />
+      <PlatformsSection />
       <PricingSection />
       {isInviteOnly && (
         <div className="my-44 flex flex-col items-center gap-4">
