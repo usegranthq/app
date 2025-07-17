@@ -61,7 +61,8 @@ jobs:
 
       - name: Deploy
         run: docker compose up --build -d --remove-orphans
-        env: DOCKER_HOST="${{ secrets.REMOTE_DOCKER_HOST }}"
+        env:
+          DOCKER_HOST: ${{ secrets.REMOTE_DOCKER_HOST }}
 
       - name: Remove environment variables file
         run: rm -f .env
