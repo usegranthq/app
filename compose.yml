@@ -1,0 +1,54 @@
+services:
+  postgres:
+    container_name: postgres
+    image: postgres:17
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: grant_hq
+    ports:
+      - 5432:5432
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    restart: always
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U postgres']
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  migrate:
+    container_name: ug_migrate
+    build:
+      context: .
+      target: install
+    env_file:
+      - path: .env.development
+        required: false
+    environment:
+      DATABASE_URL: postgres://postgres:postgres@postgres:5432/grant_hq
+    depends_on:
+      postgres:
+        condition: service_healthy
+    command: ['npm', 'run', 'migrate']
+    restart: 'no'
+
+  app:
+    container_name: ug_app
+    build: .
+    env_file:
+      - path: .env.development
+        required: false
+    environment:
+      DATABASE_URL: postgres://postgres:postgres@postgres:5432/grant_hq
+    ports:
+      - 3000:3000
+    depends_on:
+      postgres:
+        condition: service_healthy
+      migrate:
+        condition: service_completed_successfully
+    restart: always
+
+volumes:
+  postgres_data:

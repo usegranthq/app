@@ -7,6 +7,7 @@ const docsUrl = process.env.NODE_ENV === 'development' ? 'http://localhost:7575'
 const nextConfig: NextConfig = {
   reactStrictMode: true,
   poweredByHeader: false,
+  output: 'standalone',
   async rewrites() {
     return {
       beforeFiles: [

@@ -1,16 +1,10 @@
 name: Deploy to Vercel
 
 on:
+  workflow_dispatch:
   push:
     branches:
       - master
-
-env:
-  NODE_VERSION: 22
-  VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
-  VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
-  VERCEL_TELEMETRY_DISABLED: 1
-  HUSKY: 0
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -19,23 +13,55 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
 
+    environment:
+      name: production
+      url: ${{ vars.SITE_URL }}
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Set up Node.js
-        uses: actions/setup-node@v4
+      - name: Setup docker
+        uses: docker/setup-docker-action@v4
+
+      - name: Configure SSH
+        run: |
+          mkdir -p ~/.ssh
+          chmod 700 ~/.ssh
+          echo "${{ secrets.HETZNER_HOST_SSH_KEY }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan -H ${{ secrets.HETZNER_HOST }} >> ~/.ssh/known_hosts
+          chmod 644 ~/.ssh/known_hosts
+
+      - name: Write environment variables
+        uses: sibiraj-s/action-toenv@v1
         with:
-          node-version: ${{ env.NODE_VERSION }}
+          env: |
+            SITE_URL=${{ vars.SITE_URL }}
+            INVITE_TOKEN=${{ secrets.INVITE_TOKEN }}
+            JWT_SIGNING_SECRET=${{ secrets.JWT_SIGNING_SECRET }}
+            TURNSTILE_SITE_KEY=${{ secrets.TURNSTILE_SITE_KEY }}
+            TURNSTILE_SECRET_KEY=${{ secrets.TURNSTILE_SECRET_KEY }}
+            OAUTH_GITHUB_APP_CLIENT_ID=${{ secrets.OAUTH_GITHUB_APP_CLIENT_ID }}
+            OAUTH_GITHUB_APP_CLIENT_SECRET=${{ secrets.OAUTH_GITHUB_APP_CLIENT_SECRET }}
+            OAUTH_GOOGLE_APP_CLIENT_ID=${{ secrets.OAUTH_GOOGLE_APP_CLIENT_ID }}
+            OAUTH_GOOGLE_APP_CLIENT_SECRET=${{ secrets.OAUTH_GOOGLE_APP_CLIENT_SECRET }}
+            BETTER_AUTH_SECRET=${{ secrets.BETTER_AUTH_SECRET }}
+            PROVIDER_DOMAIN=${{ vars.PROVIDER_DOMAIN }}
+            NODEMAILER_SMTP_URL=${{ vars.NODEMAILER_SMTP_URL }}
+            EMAIL_FROM=${{ vars.EMAIL_FROM }}
+            RESEND_API_KEY=${{ secrets.RESEND_API_KEY }}
+            CRON_SECRET=${{ secrets.CRON_SECRET }}
+            POSTHOG_API_KEY=${{ secrets.POSTHOG_API_KEY }}
+            STATE_HMAC_SECRET_KEY=${{ secrets.STATE_HMAC_SECRET_KEY }}
+            POLAR_ACCESS_TOKEN=${{ secrets.POLAR_ACCESS_TOKEN }}
+            POLAR_WEBHOOK_SECRET=${{ secrets.POLAR_WEBHOOK_SECRET }}
+            POLAR_PRO_PLAN_PRODUCT_ID=${{ secrets.POLAR_PRO_PLAN_PRODUCT_ID }}
+            POLAR_ULTIMATE_PLAN_PRODUCT_ID=${{ secrets.POLAR_ULTIMATE_PLAN_PRODUCT_ID }}
 
-      - name: Install dependencies
-        run: npm ci
+      - name: Deploy
+        run: docker compose up --build -d --remove-orphans
+        env: DOCKER_HOST="${{ secrets.REMOTE_DOCKER_HOST }}"
 
-      - name: Run tests
-        run: npm run test
-
-      - name: Install Vercel CLI
-        run: npm install -g vercel
-
-      - name: Deploy to Vercel
-        run: vercel deploy --no-wait --prod --token=${{ secrets.VERCEL_TOKEN }}
+      - name: Remove environment variables file
+        run: rm -f .env
