@@ -172,6 +172,7 @@ export const PLAN_FEATURES: PlanFeatures[] = [
   {
     id: PLAN.PRO,
     contents: [
+      'All in free',
       `${PLANS[PLAN.PRO].features.providers.limit} Providers`,
       `${PLANS[PLAN.PRO].features.tenants.limit} Tenants`,
       'Unlimited clients per provider',
@@ -184,11 +185,11 @@ export const PLAN_FEATURES: PlanFeatures[] = [
   {
     id: PLAN.ULTIMATE,
     contents: [
+      'All in pro',
       `Unlimited Providers`,
       `Unlimited Tenants`,
-      'All in starter',
+      'Advanced SSL Certificates',
       'Auto Rotate signing keys',
-      'Priority support 24/5',
     ],
   },
 ];
