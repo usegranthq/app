@@ -10,7 +10,6 @@ import { getApiErrorMessage } from '@/utils/error';
 import { getPlanProductId } from '@/lib/billing';
 import db from '@/lib/db';
 import polarClient from '@/lib/polar';
-import { getSiteUrl } from '@/lib/site';
 import { verifySession } from '@/data/_verifySession';
 import { getCustomer, getSubscription } from '@/data/user';
 import env from '@/env';
@@ -35,8 +34,9 @@ export const checkout = async (planId: PlanId): ActionResponse => {
 
   const successUrl = new URL(
     `${ROUTES.API_BILLING_SUCCESS_URL}?checkout_id={CHECKOUT_ID}&state=${state}`,
-    getSiteUrl(),
+    env.SITE_URL,
   );
+
   let sessionURL = '';
 
   try {

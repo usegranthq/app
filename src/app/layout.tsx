@@ -1,14 +1,14 @@
 import { PropsWithChildren } from 'react';
 import type { Metadata } from 'next';
 
-import { SITE_URL } from '@/lib/site';
-
 import fonts from './fonts';
 
 import './globals.css';
 
+import env from '@/env';
+
 export const metadata: Metadata = {
-  metadataBase: new URL(SITE_URL),
+  metadataBase: new URL(env.SITE_URL),
   title: 'useGrant',
   description: 'Effortless machine to machine grant setup',
   pinterest: {

@@ -1,7 +1,12 @@
-import env from '@/env';
+// for hosted environments under a reverse proxy
+// e.g. cloudflare tunnerl, etc
+export const getSiteUrlFromRequest = (request: Request): string => {
+  const protocol = request.headers.get('x-forwarded-proto');
+  const host = request.headers.get('x-forwarded-host');
 
-export const getSiteUrl = (): string => {
-  return env.SITE_URL;
+  if (!protocol || !host) {
+    return request.url;
+  }
+
+  return `${protocol}://${host}`;
 };
-
-export const SITE_URL = getSiteUrl();

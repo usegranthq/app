@@ -18,7 +18,8 @@ const nextConfig: NextConfig = {
         {
           has: [
             {
-              type: 'host',
+              type: 'header',
+              key: 'x-forwarded-host',
               value: 'tokens.usegrant.dev',
             },
           ],
@@ -26,10 +27,15 @@ const nextConfig: NextConfig = {
           destination: '/api/well-known/:segment',
         },
         {
+          source: '/.well-known/:segment',
+          destination: '/api/well-known/:segment',
+        },
+        {
           source: '/:path*',
           has: [
             {
-              type: 'host',
+              type: 'header',
+              key: 'x-forwarded-host',
               value: 'sdk.usegrant.dev',
             },
           ],

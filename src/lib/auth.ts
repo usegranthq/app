@@ -12,7 +12,6 @@ import env, { isLive } from '@/env';
 import { getPlanByUserId } from './billing';
 import { prisma } from './db';
 import { sendChangeEmailVerification, sendEmailVerification, sendLoginEmail } from './email';
-import { getSiteUrl } from './site';
 
 const posthog = new PostHog(env.POSTHOG_API_KEY, {
   host: 'https://us.i.posthog.com',
@@ -26,7 +25,7 @@ const database = prismaAdapter(prisma, {
 export { APIError as BetterAuthAPIError };
 
 export const auth = betterAuth({
-  baseURL: getSiteUrl(),
+  baseURL: env.SITE_URL,
   secret: env.BETTER_AUTH_SECRET,
   database,
   account: {

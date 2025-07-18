@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 
 import ROUTES from '@/constants/routes';
+import { getSiteUrlFromRequest } from '@/lib/site';
 import constants from '@/constants';
 import env from '@/env';
 
@@ -16,7 +17,7 @@ export const GET = async (request: NextRequest) => {
     return NextResponse.json({ error: 'Invalid invite code' }, { status: 400 });
   }
 
-  const response = NextResponse.redirect(new URL(ROUTES.LOGIN, request.url));
+  const response = NextResponse.redirect(new URL(ROUTES.LOGIN, getSiteUrlFromRequest(request)));
   response.cookies.set(constants.INVITE_COOKIE, inviteCode, {
     path: '/',
     httpOnly: true,
