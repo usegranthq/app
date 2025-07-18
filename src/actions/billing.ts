@@ -95,7 +95,6 @@ export const upgradePlan = async (planId: PlanId): ActionResponse => {
       data: { status: subscription.status, productId: subscription.productId },
     });
   } catch (error) {
-    console.log(error);
     const errorMessage = getApiErrorMessage(error, 'Failed to create a checkout session');
     return [errorMessage, null];
   }
@@ -145,7 +144,6 @@ export const cancelSubscription = async (): ActionResponse => {
       data: { status: polarSubscription.status },
     });
   } catch (err) {
-    console.log(err);
     return ['Failed to cancel subscription', null];
   }
 

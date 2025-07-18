@@ -75,7 +75,6 @@ export async function fetchFingerprint(url: string): ActionResponse<string> {
     const fingerprint = certificate.fingerprint.replace(/:/g, '').toUpperCase();
     return [null, fingerprint];
   } catch (error) {
-    console.log(error);
     return ['Failed to fetch fingerprint', null];
   }
 }
