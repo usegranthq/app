@@ -48,7 +48,7 @@ const verifyDomain = createAuthEndpoint(
     }
 
     try {
-      const [isVerified, verificationStatus] = await customDomain.verify(domain.domain);
+      const isVerified = await customDomain.verify(domain.domain);
 
       let updatedDomain = domain;
       if (domain.verified !== isVerified) {
@@ -68,7 +68,7 @@ const verifyDomain = createAuthEndpoint(
       if (!isVerified) {
         return {
           verified: false,
-          message: `Failed to verify domain. ${verificationStatus}.`,
+          message: `Failed to verify domain.`,
           domain: null,
         };
       }

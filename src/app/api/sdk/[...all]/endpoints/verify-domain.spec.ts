@@ -46,7 +46,7 @@ describe('SDK: Verify Domain', () => {
     mockProPlanSubscription();
     mockDb.provider.findUnique.mockResolvedValue(fakeDbProvider);
     mockDb.domain.findUnique.mockResolvedValue(fakeDbDomain);
-    mockCustomDomain.verify.mockResolvedValue([false, 'Invalid Configuration']);
+    mockCustomDomain.verify.mockResolvedValue(false);
 
     const request = authorizedRequest('v1/providers/1/domains/1/verify', {
       method: 'POST',
@@ -56,7 +56,7 @@ describe('SDK: Verify Domain', () => {
     expect(response.status).toBe(STATUS_CODES.OK);
     await expect(response.json()).resolves.toEqual({
       verified: false,
-      message: 'Failed to verify domain. Invalid Configuration.',
+      message: 'Failed to verify domain.',
       domain: null,
     });
   });
@@ -65,7 +65,7 @@ describe('SDK: Verify Domain', () => {
     mockProPlanSubscription();
     mockDb.provider.findUnique.mockResolvedValue(fakeDbProvider);
     mockDb.domain.findUnique.mockResolvedValue(fakeDbDomain);
-    mockCustomDomain.verify.mockResolvedValue([true, 'Valid Configuration']);
+    mockCustomDomain.verify.mockResolvedValue(true);
     mockDb.domain.update.mockResolvedValue(fakeDbDomain);
 
     const request = authorizedRequest('v1/providers/1/domains/1/verify', {
