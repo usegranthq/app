@@ -17,9 +17,8 @@ const env = createEnv({
     NODEMAILER_SMTP_URL: z.string(),
     RESEND_API_KEY: z.string(),
     EMAIL_FROM: z.string(),
-    VERCEL_DOMINATE_TEAM_ID: z.string(),
-    VERCEL_DOMINATE_PROJECT_ID: z.string(),
-    VERCEL_DOMINATE_API_TOKEN: z.string(),
+    CLOUDFLARE_API_TOKEN: z.string(),
+    CLOUDFLARE_ZONE_ID: z.string(),
     CRON_SECRET: z.string(),
     POSTHOG_API_KEY: z.string(),
     POLAR_ACCESS_TOKEN: z.string(),
@@ -43,9 +42,8 @@ const env = createEnv({
     NODEMAILER_SMTP_URL: process.env.NODEMAILER_SMTP_URL,
     RESEND_API_KEY: process.env.RESEND_API_KEY,
     EMAIL_FROM: process.env.EMAIL_FROM,
-    VERCEL_DOMINATE_TEAM_ID: process.env.VERCEL_DOMINATE_TEAM_ID,
-    VERCEL_DOMINATE_PROJECT_ID: process.env.VERCEL_DOMINATE_PROJECT_ID,
-    VERCEL_DOMINATE_API_TOKEN: process.env.VERCEL_DOMINATE_API_TOKEN,
+    CLOUDFLARE_API_TOKEN: process.env.CLOUDFLARE_API_TOKEN,
+    CLOUDFLARE_ZONE_ID: process.env.CLOUDFLARE_ZONE_ID,
     CRON_SECRET: process.env.CRON_SECRET,
     POSTHOG_API_KEY: process.env.POSTHOG_API_KEY,
     POLAR_ACCESS_TOKEN: process.env.POLAR_ACCESS_TOKEN,
@@ -57,6 +55,6 @@ const env = createEnv({
   emptyStringAsUndefined: true,
 });
 
-export const isLive = process.env.VERCEL_ENV === 'production';
+export const isLive = process.env.NODE_ENV === 'production';
 
 export default env;

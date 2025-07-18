@@ -3,7 +3,7 @@
 import { revalidatePath } from 'next/cache';
 
 import ROUTES from '@/constants/routes';
-import { getApiErrorMessage, getZodErrorMessage } from '@/utils/error';
+import error, { getApiErrorMessage, getZodErrorMessage } from '@/utils/error';
 import db from '@/lib/db';
 import customDomain from '@/lib/domain';
 import { verifySession } from '@/data/_verifySession';
@@ -40,22 +40,23 @@ export async function addDomain(providerId: string, formData: FormData): ActionR
   const domain = validation.data;
 
   try {
-    const [isVerified] = await customDomain.add(domain);
+    const externalDomain = await customDomain.add(domain);
 
     await db.domain.create({
       data: {
         domain,
-        verified: isVerified,
+        verified: externalDomain.verified,
         providerId,
+        externalId: externalDomain.id,
       },
     });
   } catch (error) {
-    const errorMessage = getApiErrorMessage(error, (errorCode) => {
-      switch (errorCode) {
+    const errorMessage = getApiErrorMessage(error, (errMessage) => {
+      switch (errMessage) {
         case 'EXISTS':
           return 'Domain already added to this provider.';
         default:
-          return 'Failed to add domain. Try again.';
+          return errMessage ?? 'Failed to add domain. Try again.';
       }
     });
 
@@ -84,9 +85,10 @@ export async function deleteDomain(providerId: string, domain: string): ActionRe
   }
 
   try {
-    await customDomain.remove(domain);
-  } catch {
-    return ['Failed to remove domain. Try again.', null];
+    await customDomain.remove(domainRecord.externalId);
+  } catch (error) {
+    const errorMessage = getApiErrorMessage(error, 'Failed to remove domain. Try again.');
+    return [errorMessage, null];
   }
 
   try {
@@ -125,9 +127,9 @@ export async function verifyDomain(providerId: string, domain: string): ActionRe
   }
 
   try {
-    const [isVerified, verificationStatus] = await customDomain.verify(domain);
+    const isVerified = await customDomain.verify(domainRecord.externalId);
     if (!isVerified) {
-      return [`Failed to verify domain. ${verificationStatus}`, null];
+      return [`Unable to verify domain. Please verify if the DNS records are correctly configured.`, null];
     }
 
     await db.domain.update({
@@ -143,7 +145,8 @@ export async function verifyDomain(providerId: string, domain: string): ActionRe
 
     revalidatePath(ROUTES.PROVIDERS_ID_SETTINGS_DOMAIN(providerId));
     return [null, isVerified];
-  } catch {
-    return ['Failed to verify domain. Try again.', null];
+  } catch (error) {
+    const errorMessage = getApiErrorMessage(error, 'Failed to verify domain. Try again.');
+    return [errorMessage, null];
   }
 }

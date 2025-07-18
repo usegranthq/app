@@ -1,39 +1,46 @@
 import { APIError } from 'better-auth/api';
+import { APIError as CloudflareError } from 'cloudflare';
 import { ZodError } from 'zod/v4';
 
 import { Prisma } from '@/prisma/client';
 
 type MessageHandler = (errorCode: string) => string;
 
-type ErrorCode = 'EXISTS' | 'UNKNOWN';
+type ErrorCode = 'EXISTS' | string;
 
 export const isDbError = (error: unknown): error is Prisma.PrismaClientKnownRequestError => {
   return error instanceof Prisma.PrismaClientKnownRequestError;
 };
 
-const getErrorCodes = (error: unknown): ErrorCode => {
+const getErrorCodes = (error: unknown, defaultMessage: string): ErrorCode => {
   if (isDbError(error)) {
     switch (error.code) {
       case 'P2002':
         return 'EXISTS';
       default:
-        return 'UNKNOWN';
+        return getErrorMessage(error, defaultMessage);
     }
   }
 
-  return 'UNKNOWN';
+  return getErrorMessage(error, defaultMessage);
 };
 
 const getErrorMessage = (error: unknown, defaultMessage: string): string => {
   if (error instanceof APIError) {
     return error.message;
   }
-  return defaultMessage;
+
+  // check if error is a cloudflare error
+  if (error instanceof CloudflareError) {
+    return error.errors[0]?.message || defaultMessage;
+  }
+
+  return error instanceof Error ? error.message : defaultMessage;
 };
 
 export const getApiErrorMessage = (error: unknown, defaultMessage: string | MessageHandler) => {
   return typeof defaultMessage === 'function'
-    ? defaultMessage(getErrorCodes(error))
+    ? defaultMessage(getErrorCodes(error, 'UNKNOWN_ERROR'))
     : getErrorMessage(error, defaultMessage);
 };
 

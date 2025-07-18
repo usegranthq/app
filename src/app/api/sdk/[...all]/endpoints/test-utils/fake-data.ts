@@ -26,6 +26,7 @@ export const fakeDbDomain: Domain = {
   id: '1',
   domain: 'test.com',
   providerId: '1',
+  externalId: 'external-id-123',
   createdAt: new Date(),
   updatedAt: new Date(),
   verified: true,

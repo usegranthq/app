@@ -36,7 +36,7 @@ const deleteProvider = createAuthEndpoint(
       });
 
       for (const domain of domains) {
-        await customDomain.remove(domain.domain);
+        await customDomain.remove(domain.externalId);
         await db.domain.delete({ where: { id: domain.id, Provider: { userId: ctx.context.userId } } });
       }
 

@@ -100,7 +100,7 @@ export async function deleteProvider(providerId: string): ActionResponse {
     });
 
     for (const domain of domains) {
-      await customDomain.remove(domain.domain);
+      await customDomain.remove(domain.externalId);
       await db.domain.delete({ where: { id: domain.id, Provider: { userId: user.id } } });
     }
 

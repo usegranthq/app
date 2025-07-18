@@ -60,7 +60,7 @@ export async function deleteAccount(): ActionResponse {
 
   for (const domain of domains) {
     try {
-      await customDomain.remove(domain.domain);
+      await customDomain.remove(domain.externalId);
     } catch {
       return ['Failed to detach domain associated with your account. Try again or contact support.', null];
     }

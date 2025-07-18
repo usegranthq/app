@@ -1,6 +1,6 @@
-import vercel from './vercel';
+import cloudflare from './cloudflare';
 
-const blackListedDomains = ['usegrant.dev', 'vercel.app', 'vercel.pub'];
+const blackListedDomains = ['usegrant.dev'];
 
 const verifyBlackListedDomain = (domain: string) => {
   if (blackListedDomains.includes(domain)) {
@@ -14,60 +14,27 @@ type DomainVerificationStatus =
   | 'Invalid Configuration'
   | 'Unknown Error';
 
-const addDomain = async (domain: string): Promise<[boolean, DomainVerificationStatus]> => {
+const addDomain = async (domain: string) => {
   verifyBlackListedDomain(domain);
 
-  try {
-    const addDomainResponse = await vercel.domains.add(domain);
-    const domainConfigResponse = await vercel.domains.getConfig(domain);
-    const isVerified = addDomainResponse.verified && !domainConfigResponse.misconfigured;
-    return [isVerified, 'Valid Configuration'];
-  } catch {}
-
-  return [false, 'Invalid Configuration'];
+  const addDomainResponse = await cloudflare.domains.add(domain);
+  return {
+    id: addDomainResponse.id,
+    verified: addDomainResponse.status === 'active',
+  };
 };
 
-const removeDomain = async (domain: string) => {
-  verifyBlackListedDomain(domain);
-
-  await vercel.domains.remove(domain); // removes from project
-  await vercel.domains.delete(domain); // deletes from vercel
+const removeDomain = async (domainId: string) => {
+  await cloudflare.domains.delete(domainId);
 };
 
-const verifyDomain = async (domain: string): Promise<[boolean, DomainVerificationStatus]> => {
-  let isVerified = true;
-  let status: DomainVerificationStatus = 'Valid Configuration';
+const verifyDomain = async (domainId: string) => {
+  // force validation
+  await cloudflare.domains.edit(domainId);
+  await new Promise((resolve) => setTimeout(resolve, 1000)); // wait for 1 second to allow Cloudflare to process the edit
+  const domainResponse = await cloudflare.domains.get(domainId);
 
-  verifyBlackListedDomain(domain);
-
-  try {
-    const [domainResponse, domainConfigResponse] = await Promise.all([
-      vercel.domains.get(domain),
-      vercel.domains.getConfig(domain),
-    ]);
-
-    if (domainResponse.verified) {
-      return [isVerified, status];
-    }
-
-    const verifyDomainResponse = await vercel.domains.verify(domain);
-    if (verifyDomainResponse.verified) {
-      return [isVerified, status];
-    }
-
-    if (domainConfigResponse.misconfigured) {
-      isVerified = false;
-      status = 'Invalid Configuration';
-    }
-
-    isVerified = false;
-    status = 'Invalid Configuration';
-  } catch {
-    isVerified = false;
-    status = 'Unknown Error';
-  }
-
-  return [isVerified, status];
+  return domainResponse.status === 'active';
 };
 
 const customDomain = {

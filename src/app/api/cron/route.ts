@@ -1,5 +1,4 @@
 import type { NextRequest } from 'next/server';
-import { waitUntil } from '@vercel/functions';
 
 import { Prisma } from '@/types/db.types';
 
@@ -100,6 +99,6 @@ export async function GET(request: NextRequest) {
     });
   }
 
-  waitUntil(processCron());
+  processCron();
   return Response.json({ success: true });
 }

@@ -28,7 +28,7 @@ describe('SDK: Delete Provider', () => {
     });
 
     const response = await handler(request);
-    expect(mockCustomDomain.remove).toHaveBeenCalledWith(fakeDbDomain.domain);
+    expect(mockCustomDomain.remove).toHaveBeenCalledWith(fakeDbDomain.externalId);
     expect(response.status).toBe(STATUS_CODES.NO_CONTENT);
     expect(response.body).toBeNull();
   });

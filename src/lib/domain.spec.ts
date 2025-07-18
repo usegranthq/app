@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 
-import mockVercel from './__mocks__/vercel';
+import mockCloudflare from './__mocks__/cloudflare';
 import customDomain from './domain';
 
 describe('Custom Domain', () => {
@@ -15,91 +15,44 @@ describe('Custom Domain', () => {
   });
 
   it('successfully add a domain', async () => {
-    mockVercel.domains.add.mockResolvedValue({
-      name: 'test.com',
-      verified: true,
-      apexName: 'test.com',
-      projectId: '1',
+    mockCloudflare.domains.add.mockResolvedValue({
+      id: '123',
+      status: 'active',
+      hostname: 'test.com',
+      ssl: {},
     });
 
-    mockVercel.domains.getConfig.mockResolvedValue({
-      misconfigured: false,
-    });
-
-    const [isVerified, status] = await customDomain.add('test.com');
-    expect(isVerified).toBe(true);
-    expect(status).toBe('Valid Configuration');
+    const extDomain = await customDomain.add('test.com');
+    expect(extDomain.verified).toBe(true);
+    expect(extDomain.id).toBe('123');
   });
 
   it('successfully remove a domain', async () => {
-    mockVercel.domains.remove.mockResolvedValue();
-
-    await customDomain.remove('test.com');
-    expect(mockVercel.domains.remove).toHaveBeenCalledWith('test.com');
+    await customDomain.remove('external-id');
+    expect(mockCloudflare.domains.delete).toHaveBeenCalledWith('external-id');
   });
 
   it('successfully verify a domain', async () => {
-    mockVercel.domains.get.mockResolvedValue({
-      verified: true,
-      name: 'test.com',
-      apexName: 'test.com',
-      projectId: '1',
+    mockCloudflare.domains.get.mockResolvedValue({
+      id: '123',
+      status: 'active',
+      hostname: 'test.com',
+      ssl: {},
     });
 
-    mockVercel.domains.getConfig.mockResolvedValue({
-      misconfigured: false,
-    });
-
-    const [isVerified, status] = await customDomain.verify('test.com');
+    const isVerified = await customDomain.verify('test.com');
     expect(isVerified).toBe(true);
-    expect(status).toBe('Valid Configuration');
   });
 
-  it('return not verified if misconfigured', async () => {
-    mockVercel.domains.get.mockResolvedValue({
-      verified: false,
-      name: 'test.com',
-      apexName: 'test.com',
-      projectId: '1',
+  it('return not verified status not active', async () => {
+    mockCloudflare.domains.get.mockResolvedValue({
+      id: '123',
+      status: 'pending',
+      hostname: 'test.com',
+      ssl: {},
     });
 
-    mockVercel.domains.getConfig.mockResolvedValue({
-      misconfigured: true,
-    });
-
-    mockVercel.domains.verify.mockResolvedValue({
-      verified: false,
-      name: 'test.com',
-      apexName: 'test.com',
-      projectId: '1',
-    });
-
-    const [isVerified, status] = await customDomain.verify('test.com');
+    const isVerified = await customDomain.verify('test.com');
     expect(isVerified).toBe(false);
-    expect(status).toBe('Invalid Configuration');
-  });
-
-  it('return verified if not misconfigured and not verified', async () => {
-    mockVercel.domains.get.mockResolvedValue({
-      verified: false,
-      name: 'test.com',
-      apexName: 'test.com',
-      projectId: '1',
-    });
-
-    mockVercel.domains.getConfig.mockResolvedValue({
-      misconfigured: false,
-    });
-
-    mockVercel.domains.verify.mockResolvedValue({
-      verified: false,
-      name: 'test.com',
-      apexName: 'test.com',
-      projectId: '1',
-    });
-
-    const [isVerified, status] = await customDomain.verify('test.com');
-    expect(isVerified).toBe(false);
-    expect(status).toBe('Invalid Configuration');
   });
 });

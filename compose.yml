@@ -22,9 +22,6 @@ services:
     build:
       context: .
       target: install
-    env_file:
-      - path: .env
-        required: false
     environment:
       DATABASE_URL: postgres://postgres:postgres@postgres:5432/grant_hq
     depends_on:
@@ -36,9 +33,7 @@ services:
   app:
     container_name: ug_app
     build: .
-    env_file:
-      - path: .env
-        required: false
+    env_file: .env
     environment:
       DATABASE_URL: postgres://postgres:postgres@postgres:5432/grant_hq
     ports:

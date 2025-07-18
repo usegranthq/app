@@ -121,7 +121,7 @@ const DomainCard = ({ domain }: { domain: Domain }) => {
                 <tbody>
                   <tr>
                     <td className="pt-2 pr-10">{isApexDomain ? 'ALIAS/ANAME/Flattended CNAME' : 'CNAME'}</td>
-                    <td className="pt-2 pr-10">{isApexDomain ? 'apex.usegrant.dev' : 'cname.usegrant.dev'}</td>
+                    <td className="pt-2 pr-10">dns.usegrant.dev</td>
                   </tr>
                 </tbody>
               </table>

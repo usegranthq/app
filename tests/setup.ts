@@ -2,7 +2,7 @@ import { afterAll, vi } from 'vitest';
 
 import '@/lib/__mocks__/db';
 import '@/lib/__mocks__/auth';
-import '@/lib/__mocks__/vercel';
+import '@/lib/__mocks__/cloudflare';
 
 const mockEnvs = {
   SITE_URL: 'http://localhost:7500',
@@ -28,9 +28,8 @@ const mockEnvs = {
   NODEMAILER_SMTP_URL: 'smtp://john.doe@ethereal.email:xxxx@smtp.ethereal.email:587',
   EMAIL_FROM: 'Usegrant <onboarding@usegrant.local>',
   RESEND_API_KEY: 're_xxxx',
-  VERCEL_DOMINATE_TEAM_ID: 'vercel_team_xxxx',
-  VERCEL_DOMINATE_PROJECT_ID: 'vercel_prj_xxxx',
-  VERCEL_DOMINATE_API_TOKEN: 'xxxx',
+  CLOUDFLARE_API_TOKEN: 'xxxx',
+  CLOUDFLARE_ZONE_ID: 'xxxx',
   CRON_SECRET: 'xxxx',
   POLAR_ACCESS_TOKEN: 'xxxx',
   POLAR_WEBHOOK_SECRET: 'whsec_xxxx',

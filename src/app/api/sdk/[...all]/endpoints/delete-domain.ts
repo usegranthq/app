@@ -41,7 +41,7 @@ const deleteDomain = createAuthEndpoint(
     }
 
     try {
-      await customDomain.remove(domain.domain);
+      await customDomain.remove(domain.externalId);
       await db.domain.delete({
         where: {
           domain: domain.domain,

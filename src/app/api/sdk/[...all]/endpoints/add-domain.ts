@@ -60,12 +60,13 @@ const addDomain = createAuthEndpoint(
     }
 
     try {
-      const [isVerified] = await customDomain.add(ctx.body.domain);
+      const [externalId, verified] = await customDomain.add(ctx.body.domain);
       const domain = await db.domain.create({
         data: {
           domain: ctx.body.domain,
-          verified: isVerified,
+          verified,
           providerId: ctx.params.id,
+          externalId,
         },
         select: domainFields,
       });

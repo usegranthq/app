@@ -14,7 +14,7 @@ First, copy the `.env.example` file to `.env.development` and set the correct va
 Then, start the db server:
 
 ```bash
-make db
+npm run db
 ```
 
 this will run a
@@ -24,7 +24,7 @@ Also copy the connection urls provided to the `.env.development` file.
 and then start the app:
 
 ```bash
-make dev
+npm run dev
 ```
 
 Open [http://localhost:7500](http://localhost:7500) in your browser to see the result. If you have
@@ -36,9 +36,6 @@ To learn more about Next.js, take a look at the following resources:
 
 - [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
 - [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback
-and contributions are welcome!
 
 ## Testing webhooks
 
@@ -59,4 +56,5 @@ Replace `YOUR_CHANNEL_ID` with your actual Smee channel ID.
 
 ## Deployment
 
-This project is automatically deployed to Vercel on every push to the `master` branch.
+This project is automatically deployed to a VPS on Hetzner on every push to the `master` branch.
+Refer the [github actions](./.github/workflows/deploy.yml) for more details.
