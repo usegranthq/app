@@ -1,6 +1,5 @@
 import { SiGithub, SiGoogle } from '@icons-pack/react-simple-icons';
 
-import { Button } from '@/shadcn/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/shadcn/components/ui/card';
 
 import LinkButton from './LinkButton';

@@ -8,12 +8,6 @@ const verifyBlackListedDomain = (domain: string) => {
   }
 };
 
-type DomainVerificationStatus =
-  | 'Valid Configuration'
-  | 'Pending Verification'
-  | 'Invalid Configuration'
-  | 'Unknown Error';
-
 const addDomain = async (domain: string) => {
   verifyBlackListedDomain(domain);
 

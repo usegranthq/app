@@ -3,7 +3,7 @@
 import { revalidatePath } from 'next/cache';
 
 import ROUTES from '@/constants/routes';
-import error, { getApiErrorMessage, getZodErrorMessage } from '@/utils/error';
+import { getApiErrorMessage, getZodErrorMessage } from '@/utils/error';
 import db from '@/lib/db';
 import customDomain from '@/lib/domain';
 import { verifySession } from '@/data/_verifySession';

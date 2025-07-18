@@ -16,7 +16,6 @@ import {
 } from '@/shadcn/components/ui/alert-dialog';
 import { Button } from '@/shadcn/components/ui/button';
 
-import ROUTES from '@/constants/routes';
 import { authClient } from '@/lib/auth-client';
 import { useProgressBar } from '@/components/NavProgress';
 

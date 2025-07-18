@@ -1,4 +1,5 @@
 import { headers } from 'next/headers';
+import Link from 'next/link';
 import { getSessionCookie } from 'better-auth/cookies';
 
 import { Button } from '@/shadcn/components/ui/button';
@@ -22,7 +23,9 @@ export default async function NotFound() {
       </div>
       <div className="mt-8">
         <Button variant="outline" asChild>
-          <a href={isLoggedIn ? ROUTES.DASHBOARD : ROUTES.ROOT}>{isLoggedIn ? 'Back to dashboard' : 'Back to home'}</a>
+          <Link href={isLoggedIn ? ROUTES.DASHBOARD : ROUTES.ROOT}>
+            {isLoggedIn ? 'Back to dashboard' : 'Back to home'}
+          </Link>
         </Button>
       </div>
     </div>
