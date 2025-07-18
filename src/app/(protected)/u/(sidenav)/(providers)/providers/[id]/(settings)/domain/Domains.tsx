@@ -131,8 +131,8 @@ const DomainCard = ({ domain }: { domain: Domain }) => {
               enter `@`.
             </p>
             <p className="mt-4 text-sm text-muted-foreground">
-              <span className="text-sm text-destructive">*</span>For cloudflare users, disable the proxy(orange cloud)
-              for the domain and set the records above.
+              <span className="text-sm text-destructive">*</span>If you are a cloudflare user, enable the proxy(orange
+              cloud) for the domain and set the records above.
             </p>
           </>
         )}
