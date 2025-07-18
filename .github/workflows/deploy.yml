@@ -62,7 +62,9 @@ jobs:
             POLAR_ULTIMATE_PLAN_PRODUCT_ID=${{ secrets.POLAR_ULTIMATE_PLAN_PRODUCT_ID }}
 
       - name: Deploy
-        run: docker compose up --build -d --remove-orphans
+        run: |
+          docker compose up --build -d --remove-orphans
+          docker system prune -f
         env:
           DOCKER_HOST: ssh://${{ secrets.REMOTE_DOCKER_HOST }}
           COMPOSE_BAKE: true
