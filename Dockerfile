@@ -14,7 +14,9 @@ RUN npm ci
 # Rebuild the source code only when needed
 FROM base AS builder
 WORKDIR /app
+
 COPY --from=install /app/node_modules ./node_modules
+COPY --from=install /app/prisma-client ./prisma-client
 COPY . .
 
 # Next.js collects completely anonymous telemetry data about general usage.

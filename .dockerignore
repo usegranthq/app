@@ -5,5 +5,5 @@ npm-debug.log
 README.md
 .next
 .git
-prisma/generated/
+prisma-client/
 compose.yml

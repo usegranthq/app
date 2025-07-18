@@ -65,6 +65,7 @@ jobs:
         run: docker compose up --build -d --remove-orphans
         env:
           DOCKER_HOST: ssh://${{ secrets.REMOTE_DOCKER_HOST }}
+          COMPOSE_BAKE: true
 
       - name: Remove environment variables file
         run: rm -f .env
