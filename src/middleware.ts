@@ -1,4 +1,4 @@
-import type { NextRequest } from 'next/server';
+import type { MiddlewareConfig, NextRequest } from 'next/server';
 import { NextResponse } from 'next/server';
 import { getSessionCookie } from 'better-auth/cookies';
 
@@ -109,6 +109,6 @@ export async function middleware(request: NextRequest) {
   return handleDefaultRoute(request);
 }
 
-export const config = {
+export const config: MiddlewareConfig = {
   matcher: ['/((?!api|_next/static|_next/image|favicon.ico|.*\\.png$).*)'],
 };
