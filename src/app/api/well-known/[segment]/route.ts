@@ -7,7 +7,7 @@ import { getPlanByUserId } from '@/lib/billing';
 import db from '@/lib/db';
 
 const getHostFromRequest = (request: NextRequest): string | null => {
-  const ugHost = request.headers.get('x-ug-host');
+  const ugHost = request.headers.get('x-forwarded-host');
   const defaultHost = request.headers.get('host');
 
   const incomingHost = ugHost || defaultHost;
