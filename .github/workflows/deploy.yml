@@ -51,6 +51,8 @@ jobs:
             NODEMAILER_SMTP_URL=${{ vars.NODEMAILER_SMTP_URL }}
             EMAIL_FROM=${{ vars.EMAIL_FROM }}
             RESEND_API_KEY=${{ secrets.RESEND_API_KEY }}
+            CLOUDFLARE_API_TOKEN=${{ secrets.CLOUDFLARE_API_TOKEN }}
+            CLOUDFLARE_ZONE_ID=${{ secrets.CLOUDFLARE_ZONE_ID }}
             CRON_SECRET=${{ secrets.CRON_SECRET }}
             POSTHOG_API_KEY=${{ secrets.POSTHOG_API_KEY }}
             STATE_HMAC_SECRET_KEY=${{ secrets.STATE_HMAC_SECRET_KEY }}
