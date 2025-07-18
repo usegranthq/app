@@ -44,6 +44,8 @@ services:
       migrate:
         condition: service_completed_successfully
     restart: always
+    extra_hosts:
+      - host.docker.internal:host-gateway
 
   crontab:
     build:
