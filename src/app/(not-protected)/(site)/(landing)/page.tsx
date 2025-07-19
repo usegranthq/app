@@ -50,8 +50,8 @@ export default async function Home() {
         </div>
       </div>
       <TrustBasedAccess />
-      <DynamicEnv />
       <ZeroTrustSection />
+      <DynamicEnv />
       <PlatformsSection />
       <PricingSection />
       {isInviteOnly && (

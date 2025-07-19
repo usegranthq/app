@@ -2,7 +2,7 @@ import TextFlip from '@/shadcn/components/external/text-flip';
 
 export default function DynamicEnv() {
   return (
-    <div className="mt-28 flex flex-col items-center md:mt-44">
+    <div className="mt-28 flex flex-col items-center md:mt-28">
       <h2 className="text-3xl font-bold md:text-5xl">
         It&apos;s all
         <TextFlip words={['virtual', 'dynamic', 'scalable']} className="ml-2 text-3xl md:text-5xl" interval={5000} />

@@ -12,7 +12,7 @@ import NeonDbIcon from '@/components/icons/neondb';
 export default function PlatformsSection() {
   return (
     <section>
-      <div className="py-24 md:mt-10">
+      <div className="py-24 md:mt-28">
         <div className="mx-auto max-w-5xl px-6">
           <div className="relative mx-auto flex max-w-sm items-center justify-between">
             <div className="space-y-6">
