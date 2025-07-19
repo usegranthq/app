@@ -22,7 +22,7 @@ export default function PricingSection() {
             return (
               <Card
                 key={features.id}
-                className={cn('relative h-full', { 'border-primary/30': features.id === POPULAR_PLAN })}
+                className={cn('relative h-full bg-card/50', { 'border-primary/30': features.id === POPULAR_PLAN })}
               >
                 <GlowingCardBorder spread={40} glow={true} disabled={false} proximity={50} inactiveZone={0.01} />
                 <CardHeader className="pb-2">

@@ -1,73 +1,77 @@
-import { BookLock, CheckCircleIcon, LockIcon, ShieldIcon } from 'lucide-react';
+import { ReactNode } from 'react';
+import { GalleryHorizontalEndIcon, ShieldCheckIcon, ZapIcon } from 'lucide-react';
 
-import GlowingCardBorder from '@/shadcn/components/external/glowing-border';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/shadcn/components/ui/card';
+import { Card, CardContent, CardHeader } from '@/shadcn/components/ui/card';
 
-const features = [
-  {
-    icon: ShieldIcon,
-    title: 'Secure by Design',
-    description:
-      'Rotate signing keys automatically. Your services maintain full control by verifying all credentials directly, ensuring maximum security.',
-    bullets: ['Automatic key rotation', 'OAuth 2.0 standards'],
-  },
-  {
-    icon: LockIcon,
-    title: 'Zero Data Exposure',
-    description:
-      'UseGrant only stores the essentials: your signup email for authentication. We have no knowledge of your services or intended usage patterns, ensuring maximum privacy.',
-    bullets: ['Limited data storage', 'Privacy-first approach'],
-  },
-  {
-    icon: BookLock,
-    title: 'No Lock-in',
-    description:
-      'There is no lock-in. We do not store any data about your services or intended usage patterns. Use our APIs to take your data anywhere at any time.',
-    bullets: ['Rest API access', 'Export data anytime'],
-  },
-];
-
-export default function ZeroTrustSection() {
+export default function ZeroTrust() {
   return (
-    <section className="mt-28 w-full md:mt-44">
-      <div className="container mx-auto px-4 md:px-6">
-        <div className="flex flex-col items-center justify-center space-y-4 text-center">
-          <div className="space-y-2">
-            <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl">Zero Trust</h2>
-            <p className="mx-auto text-muted-foreground">Secure, private, and built for modern applications</p>
-          </div>
-        </div>
-        <div className="mx-auto grid max-w-5xl items-center gap-6 pt-10 md:pt-20 lg:grid-cols-3 lg:gap-12">
-          {features.map((feature, index) => (
-            <Card className="relative" key={`feature-${index}`}>
-              <GlowingCardBorder spread={40} glow={true} disabled={false} proximity={64} inactiveZone={0.01} />
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <feature.icon className="size-5 text-primary" />
-                  {feature.title}
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <CardDescription className="text-muted-foreground">{feature.description}</CardDescription>
-                <ul className="mt-6 space-y-2">
-                  {feature.bullets.map((bullet, index) => (
-                    <li className="flex items-center" key={`bullet-${index}`}>
-                      <CheckCircleIcon className="mr-2 h-4 w-4 text-primary" />
-                      <span className="text-sm">{bullet}</span>
-                    </li>
-                  ))}
-                </ul>
-              </CardContent>
-            </Card>
-          ))}
-        </div>
-        <div className="mt-10 flex justify-center">
-          <p className="max-w-xl text-center text-sm text-muted-foreground">
-            Boost your authentication standards with the OAuth 2.0 client credentials grant. Adopt a security model that
-            eliminates the need for persistent credentials.
+    <section className="mt-20 py-16 md:mt-32 md:py-32">
+      <div className="@container mx-auto max-w-5xl px-6">
+        <div className="text-center">
+          <h2 className="text-4xl font-semibold text-balance lg:text-5xl">Built to scale, built for security</h2>
+          <p className="mt-4 text-muted-foreground">
+            Every component designed with zero-knowledge architecture and privacy-first principles.
           </p>
+        </div>
+        <div className="mx-auto mt-8 grid max-w-sm gap-6 [--color-background:var(--color-muted)] [--color-card:var(--color-muted)] *:text-center md:mt-16 @min-4xl:max-w-full @min-4xl:grid-cols-3 dark:[--color-muted:var(--color-zinc-900)]">
+          <Card className="group border-0 bg-background shadow-none">
+            <CardHeader className="pb-3">
+              <CardDecorator>
+                <ShieldCheckIcon className="size-6" aria-hidden />
+              </CardDecorator>
+
+              <h3 className="mt-6 font-medium">Zero Trust</h3>
+            </CardHeader>
+
+            <CardContent>
+              <p className="text-sm">
+                Complete data isolation with no visibility into your services or usage patterns.
+              </p>
+            </CardContent>
+          </Card>
+
+          <Card className="group border-0 bg-background shadow-none">
+            <CardHeader className="pb-3">
+              <CardDecorator>
+                <GalleryHorizontalEndIcon className="size-6" aria-hidden />
+              </CardDecorator>
+
+              <h3 className="mt-6 font-medium">Multi-Tenant</h3>
+            </CardHeader>
+
+            <CardContent>
+              <p className="text-sm">Isolated domain for each provider with enterprise-grade scalability.</p>
+            </CardContent>
+          </Card>
+
+          <Card className="group border-0 bg-background shadow-none">
+            <CardHeader className="pb-3">
+              <CardDecorator>
+                <ZapIcon className="size-6" aria-hidden />
+              </CardDecorator>
+
+              <h3 className="mt-6 font-medium">Instant Provisioning</h3>
+            </CardHeader>
+
+            <CardContent>
+              <p className="text-sm">Instantly provision your tenant or provider in less than 100 milliseconds.</p>
+            </CardContent>
+          </Card>
         </div>
       </div>
     </section>
   );
 }
+
+const CardDecorator = ({ children }: { children: ReactNode }) => (
+  <div className="relative mx-auto size-36 duration-200 [--color-border:color-mix(in_oklab,var(--color-zinc-950)10%,transparent)] group-hover:[--color-border:color-mix(in_oklab,var(--color-zinc-950)20%,transparent)] dark:[--color-border:color-mix(in_oklab,var(--color-white)15%,transparent)] dark:group-hover:bg-white/5 dark:group-hover:[--color-border:color-mix(in_oklab,var(--color-white)20%,transparent)]">
+    <div
+      aria-hidden
+      className="absolute inset-0 bg-[linear-gradient(to_right,var(--color-border)_1px,transparent_1px),linear-gradient(to_bottom,var(--color-border)_1px,transparent_1px)] bg-[size:24px_24px]"
+    />
+    <div aria-hidden className="absolute inset-0 bg-radial from-transparent to-background to-75%" />
+    <div className="absolute inset-0 m-auto flex size-12 items-center justify-center border-t border-l bg-white dark:bg-background">
+      {children}
+    </div>
+  </div>
+);
