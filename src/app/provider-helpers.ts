@@ -4,11 +4,15 @@ import { withProtocol } from '@/utils/url';
 import env from '@/env';
 
 export function getProviderDomain(provider: Provider, domains: Domain[]) {
-  const domain = domains[0]?.domain ?? env.PROVIDER_DOMAIN.replace('{urlId}', provider.urlId);
-  return domain;
+  if (domains.length === 0) {
+    const providerDomain = new URL(provider.urlId, withProtocol(env.PROVIDER_DOMAIN));
+    return providerDomain.href;
+  }
+
+  return domains[0].domain;
 }
 
-export function getWellKnownOpenIdUrl(domain: string) {
+export function getWellKnownOpenIdConfigUrl(domain: string) {
   return `${withProtocol(domain)}/.well-known/openid-configuration`;
 }
 
