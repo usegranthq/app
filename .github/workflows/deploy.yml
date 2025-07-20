@@ -84,7 +84,7 @@ jobs:
           chmod 644 ~/.ssh/known_hosts
 
       - name: Setup dependencies in VPS
-        run: docker compose --file compose.prod.deps.yml up -d --remove-orphans
+        run: docker compose --file compose.prod.deps.yml up -d
         env:
           DOCKER_HOST: ssh://${{ secrets.REMOTE_DOCKER_HOST }}
 
@@ -148,7 +148,7 @@ jobs:
         run: |
           echo "${{ secrets.DOCKERHUB_TOKEN }}" | docker login -u ${{ secrets.DOCKERHUB_USERNAME }} --password-stdin
           docker compose --file compose.prod.apps.yml pull
-          docker compose --file compose.prod.apps.yml up -d --remove-orphans
+          docker compose --file compose.prod.apps.yml up -d
         env:
           DOCKER_HOST: ssh://${{ secrets.REMOTE_DOCKER_HOST }}
 
