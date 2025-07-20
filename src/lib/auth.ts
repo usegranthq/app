@@ -1,10 +1,11 @@
-import { betterAuth } from 'better-auth';
+import { betterAuth, SecondaryStorage } from 'better-auth';
 import { prismaAdapter } from 'better-auth/adapters/prisma';
 import { APIError } from 'better-auth/api';
 import { nextCookies } from 'better-auth/next-js';
 import { apiKey, customSession, magicLink } from 'better-auth/plugins';
 import { hoursToMilliseconds, hoursToSeconds, minutesToSeconds } from 'date-fns';
 import { PostHog } from 'posthog-node';
+import { createClient } from 'redis';
 
 import * as constants from '@/constants/cookies';
 import { daysToSeconds } from '@/utils/date';
@@ -14,6 +15,36 @@ import env, { isLive } from '@/env';
 import { getPlanByUserId } from './billing';
 import { prisma } from './db';
 import { sendChangeEmailVerification, sendEmailVerification, sendLoginEmail } from './email';
+
+const redis = createClient({
+  url: 'http://redis:6379',
+});
+
+if (env.REDIS_URL) {
+  await redis.connect();
+}
+
+function getSecondaryStorage(): SecondaryStorage | undefined {
+  if (!env.REDIS_URL) {
+    return undefined;
+  }
+
+  return {
+    get: async (key) => {
+      const value = await redis.get(key);
+      return value ? value : null;
+    },
+    set: async (key, value, ttl) => {
+      if (ttl) await redis.set(key, value, { EX: ttl });
+      // or for ioredis:
+      // if (ttl) await redis.set(key, value, 'EX', ttl)
+      else await redis.set(key, value);
+    },
+    delete: async (key) => {
+      await redis.del(key);
+    },
+  };
+}
 
 const posthog = new PostHog(env.POSTHOG_API_KEY, {
   host: 'https://us.i.posthog.com',
@@ -30,6 +61,7 @@ export const auth = betterAuth({
   baseURL: env.SITE_URL,
   secret: env.BETTER_AUTH_SECRET,
   database,
+  secondaryStorage: getSecondaryStorage(),
   account: {
     accountLinking: {
       enabled: true,
@@ -43,6 +75,7 @@ export const auth = betterAuth({
       await sendEmailVerification({ ...data, email: data.user.email });
     },
   },
+
   user: {
     changeEmail: {
       enabled: true,

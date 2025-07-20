@@ -17,6 +17,13 @@ services:
       timeout: 5s
       retries: 5
 
+  redis:
+    container_name: redis
+    image: redis:alpine
+    ports:
+      - 6379:6379
+    restart: always
+
   migrate:
     container_name: ug_migrate
     build:
@@ -36,6 +43,7 @@ services:
     env_file: .env
     environment:
       DATABASE_URL: postgres://postgres:postgres@postgres:5432/grant_hq
+      REDIS_URL: redis://redis:6379
     ports:
       - 3000:3000
     depends_on:
@@ -43,11 +51,14 @@ services:
         condition: service_healthy
       migrate:
         condition: service_completed_successfully
+      redis:
+        condition: service_healthy
     restart: always
     extra_hosts:
       - host.docker.internal:host-gateway
 
   crontab:
+    container_name: ug_cron
     build:
       context: .
       dockerfile: Dockerfile.cron
