@@ -1,7 +1,7 @@
-import fs from 'node:fs/promises';
 import path from 'node:path';
 
 import { formatDate } from '@/utils/date';
+import { getGitFileModifiedTime } from '@/utils/git';
 
 import parse from '../parser';
 
@@ -9,7 +9,7 @@ const PRIVACY_PATH = path.join(process.cwd(), 'src/resources/privacy.md');
 
 export default async function PrivacyPage() {
   const content = await parse(PRIVACY_PATH);
-  const fileModified = await fs.stat(PRIVACY_PATH).then((stats) => stats.mtime);
+  const fileModified = getGitFileModifiedTime(PRIVACY_PATH);
 
   return (
     <div className="mx-auto max-w-4xl">
