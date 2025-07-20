@@ -17,15 +17,17 @@ import { prisma } from './db';
 import { sendChangeEmailVerification, sendEmailVerification, sendLoginEmail } from './email';
 
 const redis = createClient({
-  url: 'http://redis:6379',
+  url: env.REDIS_URL,
 });
 
 if (env.REDIS_URL) {
+  console.log('Connecting to Redis...');
   await redis.connect();
+  console.log('Connected to Redis');
 }
 
 function getSecondaryStorage(): SecondaryStorage | undefined {
-  if (!env.REDIS_URL) {
+  if (!redis.isReady) {
     return undefined;
   }
 
