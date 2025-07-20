@@ -31,9 +31,7 @@ services:
 
   migrate:
     container_name: ug_migrate
-    build:
-      context: .
-      target: install
+    image: ${DOCKER_REPOSITORY:-sibirajdotdev/usegrant}:${IMAGE_TAG:-latest}
     environment:
       DATABASE_URL: postgres://postgres:postgres@postgres:5432/grant_hq
     depends_on:
@@ -44,7 +42,7 @@ services:
 
   app:
     container_name: ug_app
-    build: .
+    image: ${DOCKER_REPOSITORY:-sibirajdotdev/usegrant}:${IMAGE_TAG:-latest}
     env_file: .env
     environment:
       DATABASE_URL: postgres://postgres:postgres@postgres:5432/grant_hq
@@ -64,9 +62,7 @@ services:
 
   crontab:
     container_name: ug_cron
-    build:
-      context: .
-      dockerfile: Dockerfile.cron
+    image: ${DOCKER_REPOSITORY:-sibirajdotdev/usegrant}-cron:${IMAGE_TAG:-latest}
     environment:
       - CRON_SECRET=${CRON_SECRET}
     depends_on:

@@ -1,0 +1,14 @@
+# Development overrides - builds images locally instead of using registry
+services:
+  migrate:
+    build:
+      context: .
+      target: install
+
+  app:
+    build: .
+
+  crontab:
+    build:
+      context: .
+      dockerfile: Dockerfile.cron
