@@ -5,6 +5,7 @@ import '@/lib/__mocks__/auth';
 import '@/lib/__mocks__/cloudflare';
 
 const mockEnvs = {
+  DATABASE_URL: 'postgresql://postgres:postgres@localhost:5432/backend?pgbouncer=true&connect_timeout=15',
   SITE_URL: 'http://localhost:7500',
   POSTGRES_DATABASE: 'backend',
   POSTGRES_USER: 'postgres',
