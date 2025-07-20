@@ -147,8 +147,8 @@ jobs:
       - name: Deploy
         run: |
           echo "${{ secrets.DOCKERHUB_TOKEN }}" | docker login -u ${{ secrets.DOCKERHUB_USERNAME }} --password-stdin
-          docker compose --file compose.prod.yml pull
-          docker compose --file compose.prod.yml up -d --remove-orphans
+          docker compose --file compose.prod.apps.yml pull
+          docker compose --file compose.prod.apps.yml up -d --remove-orphans
         env:
           DOCKER_HOST: ssh://${{ secrets.REMOTE_DOCKER_HOST }}
 
