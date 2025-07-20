@@ -64,7 +64,7 @@ jobs:
             POLAR_ULTIMATE_PLAN_PRODUCT_ID=${{ secrets.POLAR_ULTIMATE_PLAN_PRODUCT_ID }}
 
       - name: Build and push migrate image
-        uses: docker/build-push-action@v5
+        uses: useblacksmith/build-push-action@v1
         with:
           context: .
           file: ./Dockerfile.migrate
@@ -73,11 +73,9 @@ jobs:
           tags: |
             ${{ secrets.DOCKER_REPOSITORY }}-migrate:${{ github.sha }}
             ${{ secrets.DOCKER_REPOSITORY }}-migrate:latest
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
 
       - name: Build and push app image
-        uses: docker/build-push-action@v5
+        uses: useblacksmith/build-push-action@v1
         with:
           context: .
           platforms: linux/arm64
@@ -85,11 +83,9 @@ jobs:
           tags: |
             ${{ secrets.DOCKER_REPOSITORY }}:${{ github.sha }}
             ${{ secrets.DOCKER_REPOSITORY }}:latest
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
 
       - name: Build and push cron image
-        uses: docker/build-push-action@v5
+        uses: useblacksmith/build-push-action@v1
         with:
           context: .
           file: ./Dockerfile.cron
@@ -98,8 +94,6 @@ jobs:
           tags: |
             ${{ secrets.DOCKER_REPOSITORY }}-cron:${{ github.sha }}
             ${{ secrets.DOCKER_REPOSITORY }}-cron:latest
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
 
       - name: Configure SSH
         run: |
