@@ -13,7 +13,7 @@ import { generateLoginToken } from '@/utils/random';
 import env, { isLive } from '@/env';
 
 import { getPlanByUserId } from './billing';
-import { prisma } from './db';
+import db from './db';
 import { sendChangeEmailVerification, sendEmailVerification, sendLoginEmail } from './email';
 
 const redis = createClient({
@@ -53,7 +53,7 @@ const posthog = new PostHog(env.POSTHOG_API_KEY, {
   flushAt: 1,
 });
 
-const database = prismaAdapter(prisma, {
+const database = prismaAdapter(db, {
   provider: 'postgresql',
 });
 

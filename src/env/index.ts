@@ -3,6 +3,7 @@ import { z } from 'zod/v4';
 
 const env = createEnv({
   server: {
+    DATABASE_URL: z.string(),
     SITE_URL: z.url(),
     INVITE_TOKEN: z.string().optional(),
     JWT_SIGNING_SECRET: z.string().min(1),
@@ -29,6 +30,7 @@ const env = createEnv({
     REDIS_URL: z.string().optional(),
   },
   runtimeEnv: {
+    DATABASE_URL: process.env.DATABASE_URL,
     SITE_URL: process.env.SITE_URL,
     INVITE_TOKEN: process.env.INVITE_TOKEN,
     JWT_SIGNING_SECRET: process.env.JWT_SIGNING_SECRET,
