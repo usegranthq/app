@@ -63,6 +63,19 @@ jobs:
             POLAR_PRO_PLAN_PRODUCT_ID=${{ secrets.POLAR_PRO_PLAN_PRODUCT_ID }}
             POLAR_ULTIMATE_PLAN_PRODUCT_ID=${{ secrets.POLAR_ULTIMATE_PLAN_PRODUCT_ID }}
 
+      - name: Build and push migrate image
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          file: ./Dockerfile.migrate
+          platforms: linux/arm64
+          push: true
+          tags: |
+            ${{ secrets.DOCKER_REPOSITORY }}-migrate:${{ github.sha }}
+            ${{ secrets.DOCKER_REPOSITORY }}-migrate:latest
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
       - name: Build and push app image
         uses: docker/build-push-action@v5
         with:

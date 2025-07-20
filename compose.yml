@@ -31,18 +31,17 @@ services:
 
   migrate:
     container_name: ug_migrate
-    image: ${DOCKER_REPOSITORY:-sibirajdotdev/usegrant}:${IMAGE_TAG:-latest}
+    image: ${DOCKER_REPOSITORY}-migrate:${IMAGE_TAG:-latest}
     environment:
       DATABASE_URL: postgres://postgres:postgres@postgres:5432/grant_hq
     depends_on:
       postgres:
         condition: service_healthy
-    command: ['npm', 'run', 'migrate']
     restart: 'no'
 
   app:
     container_name: ug_app
-    image: ${DOCKER_REPOSITORY:-sibirajdotdev/usegrant}:${IMAGE_TAG:-latest}
+    image: ${DOCKER_REPOSITORY}:${IMAGE_TAG:-latest}
     env_file: .env
     environment:
       DATABASE_URL: postgres://postgres:postgres@postgres:5432/grant_hq
@@ -62,7 +61,7 @@ services:
 
   crontab:
     container_name: ug_cron
-    image: ${DOCKER_REPOSITORY:-sibirajdotdev/usegrant}-cron:${IMAGE_TAG:-latest}
+    image: ${DOCKER_REPOSITORY}-cron:${IMAGE_TAG:-latest}
     environment:
       - CRON_SECRET=${CRON_SECRET}
     depends_on:
