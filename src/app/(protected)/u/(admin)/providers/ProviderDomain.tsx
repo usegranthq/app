@@ -14,7 +14,6 @@ export default async function ProviderDomain({ provider }: ProviderDomainProps) 
   const domains = await getDomains(provider.id);
   const domain = getProviderDomain(provider, domains);
 
-  console.log('Provider Domain:', domain);
   return (
     <Link
       href={getWellKnownOpenIdConfigUrl(domain)}

@@ -11,8 +11,9 @@ import { generateHash } from './utils/build';
 
 const matchesUserRoute = (pathname: string) => pathname.startsWith('/u');
 
-const redirectToPage = (path: string, request: NextRequest) =>
-  NextResponse.redirect(new URL(path, getSiteUrlFromRequest(request)));
+const redirectToPage = (path: string, request: NextRequest) => {
+  return NextResponse.redirect(new URL(path, getSiteUrlFromRequest(request)));
+};
 const redirectToLoginPage = (request: NextRequest) => redirectToPage(ROUTES.LOGIN, request);
 const redirectToUserPage = (request: NextRequest) => redirectToPage(ROUTES.DASHBOARD, request);
 
