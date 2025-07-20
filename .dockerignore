@@ -1,9 +1,15 @@
 Dockerfile
 .dockerignore
-node_modules
+/node_modules
 npm-debug.log
 README.md
 .next
 .git
 prisma-client/
 compose.yml
+.github/
+.husky/
+.vscode/
+scripts/
+tests/
+*.spec.ts

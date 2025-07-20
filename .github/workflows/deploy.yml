@@ -5,6 +5,10 @@ on:
   push:
     branches:
       - master
+    paths-ignore:
+      - .vscode/**
+      - .husky/**
+      - scripts/**
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
