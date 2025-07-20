@@ -21,6 +21,8 @@ COPY --from=install /app/node_modules ./node_modules
 COPY --from=install /app/prisma-client ./prisma-client
 COPY . .
 
+RUN apk add --no-cache git
+
 # Next.js collects completely anonymous telemetry data about general usage.
 # Learn more here: https://nextjs.org/telemetry
 ENV NEXT_TELEMETRY_DISABLED=1
