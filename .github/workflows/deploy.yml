@@ -33,6 +33,36 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
+      - name: Write environment variables
+        uses: sibiraj-s/action-toenv@v1
+        with:
+          env: |
+            DOCKER_REPOSITORY=${{ secrets.DOCKER_REPOSITORY }}
+            IMAGE_TAG=${{ github.sha }}
+            SITE_URL=${{ vars.SITE_URL }}
+            INVITE_TOKEN=${{ secrets.INVITE_TOKEN }}
+            JWT_SIGNING_SECRET=${{ secrets.JWT_SIGNING_SECRET }}
+            TURNSTILE_SITE_KEY=${{ secrets.TURNSTILE_SITE_KEY }}
+            TURNSTILE_SECRET_KEY=${{ secrets.TURNSTILE_SECRET_KEY }}
+            OAUTH_GITHUB_APP_CLIENT_ID=${{ secrets.OAUTH_GITHUB_APP_CLIENT_ID }}
+            OAUTH_GITHUB_APP_CLIENT_SECRET=${{ secrets.OAUTH_GITHUB_APP_CLIENT_SECRET }}
+            OAUTH_GOOGLE_APP_CLIENT_ID=${{ secrets.OAUTH_GOOGLE_APP_CLIENT_ID }}
+            OAUTH_GOOGLE_APP_CLIENT_SECRET=${{ secrets.OAUTH_GOOGLE_APP_CLIENT_SECRET }}
+            BETTER_AUTH_SECRET=${{ secrets.BETTER_AUTH_SECRET }}
+            PROVIDER_DOMAIN=${{ vars.PROVIDER_DOMAIN }}
+            NODEMAILER_SMTP_URL=${{ vars.NODEMAILER_SMTP_URL }}
+            EMAIL_FROM=${{ vars.EMAIL_FROM }}
+            RESEND_API_KEY=${{ secrets.RESEND_API_KEY }}
+            CLOUDFLARE_API_TOKEN=${{ secrets.CLOUDFLARE_API_TOKEN }}
+            CLOUDFLARE_ZONE_ID=${{ secrets.CLOUDFLARE_ZONE_ID }}
+            CRON_SECRET=${{ secrets.CRON_SECRET }}
+            POSTHOG_API_KEY=${{ secrets.POSTHOG_API_KEY }}
+            STATE_HMAC_SECRET_KEY=${{ secrets.STATE_HMAC_SECRET_KEY }}
+            POLAR_ACCESS_TOKEN=${{ secrets.POLAR_ACCESS_TOKEN }}
+            POLAR_WEBHOOK_SECRET=${{ secrets.POLAR_WEBHOOK_SECRET }}
+            POLAR_PRO_PLAN_PRODUCT_ID=${{ secrets.POLAR_PRO_PLAN_PRODUCT_ID }}
+            POLAR_ULTIMATE_PLAN_PRODUCT_ID=${{ secrets.POLAR_ULTIMATE_PLAN_PRODUCT_ID }}
+
       - name: Build and push app image
         uses: docker/build-push-action@v5
         with:
@@ -64,36 +94,6 @@ jobs:
           chmod 600 ~/.ssh/id_rsa
           ssh-keyscan -H ${{ secrets.HETZNER_HOST }} >> ~/.ssh/known_hosts
           chmod 644 ~/.ssh/known_hosts
-
-      - name: Write environment variables
-        uses: sibiraj-s/action-toenv@v1
-        with:
-          env: |
-            DOCKER_REPOSITORY=${{ secrets.DOCKER_REPOSITORY }}
-            IMAGE_TAG=${{ github.sha }}
-            SITE_URL=${{ vars.SITE_URL }}
-            INVITE_TOKEN=${{ secrets.INVITE_TOKEN }}
-            JWT_SIGNING_SECRET=${{ secrets.JWT_SIGNING_SECRET }}
-            TURNSTILE_SITE_KEY=${{ secrets.TURNSTILE_SITE_KEY }}
-            TURNSTILE_SECRET_KEY=${{ secrets.TURNSTILE_SECRET_KEY }}
-            OAUTH_GITHUB_APP_CLIENT_ID=${{ secrets.OAUTH_GITHUB_APP_CLIENT_ID }}
-            OAUTH_GITHUB_APP_CLIENT_SECRET=${{ secrets.OAUTH_GITHUB_APP_CLIENT_SECRET }}
-            OAUTH_GOOGLE_APP_CLIENT_ID=${{ secrets.OAUTH_GOOGLE_APP_CLIENT_ID }}
-            OAUTH_GOOGLE_APP_CLIENT_SECRET=${{ secrets.OAUTH_GOOGLE_APP_CLIENT_SECRET }}
-            BETTER_AUTH_SECRET=${{ secrets.BETTER_AUTH_SECRET }}
-            PROVIDER_DOMAIN=${{ vars.PROVIDER_DOMAIN }}
-            NODEMAILER_SMTP_URL=${{ vars.NODEMAILER_SMTP_URL }}
-            EMAIL_FROM=${{ vars.EMAIL_FROM }}
-            RESEND_API_KEY=${{ secrets.RESEND_API_KEY }}
-            CLOUDFLARE_API_TOKEN=${{ secrets.CLOUDFLARE_API_TOKEN }}
-            CLOUDFLARE_ZONE_ID=${{ secrets.CLOUDFLARE_ZONE_ID }}
-            CRON_SECRET=${{ secrets.CRON_SECRET }}
-            POSTHOG_API_KEY=${{ secrets.POSTHOG_API_KEY }}
-            STATE_HMAC_SECRET_KEY=${{ secrets.STATE_HMAC_SECRET_KEY }}
-            POLAR_ACCESS_TOKEN=${{ secrets.POLAR_ACCESS_TOKEN }}
-            POLAR_WEBHOOK_SECRET=${{ secrets.POLAR_WEBHOOK_SECRET }}
-            POLAR_PRO_PLAN_PRODUCT_ID=${{ secrets.POLAR_PRO_PLAN_PRODUCT_ID }}
-            POLAR_ULTIMATE_PLAN_PRODUCT_ID=${{ secrets.POLAR_ULTIMATE_PLAN_PRODUCT_ID }}
 
       - name: Deploy
         run: |
