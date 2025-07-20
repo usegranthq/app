@@ -1,8 +1,6 @@
-import Image from 'next/image';
 import Link from 'next/link';
 
-import darkLogo from '@/assets/logos/dark-logo-wordmark.png';
-import lightLogo from '@/assets/logos/light-logo-wordmark.png';
+import LogoWordMark from '@/components/icons/logo-wordmark';
 import { ThemeSwitcher } from '@/components/ThemeSwitcher';
 
 const navItems = [
@@ -17,20 +15,7 @@ export default function Navbar() {
       <div className="ml-4 flex items-center">
         <Link href="/">
           <div className="top-8 left-4 md:top-10 md:left-10">
-            <Image
-              src={darkLogo}
-              unoptimized
-              alt="logo"
-              style={{ width: '120px', height: 'auto' }}
-              className="hidden shrink-0 dark:block"
-            />
-            <Image
-              src={lightLogo}
-              unoptimized
-              alt="logo"
-              style={{ width: '120px', height: 'auto' }}
-              className="shrink-0 dark:hidden"
-            />
+            <LogoWordMark className="h-auto w-28 shrink-0" />
           </div>
         </Link>
       </div>
