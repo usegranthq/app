@@ -37,6 +37,11 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
+      - name: Inject npm-cache
+        uses: reproducible-containers/buildkit-cache-dance@v3
+        with:
+          cache-source: npm-cache
+
       - name: Write environment variables
         uses: sibiraj-s/action-toenv@v1
         with:
