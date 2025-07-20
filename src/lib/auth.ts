@@ -1,11 +1,10 @@
-import { betterAuth, SecondaryStorage } from 'better-auth';
+import { betterAuth } from 'better-auth';
 import { prismaAdapter } from 'better-auth/adapters/prisma';
 import { APIError } from 'better-auth/api';
 import { nextCookies } from 'better-auth/next-js';
 import { apiKey, customSession, magicLink } from 'better-auth/plugins';
 import { hoursToMilliseconds, hoursToSeconds, minutesToSeconds } from 'date-fns';
 import { PostHog } from 'posthog-node';
-import { createClient } from 'redis';
 
 import * as constants from '@/constants/cookies';
 import { daysToSeconds } from '@/utils/date';
@@ -15,55 +14,6 @@ import env, { isLive } from '@/env';
 import { getPlanByUserId } from './billing';
 import db from './db';
 import { sendChangeEmailVerification, sendEmailVerification, sendLoginEmail } from './email';
-
-const redis = createClient({
-  url: env.REDIS_URL,
-});
-
-async function ensureRedisConnection() {
-  if (!env.REDIS_URL || redis.isReady) {
-    return;
-  }
-
-  try {
-    console.log('Connecting to Redis...');
-    await redis.connect();
-    console.log('Connected to Redis');
-  } catch (error) {
-    console.error('Failed to connect to Redis:', error);
-  }
-}
-
-function getSecondaryStorage(): SecondaryStorage | undefined {
-  if (!env.REDIS_URL) {
-    return undefined;
-  }
-
-  return {
-    get: async (key) => {
-      await ensureRedisConnection();
-      if (!redis.isReady) return null;
-
-      const value = await redis.get(key);
-      return value ? value : null;
-    },
-    set: async (key, value, ttl) => {
-      await ensureRedisConnection();
-      if (!redis.isReady) return;
-
-      if (ttl) await redis.set(key, value, { EX: ttl });
-      // or for ioredis:
-      // if (ttl) await redis.set(key, value, 'EX', ttl)
-      else await redis.set(key, value);
-    },
-    delete: async (key) => {
-      await ensureRedisConnection();
-      if (!redis.isReady) return;
-
-      await redis.del(key);
-    },
-  };
-}
 
 const posthog = new PostHog(env.POSTHOG_API_KEY, {
   host: 'https://us.i.posthog.com',
@@ -80,7 +30,6 @@ export const auth = betterAuth({
   baseURL: env.SITE_URL,
   secret: env.BETTER_AUTH_SECRET,
   database,
-  secondaryStorage: getSecondaryStorage(),
   account: {
     accountLinking: {
       enabled: true,

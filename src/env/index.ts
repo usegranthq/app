@@ -27,7 +27,6 @@ const env = createEnv({
     POLAR_PRO_PLAN_PRODUCT_ID: z.string(),
     POLAR_ULTIMATE_PLAN_PRODUCT_ID: z.string(),
     STATE_HMAC_SECRET_KEY: z.string(),
-    REDIS_URL: z.string().optional(),
   },
   runtimeEnv: {
     DATABASE_URL: process.env.DATABASE_URL,
@@ -54,7 +53,6 @@ const env = createEnv({
     POLAR_PRO_PLAN_PRODUCT_ID: process.env.POLAR_PRO_PLAN_PRODUCT_ID,
     POLAR_ULTIMATE_PLAN_PRODUCT_ID: process.env.POLAR_ULTIMATE_PLAN_PRODUCT_ID,
     STATE_HMAC_SECRET_KEY: process.env.STATE_HMAC_SECRET_KEY,
-    REDIS_URL: process.env.REDIS_URL,
   },
   emptyStringAsUndefined: true,
 });

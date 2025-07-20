@@ -72,7 +72,6 @@ jobs:
             POLAR_WEBHOOK_SECRET=${{ secrets.POLAR_WEBHOOK_SECRET }}
             POLAR_PRO_PLAN_PRODUCT_ID=${{ secrets.POLAR_PRO_PLAN_PRODUCT_ID }}
             POLAR_ULTIMATE_PLAN_PRODUCT_ID=${{ secrets.POLAR_ULTIMATE_PLAN_PRODUCT_ID }}
-            REDIS_URL=redis://host.docker.internal:6379
 
       - name: Configure SSH
         run: |
