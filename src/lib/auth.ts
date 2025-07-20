@@ -3,9 +3,11 @@ import { prismaAdapter } from 'better-auth/adapters/prisma';
 import { APIError } from 'better-auth/api';
 import { nextCookies } from 'better-auth/next-js';
 import { apiKey, customSession, magicLink } from 'better-auth/plugins';
+import { hoursToMilliseconds, hoursToSeconds, minutesToSeconds } from 'date-fns';
 import { PostHog } from 'posthog-node';
 
 import * as constants from '@/constants/cookies';
+import { daysToSeconds } from '@/utils/date';
 import { generateLoginToken } from '@/utils/random';
 import env, { isLive } from '@/env';
 
@@ -36,7 +38,7 @@ export const auth = betterAuth({
   },
   emailVerification: {
     autoSignInAfterVerification: false,
-    expiresIn: 3600, // 1 hour
+    expiresIn: hoursToSeconds(1), // 1 hour
     async sendVerificationEmail(data) {
       await sendEmailVerification({ ...data, email: data.user.email });
     },
@@ -55,13 +57,14 @@ export const auth = betterAuth({
   session: {
     cookieCache: {
       enabled: true,
-      maxAge: 5 * 60, // Cache duration in seconds
+      maxAge: minutesToSeconds(5), // Cache duration in seconds
     },
+    expiresIn: daysToSeconds(2),
   },
   plugins: [
     magicLink({
       generateToken: () => generateLoginToken(),
-      expiresIn: 5 * 60, // 5 minutes,
+      expiresIn: minutesToSeconds(5),
       async sendMagicLink(data) {
         await sendLoginEmail(data);
       },
@@ -80,7 +83,7 @@ export const auth = betterAuth({
       rateLimit: {
         // allow 1000 requests per hour
         enabled: true,
-        timeWindow: 1000 * 60 * 60, // 1 hour in milliseconds
+        timeWindow: hoursToMilliseconds(1),
         maxRequests: 1000, // max requests in the window
       },
       customAPIKeyValidator: ({ key }) => {
