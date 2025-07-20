@@ -20,5 +20,6 @@ WORKDIR /app
 # Copy installed dependencies from install stage
 COPY --from=install /app/node_modules ./node_modules
 COPY --from=install /app/prisma ./prisma
+COPY --from=install /app/package.json ./package.json
 
 CMD ["npm", "run", "migrate"]
