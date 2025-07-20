@@ -29,6 +29,7 @@ jobs:
         uses: docker/setup-docker-action@v4
 
       - name: Set up Docker Buildx
+        id: buildx
         uses: docker/setup-buildx-action@v3
 
       - name: Log in to Docker Registry
@@ -37,10 +38,19 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
+      - name: Cache
+        uses: actions/cache@v4
+        id: cache
+        with:
+          path: cache-mount
+          key: cache-mount-${{ hashFiles('Dockerfile') }}
+
       - name: Inject npm-cache
         uses: reproducible-containers/buildkit-cache-dance@v3
         with:
-          cache-source: npm-cache
+          builder: ${{ steps.buildx.outputs.name }}
+          cache-dir: cache-mount
+          skip-extraction: ${{ steps.cache.outputs.cache-hit }}
 
       - name: Write environment variables
         uses: sibiraj-s/action-toenv@v1

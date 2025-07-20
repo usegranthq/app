@@ -11,7 +11,10 @@ WORKDIR /app
 COPY package.json yarn.lock* package-lock.json* pnpm-lock.yaml* .npmrc* ./
 COPY prisma prisma
 
-RUN --mount=type=cache,target=/root/.npm npm ci
+# Use a standard cache location that buildkit-cache-dance can handle
+RUN --mount=type=cache,target=/var/cache/npm,uid=0,gid=0 \
+    npm config set cache /var/cache/npm && \
+    npm ci
 
 # Runtime stage for migrations
 FROM base AS migrate
