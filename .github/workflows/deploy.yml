@@ -115,7 +115,7 @@ jobs:
 
       - name: Create SSH tunnel to 5432
         run: |
-          ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -N -L 5432:localhost:5432 ${{ secrets.HETZNER_HOST }} &
+          ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -N -L 5432:localhost:5432 ${{ secrets.REMOTE_DOCKER_HOST }} &
           echo $! > tunnel.pid
           sleep 5
 
