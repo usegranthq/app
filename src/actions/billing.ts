@@ -143,7 +143,7 @@ export const cancelSubscription = async (): ActionResponse => {
       where: { id: subscription.id, Customer: { userId: session.user.id } },
       data: { status: polarSubscription.status },
     });
-  } catch (err) {
+  } catch {
     return ['Failed to cancel subscription', null];
   }
 

@@ -76,13 +76,3 @@ const text = {
   fontSize: '14px',
   margin: '24px 0',
 };
-
-const code = {
-  display: 'inline-block',
-  padding: '16px 4.5%',
-  width: '90.5%',
-  backgroundColor: '#f4f4f4',
-  borderRadius: '5px',
-  border: '1px solid #eee',
-  color: '#333',
-};
