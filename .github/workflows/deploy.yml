@@ -13,9 +13,12 @@ on:
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
 
+env:
+  NODE_VERSION: 22
+
 jobs:
   deploy:
-    runs-on: blacksmith-4vcpu-ubuntu-2404
+    runs-on: blacksmith-4vcpu-ubuntu-2404-arm
 
     environment:
       name: production
@@ -25,32 +28,18 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: npm
+
       - name: Setup docker
         uses: docker/setup-docker-action@v4
 
-      - name: Set up Docker Buildx
+      - name: Set up docker buildx
         id: buildx
         uses: docker/setup-buildx-action@v3
-
-      - name: Log in to Docker Registry
-        uses: docker/login-action@v3
-        with:
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_TOKEN }}
-
-      - name: Cache
-        uses: actions/cache@v4
-        id: cache
-        with:
-          path: cache-mount
-          key: cache-mount-${{ hashFiles('Dockerfile') }}
-
-      - name: Inject npm-cache
-        uses: reproducible-containers/buildkit-cache-dance@v3
-        with:
-          builder: ${{ steps.buildx.outputs.name }}
-          cache-dir: cache-mount
-          skip-extraction: ${{ steps.cache.outputs.cache-hit }}
 
       - name: Write environment variables
         uses: sibiraj-s/action-toenv@v1
@@ -58,6 +47,7 @@ jobs:
           env: |
             DOCKER_REPOSITORY=${{ secrets.DOCKER_REPOSITORY }}
             IMAGE_TAG=${{ github.sha }}
+            DATABASE_URL=postgres://postgres:postgres@postgres:5432/grant_hq
             SITE_URL=${{ vars.SITE_URL }}
             INVITE_TOKEN=${{ secrets.INVITE_TOKEN }}
             JWT_SIGNING_SECRET=${{ secrets.JWT_SIGNING_SECRET }}
@@ -81,31 +71,64 @@ jobs:
             POLAR_WEBHOOK_SECRET=${{ secrets.POLAR_WEBHOOK_SECRET }}
             POLAR_PRO_PLAN_PRODUCT_ID=${{ secrets.POLAR_PRO_PLAN_PRODUCT_ID }}
             POLAR_ULTIMATE_PLAN_PRODUCT_ID=${{ secrets.POLAR_ULTIMATE_PLAN_PRODUCT_ID }}
+            REDIS_URL=redis://host.docker.internal:6379
 
-      - name: Build and push migrate image
-        uses: docker/build-push-action@v5
+      - name: Configure SSH
+        run: |
+          mkdir -p ~/.ssh
+          chmod 700 ~/.ssh
+          echo "${{ secrets.HETZNER_HOST_SSH_KEY }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan -H ${{ secrets.HETZNER_HOST }} >> ~/.ssh/known_hosts
+          chmod 644 ~/.ssh/known_hosts
+
+      - name: Setup dependencies in VPS
+        run: docker compose --file compose.prod.deps.yml up -d --remove-orphans
+        env:
+          DOCKER_HOST: ssh://${{ secrets.REMOTE_DOCKER_HOST }}
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build application
+        run: npm run build
+
+      - name: Log in to Docker Registry
+        uses: docker/login-action@v3
         with:
-          context: .
-          file: ./Dockerfile.migrate
-          platforms: linux/arm64
-          push: true
-          tags: |
-            ${{ secrets.DOCKER_REPOSITORY }}-migrate:${{ github.sha }}
-            ${{ secrets.DOCKER_REPOSITORY }}-migrate:latest
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
 
       - name: Build and push app image
         uses: docker/build-push-action@v5
         with:
           context: .
           platforms: linux/arm64
+          dockerfile: ./Dockerfile.prebuilt
           push: true
           tags: |
             ${{ secrets.DOCKER_REPOSITORY }}:${{ github.sha }}
             ${{ secrets.DOCKER_REPOSITORY }}:latest
           cache-from: type=gha
           cache-to: type=gha,mode=max
+
+      - name: Create SSH tunnel to 5432
+        run: |
+          ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -N -L 5432:localhost:5432 ${{ secrets.HETZNER_HOST }} &
+          echo $! > tunnel.pid
+          sleep 5
+
+      - name: Run database migrations
+        run: npm run migrate
+        env:
+          DATABASE_URL: postgres://postgres:postgres@localhost:5432/grant_hq
+
+      - name: Close SSH tunnel
+        run: |
+          if [ -f tunnel.pid ]; then
+            kill $(cat tunnel.pid) || true
+            rm tunnel.pid
+          fi
 
       - name: Build and push cron image
         uses: docker/build-push-action@v5
@@ -120,20 +143,17 @@ jobs:
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
-      - name: Configure SSH
-        run: |
-          mkdir -p ~/.ssh
-          chmod 700 ~/.ssh
-          echo "${{ secrets.HETZNER_HOST_SSH_KEY }}" > ~/.ssh/id_rsa
-          chmod 600 ~/.ssh/id_rsa
-          ssh-keyscan -H ${{ secrets.HETZNER_HOST }} >> ~/.ssh/known_hosts
-          chmod 644 ~/.ssh/known_hosts
-
       - name: Deploy
         run: |
           echo "${{ secrets.DOCKERHUB_TOKEN }}" | docker login -u ${{ secrets.DOCKERHUB_USERNAME }} --password-stdin
-          docker compose --file compose.yml pull
-          docker compose --file compose.yml up -d --remove-orphans
+          docker compose --file compose.prod.yml pull
+          docker compose --file compose.prod.yml up -d --remove-orphans
+        env:
+          DOCKER_HOST: ssh://${{ secrets.REMOTE_DOCKER_HOST }}
+
+      - name: Cleanup docker
+        run: |
+          # Remove unused containers, networks, images (both dangling and unreferenced)
           docker system prune -f
           # Remove images not associated with any containers
           docker image prune -a

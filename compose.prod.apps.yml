@@ -1,0 +1,28 @@
+services:
+  app:
+    container_name: ug_app
+    image: ${DOCKER_REPOSITORY}:${IMAGE_TAG:-latest}
+    env_file: .env
+    environment:
+      DATABASE_URL: postgres://postgres:postgres@postgres:5432/grant_hq
+    ports:
+      - 3000:3000
+    depends_on:
+      postgres:
+        condition: service_healthy
+      migrate:
+        condition: service_completed_successfully
+      redis:
+        condition: service_healthy
+    restart: always
+    extra_hosts:
+      - host.docker.internal:host-gateway
+
+  crontab:
+    container_name: ug_cron
+    image: ${DOCKER_REPOSITORY}-cron:${IMAGE_TAG:-latest}
+    environment:
+      - CRON_SECRET=${CRON_SECRET}
+    depends_on:
+      - app
+    restart: unless-stopped

@@ -1,0 +1,31 @@
+# this is a dockerfile for using prebuilt nextjs output
+# see Dockefile for the full build process
+# since full build is terribly slow, we build the nextjs app outside of this dockerfile
+# and copy the output here and serve it
+
+FROM node:22-alpine AS base
+
+WORKDIR /app
+
+ENV NODE_ENV=production
+ENV NEXT_TELEMETRY_DISABLED=1
+
+RUN addgroup --system --gid 1001 nodejs
+RUN adduser --system --uid 1001 nextjs
+
+COPY public ./public
+COPY .next/standalone ./
+COPY .next/static ./.next/static
+
+RUN chown -R nextjs:nodejs public .next
+
+USER nextjs
+
+EXPOSE 3000
+
+ENV PORT=3000
+
+# server.js is created by next build from the standalone output
+# https://nextjs.org/docs/pages/api-reference/config/next-config-js/output
+ENV HOSTNAME="0.0.0.0"
+CMD ["node", "server.js"]
