@@ -20,29 +20,46 @@ const redis = createClient({
   url: env.REDIS_URL,
 });
 
-if (env.REDIS_URL) {
-  console.log('Connecting to Redis...');
-  await redis.connect();
-  console.log('Connected to Redis');
+async function ensureRedisConnection() {
+  if (!env.REDIS_URL || redis.isReady) {
+    return;
+  }
+
+  try {
+    console.log('Connecting to Redis...');
+    await redis.connect();
+    console.log('Connected to Redis');
+  } catch (error) {
+    console.error('Failed to connect to Redis:', error);
+  }
 }
 
 function getSecondaryStorage(): SecondaryStorage | undefined {
-  if (!redis.isReady) {
+  if (!env.REDIS_URL) {
     return undefined;
   }
 
   return {
     get: async (key) => {
+      await ensureRedisConnection();
+      if (!redis.isReady) return null;
+
       const value = await redis.get(key);
       return value ? value : null;
     },
     set: async (key, value, ttl) => {
+      await ensureRedisConnection();
+      if (!redis.isReady) return;
+
       if (ttl) await redis.set(key, value, { EX: ttl });
       // or for ioredis:
       // if (ttl) await redis.set(key, value, 'EX', ttl)
       else await redis.set(key, value);
     },
     delete: async (key) => {
+      await ensureRedisConnection();
+      if (!redis.isReady) return;
+
       await redis.del(key);
     },
   };
