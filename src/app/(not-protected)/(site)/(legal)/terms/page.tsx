@@ -2,6 +2,7 @@ import fs from 'node:fs/promises';
 import path from 'node:path';
 
 import { formatDate } from '@/utils/date';
+import { getGitFileModifiedTime } from '@/utils/git';
 
 import parse from '../parser';
 
@@ -9,7 +10,7 @@ const TERMS_PATH = path.join(process.cwd(), 'src/resources/terms.md');
 
 export default async function TermsPage() {
   const content = await parse(TERMS_PATH);
-  const fileModified = await fs.stat(TERMS_PATH).then((stats) => stats.mtime);
+  const fileModified = getGitFileModifiedTime(TERMS_PATH);
 
   return (
     <div className="mx-auto max-w-4xl">
