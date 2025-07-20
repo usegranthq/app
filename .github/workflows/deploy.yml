@@ -135,9 +135,10 @@ jobs:
           docker compose --file compose.yml pull
           docker compose --file compose.yml up -d --remove-orphans
           docker system prune -f
+          # Remove images not associated with any containers
+          docker image prune -a
         env:
           DOCKER_HOST: ssh://${{ secrets.REMOTE_DOCKER_HOST }}
-          COMPOSE_BAKE: true
 
       - name: Remove environment variables file
         run: rm -f .env
