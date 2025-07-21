@@ -17,6 +17,9 @@ env:
   NODE_VERSION: 22
   NEXT_TELEMETRY_DISABLED: 1
 
+permissions:
+  contents: read
+
 jobs:
   deploy:
     runs-on: blacksmith-4vcpu-ubuntu-2404-arm
