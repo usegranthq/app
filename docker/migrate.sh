@@ -9,8 +9,6 @@ PRISMA_VERSION=$(jq -r '.devDependencies.prisma // empty | sub("^[^0-9]*"; "")' 
 
 echo "Using Prisma version $PRISMA_VERSION"
 
-npm init -y
-
-npm install prisma@$PRISMA_VERSION @prisma/client@$PRISMA_VERSION
+npm i -g prisma@$PRISMA_VERSION
 
 npx prisma migrate deploy
