@@ -43,11 +43,15 @@ services:
     extra_hosts:
       - host.docker.internal:host-gateway
 
-  crontab:
+  cron:
     container_name: ug_cron
-    image: ${DOCKER_REPOSITORY}-cron:${IMAGE_TAG:-latest}
+    image: alpine/curl
+    volumes:
+      - ./cron.sh:/cron.sh:ro
+    command: /cron.sh
     environment:
       - CRON_SECRET=${CRON_SECRET}
+      - CRON_URL=http://app:3000/api/cron
     depends_on:
       - app
     restart: unless-stopped

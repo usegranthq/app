@@ -7,8 +7,3 @@ services:
 
   app:
     build: .
-
-  crontab:
-    build:
-      context: .
-      dockerfile: Dockerfile.cron

@@ -130,24 +130,11 @@ jobs:
             rm tunnel.pid
           fi
 
-      - name: Build and push cron image
-        uses: docker/build-push-action@v5
-        with:
-          context: .
-          file: ./Dockerfile.cron
-          platforms: linux/arm64
-          push: true
-          tags: |
-            ${{ secrets.DOCKER_REPOSITORY }}-cron:${{ github.sha }}
-            ${{ secrets.DOCKER_REPOSITORY }}-cron:latest
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
-
       - name: Deploy
         run: |
           echo "${{ secrets.DOCKERHUB_TOKEN }}" | docker login -u ${{ secrets.DOCKERHUB_USERNAME }} --password-stdin
-          docker compose --file compose.prod.apps.yml pull
-          docker compose --file compose.prod.apps.yml up -d
+          docker compose -f compose.prod.apps.yml pull
+          docker compose -f compose.prod.deps.yml -f compose.prod.apps.yml up -d --remove-orphans
         env:
           DOCKER_HOST: ssh://${{ secrets.REMOTE_DOCKER_HOST }}
 
