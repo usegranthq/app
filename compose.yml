@@ -37,6 +37,8 @@ services:
       - ./package.json:/app/package.json:ro
       - ./migrate.sh:/app/migrate.sh:ro
     command: /migrate.sh
+    environment:
+      DATABASE_URL: postgres://postgres:postgres@postgres:5432/grant_hq
     depends_on:
       postgres:
         condition: service_healthy

@@ -45,10 +45,10 @@ jobs:
       - name: Write environment variables
         uses: sibiraj-s/action-toenv@v1
         with:
-          # DATABASE_URL=postgres://postgres:postgres@postgres:5432/grant_hq
           env: |
             DOCKER_REPOSITORY=${{ secrets.DOCKER_REPOSITORY }}
             IMAGE_TAG=${{ github.sha }}
+            DATABASE_URL=postgres://postgres:postgres@postgres:5432/grant_hq
             SITE_URL=${{ vars.SITE_URL }}
             INVITE_TOKEN=${{ secrets.INVITE_TOKEN }}
             JWT_SIGNING_SECRET=${{ secrets.JWT_SIGNING_SECRET }}
