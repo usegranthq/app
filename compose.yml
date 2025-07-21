@@ -17,16 +17,6 @@ services:
       timeout: 5s
       retries: 5
 
-  # migrate:
-  #   container_name: ug_migrate
-  #   image: ${DOCKER_REPOSITORY}-migrate:${IMAGE_TAG:-latest}
-  #   environment:
-  #     DATABASE_URL: postgres://postgres:postgres@postgres:5432/grant_hq
-  #   depends_on:
-  #     postgres:
-  #       condition: service_healthy
-  #   restart: 'no'
-
   migrate:
     container_name: ug_migrate
     image: node:22-alpine
@@ -35,8 +25,8 @@ services:
     volumes:
       - ./prisma:/app/prisma:ro
       - ./package.json:/app/package.json:ro
-      - ./migrate.sh:/app/migrate.sh:ro
-    command: /migrate.sh
+      - ./docker/migrate.sh:/app/migrate.sh:ro
+    command: /app/migrate.sh
     environment:
       DATABASE_URL: postgres://postgres:postgres@postgres:5432/grant_hq
     depends_on:
@@ -63,9 +53,10 @@ services:
   cron:
     container_name: ug_cron
     image: alpine/curl
+    working_dir: /app
     volumes:
-      - ./cron.sh:/cron.sh:ro
-    command: /cron.sh
+      - ./docker/cron.sh:/app/cron.sh:ro
+    command: /app/cron.sh
     environment:
       - CRON_SECRET=${CRON_SECRET}
       - CRON_URL=http://app:3000/api/cron
