@@ -11,7 +11,7 @@ if [ -z "${CRON_URL}" ]; then
 fi
 
 # send curl
-echo "* * * * * curl -H 'Authorization: Bearer ${CRON_SECRET}' ${CRON_URL}" > /etc/crontabs/root
+echo "0 */2 * * * curl -H 'Authorization: Bearer ${CRON_SECRET}' ${CRON_URL}" > /etc/crontabs/root
 
 # start cron
 crond -f -l 2
