@@ -13,3 +13,4 @@ compose*.yml
 scripts/
 tests/
 *.spec.ts
+docker/
