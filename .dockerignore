@@ -6,7 +6,7 @@ README.md
 .git
 .next
 prisma-client/
-compose.yml
+compose*.yml
 .github/
 .husky/
 .vscode/
