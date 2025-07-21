@@ -89,7 +89,7 @@ jobs:
           path: cache-mount
           key: cache-mount-${{ hashFiles('Dockerfile') }}
 
-      - name: Inject npm-cache
+      - name: Inject docker mount cache
         uses: reproducible-containers/buildkit-cache-dance@v3
         with:
           builder: ${{ steps.buildx.outputs.name }}
