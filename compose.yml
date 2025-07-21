@@ -16,15 +16,30 @@ services:
       interval: 5s
       timeout: 5s
       retries: 5
+
+  # migrate:
+  #   container_name: ug_migrate
+  #   image: ${DOCKER_REPOSITORY}-migrate:${IMAGE_TAG:-latest}
+  #   environment:
+  #     DATABASE_URL: postgres://postgres:postgres@postgres:5432/grant_hq
+  #   depends_on:
+  #     postgres:
+  #       condition: service_healthy
+  #   restart: 'no'
+
   migrate:
     container_name: ug_migrate
-    image: ${DOCKER_REPOSITORY}-migrate:${IMAGE_TAG:-latest}
-    environment:
-      DATABASE_URL: postgres://postgres:postgres@postgres:5432/grant_hq
+    image: node:22-alpine
+    restart: 'no'
+    working_dir: /app
+    volumes:
+      - ./prisma:/app/prisma:ro
+      - ./package.json:/app/package.json:ro
+      - ./migrate.sh:/app/migrate.sh:ro
+    command: /migrate.sh
     depends_on:
       postgres:
         condition: service_healthy
-    restart: 'no'
 
   app:
     container_name: ug_app

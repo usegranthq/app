@@ -29,11 +29,11 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Set up Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: ${{ env.NODE_VERSION }}
-          cache: npm
+      # - name: Set up Node.js
+      #   uses: actions/setup-node@v4
+      #   with:
+      #     node-version: ${{ env.NODE_VERSION }}
+      #     cache: npm
 
       - name: Setup docker
         uses: docker/setup-docker-action@v4
@@ -45,10 +45,10 @@ jobs:
       - name: Write environment variables
         uses: sibiraj-s/action-toenv@v1
         with:
+          # DATABASE_URL=postgres://postgres:postgres@postgres:5432/grant_hq
           env: |
             DOCKER_REPOSITORY=${{ secrets.DOCKER_REPOSITORY }}
             IMAGE_TAG=${{ github.sha }}
-            DATABASE_URL=postgres://postgres:postgres@postgres:5432/grant_hq
             SITE_URL=${{ vars.SITE_URL }}
             INVITE_TOKEN=${{ secrets.INVITE_TOKEN }}
             JWT_SIGNING_SECRET=${{ secrets.JWT_SIGNING_SECRET }}
@@ -82,23 +82,23 @@ jobs:
           ssh-keyscan -H ${{ secrets.HETZNER_HOST }} >> ~/.ssh/known_hosts
           chmod 644 ~/.ssh/known_hosts
 
-      - name: Setup dependencies in VPS
-        run: docker compose --file compose.prod.deps.yml up -d
-        env:
-          DOCKER_HOST: ssh://${{ secrets.REMOTE_DOCKER_HOST }}
+      # - name: Setup dependencies in VPS
+      #   run: docker compose --file compose.prod.deps.yml up -d
+      #   env:
+      #     DOCKER_HOST: ssh://${{ secrets.REMOTE_DOCKER_HOST }}
 
-      - name: Install dependencies
-        run: npm ci
+      # - name: Install dependencies
+      #   run: npm ci
 
       # ref: https://nextjs.org/docs/app/guides/ci-build-caching#github-actions
-      - name: Setup next cache
-        uses: actions/cache@v4
-        with:
-          path: |
-            ${{ github.workspace }}/.next/cache
-          key: ${{ runner.os }}-nextjs-${{ hashFiles('**/package-lock.json') }}-${{ hashFiles('**/*.js', '**/*.jsx', '**/*.ts', '**/*.tsx') }}
-          restore-keys: |
-            ${{ runner.os }}-nextjs-${{ hashFiles('**/package-lock.json') }}-
+      # - name: Setup next cache
+      #   uses: actions/cache@v4
+      #   with:
+      #     path: |
+      #       ${{ github.workspace }}/.next/cache
+      #     key: ${{ runner.os }}-nextjs-${{ hashFiles('**/package-lock.json') }}-${{ hashFiles('**/*.js', '**/*.jsx', '**/*.ts', '**/*.tsx') }}
+      #     restore-keys: |
+      #       ${{ runner.os }}-nextjs-${{ hashFiles('**/package-lock.json') }}-
 
       - name: Build application
         run: npm run build
@@ -109,12 +109,26 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
+      - name: Cache
+        uses: actions/cache@v4
+        id: cache
+        with:
+          path: cache-mount
+          key: cache-mount-${{ hashFiles('Dockerfile') }}
+
+      - name: Inject npm-cache
+        uses: reproducible-containers/buildkit-cache-dance@v3
+        with:
+          builder: ${{ steps.buildx.outputs.name }}
+          cache-dir: cache-mount
+          skip-extraction: ${{ steps.cache.outputs.cache-hit }}
+
       - name: Build and push app image
         uses: docker/build-push-action@v6
         with:
           context: .
           platforms: linux/arm64
-          file: ./Dockerfile.prebuilt
+          file: ./Dockerfile
           push: true
           tags: |
             ${{ secrets.DOCKER_REPOSITORY }}:${{ github.sha }}
@@ -122,29 +136,32 @@ jobs:
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
-      - name: Create SSH tunnel to 5432
-        run: |
-          ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -N -L 5432:localhost:5432 ${{ secrets.REMOTE_DOCKER_HOST }} &
-          echo $! > tunnel.pid
-          sleep 5
+      # - name: Create SSH tunnel to 5432
+      #   run: |
+      #     ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -N -L 5432:localhost:5432 ${{ secrets.REMOTE_DOCKER_HOST }} &
+      #     echo $! > tunnel.pid
+      #     sleep 5
 
-      - name: Run database migrations
-        run: npm run migrate
-        env:
-          DATABASE_URL: postgres://postgres:postgres@localhost:5432/grant_hq
+      # - name: Run database migrations
+      #   run: npm run migrate
+      #   env:
+      #     DATABASE_URL: postgres://postgres:postgres@localhost:5432/grant_hq
 
-      - name: Close SSH tunnel
-        run: |
-          if [ -f tunnel.pid ]; then
-            kill $(cat tunnel.pid) || true
-            rm tunnel.pid
-          fi
+      # - name: Close SSH tunnel
+      #   run: |
+      #     if [ -f tunnel.pid ]; then
+      #       kill $(cat tunnel.pid) || true
+      #       rm tunnel.pid
+      #     fi
 
       - name: Deploy
         run: |
           echo "${{ secrets.DOCKERHUB_TOKEN }}" | docker login -u ${{ secrets.DOCKERHUB_USERNAME }} --password-stdin
-          docker compose -f compose.prod.apps.yml pull
-          docker compose -f compose.prod.deps.yml -f compose.prod.apps.yml up -d --remove-orphans
+          docker compose -f compose.yml up -d --remove-orphans
+        # run: |
+        #   echo "${{ secrets.DOCKERHUB_TOKEN }}" | docker login -u ${{ secrets.DOCKERHUB_USERNAME }} --password-stdin
+        #   docker compose -f compose.prod.apps.yml pull
+        #   docker compose -f compose.prod.deps.yml -f compose.prod.apps.yml up -d --remove-orphans
         env:
           DOCKER_HOST: ssh://${{ secrets.REMOTE_DOCKER_HOST }}
 
