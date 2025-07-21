@@ -26,7 +26,7 @@ services:
       - ./prisma:/app/prisma:ro
       - ./package.json:/app/package.json:ro
       - ./docker/migrate.sh:/app/migrate.sh:ro
-    command: /app/migrate.sh
+    command: sh /app/migrate.sh
     environment:
       DATABASE_URL: postgres://postgres:postgres@postgres:5432/grant_hq
     depends_on:
@@ -56,7 +56,7 @@ services:
     working_dir: /app
     volumes:
       - ./docker/cron.sh:/app/cron.sh:ro
-    command: /app/cron.sh
+    command: sh /app/cron.sh
     environment:
       - CRON_SECRET=${CRON_SECRET}
       - CRON_URL=http://app:3000/api/cron
