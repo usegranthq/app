@@ -16,6 +16,10 @@ const nextConfig: NextConfig = {
           destination: 'https://avatar.iran.liara.run/public/boy/:path*',
         },
         {
+          source: '/health',
+          destination: '/api/health',
+        },
+        {
           has: [
             {
               type: 'header',
