@@ -49,7 +49,7 @@ const next = (request: NextRequest) => {
       headers: requestHeaders,
     },
   });
-  // response.headers.set('Content-Security-Policy', contentSecurityPolicyHeaderValue);
+  response.headers.set('Content-Security-Policy', contentSecurityPolicyHeaderValue);
 
   return response;
 };
