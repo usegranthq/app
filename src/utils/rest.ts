@@ -8,8 +8,8 @@ export const hasBearerToken = (request: Request) => {
   return authHeader?.startsWith('Bearer ');
 };
 
-export const getBearerToken = (request: Request): string | null => {
-  const authHeader = request.headers.get('authorization');
+export const getBearerToken = (headers: Headers): string | null => {
+  const authHeader = headers.get('authorization');
   return authHeader?.split(' ')[1] ?? null;
 };
 
@@ -85,4 +85,4 @@ export const STATUS_CODES = {
   LOOP_DETECTED: 508,
   NOT_EXTENDED: 510,
   NETWORK_AUTHENTICATION_REQUIRED: 511,
-};
+} as const;

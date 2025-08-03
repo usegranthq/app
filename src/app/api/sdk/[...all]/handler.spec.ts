@@ -3,14 +3,14 @@ import { describe, expect, it } from 'vitest';
 import { STATUS_CODES } from '@/utils/rest';
 import mockAuth from '@/lib/__mocks__/auth';
 
-import { fakeDbApiKey } from './endpoints/test-utils/fake-data';
-import createRequest from './endpoints/test-utils/request';
-import handler from './handler';
+import { fakeDbApiKey } from './procedures/test-utils/fake-data';
+import { createRequest } from './procedures/test-utils/request';
+import { handleRequest } from './route';
 
 describe('SDK: Router', () => {
   it('return 401 if the request doesnt have an api key', async () => {
     const request = createRequest('v1/providers/1/domains');
-    const response = await handler(request);
+    const response = await handleRequest(request);
     expect(response.status).toBe(STATUS_CODES.UNAUTHORIZED);
   });
 
@@ -23,7 +23,7 @@ describe('SDK: Router', () => {
 
     const request = createRequest('invalid-path');
     request.headers.set('Authorization', 'Bearer test-key');
-    const response = await handler(request);
+    const response = await handleRequest(request);
     expect(response.status).toBe(STATUS_CODES.NOT_FOUND);
   });
 
@@ -39,7 +39,7 @@ describe('SDK: Router', () => {
 
     const request = createRequest('v1/providers/1/domains');
     request.headers.set('Authorization', 'Bearer test-key');
-    const response = await handler(request);
+    const response = await handleRequest(request);
     expect(response.status).toBe(STATUS_CODES.UNAUTHORIZED);
   });
 
@@ -55,7 +55,7 @@ describe('SDK: Router', () => {
 
     const request = createRequest('v1/providers/1/domains');
     request.headers.set('Authorization', 'Bearer test-key');
-    const response = await handler(request);
+    const response = await handleRequest(request);
     expect(response.status).toBe(STATUS_CODES.TOO_MANY_REQUESTS);
     expect(response.headers.get('Retry-After')).toBe(null);
   });

@@ -1,78 +1,26 @@
-import { createRouter } from 'better-call';
+import { OpenAPIHandler } from '@orpc/openapi/fetch';
+import { onError, ORPCError, ValidationError } from '@orpc/server';
+import { z } from 'zod/v4';
 
-import { getBearerToken, rateLimitedResponse, unauthorizedResponse } from '@/utils/rest';
-import { auth } from '@/lib/auth';
+import procedures from './procedures';
+import rpcRouter from './rpc';
 
-import endpoints from './endpoints';
+const handler = new OpenAPIHandler(rpcRouter.router(procedures), {
+  interceptors: [
+    onError((error) => {
+      if (error instanceof ORPCError && error.code === 'BAD_REQUEST' && error.cause instanceof ValidationError) {
+        // If you only use Zod you can safely cast to ZodIssue[]
+        const zodError = new z.ZodError(error.data.issues as z.core.$ZodIssue[]);
 
-type VerifyApiRateLimitedError = {
-  code: 'RATE_LIMITED';
-  tryAgainIn: string | null;
-};
-
-type VerifyApiKeyNotFoundError = {
-  code: 'KEY_NOT_FOUND';
-};
-
-type VerifyApiKeyResult = [VerifyApiRateLimitedError | VerifyApiKeyNotFoundError, null] | [null, string];
-
-const verifyApiKey = async (key: string): Promise<VerifyApiKeyResult> => {
-  const result = await auth.api.verifyApiKey({
-    body: {
-      key,
-      permissions: {
-        sdk: ['read', 'write'],
-      },
-    },
-  });
-
-  if (result.error?.code === 'RATE_LIMITED') {
-    const error: VerifyApiRateLimitedError = {
-      code: 'RATE_LIMITED',
-      tryAgainIn: null,
-    };
-    return [error, null];
-  }
-
-  if (!result.valid || !result.key) {
-    const error: VerifyApiKeyNotFoundError = {
-      code: 'KEY_NOT_FOUND',
-    };
-    return [error, null];
-  }
-
-  return [null, result.key.userId];
-};
-
-const handler = async (request: Request) => {
-  const bearerToken = getBearerToken(request);
-  if (!bearerToken) {
-    return unauthorizedResponse('Missing api key');
-  }
-
-  const [error, userId] = await verifyApiKey(bearerToken);
-  if (error) {
-    switch (error.code) {
-      case 'RATE_LIMITED':
-        return rateLimitedResponse('API key rate limit reached', error.tryAgainIn);
-      default:
-        break;
-    }
-
-    return unauthorizedResponse('Unauthorized');
-  }
-
-  const router = createRouter(endpoints, {
-    basePath: '/sdk',
-    routerContext: {
-      userId,
-    },
-    openAPI: {
-      disabled: true,
-    },
-  });
-
-  return router.handler(request);
-};
+        throw new ORPCError('INPUT_VALIDATION_FAILED', {
+          status: 422,
+          message: error.message,
+          data: z.flattenError(zodError).fieldErrors,
+          cause: error.cause,
+        });
+      }
+    }),
+  ],
+});
 
 export default handler;

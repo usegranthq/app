@@ -3,7 +3,7 @@ export const ROUTES = {
   LOGIN: '/login',
   VERIFY: '/verify',
   LOGIN_CALLBACK: '/login-callback',
-  DASHBOARD: '/u',
+  DASHBOARD: '/u/providers',
   SETTINGS: '/u/settings',
   SETTINGS_BILLING: '/u/settings/billing',
   SETTINGS_APIKEYS: '/u/settings/keys',
