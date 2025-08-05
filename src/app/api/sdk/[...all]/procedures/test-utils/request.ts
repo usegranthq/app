@@ -12,7 +12,7 @@ interface ModifiedRequestInit extends Omit<RequestInit, 'body'> {
 export const createRequest = (path: string, requestInit: ModifiedRequestInit = {}) => {
   const body = requestInit.body ? JSON.stringify(requestInit.body) : undefined;
 
-  const request = new NextRequest(`http://localhost:3000/sdk/${path}`, {
+  const request = new NextRequest(`http://localhost:3000/api/sdk/${path}`, {
     ...requestInit,
     body,
     signal: undefined,

@@ -3,14 +3,18 @@ import { NextRequest } from 'next/server';
 import handler from './handler';
 
 export async function handleRequest(request: NextRequest) {
-  const { response } = await handler.handle(request, {
-    prefix: '/sdk',
+  const { response, matched } = await handler.handle(request, {
+    prefix: '/api/sdk',
     context: {
       headers: request.headers,
     },
   });
 
-  return response ?? new Response('Not found', { status: 404 });
+  if (!matched) {
+    return new Response('Not found', { status: 404 });
+  }
+
+  return response;
 }
 
 export const GET = handleRequest;
