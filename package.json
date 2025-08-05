@@ -19,7 +19,7 @@
   "dependencies": {
     "@hookform/resolvers": "^5.2.1",
     "@icons-pack/react-simple-icons": "^13.7.0",
-    "@markdoc/markdoc": "^0.5.3",
+    "@markdoc/markdoc": "^0.5.4",
     "@marsidev/react-turnstile": "^1.2.0",
     "@orpc/openapi": "^1.7.9",
     "@orpc/server": "^1.7.9",
