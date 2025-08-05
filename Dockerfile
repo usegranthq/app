@@ -8,6 +8,7 @@ WORKDIR /app
 
 # Install dependencies based on the preferred package manager
 COPY prisma prisma
+COPY prisma.config.ts prisma.config.ts
 COPY package.json yarn.lock* package-lock.json* pnpm-lock.yaml* .npmrc* ./
 RUN --mount=type=cache,target=/var/cache/npm,uid=0,gid=0 \
     npm config set cache /var/cache/npm && \
