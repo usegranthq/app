@@ -1,0 +1,106 @@
+model Provider {
+  id          String   @id @default(cuid(2))
+  name        String
+  description String
+  urlId       String   @unique
+  rotateJwks  Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  Client Client[]
+  Domain Domain[]
+  Jwks   Jwks[]
+
+  userId String
+  User   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("provider")
+}
+
+model Client {
+  id        String   @id @default(cuid(2))
+  name      String
+  audience  String
+  subject   String   @default(cuid(2))
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  providerId String
+  Provider   Provider @relation(fields: [providerId], references: [id], onDelete: Cascade)
+
+  @@map("client")
+}
+
+model Domain {
+  id         String   @id @default(cuid(2))
+  domain     String   @unique
+  verified   Boolean  @default(false)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+  externalId String   @unique
+
+  providerId String
+  Provider   Provider @relation(fields: [providerId], references: [id], onDelete: Cascade)
+
+  @@map("domain")
+}
+
+model Jwks {
+  id        String   @id @default(cuid(2))
+  kid       String
+  key       Json
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  providerId String
+  Provider   Provider @relation(fields: [providerId], references: [id], onDelete: Cascade)
+
+  @@map("jwks")
+}
+
+model Tenant {
+  id          String   @id @default(cuid(2))
+  name        String
+  description String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  TenantProvider TenantProvider[]
+
+  userId String
+  User   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("tenant")
+}
+
+model TenantProvider {
+  id                          String   @id @default(cuid(2))
+  url                         String
+  fingerprints                String[]
+  audience                    String
+  earliestIssuanceTimeAllowed Int
+  createdAt                   DateTime @default(now())
+  updatedAt                   DateTime @updatedAt
+
+  tenantId             String
+  Tenant               Tenant                 @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  TenantProviderPolicy TenantProviderPolicy[]
+
+  @@unique([url, tenantId])
+  @@map("tenant_provider")
+}
+
+model TenantProviderPolicy {
+  id          String   @id @default(cuid(2))
+  name        String
+  description String
+  audience    String
+  conditions  Json?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  tenantProviderId String
+  TenantProvider   TenantProvider @relation(fields: [tenantProviderId], references: [id], onDelete: Cascade)
+
+  @@map("tenant_provider_policy")
+}
