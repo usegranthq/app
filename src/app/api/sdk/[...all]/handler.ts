@@ -1,11 +1,18 @@
 import { OpenAPIHandler } from '@orpc/openapi/fetch';
 import { onError, ORPCError, ValidationError } from '@orpc/server';
+import { CORSPlugin } from '@orpc/server/plugins';
 import { z } from 'zod/v4';
 
 import procedures from './procedures';
 import rpcRouter from './rpc';
 
 const handler = new OpenAPIHandler(rpcRouter.router(procedures), {
+  plugins: [
+    new CORSPlugin({
+      origin: (origin) => origin,
+      allowMethods: ['GET', 'HEAD', 'PUT', 'POST', 'DELETE', 'PATCH'],
+    }),
+  ],
   interceptors: [
     onError((error) => {
       if (error instanceof ORPCError && error.code === 'BAD_REQUEST' && error.cause instanceof ValidationError) {
