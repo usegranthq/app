@@ -1,0 +1,94 @@
+name: SDK E2E Tests
+
+on:
+  push:
+    branches:
+      - master
+
+env:
+  NODE_VERSION: 22
+
+jobs:
+  e2e:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    services:
+      postgres:
+        image: postgres:15
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: grant_hq
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          # Maps tcp port 5432 on service container to the host
+          - 5433:5432
+
+    env:
+      DATABASE_URL: postgres://postgres:postgres@localhost:5433/grant_hq
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup node
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: npm
+
+      - name: Write environment variables
+        uses: sibiraj-s/action-toenv@v1
+        with:
+          env: |
+            PORT=3000
+            DATABASE_URL=${{ env.DATABASE_URL }}
+            SITE_URL=https://usegrant.dev
+            INVITE_TOKEN=xxx
+            JWT_SIGNING_SECRET=xxx
+            TURNSTILE_SITE_KEY=xxx
+            TURNSTILE_SECRET_KEY=xxx
+            OAUTH_GITHUB_APP_CLIENT_ID=xxx
+            OAUTH_GITHUB_APP_CLIENT_SECRET=xxx
+            OAUTH_GOOGLE_APP_CLIENT_ID=xxx
+            OAUTH_GOOGLE_APP_CLIENT_SECRET=xxx
+            BETTER_AUTH_SECRET=xxx
+            PROVIDER_DOMAIN=xxx
+            NODEMAILER_SMTP_URL=xxx
+            EMAIL_FROM=xxx
+            RESEND_API_KEY=xxx
+            CLOUDFLARE_API_TOKEN=xxx
+            CLOUDFLARE_ZONE_ID=xxx
+            CRON_SECRET=xxx
+            POSTHOG_API_KEY=xxx
+            STATE_HMAC_SECRET_KEY=xxx
+            POLAR_ACCESS_TOKEN=xxx
+            POLAR_WEBHOOK_SECRET=xxx
+            POLAR_PRO_PLAN_PRODUCT_ID=xxx
+            POLAR_ULTIMATE_PLAN_PRODUCT_ID=xxx
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Start dev server
+        run: npx pm2 start "npm run dev -- -H 0.0.0.0" --name dev --silent
+
+      - name: Wait for server to be ready
+        run: npx wait-on http://localhost:3000/health
+
+      - name: Run migrations
+        run: npm run migrate:dev
+
+      - name: Run seed
+        run: npm run seed:e2e
+
+      - name: Run E2E SDK tests
+        run: npm run sdk:e2e
+
+      - name: Stop dev server
+        run: npx pm2 stop dev

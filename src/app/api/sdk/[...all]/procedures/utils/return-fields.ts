@@ -10,6 +10,7 @@ export const providerFields: Prisma.ProviderSelect = {
   name: true,
   description: true,
   urlId: true,
+  rotateJwks: true,
   ...commonFields,
 };
 
