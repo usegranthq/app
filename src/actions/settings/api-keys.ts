@@ -15,7 +15,7 @@ const toTokenExpiration = (expiresInDays: number) => {
 };
 
 export async function createApiKey(formData: FormData): ActionResponse<string> {
-  await verifySession();
+  const { user } = await verifySession();
 
   const validation = createApiKeySchema.safeParse({
     name: formData.get('name'),
@@ -47,6 +47,7 @@ export async function createApiKey(formData: FormData): ActionResponse<string> {
         name: validation.data.name,
         expiresIn: expiresInDays > 0 ? toTokenExpiration(expiresInDays) : null,
         prefix: 'uga_',
+        userId: user.id,
         permissions: {
           sdk: ['read', 'write'],
         },
