@@ -1,9 +1,15 @@
 #!/bin/bash
-
 # this is for running locally
 
-# run docker if not in CI
-if [ "$CI" != "true" ]; then
+set -euo pipefail
+
+# Start a new process group and make this script the leader
+# so all child processes belong to the same group
+# $$ is the PID of the current script process
+trap 'echo "Cleaning up..."; kill -- -$$' EXIT
+
+ # run docker if not in CI
+if [ "${CI:-}" != "true" ]; then
   # check and stop any existing container
   if [ "$(docker ps -q -f name=uge2epg)" ]; then
     docker stop uge2epg
@@ -20,10 +26,12 @@ if [ "$CI" != "true" ]; then
 
   # wait for postgres to be ready
   sleep 5
+
+  npm run dev &
 fi
 
 # check if the DATABASE_URL is set
-if [ -z "$DATABASE_URL" ]; then
+if [ -z "${DATABASE_URL:-}" ]; then
   echo "❌ DATABASE_URL is not set"
   exit 1
 fi
@@ -39,8 +47,8 @@ cd "$(dirname "$0")"
 
 npm run sdk:e2e
 
-# stop the docker container
-if [ "$CI" != "true" ]; then
+# stop the docker container if not in CI
+if [ "${CI:-}" != "true" ]; then
   docker stop uge2epg
   docker rm uge2epg
 fi
