@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# this is for running locally
+
 # run docker if not in CI
 if [ "$CI" != "true" ]; then
   # check and stop any existing container

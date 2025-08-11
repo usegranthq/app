@@ -210,7 +210,6 @@ const createTenantContract = contractBase
       description: z.string(),
       createdAt: z.date(),
       updatedAt: z.date(),
-      userId: z.string(),
     }),
   );
 
