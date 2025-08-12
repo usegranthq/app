@@ -1,6 +1,9 @@
+import { z } from 'zod/v4';
+
 import { getApiErrorMessage } from '@/utils/error';
 import { getPlanByUserId } from '@/lib/billing';
 import db from '@/lib/db';
+import { conditionsSchema } from '@/schema';
 
 import { authRpcRouter } from '../rpc';
 import { tokenProviderPolicyFields } from './utils/return-fields';
@@ -91,7 +94,10 @@ const createTenantProviderPolicy = authRpcRouter.tenants.providers.policies.crea
         select: tokenProviderPolicyFields,
       });
 
-      return tenantProviderPolicy;
+      return {
+        ...tenantProviderPolicy,
+        conditions: (tenantProviderPolicy.conditions as z.infer<typeof conditionsSchema>[]) || [],
+      };
     } catch (error) {
       const errorMessage = getApiErrorMessage(error, 'Something went wrong');
 

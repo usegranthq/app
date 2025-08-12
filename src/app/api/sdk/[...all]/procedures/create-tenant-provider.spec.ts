@@ -6,7 +6,7 @@ import { sillyClone } from '@/utils/object';
 import { STATUS_CODES } from '@/utils/rest';
 import mockDb from '@/lib/__mocks__/db';
 
-import { fakeDbTenant, fakeDbTenantProvider } from './test-utils/fake-data';
+import { fakeDbTenant, fakeDbTenantProvider, fakeDbTenantProviderResponse } from './test-utils/fake-data';
 import createAuthorizedRequest from './test-utils/request';
 
 describe('SDK: Create Tenant Provider', () => {
@@ -78,6 +78,6 @@ describe('SDK: Create Tenant Provider', () => {
 
     const response = await request.post();
     expect(response.status).toBe(STATUS_CODES.CREATED);
-    await expect(response.json()).resolves.toMatchObject(sillyClone(fakeDbTenantProvider));
+    await expect(response.json()).resolves.toMatchObject(sillyClone(fakeDbTenantProviderResponse));
   });
 });

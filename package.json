@@ -5,7 +5,7 @@
   "scripts": {
     "db": "prisma dev -n usegrant",
     "seed:e2e": "tsx e2e/seed.ts",
-    "sdk:e2e": "hurl --test e2e --variables-file e2e/hurl.vars",
+    "sdk:e2e": "hurl --test e2e --variables-file e2e/hurl.vars --jobs 1",
     "dev": "rm -rf .next && next dev --turbopack",
     "build": "next build --turbopack",
     "start": "next start",

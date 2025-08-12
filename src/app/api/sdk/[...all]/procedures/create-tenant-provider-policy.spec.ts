@@ -6,7 +6,12 @@ import { sillyClone } from '@/utils/object';
 import { STATUS_CODES } from '@/utils/rest';
 import mockDb from '@/lib/__mocks__/db';
 
-import { fakeDbTenant, fakeDbTenantProvider, fakeDbTenantProviderPolicy } from './test-utils/fake-data';
+import {
+  fakeDbTenant,
+  fakeDbTenantProvider,
+  fakeDbTenantProviderPolicy,
+  fakeDbTenantProviderPolicyResposne,
+} from './test-utils/fake-data';
 import createAuthorizedRequest from './test-utils/request';
 
 describe('SDK: Create Tenant Provider Policy', () => {
@@ -114,6 +119,6 @@ describe('SDK: Create Tenant Provider Policy', () => {
 
     const response = await request.post();
     expect(response.status).toBe(STATUS_CODES.CREATED);
-    await expect(response.json()).resolves.toMatchObject(sillyClone(fakeDbTenantProviderPolicy));
+    await expect(response.json()).resolves.toMatchObject(sillyClone(fakeDbTenantProviderPolicyResposne));
   });
 });

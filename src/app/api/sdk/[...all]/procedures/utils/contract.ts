@@ -5,6 +5,7 @@ import { MAX_EXPIRY, ONE_HOUR } from '@/utils/jwt';
 import { STATUS_CODES } from '@/utils/rest';
 import {
   clientSchema,
+  conditionsSchema,
   domainSchema,
   providerSchema,
   tenantProviderPolicySchema,
@@ -232,15 +233,14 @@ const createTenantProviderContract = contractBase
     [ERRORS.TENANT_PROVIDER_ALREADY_EXISTS.code]: ERRORS.TENANT_PROVIDER_ALREADY_EXISTS,
   })
   .output(
-    z.strictObject({
+    z.object({
       id: z.string(),
       url: z.string(),
       audience: z.string(),
-      createdAt: z.date(),
-      updatedAt: z.date(),
       fingerprints: z.string().array(),
       earliestIssuanceTimeAllowed: z.number(),
-      tenantId: z.string(),
+      createdAt: z.date(),
+      updatedAt: z.date(),
     }),
   );
 
@@ -586,7 +586,7 @@ const listTenantProviderPoliciesContract = contractBase
         name: z.string(),
         description: z.string(),
         audience: z.string(),
-        conditions: z.any(), // @todo: fix type
+        conditions: z.array(conditionsSchema).optional().nullable(),
         createdAt: z.date(),
         updatedAt: z.date(),
       }),
@@ -619,7 +619,7 @@ const getTenantProviderPolicyContract = contractBase
       name: z.string(),
       description: z.string(),
       audience: z.string(),
-      conditions: z.any(), // @todo: fix type
+      conditions: z.array(conditionsSchema).optional().nullable(),
       createdAt: z.date(),
       updatedAt: z.date(),
     }),
@@ -699,11 +699,10 @@ const createTenantProviderPolicyContract = contractBase
       id: z.string(),
       name: z.string(),
       description: z.string(),
+      audience: z.string(),
+      conditions: z.array(conditionsSchema).optional().nullable(),
       createdAt: z.date(),
       updatedAt: z.date(),
-      audience: z.string(),
-      conditions: z.any(), // @todo: fix type
-      tenantProviderId: z.string(),
     }),
   );
 

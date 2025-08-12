@@ -1,4 +1,7 @@
+import { z } from 'zod/v4';
+
 import db from '@/lib/db';
+import { conditionsSchema } from '@/schema';
 
 import { authRpcRouter } from '../rpc';
 import { tokenProviderPolicyFields } from './utils/return-fields';
@@ -53,7 +56,10 @@ const getTenantProviderPolicy = authRpcRouter.tenants.providers.policies.get.han
       throw errors.TENANT_PROVIDER_POLICY_NOT_FOUND();
     }
 
-    return tenantProviderPolicy;
+    return {
+      ...tenantProviderPolicy,
+      conditions: (tenantProviderPolicy.conditions as z.infer<typeof conditionsSchema>[]) || [],
+    };
   },
 );
 

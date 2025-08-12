@@ -1,4 +1,7 @@
+import { z } from 'zod/v4';
+
 import db from '@/lib/db';
+import { conditionsSchema } from '@/schema';
 
 import { authRpcRouter } from '../rpc';
 import { tokenProviderPolicyFields } from './utils/return-fields';
@@ -48,7 +51,10 @@ const listTenantProviderPolicies = authRpcRouter.tenants.providers.policies.list
       select: tokenProviderPolicyFields,
     });
 
-    return tenantProviderPolicies;
+    return tenantProviderPolicies.map((tenantProviderPolicy) => ({
+      ...tenantProviderPolicy,
+      conditions: (tenantProviderPolicy.conditions as z.infer<typeof conditionsSchema>[]) || [],
+    }));
   },
 );
 
