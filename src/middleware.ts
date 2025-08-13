@@ -5,6 +5,7 @@ import { getSessionCookie } from 'better-auth/cookies';
 import * as constants from '@/constants';
 
 import ROUTES from './constants/routes';
+import { isLive } from './env';
 import { inviteFlag } from './flags';
 import { getSiteUrlFromRequest } from './lib/site';
 import { generateHash } from './utils/build';
@@ -28,9 +29,11 @@ const next = (request: NextRequest) => {
   const nonce = generateHash();
   const isProtectedRoute = matchesUserRoute(request.nextUrl.pathname);
 
+  const devCsp = isLive ? '' : `'unsafe-eval'`;
+
   // see https://web.dev/strict-csp for strict CSP reference
   const cspHeader = `
-      script-src ${isProtectedRoute ? `'nonce-${nonce}' 'strict-dynamic'` : `http: https: 'unsafe-inline'`};
+      script-src ${isProtectedRoute ? `'nonce-${nonce}' 'strict-dynamic' ${devCsp}` : `http: https: 'unsafe-inline' ${devCsp}`};
       object-src 'none';
       base-uri 'none';
       upgrade-insecure-requests;
