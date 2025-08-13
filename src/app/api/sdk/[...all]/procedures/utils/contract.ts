@@ -23,6 +23,52 @@ const contractBase = oc.errors({
   },
 });
 
+const listProvidersContract = contractBase
+  .route({
+    method: 'GET',
+    path: '/v1/providers',
+    successStatus: STATUS_CODES.OK,
+    summary: 'List Providers',
+    tags: ['providers'],
+  })
+  .output(
+    z.array(
+      z.object({
+        id: z.string(),
+        name: z.string(),
+        description: z.string(),
+        urlId: z.string(),
+        createdAt: z.date(),
+        updatedAt: z.date(),
+        rotateJwks: z.boolean(),
+      }),
+    ),
+  );
+
+const getProviderContract = contractBase
+  .route({
+    method: 'GET',
+    path: '/v1/providers/{id}',
+    successStatus: STATUS_CODES.OK,
+    summary: 'Get Provider',
+    tags: ['providers'],
+  })
+  .input(z.object({ id: z.string().describe('Provider ID') }))
+  .errors({
+    [ERRORS.PROVIDER_NOT_FOUND.code]: ERRORS.PROVIDER_NOT_FOUND,
+  })
+  .output(
+    z.object({
+      id: z.string(),
+      name: z.string(),
+      description: z.string(),
+      rotateJwks: z.boolean(),
+      urlId: z.string(),
+      createdAt: z.date(),
+      updatedAt: z.date(),
+    }),
+  );
+
 const createProviderContract = contractBase
   .route({
     method: 'POST',
@@ -59,55 +105,6 @@ const deleteProviderContract = contractBase
   .input(z.object({ id: z.string('Provider ID') }))
   .errors({
     [ERRORS.PROVIDER_NOT_FOUND.code]: ERRORS.PROVIDER_NOT_FOUND,
-  });
-
-const addDomainContract = contractBase
-  .route({
-    method: 'POST',
-    path: '/v1/providers/{providerId}/domains',
-    successStatus: STATUS_CODES.CREATED,
-    summary: 'Add Domain to Provider',
-    tags: ['providers', 'domains'],
-  })
-  .input(
-    z.object({
-      providerId: z.string().describe('Provider ID'),
-      domain: domainSchema,
-    }),
-  )
-  .errors({
-    [ERRORS.MAX_DOMAINS_LIMIT_REACHED.code]: ERRORS.MAX_DOMAINS_LIMIT_REACHED,
-    [ERRORS.PROVIDER_NOT_FOUND.code]: ERRORS.PROVIDER_NOT_FOUND,
-    [ERRORS.DOMAIN_ALREADY_ADDED.code]: ERRORS.DOMAIN_ALREADY_ADDED,
-    [ERRORS.CUSTOM_DOMAINS_NOT_AVAILABLE.code]: ERRORS.CUSTOM_DOMAINS_NOT_AVAILABLE,
-  })
-  .output(
-    z.object({
-      id: z.string(),
-      domain: z.string(),
-      verified: z.boolean(),
-      createdAt: z.date(),
-      updatedAt: z.date(),
-    }),
-  );
-
-const deleteDomainContract = contractBase
-  .route({
-    method: 'DELETE',
-    path: '/v1/providers/{providerId}/domains/{domainId}',
-    successStatus: STATUS_CODES.NO_CONTENT,
-    summary: 'Delete Domain',
-    tags: ['providers', 'domains'],
-  })
-  .input(
-    z.object({
-      providerId: z.string().describe('Provider ID'),
-      domainId: z.string().describe('Domain ID'),
-    }),
-  )
-  .errors({
-    [ERRORS.PROVIDER_NOT_FOUND.code]: ERRORS.PROVIDER_NOT_FOUND,
-    [ERRORS.DOMAIN_NOT_FOUND.code]: ERRORS.DOMAIN_NOT_FOUND,
   });
 
 const createClientContract = contractBase
@@ -156,137 +153,6 @@ const deleteClientContract = contractBase
     z.object({
       providerId: z.string().describe('Provider ID'),
       clientId: z.string().describe('Client ID'),
-    }),
-  );
-
-const createAccessTokenContract = contractBase
-  .route({
-    method: 'POST',
-    path: '/v1/providers/{providerId}/clients/{clientId}/tokens',
-    successStatus: STATUS_CODES.CREATED,
-    summary: 'Create Access Token',
-    tags: ['providers', 'clients', 'tokens'],
-  })
-  .input(
-    z.object({
-      providerId: z.string().describe('Provider ID'),
-      clientId: z.string().describe('Client ID'),
-      // payload
-      expiresIn: z.number().positive().max(MAX_EXPIRY).default(ONE_HOUR),
-      useJwtType: z.boolean().optional(),
-      audienceAsArray: z.boolean().optional(),
-      forceDefaultDomain: z.boolean().optional(),
-    }),
-  )
-  .errors({
-    [ERRORS.PROVIDER_NOT_FOUND.code]: ERRORS.PROVIDER_NOT_FOUND,
-    [ERRORS.CLIENT_NOT_FOUND.code]: ERRORS.CLIENT_NOT_FOUND,
-  })
-  .output(
-    z.strictObject({
-      accessToken: z.string(),
-      type: z.literal('Bearer'),
-      expiresAt: z.date(),
-    }),
-  );
-
-const createTenantContract = contractBase
-  .route({
-    method: 'POST',
-    path: '/v1/tenants',
-    successStatus: STATUS_CODES.CREATED,
-    summary: 'Create Tenant',
-    tags: ['tenants'],
-  })
-  .errors({
-    [ERRORS.TENANTS_NOT_AVAILABLE.code]: ERRORS.TENANTS_NOT_AVAILABLE,
-    [ERRORS.MAX_TENANTS_LIMIT_REACHED.code]: ERRORS.MAX_TENANTS_LIMIT_REACHED,
-    [ERRORS.TENANT_ALREADY_EXISTS.code]: ERRORS.TENANT_ALREADY_EXISTS,
-  })
-  .input(tenantSchema)
-  .output(
-    z.object({
-      id: z.string(),
-      name: z.string(),
-      description: z.string(),
-      createdAt: z.date(),
-      updatedAt: z.date(),
-    }),
-  );
-
-const createTenantProviderContract = contractBase
-  .route({
-    method: 'POST',
-    path: '/v1/tenants/{tenantId}/providers',
-    successStatus: STATUS_CODES.CREATED,
-    summary: 'Create Tenant Provider',
-    tags: ['tenants', 'providers'],
-  })
-  .input(
-    tenantProviderSchema.extend({
-      tenantId: z.string().describe('Tenant ID'),
-    }),
-  )
-  .errors({
-    [ERRORS.TENANT_NOT_FOUND.code]: ERRORS.TENANT_NOT_FOUND,
-    [ERRORS.MAX_TENANT_PROVIDERS_LIMIT_REACHED.code]: ERRORS.MAX_TENANT_PROVIDERS_LIMIT_REACHED,
-    [ERRORS.TENANT_PROVIDER_ALREADY_EXISTS.code]: ERRORS.TENANT_PROVIDER_ALREADY_EXISTS,
-  })
-  .output(
-    z.object({
-      id: z.string(),
-      url: z.string(),
-      audience: z.string(),
-      fingerprints: z.string().array(),
-      earliestIssuanceTimeAllowed: z.number(),
-      createdAt: z.date(),
-      updatedAt: z.date(),
-    }),
-  );
-
-const listProvidersContract = contractBase
-  .route({
-    method: 'GET',
-    path: '/v1/providers',
-    successStatus: STATUS_CODES.OK,
-    summary: 'List Providers',
-    tags: ['providers'],
-  })
-  .output(
-    z.array(
-      z.object({
-        id: z.string(),
-        name: z.string(),
-        description: z.string(),
-        urlId: z.string(),
-        createdAt: z.date(),
-        updatedAt: z.date(),
-        rotateJwks: z.boolean(),
-      }),
-    ),
-  );
-
-const getProviderContract = contractBase
-  .route({
-    method: 'GET',
-    path: '/v1/providers/{id}',
-    successStatus: STATUS_CODES.OK,
-    summary: 'Get Provider',
-    tags: ['providers'],
-  })
-  .input(z.object({ id: z.string().describe('Provider ID') }))
-  .errors({
-    [ERRORS.PROVIDER_NOT_FOUND.code]: ERRORS.PROVIDER_NOT_FOUND,
-  })
-  .output(
-    z.object({
-      id: z.string(),
-      name: z.string(),
-      description: z.string(),
-      rotateJwks: z.boolean(),
-      urlId: z.string(),
-      createdAt: z.date(),
-      updatedAt: z.date(),
     }),
   );
 
@@ -341,6 +207,37 @@ const getClientContract = contractBase
       subject: z.string(),
       createdAt: z.date(),
       updatedAt: z.date(),
+    }),
+  );
+
+const createAccessTokenContract = contractBase
+  .route({
+    method: 'POST',
+    path: '/v1/providers/{providerId}/clients/{clientId}/tokens',
+    successStatus: STATUS_CODES.CREATED,
+    summary: 'Create Access Token',
+    tags: ['providers', 'clients', 'tokens'],
+  })
+  .input(
+    z.object({
+      providerId: z.string().describe('Provider ID'),
+      clientId: z.string().describe('Client ID'),
+      // payload
+      expiresIn: z.number().positive().max(MAX_EXPIRY).default(ONE_HOUR),
+      useJwtType: z.boolean().optional(),
+      audienceAsArray: z.boolean().optional(),
+      forceDefaultDomain: z.boolean().optional(),
+    }),
+  )
+  .errors({
+    [ERRORS.PROVIDER_NOT_FOUND.code]: ERRORS.PROVIDER_NOT_FOUND,
+    [ERRORS.CLIENT_NOT_FOUND.code]: ERRORS.CLIENT_NOT_FOUND,
+  })
+  .output(
+    z.strictObject({
+      accessToken: z.string(),
+      type: z.literal('Bearer'),
+      expiresAt: z.date(),
     }),
   );
 
@@ -431,6 +328,55 @@ const verifyDomainContract = contractBase
     }),
   );
 
+const addDomainContract = contractBase
+  .route({
+    method: 'POST',
+    path: '/v1/providers/{providerId}/domains',
+    successStatus: STATUS_CODES.CREATED,
+    summary: 'Add Domain to Provider',
+    tags: ['providers', 'domains'],
+  })
+  .input(
+    z.object({
+      providerId: z.string().describe('Provider ID'),
+      domain: domainSchema,
+    }),
+  )
+  .errors({
+    [ERRORS.MAX_DOMAINS_LIMIT_REACHED.code]: ERRORS.MAX_DOMAINS_LIMIT_REACHED,
+    [ERRORS.PROVIDER_NOT_FOUND.code]: ERRORS.PROVIDER_NOT_FOUND,
+    [ERRORS.DOMAIN_ALREADY_ADDED.code]: ERRORS.DOMAIN_ALREADY_ADDED,
+    [ERRORS.CUSTOM_DOMAINS_NOT_AVAILABLE.code]: ERRORS.CUSTOM_DOMAINS_NOT_AVAILABLE,
+  })
+  .output(
+    z.object({
+      id: z.string(),
+      domain: z.string(),
+      verified: z.boolean(),
+      createdAt: z.date(),
+      updatedAt: z.date(),
+    }),
+  );
+
+const deleteDomainContract = contractBase
+  .route({
+    method: 'DELETE',
+    path: '/v1/providers/{providerId}/domains/{domainId}',
+    successStatus: STATUS_CODES.NO_CONTENT,
+    summary: 'Delete Domain',
+    tags: ['providers', 'domains'],
+  })
+  .input(
+    z.object({
+      providerId: z.string().describe('Provider ID'),
+      domainId: z.string().describe('Domain ID'),
+    }),
+  )
+  .errors({
+    [ERRORS.PROVIDER_NOT_FOUND.code]: ERRORS.PROVIDER_NOT_FOUND,
+    [ERRORS.DOMAIN_NOT_FOUND.code]: ERRORS.DOMAIN_NOT_FOUND,
+  });
+
 const listTenantsContract = contractBase
   .route({
     method: 'GET',
@@ -473,6 +419,30 @@ const getTenantContract = contractBase
     }),
   );
 
+const createTenantContract = contractBase
+  .route({
+    method: 'POST',
+    path: '/v1/tenants',
+    successStatus: STATUS_CODES.CREATED,
+    summary: 'Create Tenant',
+    tags: ['tenants'],
+  })
+  .errors({
+    [ERRORS.TENANTS_NOT_AVAILABLE.code]: ERRORS.TENANTS_NOT_AVAILABLE,
+    [ERRORS.MAX_TENANTS_LIMIT_REACHED.code]: ERRORS.MAX_TENANTS_LIMIT_REACHED,
+    [ERRORS.TENANT_ALREADY_EXISTS.code]: ERRORS.TENANT_ALREADY_EXISTS,
+  })
+  .input(tenantSchema)
+  .output(
+    z.object({
+      id: z.string(),
+      name: z.string(),
+      description: z.string(),
+      createdAt: z.date(),
+      updatedAt: z.date(),
+    }),
+  );
+
 const deleteTenantContract = contractBase
   .route({
     method: 'DELETE',
@@ -486,13 +456,43 @@ const deleteTenantContract = contractBase
     [ERRORS.TENANT_NOT_FOUND.code]: ERRORS.TENANT_NOT_FOUND,
   });
 
+const createTenantProviderContract = contractBase
+  .route({
+    method: 'POST',
+    path: '/v1/tenants/{tenantId}/providers',
+    successStatus: STATUS_CODES.CREATED,
+    summary: 'Create Tenant Provider',
+    tags: ['tenants', 'tenantProviders'],
+  })
+  .input(
+    tenantProviderSchema.extend({
+      tenantId: z.string().describe('Tenant ID'),
+    }),
+  )
+  .errors({
+    [ERRORS.TENANT_NOT_FOUND.code]: ERRORS.TENANT_NOT_FOUND,
+    [ERRORS.MAX_TENANT_PROVIDERS_LIMIT_REACHED.code]: ERRORS.MAX_TENANT_PROVIDERS_LIMIT_REACHED,
+    [ERRORS.TENANT_PROVIDER_ALREADY_EXISTS.code]: ERRORS.TENANT_PROVIDER_ALREADY_EXISTS,
+  })
+  .output(
+    z.object({
+      id: z.string(),
+      url: z.string(),
+      audience: z.string(),
+      fingerprints: z.string().array(),
+      earliestIssuanceTimeAllowed: z.number(),
+      createdAt: z.date(),
+      updatedAt: z.date(),
+    }),
+  );
+
 const listTenantProvidersContract = contractBase
   .route({
     method: 'GET',
     path: '/v1/tenants/{tenantId}/providers',
     successStatus: STATUS_CODES.OK,
     summary: 'List Tenant Providers',
-    tags: ['tenants', 'providers'],
+    tags: ['tenants', 'tenantProviders'],
   })
   .input(z.object({ tenantId: z.string().describe('Tenant ID') }))
   .errors({
@@ -518,7 +518,7 @@ const getTenantProviderContract = contractBase
     path: '/v1/tenants/{tenantId}/providers/{tenantProviderId}',
     successStatus: STATUS_CODES.OK,
     summary: 'Get Tenant Provider',
-    tags: ['tenants', 'providers'],
+    tags: ['tenants', 'tenantProviders'],
   })
   .input(
     z.object({
@@ -548,7 +548,7 @@ const deleteTenantProviderContract = contractBase
     path: '/v1/tenants/{tenantId}/providers/{tenantProviderId}',
     successStatus: STATUS_CODES.NO_CONTENT,
     summary: 'Delete Tenant Provider',
-    tags: ['tenants', 'providers'],
+    tags: ['tenants', 'tenantProviders'],
   })
   .input(
     z.object({
@@ -567,7 +567,7 @@ const listTenantProviderPoliciesContract = contractBase
     path: '/v1/tenants/{tenantId}/providers/{tenantProviderId}/policies',
     successStatus: STATUS_CODES.OK,
     summary: 'List Tenant Provider Policies',
-    tags: ['tenants', 'providers', 'policies'],
+    tags: ['tenants', 'tenantProviders', 'policies'],
   })
   .input(
     z.object({
@@ -593,13 +593,45 @@ const listTenantProviderPoliciesContract = contractBase
     ),
   );
 
+const createTenantProviderPolicyContract = contractBase
+  .route({
+    method: 'POST',
+    path: '/v1/tenants/{tenantId}/providers/{tenantProviderId}/policies',
+    successStatus: STATUS_CODES.CREATED,
+    summary: 'Create Tenant Provider Policy',
+    tags: ['tenants', 'tenantProviders', 'policies'],
+  })
+  .input(
+    tenantProviderPolicySchema.extend({
+      tenantId: z.string().describe('Tenant ID'),
+      tenantProviderId: z.string().describe('Tenant Provider ID'),
+    }),
+  )
+  .errors({
+    [ERRORS.TENANT_NOT_FOUND.code]: ERRORS.TENANT_NOT_FOUND,
+    [ERRORS.TENANT_PROVIDER_NOT_FOUND.code]: ERRORS.TENANT_PROVIDER_NOT_FOUND,
+    [ERRORS.MAX_TENANT_PROVIDER_POLICIES_LIMIT_REACHED.code]: ERRORS.MAX_TENANT_PROVIDER_POLICIES_LIMIT_REACHED,
+    [ERRORS.TENANT_PROVIDER_POLICY_ALREADY_EXISTS.code]: ERRORS.TENANT_PROVIDER_POLICY_ALREADY_EXISTS,
+  })
+  .output(
+    z.object({
+      id: z.string(),
+      name: z.string(),
+      description: z.string(),
+      audience: z.string(),
+      conditions: z.array(conditionsSchema).optional().nullable(),
+      createdAt: z.date(),
+      updatedAt: z.date(),
+    }),
+  );
+
 const getTenantProviderPolicyContract = contractBase
   .route({
     method: 'GET',
     path: '/v1/tenants/{tenantId}/providers/{tenantProviderId}/policies/{policyId}',
     successStatus: STATUS_CODES.OK,
     summary: 'Get Tenant Provider Policy',
-    tags: ['tenants', 'providers', 'policies'],
+    tags: ['tenants', 'tenantProviders', 'policies'],
   })
   .input(
     z.object({
@@ -631,7 +663,7 @@ const deleteTenantProviderPolicyContract = contractBase
     path: '/v1/tenants/{tenantId}/providers/{tenantProviderId}/policies/{policyId}',
     successStatus: STATUS_CODES.NO_CONTENT,
     summary: 'Delete Tenant Provider Policy',
-    tags: ['tenants', 'providers', 'policies'],
+    tags: ['tenants', 'tenantProviders', 'policies'],
   })
   .input(
     z.object({
@@ -671,38 +703,6 @@ const validateTokenContract = contractBase
   .output(
     z.strictObject({
       exp: z.number().optional(),
-    }),
-  );
-
-const createTenantProviderPolicyContract = contractBase
-  .route({
-    method: 'POST',
-    path: '/v1/tenants/{tenantId}/providers/{tenantProviderId}/policies',
-    successStatus: STATUS_CODES.CREATED,
-    summary: 'Create Tenant Provider Policy',
-    tags: ['tenants', 'providers', 'policies'],
-  })
-  .input(
-    tenantProviderPolicySchema.extend({
-      tenantId: z.string().describe('Tenant ID'),
-      tenantProviderId: z.string().describe('Tenant Provider ID'),
-    }),
-  )
-  .errors({
-    [ERRORS.TENANT_NOT_FOUND.code]: ERRORS.TENANT_NOT_FOUND,
-    [ERRORS.TENANT_PROVIDER_NOT_FOUND.code]: ERRORS.TENANT_PROVIDER_NOT_FOUND,
-    [ERRORS.MAX_TENANT_PROVIDER_POLICIES_LIMIT_REACHED.code]: ERRORS.MAX_TENANT_PROVIDER_POLICIES_LIMIT_REACHED,
-    [ERRORS.TENANT_PROVIDER_POLICY_ALREADY_EXISTS.code]: ERRORS.TENANT_PROVIDER_POLICY_ALREADY_EXISTS,
-  })
-  .output(
-    z.object({
-      id: z.string(),
-      name: z.string(),
-      description: z.string(),
-      audience: z.string(),
-      conditions: z.array(conditionsSchema).optional().nullable(),
-      createdAt: z.date(),
-      updatedAt: z.date(),
     }),
   );
 
