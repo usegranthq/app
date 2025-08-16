@@ -113,7 +113,7 @@ const createClientContract = contractBase
     path: '/v1/providers/{providerId}/clients',
     successStatus: STATUS_CODES.CREATED,
     summary: 'Create Client',
-    tags: ['providers', 'clients'],
+    tags: ['providers/clients'],
   })
   .errors({
     [ERRORS.PROVIDER_NOT_FOUND.code]: ERRORS.PROVIDER_NOT_FOUND,
@@ -143,7 +143,7 @@ const deleteClientContract = contractBase
     path: '/v1/providers/{providerId}/clients/{clientId}',
     successStatus: STATUS_CODES.NO_CONTENT,
     summary: 'Delete Client',
-    tags: ['providers', 'clients'],
+    tags: ['providers/clients'],
   })
   .errors({
     [ERRORS.PROVIDER_NOT_FOUND.code]: ERRORS.PROVIDER_NOT_FOUND,
@@ -162,7 +162,7 @@ const listClientsContract = contractBase
     path: '/v1/providers/{providerId}/clients',
     successStatus: STATUS_CODES.OK,
     summary: 'List Clients',
-    tags: ['providers', 'clients'],
+    tags: ['providers/clients'],
   })
   .input(z.object({ providerId: z.string().describe('Provider ID') }))
   .errors({
@@ -187,7 +187,7 @@ const getClientContract = contractBase
     path: '/v1/providers/{providerId}/clients/{clientId}',
     successStatus: STATUS_CODES.OK,
     summary: 'Get Client',
-    tags: ['providers', 'clients'],
+    tags: ['providers/clients'],
   })
   .input(
     z.object({
@@ -216,7 +216,7 @@ const createAccessTokenContract = contractBase
     path: '/v1/providers/{providerId}/clients/{clientId}/tokens',
     successStatus: STATUS_CODES.CREATED,
     summary: 'Create Access Token',
-    tags: ['providers', 'clients', 'tokens'],
+    tags: ['providers/clients/tokens'],
   })
   .input(
     z.object({
@@ -247,7 +247,7 @@ const listDomainsContract = contractBase
     path: '/v1/providers/{providerId}/domains',
     successStatus: STATUS_CODES.OK,
     summary: 'List Domains',
-    tags: ['providers', 'domains'],
+    tags: ['providers/domains'],
   })
   .input(z.object({ providerId: z.string().describe('Provider ID') }))
   .errors({
@@ -271,7 +271,7 @@ const getDomainContract = contractBase
     path: '/v1/providers/{providerId}/domains/{domainId}',
     successStatus: STATUS_CODES.OK,
     summary: 'Get Domain',
-    tags: ['providers', 'domains'],
+    tags: ['providers/domains'],
   })
   .input(
     z.object({
@@ -299,7 +299,7 @@ const verifyDomainContract = contractBase
     path: '/v1/providers/{providerId}/domains/{domainId}/verify',
     successStatus: STATUS_CODES.OK,
     summary: 'Verify Domain',
-    tags: ['providers', 'domains'],
+    tags: ['providers/domains'],
   })
   .input(
     z.object({
@@ -334,7 +334,7 @@ const addDomainContract = contractBase
     path: '/v1/providers/{providerId}/domains',
     successStatus: STATUS_CODES.CREATED,
     summary: 'Add Domain to Provider',
-    tags: ['providers', 'domains'],
+    tags: ['providers/domains'],
   })
   .input(
     z.object({
@@ -364,7 +364,7 @@ const deleteDomainContract = contractBase
     path: '/v1/providers/{providerId}/domains/{domainId}',
     successStatus: STATUS_CODES.NO_CONTENT,
     summary: 'Delete Domain',
-    tags: ['providers', 'domains'],
+    tags: ['providers/domains'],
   })
   .input(
     z.object({
@@ -462,7 +462,7 @@ const createTenantProviderContract = contractBase
     path: '/v1/tenants/{tenantId}/providers',
     successStatus: STATUS_CODES.CREATED,
     summary: 'Create Tenant Provider',
-    tags: ['tenants', 'tenantProviders'],
+    tags: ['tenants/providers'],
   })
   .input(
     tenantProviderSchema.extend({
@@ -492,7 +492,7 @@ const listTenantProvidersContract = contractBase
     path: '/v1/tenants/{tenantId}/providers',
     successStatus: STATUS_CODES.OK,
     summary: 'List Tenant Providers',
-    tags: ['tenants', 'tenantProviders'],
+    tags: ['tenants/providers'],
   })
   .input(z.object({ tenantId: z.string().describe('Tenant ID') }))
   .errors({
@@ -518,7 +518,7 @@ const getTenantProviderContract = contractBase
     path: '/v1/tenants/{tenantId}/providers/{tenantProviderId}',
     successStatus: STATUS_CODES.OK,
     summary: 'Get Tenant Provider',
-    tags: ['tenants', 'tenantProviders'],
+    tags: ['tenants/providers'],
   })
   .input(
     z.object({
@@ -548,7 +548,7 @@ const deleteTenantProviderContract = contractBase
     path: '/v1/tenants/{tenantId}/providers/{tenantProviderId}',
     successStatus: STATUS_CODES.NO_CONTENT,
     summary: 'Delete Tenant Provider',
-    tags: ['tenants', 'tenantProviders'],
+    tags: ['tenants/providers'],
   })
   .input(
     z.object({
@@ -567,7 +567,7 @@ const listTenantProviderPoliciesContract = contractBase
     path: '/v1/tenants/{tenantId}/providers/{tenantProviderId}/policies',
     successStatus: STATUS_CODES.OK,
     summary: 'List Tenant Provider Policies',
-    tags: ['tenants', 'tenantProviders', 'policies'],
+    tags: ['tenants/providers/policies'],
   })
   .input(
     z.object({
@@ -599,7 +599,7 @@ const createTenantProviderPolicyContract = contractBase
     path: '/v1/tenants/{tenantId}/providers/{tenantProviderId}/policies',
     successStatus: STATUS_CODES.CREATED,
     summary: 'Create Tenant Provider Policy',
-    tags: ['tenants', 'tenantProviders', 'policies'],
+    tags: ['tenants/providers/policies'],
   })
   .input(
     tenantProviderPolicySchema.extend({
@@ -631,7 +631,7 @@ const getTenantProviderPolicyContract = contractBase
     path: '/v1/tenants/{tenantId}/providers/{tenantProviderId}/policies/{policyId}',
     successStatus: STATUS_CODES.OK,
     summary: 'Get Tenant Provider Policy',
-    tags: ['tenants', 'tenantProviders', 'policies'],
+    tags: ['tenants/providers/policies'],
   })
   .input(
     z.object({
@@ -663,7 +663,7 @@ const deleteTenantProviderPolicyContract = contractBase
     path: '/v1/tenants/{tenantId}/providers/{tenantProviderId}/policies/{policyId}',
     successStatus: STATUS_CODES.NO_CONTENT,
     summary: 'Delete Tenant Provider Policy',
-    tags: ['tenants', 'tenantProviders', 'policies'],
+    tags: ['tenants/providers/policies'],
   })
   .input(
     z.object({
@@ -684,7 +684,7 @@ const validateTokenContract = contractBase
     path: '/v1/tenants/{tenantId}/validate',
     successStatus: STATUS_CODES.OK,
     summary: 'Validate Token',
-    tags: ['tenants', 'tokens'],
+    tags: ['tenants/tokens'],
   })
   .input(
     z.object({
