@@ -133,4 +133,7 @@ export const auth = betterAuth({
       clientSecret: env.OAUTH_GOOGLE_APP_CLIENT_SECRET,
     },
   },
+  telemetry: {
+    enabled: false,
+  },
 });
