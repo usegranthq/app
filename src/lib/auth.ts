@@ -35,6 +35,7 @@ export const auth = betterAuth({
       enabled: true,
       allowDifferentEmails: false,
     },
+    updateAccountOnSignIn: true,
   },
   emailVerification: {
     autoSignInAfterVerification: false,
@@ -43,7 +44,6 @@ export const auth = betterAuth({
       await sendEmailVerification({ ...data, email: data.user.email });
     },
   },
-
   user: {
     changeEmail: {
       enabled: true,
