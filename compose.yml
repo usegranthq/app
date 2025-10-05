@@ -3,9 +3,9 @@ services:
     container_name: postgres
     image: postgres:17
     environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
-      POSTGRES_DB: grant_hq
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
     ports:
       - 5432:5432
     volumes:
@@ -28,7 +28,7 @@ services:
       - ./docker/migrate.sh:/app/migrate.sh:ro
     command: sh /app/migrate.sh
     environment:
-      DATABASE_URL: postgres://postgres:postgres@postgres:5432/grant_hq
+      DATABASE_URL: ${DATABASE_URL}
     depends_on:
       postgres:
         condition: service_healthy
@@ -38,7 +38,7 @@ services:
     image: ${DOCKER_REPOSITORY}:${IMAGE_TAG:-latest}
     env_file: .env
     environment:
-      DATABASE_URL: postgres://postgres:postgres@postgres:5432/grant_hq
+      DATABASE_URL: ${DATABASE_URL}
     ports:
       - 3000:3000
     depends_on:

@@ -45,7 +45,7 @@ jobs:
             DOCKER_REPOSITORY=${{ secrets.DOCKER_REPOSITORY }}
             IMAGE_TAG=${{ github.sha }}
             DATABASE_URL=postgres://postgres:postgres@postgres:5432/grant_hq
-            SITE_URL=${{ vars.SITE_URL }}
+            SITE_URL=${{ secrets.SITE_URL }}
             INVITE_TOKEN=${{ secrets.INVITE_TOKEN }}
             JWT_SIGNING_SECRET=${{ secrets.JWT_SIGNING_SECRET }}
             TURNSTILE_SITE_KEY=${{ secrets.TURNSTILE_SITE_KEY }}
@@ -55,9 +55,9 @@ jobs:
             OAUTH_GOOGLE_APP_CLIENT_ID=${{ secrets.OAUTH_GOOGLE_APP_CLIENT_ID }}
             OAUTH_GOOGLE_APP_CLIENT_SECRET=${{ secrets.OAUTH_GOOGLE_APP_CLIENT_SECRET }}
             BETTER_AUTH_SECRET=${{ secrets.BETTER_AUTH_SECRET }}
-            PROVIDER_DOMAIN=${{ vars.PROVIDER_DOMAIN }}
-            NODEMAILER_SMTP_URL=${{ vars.NODEMAILER_SMTP_URL }}
-            EMAIL_FROM=${{ vars.EMAIL_FROM }}
+            PROVIDER_DOMAIN=${{ secrets.PROVIDER_DOMAIN }}
+            NODEMAILER_SMTP_URL=${{ secrets.NODEMAILER_SMTP_URL }}
+            EMAIL_FROM=${{ secrets.EMAIL_FROM }}
             RESEND_API_KEY=${{ secrets.RESEND_API_KEY }}
             CLOUDFLARE_API_TOKEN=${{ secrets.CLOUDFLARE_API_TOKEN }}
             CLOUDFLARE_ZONE_ID=${{ secrets.CLOUDFLARE_ZONE_ID }}
