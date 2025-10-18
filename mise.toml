@@ -1,0 +1,39 @@
+[tools]
+act = "latest"
+node = "22"
+"npm:smee-client" = "latest"
+
+[env]
+_.file = ".env"
+
+[tasks.setup]
+run = [
+  "mise install",
+  "npm install"
+]
+
+[tasks.db]
+run = "npm run db"
+
+[tasks.dev]
+run = "npm run dev"
+
+[tasks.build]
+run = "npm run build"
+
+[tasks.studio]
+run = "npm run studio"
+
+[tasks.lint]
+run = "npm run lint"
+
+[tasks.format]
+run = "npm run format"
+
+[tasks.check]
+run = [
+  { tasks = ["lint", "format"] }
+]
+
+[tasks."shadcn:update"]
+run = "sh ./scripts/shadcn-update.sh"

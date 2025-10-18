@@ -4,17 +4,30 @@
 
 ## Prerequisites
 
+- [mise](https://mise.jdx.dev)
 - [Node.js](https://nodejs.org/en)
-- [Docker](https://www.docker.com/products/docker-desktop/)
+- [Docker](https://www.docker.com/products/docker-desktop)
 
 ## Getting Started
 
-First, copy the `.env.example` file to `.env.development` and set the correct values:
+Install mise
+
+```bash
+brew install mise
+```
+
+Run the setup
+
+```bash
+mise run setup
+```
+
+Then, copy the `.env.example` file to `.env.development` and set the correct values:
 
 Then, start the db server:
 
 ```bash
-npm run db
+mise run db
 ```
 
 this will run a
@@ -24,7 +37,7 @@ Also copy the connection urls provided to the `.env.development` file.
 and then start the app:
 
 ```bash
-npm run dev
+mise run dev
 ```
 
 Open [http://localhost:7500](http://localhost:7500) in your browser to see the result. If you have
@@ -42,12 +55,7 @@ To learn more about Next.js, take a look at the following resources:
 To test webhooks locally, you can use [smee.io](https://smee.io) to forward webhook events from
 external services to your local development server.
 
-Install and start smee client globally if you haven't already:
-
 ```bash
-# install
-npm install -g smee-client
-
 # run smee client
 smee -u https://smee.io/YOUR_CHANNEL_ID --target http://localhost:7500/api/webhooks/polar
 ```
