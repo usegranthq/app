@@ -1,7 +1,7 @@
 [tools]
 node = "22"
-act = "latest"
 "npm:smee-client" = "latest"
+"aqua:nektos/act" = "latest"
 
 [env]
 _.file = ".env"
