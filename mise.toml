@@ -1,6 +1,6 @@
 [tools]
-act = "latest"
 node = "22"
+act = "latest"
 "npm:smee-client" = "latest"
 
 [env]
@@ -37,6 +37,9 @@ run = "npm run format"
 run = [
   { tasks = ["lint", "format"] }
 ]
+
+[tasks."e2e:sdk"]
+run = "sh ./e2e/run.sh"
 
 [tasks."shadcn:update"]
 run = "sh ./scripts/shadcn-update.sh"
