@@ -21,6 +21,9 @@ run = "npm run dev"
 [tasks.build]
 run = "npm run build"
 
+[tasks.start]
+run = "sh ./start.sh"
+
 [tasks.studio]
 run = "npm run studio"
 
