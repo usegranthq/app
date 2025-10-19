@@ -1,0 +1,37 @@
+[setup]
+run = [
+  "mise install",
+  "npm install"
+]
+
+[db]
+run = "npm run db"
+
+[dev]
+run = "npm run dev"
+
+[build]
+run = "npm run build"
+
+[start]
+run = "sh ./start.sh"
+
+[studio]
+run = "npm run studio"
+
+[lint]
+run = "npm run lint"
+
+[format]
+run = "npm run format"
+
+[check]
+run = [
+  { tasks = ["lint", "format"] }
+]
+
+["e2e:sdk"]
+run = "sh ./e2e/run.sh"
+
+["shadcn:update"]
+run = "sh ./scripts/shadcn-update.sh"
