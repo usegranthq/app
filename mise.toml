@@ -11,4 +11,4 @@ node = "22"
 _.file = ".env"
 
 [task_config]
-includes = ["tasks.toml"]
+includes = ["mise.tasks.toml"]
