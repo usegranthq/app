@@ -1,4 +1,4 @@
-import { z } from 'zod/v4';
+import z from 'zod';
 
 import { getApiErrorMessage } from '@/utils/error';
 import { getPlanByUserId } from '@/lib/billing';

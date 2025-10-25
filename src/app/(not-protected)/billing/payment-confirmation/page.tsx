@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { CheckCircle2Icon } from 'lucide-react';
-import { z } from 'zod/v4';
+import z from 'zod';
 
 import { Button } from '@/shadcn/components/ui/button';
 

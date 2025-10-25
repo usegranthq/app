@@ -1,7 +1,7 @@
 import { OpenAPIHandler } from '@orpc/openapi/fetch';
 import { onError, ORPCError, ValidationError } from '@orpc/server';
 import { CORSPlugin } from '@orpc/server/plugins';
-import { z } from 'zod/v4';
+import z from 'zod';
 
 import procedures from './procedures';
 import rpcRouter from './rpc';
