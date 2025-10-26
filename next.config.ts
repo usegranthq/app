@@ -7,6 +7,7 @@ const docsUrl = process.env.NODE_ENV === 'development' ? 'http://localhost:3500'
 const nextConfig: NextConfig = {
   reactStrictMode: true,
   poweredByHeader: false,
+  reactCompiler: true,
   output: 'standalone',
   async rewrites() {
     return {

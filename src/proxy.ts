@@ -1,4 +1,4 @@
-import type { MiddlewareConfig, NextRequest } from 'next/server';
+import type { NextRequest, ProxyConfig } from 'next/server';
 import { NextResponse } from 'next/server';
 import { getSessionCookie } from 'better-auth/cookies';
 
@@ -93,7 +93,7 @@ const handleDefaultRoute = (request: NextRequest) => {
   return authRoutes.includes(request.nextUrl.pathname) ? redirectToUserPage(request) : next(request);
 };
 
-export async function middleware(request: NextRequest) {
+export async function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
   const inviteEnabled = await inviteFlag();
 
@@ -110,6 +110,6 @@ export async function middleware(request: NextRequest) {
   return handleDefaultRoute(request);
 }
 
-export const config: MiddlewareConfig = {
+export const config: ProxyConfig = {
   matcher: ['/((?!api|_next/static|_next/image|favicon.ico|.*\\.png$).*)'],
 };
