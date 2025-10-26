@@ -5,6 +5,7 @@ import { WebhookSubscriptionUncanceledPayload } from '@polar-sh/sdk/models/compo
 import { WebhookSubscriptionUpdatedPayload } from '@polar-sh/sdk/models/components/webhooksubscriptionupdatedpayload';
 
 import db from '@/lib/db';
+import logger from '@/lib/log';
 
 export class ProcessWebhook {
   async updateSubscriptionData(
@@ -19,13 +20,13 @@ export class ProcessWebhook {
     const polarCustomer = polarSubscription.customer;
 
     if (!polarCustomer.externalId) {
-      console.error('Failed to process subscription data. External ID not found in polar customer records.');
+      logger.error('Failed to process subscription data. External ID not found in polar customer records.');
       return;
     }
 
     const user = await db.user.findFirst({ where: { id: polarCustomer.externalId } });
     if (!user) {
-      console.error('Failed to process subscription data. User not found');
+      logger.error('Failed to process subscription data. User not found');
       return;
     }
 
@@ -55,7 +56,7 @@ export class ProcessWebhook {
         },
       });
     } catch (error) {
-      console.error('Failed to process subscription data', error);
+      logger.error(error, 'Failed to process subscription data');
     }
   }
 }

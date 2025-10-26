@@ -1,34 +1,75 @@
+import { diag, DiagConsoleLogger, DiagLogLevel } from '@opentelemetry/api';
+import { OTLPLogExporter } from '@opentelemetry/exporter-logs-otlp-http';
 import { OTLPTraceExporter } from '@opentelemetry/exporter-trace-otlp-http';
-import { resourceFromAttributes } from '@opentelemetry/resources';
-import { NodeTracerProvider, SimpleSpanProcessor } from '@opentelemetry/sdk-trace-node';
+import { PinoInstrumentation } from '@opentelemetry/instrumentation-pino';
+import { logs, NodeSDK, resources, tracing } from '@opentelemetry/sdk-node';
 import { ATTR_SERVICE_NAME } from '@opentelemetry/semantic-conventions';
 
 import env from './env';
 
-export function register() {
-  const provider = new NodeTracerProvider({
-    resource: resourceFromAttributes(
-      {
-        [ATTR_SERVICE_NAME]: 'usegrant-app',
-      },
-      {
-        // Use the latest schema version
-        // Info: https://opentelemetry.io/docs/specs/semconv/
-        schemaUrl: 'https://opentelemetry.io/schemas/1.37.0',
-      },
-    ),
-    spanProcessors: [
-      new SimpleSpanProcessor(
-        new OTLPTraceExporter({
-          url: `https://api.axiom.co/v1/traces`,
-          headers: {
-            Authorization: `Bearer ${env.AXIOM_API_TOKEN}`,
-            'X-Axiom-Dataset': env.AXIOM_OTEL_DATASET,
-          },
-        }),
-      ),
-    ],
-  });
+const resource = resources.resourceFromAttributes(
+  {
+    [ATTR_SERVICE_NAME]: 'usegrant-app',
+  },
+  {
+    // Use the latest schema version
+    // Info: https://opentelemetry.io/docs/specs/semconv/
+    schemaUrl: 'https://opentelemetry.io/schemas/1.37.0',
+  },
+);
 
-  provider.register();
+const traceExporter = new OTLPTraceExporter({
+  url: `https://api.axiom.co/v1/traces`,
+  headers: {
+    Authorization: `Bearer ${env.AXIOM_API_TOKEN}`,
+    'X-Axiom-Dataset': env.AXIOM_OTEL_DATASET,
+  },
+});
+
+const logExporter = new OTLPLogExporter({
+  url: `https://api.axiom.co/v1/logs`,
+  headers: {
+    Authorization: `Bearer ${env.AXIOM_API_TOKEN}`,
+    'X-Axiom-Dataset': env.AXIOM_OTEL_DATASET,
+  },
+});
+
+if (process.env.ENABLE_OTEL_LOGS === 'true') diag.setLogger(new DiagConsoleLogger(), DiagLogLevel.DEBUG);
+
+const sdk = new NodeSDK({
+  // Registering the resource to the SDK
+  resource: resource,
+
+  // batch and send traces
+  spanProcessors: [
+    new tracing.BatchSpanProcessor(traceExporter),
+    // print logs to console
+    // new tracing.SimpleSpanProcessor(new tracing.ConsoleSpanExporter()), // for dev
+  ],
+
+  // send logs
+  logRecordProcessors: [new logs.BatchLogRecordProcessor(logExporter)],
+
+  // instrumentations to patch pino
+  instrumentations: [
+    new PinoInstrumentation({
+      enabled: true,
+    }),
+  ],
+});
+
+export function register() {
+  sdk.start();
+
+  if (process.env.NEXT_RUNTIME === 'nodejs') {
+    process.on('SIGTERM', () =>
+      sdk
+        .shutdown()
+        .then(
+          () => console.log('OTEL SDK shut down successfully'),
+          (err) => console.log('Error shutting down OTEL SDK', err),
+        )
+        .finally(() => process.exit(0)),
+    );
+  }
 }

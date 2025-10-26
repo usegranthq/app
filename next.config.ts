@@ -9,6 +9,7 @@ const nextConfig: NextConfig = {
   poweredByHeader: false,
   reactCompiler: true,
   output: 'standalone',
+  serverExternalPackages: ['pino'],
   async rewrites() {
     return {
       beforeFiles: [

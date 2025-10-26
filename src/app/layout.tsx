@@ -6,7 +6,6 @@ import fonts from './fonts';
 import './globals.css';
 
 import env from '@/env';
-import { register } from '@/instrumentation';
 
 export const metadata: Metadata = {
   metadataBase: new URL(env.SITE_URL),
@@ -24,7 +23,6 @@ export const metadata: Metadata = {
 };
 
 const fontClasses = fonts.join(' ');
-register();
 
 export default function RootLayout({ children }: Readonly<PropsWithChildren>) {
   return (

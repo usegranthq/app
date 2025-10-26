@@ -6,6 +6,7 @@ import { generateJwk } from '@/utils/jwk';
 import { validateBearerToken } from '@/utils/rest';
 import { getPlanByUserId } from '@/lib/billing';
 import db from '@/lib/db';
+import logger from '@/lib/log';
 import env from '@/env';
 
 const processCron = async () => {
@@ -88,7 +89,7 @@ const processCron = async () => {
       });
     }
   } catch (error) {
-    console.error('Error processing cron', error);
+    logger.error(error, 'Error processing cron');
   }
 };
 
