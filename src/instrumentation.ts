@@ -1,8 +1,7 @@
-import { diag, DiagConsoleLogger, DiagLogLevel } from '@opentelemetry/api';
 import { OTLPLogExporter } from '@opentelemetry/exporter-logs-otlp-http';
 import { OTLPTraceExporter } from '@opentelemetry/exporter-trace-otlp-http';
 import { PinoInstrumentation } from '@opentelemetry/instrumentation-pino';
-import { logs, NodeSDK, resources, tracing } from '@opentelemetry/sdk-node';
+import { api, logs, NodeSDK, resources, tracing } from '@opentelemetry/sdk-node';
 import { ATTR_SERVICE_NAME } from '@opentelemetry/semantic-conventions';
 
 import env from './env';
@@ -34,7 +33,9 @@ const logExporter = new OTLPLogExporter({
   },
 });
 
-if (process.env.ENABLE_OTEL_LOGS === 'true') diag.setLogger(new DiagConsoleLogger(), DiagLogLevel.DEBUG);
+if (process.env.ENABLE_OTEL_LOGS === 'true') {
+  api.diag.setLogger(new api.DiagConsoleLogger(), api.DiagLogLevel.DEBUG);
+}
 
 const sdk = new NodeSDK({
   // Registering the resource to the SDK
