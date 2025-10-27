@@ -1,4 +1,4 @@
-import { ReactElement } from 'react';
+import { ReactNode } from 'react';
 import { render } from '@react-email/components';
 import nodemailer from 'nodemailer';
 import { Resend } from 'resend';
@@ -11,7 +11,7 @@ import VerifyEmail from '@/templates/VerifyEmail';
 interface SendEmailParams {
   to: string;
   subject: string;
-  template: ReactElement<unknown>;
+  template: ReactNode;
 }
 
 export const sendEmail = async (data: SendEmailParams) => {
@@ -62,7 +62,7 @@ export const sendLoginEmail = async (data: SendLoginEmailParams) => {
   await sendEmail({
     to: data.email,
     subject: 'Login to UseGrant',
-    template: <LoginEmail token={data.token} url={data.url} />,
+    template: LoginEmail({ token: data.token, url: data.url }),
   });
 };
 
@@ -70,7 +70,7 @@ export const sendEmailVerification = async (data: SendEmailVerificationParams) =
   await sendEmail({
     to: data.email,
     subject: 'Verify your email address',
-    template: <VerifyEmail token={data.token} url={data.url} />,
+    template: VerifyEmail({ token: data.token, url: data.url }),
   });
 };
 
@@ -78,6 +78,6 @@ export const sendChangeEmailVerification = async (data: SendChangeEmailVerificat
   await sendEmail({
     to: data.email,
     subject: 'Verify your email address',
-    template: <ChangeEmailVerification token={data.token} url={data.url} newEmail={data.newEmail} />,
+    template: ChangeEmailVerification({ token: data.token, url: data.url, newEmail: data.newEmail }),
   });
 };
