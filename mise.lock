@@ -16,6 +16,10 @@ checksum = "sha256:dbc1a17024a32827adb23b5b11ce98cefcd783145a30fe41bb2845be711e9
 size = 49897281
 url = "https://nodejs.org/dist/v22.21.0/node-v22.21.0-darwin-arm64.tar.gz"
 
+[[tools."npm:knip"]]
+version = "5.66.3"
+backend = "npm:knip"
+
 [[tools."npm:smee-client"]]
 version = "4.4.1"
 backend = "npm:smee-client"

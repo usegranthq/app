@@ -6,7 +6,7 @@ import customDomain from '@/lib/domain';
 import { authRpcRouter } from '../rpc';
 import { domainFields } from './utils/return-fields';
 
-export const addDomain = authRpcRouter.providers.domains.add.handler(async ({ context, input, errors }) => {
+const addDomain = authRpcRouter.providers.domains.add.handler(async ({ context, input, errors }) => {
   const plan = await getPlanByUserId(context.userId);
 
   if (!plan.features.customDomain.available) {

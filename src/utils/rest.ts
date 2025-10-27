@@ -3,34 +3,9 @@ export const validateBearerToken = (request: Request, secret?: string) => {
   return authHeader === `Bearer ${secret}`;
 };
 
-export const hasBearerToken = (request: Request) => {
-  const authHeader = request.headers.get('authorization');
-  return authHeader?.startsWith('Bearer ');
-};
-
 export const getBearerToken = (headers: Headers): string | null => {
   const authHeader = headers.get('authorization');
   return authHeader?.split(' ')[1] ?? null;
-};
-
-export const unauthorizedResponse = (message = 'Unauthorized') => {
-  return new Response(message, { status: 401 });
-};
-
-export const forbiddenResponse = (message = 'Forbidden') => {
-  return new Response(message, { status: 403 });
-};
-
-export const rateLimitedResponse = (message = 'Rate limited', retryAfter?: string | null) => {
-  const headers = new Headers();
-  if (retryAfter) {
-    headers.set('Retry-After', retryAfter);
-  }
-
-  return new Response(message, {
-    status: 429,
-    headers,
-  });
 };
 
 // Ref: https://github.com/Bekacru/better-call/blob/660c2e48c5c68a63309523d386c925028f27463f/src/error.ts

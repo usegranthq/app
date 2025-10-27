@@ -19,7 +19,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 
 import { Tenant, TenantProvider } from '@/types/app.types';
 
-import { ROUTES } from '@/constants/routes';
+import ROUTES from '@/constants/routes';
 import { withoutProtocol } from '@/utils/url';
 import PaginationControls from '@/components/PaginationControls';
 

@@ -6,7 +6,7 @@ interface LoginEmailProps {
   url: string;
 }
 
-export const VerifyEmail = ({ url }: LoginEmailProps) => (
+const VerifyEmail = ({ url }: LoginEmailProps) => (
   <Html>
     <Head />
     <Preview>Verify your email address</Preview>

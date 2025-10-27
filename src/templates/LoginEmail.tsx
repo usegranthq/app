@@ -6,7 +6,7 @@ interface LoginEmailProps {
   url: string;
 }
 
-export const LoginEmail = ({ token, url }: LoginEmailProps) => (
+const LoginEmail = ({ token, url }: LoginEmailProps) => (
   <Html>
     <Head />
     <Preview>Log in with this magic link</Preview>

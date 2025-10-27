@@ -6,6 +6,7 @@ lockfile = true
 node = "22"
 "npm:smee-client" = "latest"
 "aqua:nektos/act" = "latest"
+"npm:knip" = "latest"
 
 [env]
 _.file = ".env"

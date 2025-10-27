@@ -9,7 +9,7 @@ import { Session } from '@/types/app.types';
 
 import SessionOptions from './SessionOptions';
 
-export const columns: ColumnDef<Session>[] = [
+const columns: ColumnDef<Session>[] = [
   {
     header: 'IP Address',
     cell: ({ row }) => {

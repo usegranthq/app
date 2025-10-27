@@ -2,7 +2,7 @@
 
 import { useEffect } from 'react';
 
-import { ROUTES } from '@/constants/routes';
+import ROUTES from '@/constants/routes';
 import Spinner from '@/components/Spinner';
 
 // just redirects to dashboard assuming the user is logged in

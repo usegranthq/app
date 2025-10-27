@@ -1,4 +1,4 @@
-import { ColorPicker } from '@/components/ColorPicker';
+import ColorPicker from '@/components/ColorPicker';
 import { ThemeSwitcher } from '@/components/ThemeSwitcher';
 
 import PlanBadge from './PlanBadge';

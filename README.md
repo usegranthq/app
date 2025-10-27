@@ -66,3 +66,11 @@ Replace `YOUR_CHANNEL_ID` with your actual Smee channel ID.
 
 This project is automatically deployed to a VPS on Hetzner on every push to the `master` branch.
 Refer the [github actions](./.github/workflows/deploy.yml) for more details.
+
+## Others
+
+To find unused items in the codebase, run [knip](https://knip.dev)
+
+```bash
+knip
+```

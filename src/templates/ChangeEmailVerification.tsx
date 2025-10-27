@@ -7,7 +7,7 @@ interface LoginEmailProps {
   newEmail: string;
 }
 
-export const ChangeEmailVerification = ({ url, newEmail }: LoginEmailProps) => (
+const ChangeEmailVerification = ({ url, newEmail }: LoginEmailProps) => (
   <Html>
     <Head />
     <Preview>Verify your email address</Preview>
@@ -16,7 +16,7 @@ export const ChangeEmailVerification = ({ url, newEmail }: LoginEmailProps) => (
         <Heading style={h1}>Verify email change request</Heading>
         <Text style={text}>
           You have requested to change your email address to{' '}
-          <CodeInline className="rounded-[6px] bg-gray-300 px-[4px] py-[2px]">{newEmail}</CodeInline>. address.
+          <CodeInline className="rounded-[6px] bg-gray-300 px-1 py-0.5">{newEmail}</CodeInline>. address.
         </Text>
         <Link
           href={url}

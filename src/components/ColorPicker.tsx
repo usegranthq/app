@@ -48,7 +48,7 @@ const colors: ColorPickerItem[] = [
   { type: 'color', label: 'Cosmic Night', value: 'cosmic-night' },
 ];
 
-export default function ColorPickerDropdown() {
+function ColorPickerDropdown() {
   const { setColor } = useColor();
 
   return (
@@ -76,7 +76,7 @@ export default function ColorPickerDropdown() {
   );
 }
 
-export function ColorPicker({ className }: ColorPickerProps) {
+export default function ColorPicker({ className }: ColorPickerProps) {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>

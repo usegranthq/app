@@ -20,10 +20,6 @@ export const createRequest = (path: string, requestInit: ModifiedRequestInit = {
   return request;
 };
 
-export const objToRequestBody = (obj: unknown): string => {
-  return JSON.stringify(obj);
-};
-
 const authorizedRequest = (path: string, requestInit: ModifiedRequestInit = {}) => {
   mockAuth.api.verifyApiKey.mockResolvedValue({
     valid: true,

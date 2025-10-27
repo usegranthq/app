@@ -5,7 +5,7 @@ import db from '@/lib/db';
 import { authRpcRouter } from '../rpc';
 import { clientFields } from './utils/return-fields';
 
-export const createClient = authRpcRouter.providers.clients.create.handler(async ({ context, input, errors }) => {
+const createClient = authRpcRouter.providers.clients.create.handler(async ({ context, input, errors }) => {
   const { name, audience } = input;
 
   // Check if provider exists

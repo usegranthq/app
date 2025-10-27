@@ -12,7 +12,7 @@ import { isNullOrUndefined } from '@/utils/validators';
 
 import ApiKeyOptions from './ApiKeyOptions';
 
-export const columns: ColumnDef<ApiKey>[] = [
+const columns: ColumnDef<ApiKey>[] = [
   {
     header: 'Name',
     cell: ({ row }) => {

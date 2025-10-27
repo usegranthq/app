@@ -14,7 +14,7 @@ interface SendEmailParams {
   template: ReactNode;
 }
 
-export const sendEmail = async (data: SendEmailParams) => {
+const sendEmail = async (data: SendEmailParams) => {
   if (process.env.NODE_ENV === 'development') {
     const transporter = nodemailer.createTransport(env.NODEMAILER_SMTP_URL);
     const emailHtml = await render(data.template);

@@ -7,7 +7,7 @@ import { WebhookSubscriptionUpdatedPayload } from '@polar-sh/sdk/models/componen
 import db from '@/lib/db';
 import logger from '@/lib/log';
 
-export class ProcessWebhook {
+class ProcessWebhook {
   async updateSubscriptionData(
     payload:
       | WebhookSubscriptionActivePayload

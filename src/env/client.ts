@@ -1,9 +1,9 @@
 import { createEnv } from '@t3-oss/env-nextjs';
 
-const env = createEnv({
+const clientEnv = createEnv({
   client: {},
   runtimeEnv: {},
   emptyStringAsUndefined: true,
 });
 
-export default env;
+export default clientEnv;
