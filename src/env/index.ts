@@ -27,8 +27,9 @@ const env = createEnv({
     POLAR_PRO_PLAN_PRODUCT_ID: z.string(),
     POLAR_ULTIMATE_PLAN_PRODUCT_ID: z.string(),
     STATE_HMAC_SECRET_KEY: z.string(),
-    AXIOM_API_TOKEN: z.string(),
-    AXIOM_OTEL_DATASET: z.string(),
+    OTEL_DOMAIN: z.string(),
+    OTEL_API_TOKEN: z.string(),
+    OTEL_AXIOM_DATASET: z.string(),
   },
   runtimeEnv: {
     DATABASE_URL: process.env.DATABASE_URL,
@@ -55,8 +56,9 @@ const env = createEnv({
     POLAR_PRO_PLAN_PRODUCT_ID: process.env.POLAR_PRO_PLAN_PRODUCT_ID,
     POLAR_ULTIMATE_PLAN_PRODUCT_ID: process.env.POLAR_ULTIMATE_PLAN_PRODUCT_ID,
     STATE_HMAC_SECRET_KEY: process.env.STATE_HMAC_SECRET_KEY,
-    AXIOM_API_TOKEN: process.env.AXIOM_API_TOKEN,
-    AXIOM_OTEL_DATASET: process.env.AXIOM_OTEL_DATASET,
+    OTEL_DOMAIN: process.env.OTEL_DOMAIN,
+    OTEL_API_TOKEN: process.env.OTEL_API_TOKEN,
+    OTEL_AXIOM_DATASET: process.env.OTEL_AXIOM_DATASET,
   },
   emptyStringAsUndefined: true,
 });

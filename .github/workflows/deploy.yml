@@ -71,8 +71,9 @@ jobs:
             POLAR_WEBHOOK_SECRET=${{ secrets.POLAR_WEBHOOK_SECRET }}
             POLAR_PRO_PLAN_PRODUCT_ID=${{ secrets.POLAR_PRO_PLAN_PRODUCT_ID }}
             POLAR_ULTIMATE_PLAN_PRODUCT_ID=${{ secrets.POLAR_ULTIMATE_PLAN_PRODUCT_ID }}
-            AXIOM_OTEL_DATASET=${{ secrets.AXIOM_OTEL_DATASET }}
-            AXIOM_API_TOKEN=${{ secrets.AXIOM_API_TOKEN }}
+            OTEL_DOMAIN=${{ secrets.OTEL_DOMAIN }}
+            OTEL_API_TOKEN=${{ secrets.OTEL_API_TOKEN }}
+            OTEL_AXIOM_DATASET=${{ secrets.OTEL_AXIOM_DATASET }}
 
       - name: Configure SSH
         run: |

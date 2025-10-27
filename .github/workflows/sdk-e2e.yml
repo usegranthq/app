@@ -71,8 +71,9 @@ jobs:
             POLAR_WEBHOOK_SECRET=xxx
             POLAR_PRO_PLAN_PRODUCT_ID=xxx
             POLAR_ULTIMATE_PLAN_PRODUCT_ID=xxx
-            AXIOM_OTEL_DATASET=xxx
-            AXIOM_API_TOKEN=xxx
+            OTEL_DOMAIN=xxx
+            OTEL_API_TOKEN=xxx
+            OTEL_AXIOM_DATASET=xxx
 
       - name: Install dependencies
         run: npm ci

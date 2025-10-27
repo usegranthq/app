@@ -19,18 +19,18 @@ const resource = resources.resourceFromAttributes(
 );
 
 const traceExporter = new OTLPTraceExporter({
-  url: `https://api.axiom.co/v1/traces`,
+  url: `https://${env.OTEL_DOMAIN}/v1/traces`,
   headers: {
-    Authorization: `Bearer ${env.AXIOM_API_TOKEN}`,
-    'X-Axiom-Dataset': env.AXIOM_OTEL_DATASET,
+    Authorization: `Bearer ${env.OTEL_API_TOKEN}`,
+    'X-Axiom-Dataset': env.OTEL_AXIOM_DATASET,
   },
 });
 
 const logExporter = new OTLPLogExporter({
-  url: `https://api.axiom.co/v1/logs`,
+  url: `https:/${env.OTEL_DOMAIN}/v1/logs`,
   headers: {
-    Authorization: `Bearer ${env.AXIOM_API_TOKEN}`,
-    'X-Axiom-Dataset': env.AXIOM_OTEL_DATASET,
+    Authorization: `Bearer ${env.OTEL_API_TOKEN}`,
+    'X-Axiom-Dataset': env.OTEL_AXIOM_DATASET,
   },
 });
 
