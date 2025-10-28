@@ -1,4 +1,5 @@
 import { PrismaPg } from '@prisma/adapter-pg';
+import { defaultKeyHasher } from 'better-auth/plugins';
 import { nanoid } from 'nanoid';
 
 import { PrismaClient } from '@/prisma/client';
@@ -26,17 +27,16 @@ async function seed() {
       updatedAt: new Date(),
     },
   });
+  const key = 'uga_40731d7e2bdfba119869463612b0c606a98ae0d72ca13820e757081a1d08b6c8';
+  const hashedKey = await defaultKeyHasher(key); // -> PIthMM33rWnogdZE2JIXkVCLmSBCUTTi0aw3rZ0ARuE
 
-  console.log('✅ Created user:', user.email);
-
-  // full api key for the encoded value: uga_bmmjfrPamjosBnOvpKIMsYOmdYRWqkgaNdLDxEktbJFDizQAcpkFTAAxYVMFJUnU
   const apiKey = await prisma.apikey.create({
     data: {
       id: nanoid(),
       name: 'Test API Key',
-      start: 'uga_bm',
+      start: 'uga_40',
       prefix: 'uga_',
-      key: '4dKUP1rd4HadiIZ4rcCrMbEA4v9r_iQ40_89n-swRG0', // encoded
+      key: hashedKey,
       userId: user.id,
       enabled: true,
       createdAt: new Date(),
@@ -44,6 +44,7 @@ async function seed() {
       permissions: JSON.stringify({
         sdk: ['read', 'write'],
       }),
+      expiresAt: null,
     },
   });
 

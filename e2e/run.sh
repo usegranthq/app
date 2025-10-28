@@ -6,17 +6,30 @@ set -euo pipefail
 # Start a new process group and make this script the leader
 # so all child processes belong to the same group
 # $$ is the PID of the current script process
-trap 'echo "Cleaning up..."; kill -- -$$' EXIT
+cleanup() {
+  echo "- performing cleanup..."
+  # check and stop any existing container
+  if [ "$(docker ps -q -f name=uge2epg)" ]; then
+    docker stop uge2epg
+  fi
+
+  # kill rest of the process group
+  kill -- -$$
+
+  echo "- cleanup completed!"
+}
+
+trap cleanup EXIT
 
  # run docker if not in CI
 if [ "${CI:-}" != "true" ]; then
   # check and stop any existing container
   if [ "$(docker ps -q -f name=uge2epg)" ]; then
     docker stop uge2epg
-    docker rm uge2epg
   fi
 
-  docker run --name uge2epg \
+  echo "- starting postgres docker container..."
+  docker run --rm --name uge2epg \
     -e POSTGRES_USER=postgres \
     -e POSTGRES_PASSWORD=postgres \
     -e POSTGRES_DB=ugdb \
@@ -27,8 +40,13 @@ if [ "${CI:-}" != "true" ]; then
   # wait for postgres to be ready
   sleep 5
 
-  npm run dev &
+  npx next dev &
 fi
+
+# wait for the server to be ready
+echo "- waiting for the dev server to be ready..."
+npx -y wait-on http://localhost:3000/health
+echo "- dev server is up"
 
 # check if the DATABASE_URL is set
 if [ -z "${DATABASE_URL:-}" ]; then
@@ -50,5 +68,4 @@ npm run sdk:e2e
 # stop the docker container if not in CI
 if [ "${CI:-}" != "true" ]; then
   docker stop uge2epg
-  docker rm uge2epg
 fi
