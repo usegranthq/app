@@ -9,7 +9,8 @@ const nextConfig: NextConfig = {
   poweredByHeader: false,
   reactCompiler: true,
   output: 'standalone',
-  serverExternalPackages: ['pino'],
+  // @todo: remove winston, when opentelemetry logs are out of experimental
+  serverExternalPackages: ['winston'],
   async rewrites() {
     return {
       beforeFiles: [

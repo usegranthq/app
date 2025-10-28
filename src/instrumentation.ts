@@ -1,6 +1,6 @@
 import { OTLPLogExporter } from '@opentelemetry/exporter-logs-otlp-http';
 import { OTLPTraceExporter } from '@opentelemetry/exporter-trace-otlp-http';
-import { PinoInstrumentation } from '@opentelemetry/instrumentation-pino';
+import { WinstonInstrumentation } from '@opentelemetry/instrumentation-winston';
 import { api, logs, NodeSDK, resources, tracing } from '@opentelemetry/sdk-node';
 import { ATTR_SERVICE_NAME } from '@opentelemetry/semantic-conventions';
 
@@ -53,7 +53,7 @@ const sdk = new NodeSDK({
 
   // instrumentations to patch pino
   instrumentations: [
-    new PinoInstrumentation({
+    new WinstonInstrumentation({
       enabled: true,
     }),
   ],

@@ -1,12 +1,11 @@
-import pino from 'pino';
+import winston from 'winston';
 
-const logger = pino({
-  transport: {
-    target: 'pino-pretty',
+const logger = winston.createLogger({
+  defaultMeta: {
+    service: 'ug.app',
   },
-  base: {
-    service: 'ug.logger',
-  },
+  format: winston.format.combine(winston.format.timestamp(), winston.format.prettyPrint()),
+  transports: [new winston.transports.Console()],
 });
 
 export default logger;

@@ -56,7 +56,7 @@ class ProcessWebhook {
         },
       });
     } catch (error) {
-      logger.error(error, 'Failed to process subscription data');
+      logger.error('Failed to process subscription data', error);
     }
   }
 }

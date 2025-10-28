@@ -89,7 +89,7 @@ const processCron = async () => {
       });
     }
   } catch (error) {
-    logger.error(error, 'Error processing cron');
+    logger.error('Error processing cron', error);
   }
 };
 
