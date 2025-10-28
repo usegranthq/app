@@ -1,7 +1,7 @@
 import z from 'zod';
 
 const DEFAULT_SAFE_REGEX = [
-  /^[a-z\d\-_\s]+$/,
+  /^[A-Za-z\d\-_\s]+$/,
   'Invalid characters. Please Use only alphabets, numbers, hyphens, underscores, and spaces.',
 ] as const;
 
