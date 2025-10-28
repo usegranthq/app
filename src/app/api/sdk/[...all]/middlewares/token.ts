@@ -6,7 +6,7 @@ type VerifyApiRateLimitedError = {
 };
 
 type VerifyApiKeyNotFoundError = {
-  code: 'KEY_NOT_FOUND';
+  code: 'INVALID_API_KEY';
 };
 
 type VerifyApiKeyResult = [VerifyApiRateLimitedError | VerifyApiKeyNotFoundError, null] | [null, string];
@@ -31,7 +31,7 @@ export default async function verifyApiKey(key: string): Promise<VerifyApiKeyRes
 
   if (!result.valid || !result.key) {
     const error: VerifyApiKeyNotFoundError = {
-      code: 'KEY_NOT_FOUND',
+      code: 'INVALID_API_KEY',
     };
     return [error, null];
   }
