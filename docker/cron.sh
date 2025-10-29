@@ -1,4 +1,6 @@
-set -ex
+#!/bin/sh
+
+set -e
 
 echo "Starting cron script..."
 
