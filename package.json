@@ -65,7 +65,7 @@
     "lucide-react": "^0.548.0",
     "motion": "^12.23.24",
     "nanoid": "^5.1.6",
-    "next": "16.0.0",
+    "next": "16.0.1",
     "next-themes": "^0.4.6",
     "nodemailer": "^7.0.10",
     "nuqs": "^2.7.2",
@@ -91,7 +91,7 @@
     "@ianvs/prettier-plugin-sort-imports": "^4.7.0",
     "@orangeopensource/hurl": "^7.0.0",
     "@tailwindcss/postcss": "^4.1.16",
-    "@types/node": "^22.18.12",
+    "@types/node": "^22.18.13",
     "@types/nodemailer": "^7.0.3",
     "@types/react": "19.2.2",
     "@types/react-dom": "19.2.2",
@@ -113,7 +113,7 @@
   },
   "overrides": {
     "@polar-sh/nextjs": {
-      "next": "16.0.0"
+      "next": "16.0.1"
     }
   }
 }
