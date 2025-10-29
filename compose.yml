@@ -56,13 +56,13 @@ services:
     working_dir: /app
     volumes:
       - ./docker/cron.sh:/app/cron.sh:ro
-    command: ['/bin/sh', '/app/cron.sh']
+    command: sh /app/cron.sh
     environment:
       - CRON_SECRET=${CRON_SECRET}
       - CRON_URL=http://app:3000/api/cron
     depends_on:
       - app
-    restart: always
+    restart: unless-stopped
 
 volumes:
   postgres_data:
