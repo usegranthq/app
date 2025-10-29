@@ -1,3 +1,7 @@
+set -ex
+
+echo "Starting cron script..."
+
 # check if CRON_SECRET is set
 if [ -z "${CRON_SECRET}" ]; then
   echo "CRON_SECRET is not set. Please set it before running this script."
