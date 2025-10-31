@@ -4,9 +4,6 @@ run = [
   "npm install"
 ]
 
-[db]
-run = "npm run db"
-
 [dev]
 run = "npm run dev"
 
@@ -15,6 +12,9 @@ run = "npm run build"
 
 [start]
 run = "sh ./start.sh"
+
+[db]
+run = "npm run db"
 
 [studio]
 run = "npm run studio"
