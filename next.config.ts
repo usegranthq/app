@@ -75,7 +75,6 @@ const nextConfig: NextConfig = {
           { key: 'X-Content-Type-Options', value: 'nosniff' },
           { key: 'X-XSS-Protection', value: '1; mode=block' },
           { key: 'Referrer-Policy', value: 'no-referrer' },
-          // reference for other headers: https://vercel.com/docs/edge-network/headers/response-headers
         ],
       },
     ];
