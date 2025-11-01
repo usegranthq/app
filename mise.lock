@@ -8,13 +8,13 @@ size = 7523767
 url = "https://github.com/nektos/act/releases/download/v0.2.82/act_Darwin_arm64.tar.gz"
 
 [[tools.node]]
-version = "22.21.1"
+version = "24.11.0"
 backend = "core:node"
 
 [tools.node.platforms.macos-arm64]
-checksum = "sha256:c170d6554fba83d41d25a76cdbad85487c077e51fa73519e41ac885aa429d8af"
-size = 49924179
-url = "https://nodejs.org/dist/v22.21.1/node-v22.21.1-darwin-arm64.tar.gz"
+checksum = "sha256:0be2ab2816a4fa02d1acff014a434f29f56d8d956f5af6a98b70ced6c5f4d201"
+size = 51168984
+url = "https://nodejs.org/dist/v24.11.0/node-v24.11.0-darwin-arm64.tar.gz"
 
 [[tools."npm:knip"]]
 version = "5.66.4"
