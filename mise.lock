@@ -17,7 +17,7 @@ size = 51168984
 url = "https://nodejs.org/dist/v24.11.0/node-v24.11.0-darwin-arm64.tar.gz"
 
 [[tools."npm:knip"]]
-version = "5.66.4"
+version = "5.68.0"
 backend = "npm:knip"
 
 [[tools."npm:smee-client"]]
