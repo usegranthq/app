@@ -5,7 +5,7 @@ import { usePathname } from 'next/navigation';
 
 import { cn } from '@/shadcn/lib/utils';
 
-type NavLinkProps = LinkProps & {
+type NavLinkProps = LinkProps<string> & {
   className?: string;
   children: React.ReactNode;
   activeClassName?: string;

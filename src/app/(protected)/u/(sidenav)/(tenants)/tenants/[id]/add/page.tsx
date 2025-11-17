@@ -2,11 +2,7 @@ import { KeySquareIcon } from 'lucide-react';
 
 import AddProviderForm from './AddProviderForm';
 
-interface AddIdpProps {
-  params: Promise<{ id: string }>;
-}
-
-export default async function AddIdp({ params }: AddIdpProps) {
+export default async function AddIdp({ params }: PageProps<'/u/tenants/[id]/add'>) {
   const { id } = await params;
 
   return (

@@ -1,5 +1,3 @@
-import Link from 'next/link';
-
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/shadcn/components/ui/card';
 
 import { getSigningKeys } from '@/data/providers';
@@ -31,9 +29,9 @@ export default async function SigningKeys({ provider }: SigningKeysProps) {
       <CardContent>
         <div className="mb-8">
           Your JWKS endpoint:{' '}
-          <Link href={jwksUrl} target="_blank" className="text-sm underline underline-offset-2">
+          <a href={jwksUrl} target="_blank" className="text-sm underline underline-offset-2">
             {jwksUrl}
-          </Link>
+          </a>
         </div>
 
         <KeysList provider={provider} signingKeys={signingKeys} plan={plan} />

@@ -18,7 +18,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 
 import { TenantProvider, TenantProviderPolicy } from '@/types/app.types';
 
-import ROUTES from '@/constants/routes';
+import ROUTES, { DYNAMIC_ROUTES } from '@/constants/routes';
 import { withoutProtocol } from '@/utils/url';
 import PaginationControls from '@/components/PaginationControls';
 
@@ -95,7 +95,7 @@ export default function TenantProviderPolicies({
               </BreadcrumbItem>
               <BreadcrumbSeparator />
               <BreadcrumbItem>
-                <BreadcrumbLink href={ROUTES.TENANTS_ID(id)}>Providers</BreadcrumbLink>
+                <BreadcrumbLink href={DYNAMIC_ROUTES.TENANTS_ID(id)}>Providers</BreadcrumbLink>
               </BreadcrumbItem>
               <BreadcrumbSeparator />
               <BreadcrumbItem>
@@ -108,7 +108,7 @@ export default function TenantProviderPolicies({
           </h1>
         </div>
         <Button asChild className="ml-auto">
-          <Link href={`/u/tenants/${id}/providers/${tenantProvider.id}/add`}>Add new policy</Link>
+          <Link href={DYNAMIC_ROUTES.TENANTS_ID_PROVIDERS_ID_ADD(id, tenantProvider.id)}>Add new policy</Link>
         </Button>
       </div>
       <div className="mt-10 rounded-md border">

@@ -1,7 +1,6 @@
 'use server';
 
-import { revalidatePath } from 'next/cache';
-import { redirect } from 'next/navigation';
+import { refresh } from 'next/cache';
 
 import ROUTES from '@/constants/routes';
 import { PlanId, PLANS } from '@/utils/billing';
@@ -14,7 +13,7 @@ import { verifySession } from '@/data/_verifySession';
 import { getCustomer, getSubscription } from '@/data/user';
 import env from '@/env';
 
-export const checkout = async (planId: PlanId): ActionResponse => {
+export const checkout = async (planId: PlanId): ActionResponse<string> => {
   const session = await verifySession();
 
   if (planId === 'free') {
@@ -54,7 +53,7 @@ export const checkout = async (planId: PlanId): ActionResponse => {
   }
 
   // redirect to checkout session
-  redirect(sessionURL);
+  return [null, sessionURL];
 };
 
 export const upgradePlan = async (planId: PlanId): ActionResponse => {
@@ -99,7 +98,7 @@ export const upgradePlan = async (planId: PlanId): ActionResponse => {
     return [errorMessage, null];
   }
 
-  revalidatePath(ROUTES.SETTINGS_BILLING);
+  refresh();
   return [null, null];
 };
 

@@ -1,9 +1,8 @@
 'use server';
 
-import { revalidatePath } from 'next/cache';
+import { refresh } from 'next/cache';
 import { headers } from 'next/headers';
 
-import ROUTES from '@/constants/routes';
 import { getApiErrorMessage, getZodErrorMessage } from '@/utils/error';
 import { auth } from '@/lib/auth';
 import db from '@/lib/db';
@@ -54,7 +53,7 @@ export async function createApiKey(formData: FormData): ActionResponse<string> {
       },
       headers: await headers(),
     });
-    revalidatePath(ROUTES.SETTINGS_APIKEYS);
+    refresh();
     return [null, token.key];
   } catch (error) {
     const errorMessage = getApiErrorMessage(error, 'Failed to create token. Try again.');
@@ -77,6 +76,6 @@ export async function deleteApiKey(id: string): ActionResponse {
     return [errorMessage, null];
   }
 
-  revalidatePath(ROUTES.SETTINGS_APIKEYS);
+  refresh();
   return [null, null];
 }

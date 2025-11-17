@@ -1,6 +1,6 @@
 'use server';
 
-import { revalidatePath } from 'next/cache';
+import { refresh } from 'next/cache';
 import { redirect } from 'next/navigation';
 import { JWK } from 'jose';
 import z from 'zod';
@@ -57,7 +57,7 @@ export async function createProvider(data: ProviderFormValues): ActionResponse<P
       },
     });
 
-    revalidatePath(ROUTES.PROVIDERS, 'layout');
+    refresh();
     return [null, provider];
   } catch (error) {
     const errorMessage = getApiErrorMessage(error, 'Failed to create provider');
@@ -79,7 +79,7 @@ export async function updateProvider(providerId: string, data: ProviderFormValue
       where: { id: providerId, userId: user.id },
       data: validation.data,
     });
-    revalidatePath(ROUTES.PROVIDERS, 'layout');
+    refresh();
     return [null, null];
   } catch (error) {
     const errorMessage = getApiErrorMessage(error, 'Failed to update provider');
@@ -106,7 +106,7 @@ export async function deleteProvider(providerId: string): ActionResponse {
 
     await db.provider.delete({ where: { id: providerId, userId: user.id } });
 
-    revalidatePath(ROUTES.PROVIDERS, 'layout');
+    refresh();
   } catch (error) {
     const errorMessage = getApiErrorMessage(error, 'Failed to delete provider');
     return [errorMessage, null];
@@ -145,7 +145,7 @@ export async function createClient(providerId: string, data: ClientFormValues): 
         providerId,
       },
     });
-    revalidatePath(ROUTES.PROVIDERS_ID(providerId), 'layout');
+    refresh();
     return [null, null];
   } catch (error) {
     const errorMessage = getApiErrorMessage(error, 'Failed to create client');
@@ -164,7 +164,7 @@ export async function deleteClient(providerId: string, clientId: string): Action
         Provider: { userId: user.id },
       },
     });
-    revalidatePath(ROUTES.PROVIDERS_ID(providerId), 'layout');
+    refresh();
     return [null, null];
   } catch (error) {
     const errorMessage = getApiErrorMessage(error, 'Failed to delete client');
@@ -242,7 +242,7 @@ export async function generateAccessToken(
 
   try {
     const token = await createJwt(claims, signingKey, jwtOptions);
-    revalidatePath(ROUTES.PROVIDERS_ID(providerId));
+    refresh();
     return [null, token];
   } catch (error) {
     const errorMessage = getApiErrorMessage(error, 'Failed to generate client token');
@@ -296,7 +296,7 @@ export async function requestSigningKey(providerId: string): ActionResponse<stri
       },
     });
 
-    revalidatePath(ROUTES.PROVIDERS_ID_ADVANCED(providerId));
+    refresh();
     return [null, key.id];
   } catch (error) {
     const errorMessage = getApiErrorMessage(error, 'Failed to generate new key');
@@ -334,7 +334,7 @@ export async function removeKey(providerId: string, id: string): ActionResponse 
 
   try {
     await db.jwks.delete({ where: { id, providerId, Provider: { userId: user.id } } });
-    revalidatePath(ROUTES.PROVIDERS_ID_ADVANCED(providerId));
+    refresh();
     return [null, null];
   } catch (error) {
     const errorMessage = getApiErrorMessage(error, 'Failed to remove key');
@@ -354,7 +354,7 @@ export async function toggleRotateJwks(providerId: string, rotateJwks: boolean):
       where: { id: providerId, userId: user.id },
       data: { rotateJwks },
     });
-    revalidatePath(ROUTES.PROVIDERS_ID_ADVANCED(providerId));
+    refresh();
     return [null, null];
   } catch (error) {
     const errorMessage = getApiErrorMessage(error, 'Failed to toggle rotate JWKS');

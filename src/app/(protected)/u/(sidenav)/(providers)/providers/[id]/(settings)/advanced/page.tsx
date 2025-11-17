@@ -4,14 +4,8 @@ import { getProvider } from '@/data/providers';
 
 import SigningKeys from './SigningKeys';
 
-interface AdvancedPageProps {
-  params: Promise<{
-    id: string;
-  }>;
-}
-
-export default async function AdvancedPage({ params }: AdvancedPageProps) {
-  const { id } = await params;
+export default async function AdvancedPage(props: PageProps<'/u/providers/[id]'>) {
+  const { id } = await props.params;
   const provider = await getProvider(id);
 
   if (!provider) {

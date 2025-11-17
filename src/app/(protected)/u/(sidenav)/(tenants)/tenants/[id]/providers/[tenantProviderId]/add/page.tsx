@@ -5,11 +5,7 @@ import { getTenantProvider } from '@/data/tenants';
 
 import AddPolicyForm from './AddPolicyForm';
 
-interface AddIdpProps {
-  params: Promise<{ id: string; tenantProviderId: string }>;
-}
-
-export default async function AddIdp({ params }: AddIdpProps) {
+export default async function AddIdp({ params }: PageProps<'/u/tenants/[id]/providers/[tenantProviderId]/add'>) {
   const { id, tenantProviderId } = await params;
 
   const tenantProvider = await getTenantProvider(id, tenantProviderId);

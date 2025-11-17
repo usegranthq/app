@@ -18,12 +18,7 @@ import * as providersDal from '@/data/providers';
 import ClientsList from './ClientsList';
 import NoClients from './NoClients';
 
-interface ProviderPageProps {
-  params: Params<{ id: string }>;
-  searchParams: SearchParams<PaginationProps>;
-}
-
-export default async function ProviderPage(props: ProviderPageProps) {
+export default async function ProviderPage(props: PageProps<'/u/providers/[id]'>) {
   const { id } = await props.params;
   const queryParams = await props.searchParams;
 

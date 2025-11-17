@@ -1,3 +1,4 @@
+import { Route } from 'next';
 import Link from 'next/link';
 import { BookOpenIcon, ChevronRight, Code2Icon, Settings2Icon, UsersIcon, type LucideIcon } from 'lucide-react';
 
@@ -25,7 +26,7 @@ interface NavItem {
   isActive?: boolean;
   items?: SubItem[];
   defaultOpen?: boolean;
-  path?: string;
+  path?: Route | string;
 }
 
 interface NavGroup {
@@ -125,8 +126,8 @@ const items: NavGroup[] = [
   },
 ];
 
-const getPath = (path: string, providerId: string): string => {
-  return path.startsWith('/') ? path : `/u/providers/${providerId}/${path}`;
+const getPath = (path: string, providerId: string): Route => {
+  return (path.startsWith('/') ? path : `/u/providers/${providerId}/${path}`) as Route;
 };
 
 export default function ProviderNav({ providerId }: { providerId: string }) {
@@ -164,15 +165,19 @@ export default function ProviderNav({ providerId }: { providerId: string }) {
                       <SidebarMenuSub>
                         {item.items?.map((subItem) => {
                           const path = getPath(subItem.path, providerId);
-                          const LinkComponent = subItem.external ? 'a' : Link;
-                          const target = subItem.external ? '_blank' : undefined;
 
                           return (
                             <SidebarMenuSubItem key={subItem.title}>
                               <SidebarMenuSubButton asChild>
-                                <LinkComponent href={path} target={target}>
-                                  <span>{subItem.title}</span>
-                                </LinkComponent>
+                                {subItem.external ? (
+                                  <a href={path} target="_blank">
+                                    <span>{subItem.title}</span>
+                                  </a>
+                                ) : (
+                                  <Link href={path as Route}>
+                                    <span>{subItem.title}</span>
+                                  </Link>
+                                )}
                               </SidebarMenuSubButton>
                             </SidebarMenuSubItem>
                           );

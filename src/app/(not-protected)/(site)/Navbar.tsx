@@ -1,9 +1,16 @@
+import { Route } from 'next';
 import Link from 'next/link';
 
 import LogoWordMark from '@/components/icons/logo-wordmark';
 import { ThemeSwitcher } from '@/components/ThemeSwitcher';
 
-const navItems = [
+type NavItem = {
+  label: string;
+  href: Route;
+  external?: boolean;
+};
+
+const navItems: NavItem[] = [
   { label: 'home', href: '/' },
   { label: 'pricing', href: '/#pricing' },
   { label: 'docs', href: '/docs', external: true },

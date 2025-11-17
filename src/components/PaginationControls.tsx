@@ -1,6 +1,7 @@
 'use client';
 
 import { MouseEvent, useCallback, useEffect } from 'react';
+import { Route } from 'next';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 
 import {
@@ -128,7 +129,7 @@ export default function PaginationControls({ pagination, className }: Pagination
     (page: number) => {
       const params = new URLSearchParams(searchParams.toString());
       params.set('page', page.toString());
-      router.push(pathname + '?' + params);
+      router.push((pathname + '?' + params) as Route);
     },
     [router, pathname, searchParams],
   );

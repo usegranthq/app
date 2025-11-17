@@ -24,10 +24,13 @@ export default function PlanButton({ id, features, currentPlan }: PlanButtonProp
   const handleCheckout = (planId: PlanId) => {
     startTransition(async () => {
       progress.start();
-      const [errorMessage] = await checkout(planId);
+      const [errorMessage, sessionURL] = await checkout(planId);
       if (errorMessage) {
         toast.error(errorMessage);
+        return;
       }
+
+      window.location.href = sessionURL!;
     });
   };
 

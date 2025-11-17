@@ -1,5 +1,3 @@
-import Link from 'next/link';
-
 import { Provider } from '@/types/app.types';
 
 import { withoutProtocol } from '@/utils/url';
@@ -15,12 +13,12 @@ export default async function ProviderDomain({ provider }: ProviderDomainProps) 
   const domain = getProviderDomain(provider, domains);
 
   return (
-    <Link
+    <a
       href={getWellKnownOpenIdConfigUrl(domain)}
       target="_blank"
       className="z-10 text-sm underline-offset-2 hover:underline"
     >
       {withoutProtocol(domain)}
-    </Link>
+    </a>
   );
 }

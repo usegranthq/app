@@ -6,7 +6,7 @@ import z from 'zod';
 
 import { Tenant } from '@/types/app.types';
 
-import ROUTES from '@/constants/routes';
+import ROUTES, { DYNAMIC_ROUTES } from '@/constants/routes';
 import { getIssuerCertifcate } from '@/utils/ca';
 import { getApiErrorMessage, getZodErrorMessage } from '@/utils/error';
 import { isValidUrl } from '@/utils/url';
@@ -225,8 +225,8 @@ export async function createTenantProviderPolicy(
     return [getApiErrorMessage(error, 'Failed to create policy'), null];
   }
 
-  revalidatePath(ROUTES.TENANTS_ID_PROVIDERS_ID(tenantId, tenantProviderId));
-  redirect(ROUTES.TENANTS_ID_PROVIDERS_ID(tenantId, tenantProviderId));
+  revalidatePath(DYNAMIC_ROUTES.TENANTS_ID_PROVIDERS_ID(tenantId, tenantProviderId));
+  redirect(DYNAMIC_ROUTES.TENANTS_ID_PROVIDERS_ID(tenantId, tenantProviderId));
 }
 
 export async function deleteTenantProviderPolicy(
@@ -251,6 +251,6 @@ export async function deleteTenantProviderPolicy(
     return [getApiErrorMessage(error, 'Failed to delete policy'), null];
   }
 
-  revalidatePath(ROUTES.TENANTS_ID_PROVIDERS_ID(tenantId, tenantProviderId));
-  redirect(ROUTES.TENANTS_ID_PROVIDERS_ID(tenantId, tenantProviderId));
+  revalidatePath(DYNAMIC_ROUTES.TENANTS_ID_PROVIDERS_ID(tenantId, tenantProviderId));
+  redirect(DYNAMIC_ROUTES.TENANTS_ID_PROVIDERS_ID(tenantId, tenantProviderId));
 }

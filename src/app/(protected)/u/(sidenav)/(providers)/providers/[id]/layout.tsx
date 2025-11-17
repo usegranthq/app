@@ -7,12 +7,7 @@ import { ProviderProvider } from './_blocks/ProviderContext';
 import ProviderNav from './_blocks/ProviderNav';
 import ProviderSwitcher from './_blocks/ProviderSwitcher';
 
-interface UserLayoutProps {
-  children: React.ReactNode;
-  params: Promise<{ id: string }>;
-}
-
-export default async function UserLayout(props: UserLayoutProps) {
+export default async function UserLayout(props: LayoutProps<'/u/providers/[id]'>) {
   const { id } = await props.params;
   const { children } = props;
 

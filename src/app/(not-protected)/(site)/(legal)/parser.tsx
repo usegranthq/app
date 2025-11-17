@@ -1,5 +1,6 @@
 import fs from 'node:fs/promises';
 import React, { ReactNode } from 'react';
+import { Route } from 'next';
 import Link from 'next/link';
 import Markdoc, { Config, Node } from '@markdoc/markdoc';
 
@@ -66,9 +67,18 @@ const components: Components = {
   },
   Heading: Heading,
   Link: ({ href, children }) => {
-    const target = href.startsWith('http') ? '_blank' : undefined;
+    const isExternal = !href.startsWith('/');
+
+    if (isExternal) {
+      return (
+        <a href={href} target="_blank" className="underline underline-offset-2">
+          {children}
+        </a>
+      );
+    }
+
     return (
-      <Link href={href} target={target} className="underline underline-offset-2">
+      <Link href={href as Route} className="underline underline-offset-2">
         {children}
       </Link>
     );

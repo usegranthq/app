@@ -9,11 +9,7 @@ import CaDetails from './CaDetails';
 import DomainDetails from './DomainDetails';
 import CustomDomains from './Domains';
 
-interface DomainPageProps {
-  params: Promise<{ id: string }>;
-}
-
-export default async function DomainPage(props: DomainPageProps) {
+export default async function DomainPage(props: PageProps<'/u/providers/[id]/domain'>) {
   const { id } = await props.params;
   const providerPromise = getProvider(id);
   const domainsPromise = getDomains(id);

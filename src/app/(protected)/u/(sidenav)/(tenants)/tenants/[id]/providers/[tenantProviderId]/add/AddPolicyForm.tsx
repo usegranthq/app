@@ -12,7 +12,7 @@ import { Label } from '@/shadcn/components/ui/label';
 
 import { TenantProvider } from '@/types/app.types';
 
-import ROUTES from '@/constants/routes';
+import { DYNAMIC_ROUTES } from '@/constants/routes';
 import { createTenantProviderPolicy } from '@/actions';
 import HookForm from '@/components/HookForm';
 import { useProgressBar } from '@/components/NavProgress';
@@ -60,7 +60,7 @@ export default function AddPolicyForm({ tenantId, tenantProvider }: AddPolicyFor
       }
 
       toast.success(`Tenant provider created successfully`);
-      router.push(ROUTES.TENANTS_ID_PROVIDERS_ID(tenantId, tenantProvider.id));
+      router.push(DYNAMIC_ROUTES.TENANTS_ID_PROVIDERS_ID(tenantId, tenantProvider.id));
     });
   };
 

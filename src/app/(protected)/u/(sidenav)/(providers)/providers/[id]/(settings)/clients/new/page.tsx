@@ -2,11 +2,7 @@ import { UserRoundPlusIcon } from 'lucide-react';
 
 import CreateClientForm from './CreateClientForm';
 
-interface NewClientPageProps {
-  params: Promise<{ id: string }>;
-}
-
-export default async function NewClientPage(props: NewClientPageProps) {
+export default async function NewClientPage(props: PageProps<'/u/providers/[id]/clients/new'>) {
   const { id } = await props.params;
 
   return (

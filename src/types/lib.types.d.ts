@@ -12,11 +12,6 @@ type Params<T extends Record<string, unknown>> = Promise<T>;
 
 type DefaultPropsType = Record<string, unknown>;
 
-type PageProps<T extends DefaultPropsType, P extends DefaultPropsType, S extends DefaultPropsType> = {
-  params: Params<P>;
-  searchParams: SearchParams<S>;
-} & T;
-
 type PaginationProps = Partial<{ page: string; limit: string }>;
 
 type Pagination = {

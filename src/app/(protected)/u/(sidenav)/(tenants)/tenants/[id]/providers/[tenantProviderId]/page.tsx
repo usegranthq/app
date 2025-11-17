@@ -6,12 +6,10 @@ import { getTenant, getTenantProvider, getTenantProviderPolicies } from '@/data/
 import NoPolicies from './NoPolicies';
 import TenantProviderPolicies from './TenantProviderPolicies';
 
-interface TenantPageProps {
-  params: Params<{ id: string; tenantProviderId: string }>;
-  searchParams: SearchParams<PaginationProps>;
-}
-
-export default async function TenantPage({ params, searchParams }: TenantPageProps) {
+export default async function TenantPage({
+  params,
+  searchParams,
+}: PageProps<'/u/tenants/[id]/providers/[tenantProviderId]'>) {
   const { id, tenantProviderId } = await params;
   const queryParams = await searchParams;
 

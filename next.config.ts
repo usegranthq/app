@@ -9,6 +9,7 @@ const nextConfig: NextConfig = {
   poweredByHeader: false,
   reactCompiler: true,
   output: 'standalone',
+  typedRoutes: true,
   // @todo: remove winston, when opentelemetry logs are out of experimental
   serverExternalPackages: ['winston'],
   async rewrites() {

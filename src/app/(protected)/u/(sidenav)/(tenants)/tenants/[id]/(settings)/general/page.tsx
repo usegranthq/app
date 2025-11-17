@@ -5,11 +5,7 @@ import { getTenant } from '@/data/tenants';
 import DeleteTenant from './DeleteTenant';
 import TenantDetails from './TenantDetails';
 
-interface GeneralPageProps {
-  params: Params<{ id: string }>;
-}
-
-export default async function GeneralPage(props: GeneralPageProps) {
+export default async function GeneralPage(props: PageProps<'/u/tenants/[id]/general'>) {
   const { id } = await props.params;
 
   const tenant = await getTenant(id);

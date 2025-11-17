@@ -3,7 +3,7 @@ import { KanbanIcon } from 'lucide-react';
 
 import { Button } from '@/shadcn/components/ui/button';
 
-import ROUTES from '@/constants/routes';
+import { DYNAMIC_ROUTES } from '@/constants/routes';
 
 interface NoPoliciesProps {
   id: string;
@@ -21,7 +21,7 @@ export default async function NoPolicies({ id, tenantProviderId }: NoPoliciesPro
           unique policies to your tenant provider.
         </p>
         <Button className="mt-4" asChild>
-          <Link href={ROUTES.TENANTS_ID_PROVIDERS_ID_ADD(id, tenantProviderId)}>Add policy</Link>
+          <Link href={DYNAMIC_ROUTES.TENANTS_ID_PROVIDERS_ID_ADD(id, tenantProviderId)}>Add policy</Link>
         </Button>
       </div>
     </div>

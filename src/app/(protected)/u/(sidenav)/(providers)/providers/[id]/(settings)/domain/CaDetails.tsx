@@ -1,7 +1,6 @@
 'use client';
 
 import { useEffect, useMemo, useState } from 'react';
-import Link from 'next/link';
 import { useFormStatus } from 'react-dom';
 import { toast } from 'sonner';
 
@@ -107,13 +106,13 @@ export default function CaDetails(props: CaDetailsProps) {
           <div className="mb-4">
             <p className="text-sm text-muted-foreground">
               Your default provider&apos;s domain is{' '}
-              <Link
+              <a
                 href={`${defaultDomain}/.well-known/openid-configuration`}
                 target="_blank"
                 className="font-bold hover:underline"
               >
                 {withoutProtocol(defaultDomain)}
-              </Link>
+              </a>
             </p>
           </div>
           <div className="flex flex-col gap-8">

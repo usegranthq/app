@@ -1,3 +1,4 @@
+import { Route } from 'next';
 import Link from 'next/link';
 import { ChevronRight, Code2Icon, Settings2Icon, UsersIcon, type LucideIcon } from 'lucide-react';
 
@@ -25,7 +26,7 @@ interface NavItem {
   isActive?: boolean;
   items?: SubItem[];
   defaultOpen?: boolean;
-  path?: string;
+  path?: Route | string;
 }
 
 interface NavGroup {
@@ -87,8 +88,8 @@ const items: NavGroup[] = [
   },
 ];
 
-const getPath = (path: string, tenantId: string): string => {
-  return path.startsWith('/') ? path : `/u/tenants/${tenantId}/${path}`;
+const getPath = (path: string, tenantId: string): Route => {
+  return (path.startsWith('/') ? path : `/u/tenants/${tenantId}/${path}`) as Route;
 };
 
 export function TenantNav({ tenantId }: { tenantId: string }) {
