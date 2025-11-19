@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 
 import ROUTES from '@/constants/routes';
+import { safeCompare } from '@/utils/string';
 import { getSiteUrlFromRequest } from '@/lib/site';
 import constants from '@/constants';
 import env from '@/env';
@@ -13,7 +14,7 @@ export const GET = async (request: NextRequest) => {
   }
 
   // check if invite code is valid
-  if (inviteCode !== env.INVITE_TOKEN) {
+  if (!safeCompare(inviteCode, env.INVITE_TOKEN ?? '')) {
     return NextResponse.json({ error: 'Invalid invite code' }, { status: 400 });
   }
 
@@ -22,6 +23,8 @@ export const GET = async (request: NextRequest) => {
     path: '/',
     httpOnly: true,
     secure: process.env.NODE_ENV === 'production',
+    sameSite: 'lax',
+    maxAge: 60 * 60 * 24 * 7, // 7 days
   });
 
   return response;
