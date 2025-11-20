@@ -6,16 +6,23 @@ on:
       - master
 
 env:
-  NODE_VERSION: 22
+  NODE_VERSION: 24
 
 jobs:
-  e2e:
+  unit:
     runs-on: ubuntu-latest
     permissions:
       contents: read
     steps:
       - name: Checkout
         uses: actions/checkout@v5
+
+      # mock environment variables
+      - name: Setup Environment variables
+        uses: sibiraj-s/action-toenv@v1
+        with:
+          env: |
+            DATABASE_URL=postgres://postgres:postgres@localhost:5433/grant_hq
 
       - name: Setup node
         uses: actions/setup-node@v6
