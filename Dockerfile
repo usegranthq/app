@@ -6,10 +6,14 @@ FROM base AS install
 # RUN apk add --no-cache libc6-compat
 WORKDIR /app
 
-# Install dependencies based on the preferred package manager
+# Copy necessary files for installing dependencies
 COPY prisma prisma
 COPY prisma.config.ts prisma.config.ts
 COPY package.json yarn.lock* package-lock.json* pnpm-lock.yaml* .npmrc* ./
+# copy env file too, required for prisma generate, since it needs the DATABASE_URL
+COPY .env ./
+
+# Install dependencies
 RUN --mount=type=cache,target=/root/.npm npm ci
 
 # Rebuild the source code only when needed
