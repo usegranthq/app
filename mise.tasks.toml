@@ -35,3 +35,6 @@ run = "sh ./e2e/run.sh"
 
 ["shadcn:update"]
 run = "sh ./scripts/shadcn-update.sh"
+
+["migrate:dev"]
+run = "npm run migrate:dev"
