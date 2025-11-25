@@ -1,6 +1,6 @@
-import { betterAuth } from 'better-auth';
 import { prismaAdapter } from 'better-auth/adapters/prisma';
 import { APIError } from 'better-auth/api';
+import { betterAuth } from 'better-auth/minimal';
 import { nextCookies } from 'better-auth/next-js';
 import { apiKey, customSession, magicLink } from 'better-auth/plugins';
 import { hoursToMilliseconds, hoursToSeconds, minutesToSeconds } from 'date-fns';
