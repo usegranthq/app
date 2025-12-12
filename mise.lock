@@ -4,12 +4,12 @@ backend = "aqua:nektos/act"
 "platforms.macos-arm64" = { checksum = "sha256:028d9705b9ce97e83e2b451622734e517b54240a6b0c6682c205e3da332dee56", url = "https://github.com/nektos/act/releases/download/v0.2.83/act_Darwin_arm64.tar.gz"}
 
 [[tools.node]]
-version = "24.11.1"
+version = "24.12.0"
 backend = "core:node"
-"platforms.macos-arm64" = { checksum = "sha256:b05aa3a66efe680023f930bd5af3fdbbd542794da5644ca2ad711d68cbd4dc35", url = "https://nodejs.org/dist/v24.11.1/node-v24.11.1-darwin-arm64.tar.gz"}
+"platforms.macos-arm64" = { checksum = "sha256:319f221adc5e44ff0ed57e8a441b2284f02b8dc6fc87b8eb92a6a93643fd8080", url = "https://nodejs.org/dist/v24.12.0/node-v24.12.0-darwin-arm64.tar.gz"}
 
 [[tools."npm:knip"]]
-version = "5.71.0"
+version = "5.73.4"
 backend = "npm:knip"
 
 [[tools."npm:smee-client"]]
