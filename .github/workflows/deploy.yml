@@ -44,7 +44,7 @@ jobs:
         with:
           oauth-client-id: ${{ secrets.TAILSCALE_CLIENT_ID }}
           audience: ${{ secrets.TAILSCALE_AUDIENCE }}
-          tags: tag:usegrant-prod
+          tags: tag:ci-actions-deploy
 
       - name: Configure SSH
         run: |
