@@ -50,7 +50,7 @@ jobs:
         run: |
           mkdir -p ~/.ssh
           chmod 700 ~/.ssh
-          ssh-keyscan -H ${{ secrets.TAILSCALE_HOST }} >> ~/.ssh/known_hosts
+          ssh-keyscan -H ${{ secrets.TAILSCALE_HETZNER_HOST }} >> ~/.ssh/known_hosts
           chmod 644 ~/.ssh/known_hosts
 
       - name: Test SSH connection
