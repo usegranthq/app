@@ -74,3 +74,16 @@ To find unused items in the codebase, run [knip](https://knip.dev)
 ```bash
 knip
 ```
+
+## Docker Rootless Mode
+
+Follow the instructions here https://docs.docker.com/engine/security/rootless/ to setup docker
+rootless mode
+
+```bash
+export PATH=/usr/bin:$PATH
+export DOCKER_HOST=unix:///run/user/1000/docker.sock
+```
+
+Make sure the above environment variables are at the top of the `~/.bashrc` file so SSH works via
+remote host
