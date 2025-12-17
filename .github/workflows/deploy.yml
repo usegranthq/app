@@ -18,6 +18,7 @@ env:
 
 permissions:
   contents: read
+  id-token: write
 
 jobs:
   deploy:
@@ -37,6 +38,13 @@ jobs:
       - name: Set up docker buildx
         id: buildx
         uses: docker/setup-buildx-action@v3
+
+      - name: Configure Tailscale
+        uses: tailscale/github-action@v4
+        with:
+          oauth-client-id: ${{ secrets.TAILSCALE_CLIENT_ID }}
+          audience: ${{ secrets.TAILSCALE_AUDIENCE }}
+          tags: tag:usegrant-prod
 
       - name: Prepare image tag
         run: echo "DOCKER_IMAGE_TAG=sha-${GITHUB_SHA::7}" >> $GITHUB_ENV
@@ -77,15 +85,6 @@ jobs:
             OTEL_DOMAIN=${{ secrets.OTEL_DOMAIN }}
             OTEL_API_TOKEN=${{ secrets.OTEL_API_TOKEN }}
             OTEL_AXIOM_DATASET=${{ secrets.OTEL_AXIOM_DATASET }}
-
-      - name: Configure SSH
-        run: |
-          mkdir -p ~/.ssh
-          chmod 700 ~/.ssh
-          echo "${{ secrets.HETZNER_HOST_SSH_KEY }}" > ~/.ssh/id_rsa
-          chmod 600 ~/.ssh/id_rsa
-          ssh-keyscan -H ${{ secrets.HETZNER_HOST }} >> ~/.ssh/known_hosts
-          chmod 644 ~/.ssh/known_hosts
 
       - name: Test SSH connection
         run: ssh ${{ secrets.REMOTE_DOCKER_HOST }} exit
