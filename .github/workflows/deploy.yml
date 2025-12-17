@@ -142,7 +142,7 @@ jobs:
           # Remove images not associated with any containers
           docker image prune -a
         env:
-          DOCKER_HOST: ssh://${{ secrets.REMOTE_DOCKER_HOST }}
+          DOCKER_HOST: ssh://${{ secrets.REMOTE_DOCKER_HOST }}/run/user/$(id -u)/docker.sock
 
       - name: Remove environment variables file
         run: rm -f .env
