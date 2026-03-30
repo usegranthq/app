@@ -20,6 +20,7 @@
     "prepare": "husky && npm run generate"
   },
   "dependencies": {
+    "@better-auth/api-key": "^1.5.6",
     "@hookform/resolvers": "^5.2.2",
     "@icons-pack/react-simple-icons": "^13.13.0",
     "@markdoc/markdoc": "^0.5.7",
@@ -54,7 +55,7 @@
     "@react-email/components": "^1.0.1",
     "@t3-oss/env-nextjs": "^0.13.11",
     "@tanstack/react-table": "^8.21.3",
-    "better-auth": "^1.4.6",
+    "better-auth": "^1.5.6",
     "class-variance-authority": "^0.7.1",
     "cloudflare": "^5.2.0",
     "clsx": "^2.1.1",

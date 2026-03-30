@@ -3,6 +3,8 @@ import { Client, Domain, Provider, Tenant, TenantProvider, TenantProviderPolicy 
 export const fakeDbApiKey = {
   id: '1',
   userId: '1',
+  configId: 'default',
+  referenceId: '1',
   enabled: true,
   name: 'test-key',
   createdAt: new Date('2025-08-03T18:19:44.344Z'),

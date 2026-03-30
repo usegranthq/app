@@ -74,7 +74,7 @@ export const sendEmailVerification = async (data: SendEmailVerificationParams) =
   });
 };
 
-export const sendChangeEmailVerification = async (data: SendChangeEmailVerificationParams) => {
+export const sendChangeEmailConfirmation = async (data: SendChangeEmailVerificationParams) => {
   await sendEmail({
     to: data.email,
     subject: 'Verify your email address',

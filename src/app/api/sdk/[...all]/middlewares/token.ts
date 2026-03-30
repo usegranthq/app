@@ -36,5 +36,5 @@ export default async function verifyApiKey(key: string): Promise<VerifyApiKeyRes
     return [error, null];
   }
 
-  return [null, result.key.userId];
+  return [null, result.key.referenceId];
 }

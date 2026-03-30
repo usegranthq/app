@@ -1,5 +1,5 @@
+import { defaultKeyHasher } from '@better-auth/api-key';
 import { PrismaPg } from '@prisma/adapter-pg';
-import { defaultKeyHasher } from 'better-auth/plugins';
 import { nanoid } from 'nanoid';
 
 import { PrismaClient } from '@/prisma/client';
@@ -37,7 +37,7 @@ async function seed() {
       start: 'uga_40',
       prefix: 'uga_',
       key: hashedKey,
-      userId: user.id,
+      referenceId: user.id,
       enabled: true,
       createdAt: new Date(),
       updatedAt: new Date(),

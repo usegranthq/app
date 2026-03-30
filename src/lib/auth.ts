@@ -1,8 +1,9 @@
+import { apiKey } from '@better-auth/api-key';
 import { prismaAdapter } from 'better-auth/adapters/prisma';
 import { APIError } from 'better-auth/api';
 import { betterAuth } from 'better-auth/minimal';
 import { nextCookies } from 'better-auth/next-js';
-import { apiKey, customSession, magicLink } from 'better-auth/plugins';
+import { customSession, magicLink } from 'better-auth/plugins';
 import { hoursToMilliseconds, hoursToSeconds, minutesToSeconds } from 'date-fns';
 import { PostHog } from 'posthog-node';
 
@@ -13,7 +14,7 @@ import { generateLoginToken } from '@/utils/random';
 
 import { getPlanByUserId } from './billing';
 import db from './db';
-import { sendChangeEmailVerification, sendEmailVerification, sendLoginEmail } from './email';
+import { sendChangeEmailConfirmation, sendEmailVerification, sendLoginEmail } from './email';
 
 const posthog = new PostHog(env.POSTHOG_API_KEY, {
   host: 'https://us.i.posthog.com',
@@ -47,8 +48,8 @@ export const auth = betterAuth({
   user: {
     changeEmail: {
       enabled: true,
-      async sendChangeEmailVerification(data) {
-        await sendChangeEmailVerification({ ...data, email: data.user.email });
+      async sendChangeEmailConfirmation(data) {
+        await sendChangeEmailConfirmation({ ...data, email: data.user.email });
       },
     },
     deleteUser: {
