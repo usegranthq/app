@@ -1,6 +1,6 @@
-import { getApiErrorMessage } from '@/utils/error';
 import db from '@/lib/db';
 import customDomain from '@/lib/domain';
+import { getApiErrorMessage } from '@/utils/error';
 
 import { authRpcRouter } from '../rpc';
 

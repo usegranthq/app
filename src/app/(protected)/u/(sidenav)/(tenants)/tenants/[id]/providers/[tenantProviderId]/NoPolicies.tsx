@@ -1,9 +1,8 @@
-import Link from 'next/link';
 import { KanbanIcon } from 'lucide-react';
-
-import { Button } from '@/shadcn/components/ui/button';
+import Link from 'next/link';
 
 import { DYNAMIC_ROUTES } from '@/constants/routes';
+import { Button } from '@/shadcn/components/ui/button';
 
 interface NoPoliciesProps {
   id: string;

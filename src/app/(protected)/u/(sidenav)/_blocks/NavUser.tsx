@@ -2,12 +2,11 @@
 
 import { ChevronsUpDownIcon } from 'lucide-react';
 
-import { DropdownMenu, DropdownMenuTrigger } from '@/shadcn/components/ui/dropdown-menu';
-import { SidebarMenu, SidebarMenuButton, SidebarMenuItem } from '@/shadcn/components/ui/sidebar';
-
 import { UserAvatar } from '@/app/(protected)/u/_blocks/UserAvatar';
 import UserNavDropdown from '@/app/(protected)/u/_blocks/UserNavDropdown';
 import { useUser } from '@/contexts/User';
+import { DropdownMenu, DropdownMenuTrigger } from '@/shadcn/components/ui/dropdown-menu';
+import { SidebarMenu, SidebarMenuButton, SidebarMenuItem } from '@/shadcn/components/ui/sidebar';
 
 export function NavUser() {
   const user = useUser();

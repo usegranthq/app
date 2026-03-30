@@ -1,5 +1,5 @@
-import Link from 'next/link';
 import { UserPlusIcon } from 'lucide-react';
+import Link from 'next/link';
 
 import { Button } from '@/shadcn/components/ui/button';
 

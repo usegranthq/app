@@ -1,6 +1,6 @@
+import { BookOpenIcon, ChevronRight, Code2Icon, Settings2Icon, UsersIcon, type LucideIcon } from 'lucide-react';
 import { Route } from 'next';
 import Link from 'next/link';
-import { BookOpenIcon, ChevronRight, Code2Icon, Settings2Icon, UsersIcon, type LucideIcon } from 'lucide-react';
 
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/shadcn/components/ui/collapsible';
 import {

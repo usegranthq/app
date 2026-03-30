@@ -1,13 +1,12 @@
 import { ShieldCheckIcon } from 'lucide-react';
 
-import { cn } from '@/shadcn/lib/utils';
-
 import AlicloudIcon from '@/components/icons/alicloud';
 import AwsIcon from '@/components/icons/aws';
 import AzureIcon from '@/components/icons/azure';
 import GcpIcon from '@/components/icons/gcp';
 import LogoIcon from '@/components/icons/logo';
 import NeonDbIcon from '@/components/icons/neondb';
+import { cn } from '@/shadcn/lib/utils';
 
 export default function PlatformsSection() {
   return (

@@ -4,6 +4,8 @@ import { useEffect, useMemo, useState } from 'react';
 import { useFormStatus } from 'react-dom';
 import { toast } from 'sonner';
 
+import { getCaDetails } from '@/actions/ca';
+import Spinner from '@/components/Spinner';
 import { Button } from '@/shadcn/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/shadcn/components/ui/card';
 import { Input } from '@/shadcn/components/ui/input';
@@ -16,12 +18,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/shadcn/components/ui/select';
-
 import { Domain } from '@/types/app.types';
-
 import { withoutProtocol } from '@/utils/url';
-import { getCaDetails } from '@/actions/ca';
-import Spinner from '@/components/Spinner';
 
 interface CaDetailsProps {
   domains: Domain[];

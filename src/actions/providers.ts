@@ -1,22 +1,21 @@
 'use server';
 
+import { JWK } from 'jose';
 import { refresh } from 'next/cache';
 import { redirect } from 'next/navigation';
-import { JWK } from 'jose';
 import z from 'zod';
 
+import ROUTES from '@/constants/routes';
+import { verifySession } from '@/data/_verifySession';
+import db from '@/lib/db';
+import customDomain from '@/lib/domain';
+import { clientSchema, providerSchema } from '@/schema';
 import { Provider } from '@/types/app.types';
 import { Prisma } from '@/types/db.types';
-
-import ROUTES from '@/constants/routes';
 import ERRORS, { getApiErrorMessage, getZodErrorMessage } from '@/utils/error';
 import { generateJwk } from '@/utils/jwk';
 import { createJwt, defaultJwk } from '@/utils/jwt';
 import { createUrlId, getIssuer } from '@/utils/provider';
-import db from '@/lib/db';
-import customDomain from '@/lib/domain';
-import { verifySession } from '@/data/_verifySession';
-import { clientSchema, providerSchema } from '@/schema';
 
 type ProviderFormValues = z.infer<typeof providerSchema>;
 type ClientFormValues = z.infer<typeof clientSchema>;

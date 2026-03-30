@@ -1,8 +1,6 @@
 import { oc } from '@orpc/contract';
 import z from 'zod/v4';
 
-import { MAX_EXPIRY, ONE_HOUR } from '@/utils/jwt';
-import { STATUS_CODES } from '@/utils/rest';
 import {
   clientSchema,
   conditionsSchema,
@@ -12,6 +10,8 @@ import {
   tenantProviderSchema,
   tenantSchema,
 } from '@/schema';
+import { MAX_EXPIRY, ONE_HOUR } from '@/utils/jwt';
+import { STATUS_CODES } from '@/utils/rest';
 
 import ERRORS from './errors';
 

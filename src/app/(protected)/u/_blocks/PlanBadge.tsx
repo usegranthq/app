@@ -1,9 +1,8 @@
-import Link from 'next/link';
 import { GemIcon } from 'lucide-react';
-
-import { Badge } from '@/shadcn/components/ui/badge';
+import Link from 'next/link';
 
 import { getPlanDetails } from '@/data/user';
+import { Badge } from '@/shadcn/components/ui/badge';
 
 export default async function PlanBadge() {
   const plan = await getPlanDetails();

@@ -2,8 +2,8 @@
 
 import { useEffect } from 'react';
 
-import ROUTES from '@/constants/routes';
 import Spinner from '@/components/Spinner';
+import ROUTES from '@/constants/routes';
 
 // just redirects to dashboard assuming the user is logged in
 // this is used to handle the redirect from the oauth providers and magic links

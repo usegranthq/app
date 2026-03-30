@@ -1,9 +1,9 @@
+import { decodeJwt } from 'jose';
 import { cookies } from 'next/headers';
 import { redirect, RedirectType } from 'next/navigation';
-import { decodeJwt } from 'jose';
 
-import { isNullOrUndefined } from '@/utils/validators';
 import * as constants from '@/constants';
+import { isNullOrUndefined } from '@/utils/validators';
 
 import VerifyForm from './VerifyForm';
 

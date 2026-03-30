@@ -1,8 +1,7 @@
 import 'server-only';
-
-import { cache } from 'react';
 import { headers } from 'next/headers';
 import { redirect } from 'next/navigation';
+import { cache } from 'react';
 
 import ROUTES from '@/constants/routes';
 import { auth } from '@/lib/auth';

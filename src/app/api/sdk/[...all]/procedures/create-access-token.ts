@@ -1,9 +1,9 @@
 import { JWK } from 'jose';
 
-import { createJwt, defaultJwk } from '@/utils/jwt';
-import { getIssuer } from '@/utils/provider';
 import { getPlanByUserId } from '@/lib/billing';
 import db from '@/lib/db';
+import { createJwt, defaultJwk } from '@/utils/jwt';
+import { getIssuer } from '@/utils/provider';
 
 import { authRpcRouter } from '../rpc';
 

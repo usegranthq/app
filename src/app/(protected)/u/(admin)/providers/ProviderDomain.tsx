@@ -1,8 +1,7 @@
-import { Provider } from '@/types/app.types';
-
-import { withoutProtocol } from '@/utils/url';
-import { getDomains } from '@/data/providers';
 import { getProviderDomain, getWellKnownOpenIdConfigUrl } from '@/app/provider-helpers';
+import { getDomains } from '@/data/providers';
+import { Provider } from '@/types/app.types';
+import { withoutProtocol } from '@/utils/url';
 
 interface ProviderDomainProps {
   provider: Provider;

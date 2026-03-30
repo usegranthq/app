@@ -1,5 +1,7 @@
 'use client';
 
+import { AnimatePresence, domAnimation, LazyMotion, motion, useMotionTemplate, useSpring } from 'motion/react';
+import { useRouter } from 'next/navigation';
 import {
   createContext,
   PropsWithChildren,
@@ -9,8 +11,6 @@ import {
   useEffect,
   useOptimistic,
 } from 'react';
-import { useRouter } from 'next/navigation';
-import { AnimatePresence, domAnimation, LazyMotion, motion, useMotionTemplate, useSpring } from 'motion/react';
 import { useInterval } from 'usehooks-ts';
 
 import { cn } from '@/shadcn/lib/utils';

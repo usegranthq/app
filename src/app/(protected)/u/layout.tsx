@@ -1,8 +1,8 @@
 import { PropsWithChildren } from 'react';
 
-import { getUser } from '@/data/user';
 import LoadingProgress from '@/components/NavProgress';
 import { UserProvider } from '@/contexts/User';
+import { getUser } from '@/data/user';
 
 export default async function UserLayout({ children }: PropsWithChildren) {
   const user = await getUser();

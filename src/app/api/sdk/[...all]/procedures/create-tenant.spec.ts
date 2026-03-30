@@ -1,10 +1,10 @@
 import { describe, expect, it } from 'vitest';
 
+import mockDb from '@/lib/__mocks__/db';
 import { PLANS } from '@/utils/billing';
 import ERRORS from '@/utils/error';
 import { sillyClone } from '@/utils/object';
 import { STATUS_CODES } from '@/utils/rest';
-import mockDb from '@/lib/__mocks__/db';
 
 import { fakeDbTenant, fakeDbTenantResponse } from './test-utils/fake-data';
 import createAuthorizedRequest from './test-utils/request';

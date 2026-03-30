@@ -3,9 +3,8 @@
 import Link from 'next/link';
 import { toast } from 'sonner';
 
-import { Input } from '@/shadcn/components/ui/input';
-
 import { verify } from '@/actions';
+import { Input } from '@/shadcn/components/ui/input';
 
 import SubmitButton from './SubmitButton';
 

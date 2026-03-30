@@ -1,5 +1,5 @@
-import { notFound } from 'next/navigation';
 import { KeySquareIcon } from 'lucide-react';
+import { notFound } from 'next/navigation';
 
 import { getTenantProvider } from '@/data/tenants';
 

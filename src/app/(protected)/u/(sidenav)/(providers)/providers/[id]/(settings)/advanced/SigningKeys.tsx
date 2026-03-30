@@ -1,8 +1,7 @@
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/shadcn/components/ui/card';
-
+import { getWellKnownURL } from '@/app/provider-helpers';
 import { getSigningKeys } from '@/data/providers';
 import { getPlanDetails } from '@/data/user';
-import { getWellKnownURL } from '@/app/provider-helpers';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/shadcn/components/ui/card';
 import { Provider } from '@/types';
 
 import KeysList from './KeysList';

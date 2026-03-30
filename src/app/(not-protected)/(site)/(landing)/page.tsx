@@ -1,9 +1,8 @@
 import Link from 'next/link';
 
+import env from '@/env';
 import PointerHighlight from '@/shadcn/components/external/pointer-highlight';
 import { Button } from '@/shadcn/components/ui/button';
-
-import env from '@/env';
 
 import DynamicEnv from './DyanmicEnv';
 import PlatformsSection from './Platforms';

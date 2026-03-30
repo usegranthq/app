@@ -1,6 +1,8 @@
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 
+import ROUTES from '@/constants/routes';
+import * as providersDal from '@/data/providers';
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -10,10 +12,7 @@ import {
   BreadcrumbSeparator,
 } from '@/shadcn/components/ui/breadcrumb';
 import { Button } from '@/shadcn/components/ui/button';
-
-import ROUTES from '@/constants/routes';
 import { normalizePaginationParams } from '@/utils/pagination';
-import * as providersDal from '@/data/providers';
 
 import ClientsList from './ClientsList';
 import NoClients from './NoClients';

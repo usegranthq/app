@@ -1,5 +1,4 @@
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/shadcn/components/ui/card';
-
 import { Tenant } from '@/types/app.types';
 
 import DeleteTenantAction from './DeleteTenantAction';

@@ -1,5 +1,5 @@
-import * as React from 'react';
 import { Body, CodeInline, Container, Head, Heading, Html, Link, Preview, Text } from '@react-email/components';
+import * as React from 'react';
 
 interface LoginEmailProps {
   token: string;

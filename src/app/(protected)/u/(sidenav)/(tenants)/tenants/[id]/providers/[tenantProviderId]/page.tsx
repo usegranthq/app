@@ -1,7 +1,7 @@
 import { notFound } from 'next/navigation';
 
-import { normalizePaginationParams } from '@/utils/pagination';
 import { getTenant, getTenantProvider, getTenantProviderPolicies } from '@/data/tenants';
+import { normalizePaginationParams } from '@/utils/pagination';
 
 import NoPolicies from './NoPolicies';
 import TenantProviderPolicies from './TenantProviderPolicies';

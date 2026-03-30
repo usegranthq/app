@@ -1,7 +1,7 @@
 'use client';
 
-import { useState } from 'react';
 import { CopyCheckIcon, CopyIcon } from 'lucide-react';
+import { useState } from 'react';
 
 import { Button } from '@/shadcn/components/ui/button';
 import { Input } from '@/shadcn/components/ui/input';

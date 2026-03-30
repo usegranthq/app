@@ -1,9 +1,10 @@
 'use client';
 
-import { useRouter } from 'next/navigation';
 import { DotsHorizontalIcon } from '@radix-ui/react-icons';
+import { useRouter } from 'next/navigation';
 import { toast } from 'sonner';
 
+import { deleteSession } from '@/actions/settings';
 import {
   AlertDialog,
   AlertDialogAction,
@@ -23,10 +24,7 @@ import {
   DropdownMenuLabel,
   DropdownMenuTrigger,
 } from '@/shadcn/components/ui/dropdown-menu';
-
 import { Session } from '@/types/app.types';
-
-import { deleteSession } from '@/actions/settings';
 
 export default function SessionOptions({ session }: { session: Session }) {
   const router = useRouter();

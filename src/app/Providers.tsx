@@ -1,10 +1,9 @@
-import { PropsWithChildren } from 'react';
 import { NuqsAdapter } from 'nuqs/adapters/next/app';
-
-import { Toaster } from '@/shadcn/components/ui/sonner';
+import { PropsWithChildren } from 'react';
 
 import ThemeProvider from '@/components/ThemeProvider';
 import { ColorProvider } from '@/contexts/ColorProvider';
+import { Toaster } from '@/shadcn/components/ui/sonner';
 
 interface ProvidersProps extends Readonly<PropsWithChildren> {
   nonce: string;

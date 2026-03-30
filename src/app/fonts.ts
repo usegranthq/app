@@ -1,6 +1,6 @@
-import { Fira_Code, Inter, JetBrains_Mono, Oxanium } from 'next/font/google';
 import { GeistMono } from 'geist/font/mono';
 import { GeistSans } from 'geist/font/sans';
+import { Fira_Code, Inter, JetBrains_Mono, Oxanium } from 'next/font/google';
 
 const oxanium = Oxanium({
   subsets: ['latin'],

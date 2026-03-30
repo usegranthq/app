@@ -1,6 +1,6 @@
-import { ReactNode } from 'react';
 import { render } from '@react-email/components';
 import nodemailer from 'nodemailer';
+import { ReactNode } from 'react';
 import { Resend } from 'resend';
 
 import env from '@/env';
@@ -78,6 +78,10 @@ export const sendChangeEmailVerification = async (data: SendChangeEmailVerificat
   await sendEmail({
     to: data.email,
     subject: 'Verify your email address',
-    template: ChangeEmailVerification({ token: data.token, url: data.url, newEmail: data.newEmail }),
+    template: ChangeEmailVerification({
+      token: data.token,
+      url: data.url,
+      newEmail: data.newEmail,
+    }),
   });
 };

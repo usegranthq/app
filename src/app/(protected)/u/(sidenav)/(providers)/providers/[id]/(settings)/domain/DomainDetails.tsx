@@ -4,15 +4,13 @@ import { startTransition } from 'react';
 import { useFormStatus } from 'react-dom';
 import { toast } from 'sonner';
 
+import { addDomain } from '@/actions';
+import { useProgressBar } from '@/components/NavProgress';
 import { Button } from '@/shadcn/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/shadcn/components/ui/card';
 import { Input } from '@/shadcn/components/ui/input';
 import { Label } from '@/shadcn/components/ui/label';
-
 import { Domain, Provider } from '@/types/app.types';
-
-import { addDomain } from '@/actions';
-import { useProgressBar } from '@/components/NavProgress';
 
 interface DomainDetailsProps {
   provider: Provider;

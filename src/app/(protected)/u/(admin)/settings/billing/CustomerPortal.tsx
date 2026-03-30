@@ -1,13 +1,12 @@
 'use client';
 
-import { useTransition } from 'react';
 import { ExternalLinkIcon } from 'lucide-react';
+import { useTransition } from 'react';
 import { toast } from 'sonner';
-
-import { Button } from '@/shadcn/components/ui/button';
 
 import { redirectToCustomerPortal } from '@/actions';
 import { useProgressBar } from '@/components/NavProgress';
+import { Button } from '@/shadcn/components/ui/button';
 
 export default function CustomerPortal() {
   const [isPending, startTransition] = useTransition();

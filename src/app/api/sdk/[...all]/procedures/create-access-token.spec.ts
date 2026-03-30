@@ -1,9 +1,9 @@
 import * as jose from 'jose';
 import { describe, expect, it, vi } from 'vitest';
 
+import mockDb from '@/lib/__mocks__/db';
 import ERRORS from '@/utils/error';
 import { STATUS_CODES } from '@/utils/rest';
-import mockDb from '@/lib/__mocks__/db';
 
 import { fakeDbClient, fakeDbProvider, fakeDbProviderWithDomain } from './test-utils/fake-data';
 import createAuthorizedRequest from './test-utils/request';

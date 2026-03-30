@@ -1,11 +1,13 @@
 'use client';
 
-import { ComponentPropsWithoutRef } from 'react';
+import { BadgeCheckIcon, CreditCardIcon, LockIcon, LogOutIcon } from 'lucide-react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { BadgeCheckIcon, CreditCardIcon, LockIcon, LogOutIcon } from 'lucide-react';
+import { ComponentPropsWithoutRef } from 'react';
 import { toast } from 'sonner';
 
+import { useUser } from '@/contexts/User';
+import { authClient } from '@/lib/auth-client';
 import {
   AlertDialog,
   AlertDialogAction,
@@ -26,9 +28,6 @@ import {
   DropdownMenuShortcut,
 } from '@/shadcn/components/ui/dropdown-menu';
 import { cn } from '@/shadcn/lib/utils';
-
-import { authClient } from '@/lib/auth-client';
-import { useUser } from '@/contexts/User';
 
 import { UserAvatar } from './UserAvatar';
 

@@ -1,11 +1,10 @@
-import { PropsWithChildren } from 'react';
 import type { Metadata } from 'next';
-
-import fonts from './fonts';
-
-import './globals.css';
+import { PropsWithChildren } from 'react';
 
 import env from '@/env';
+
+import './globals.css';
+import fonts from './fonts';
 
 export const metadata: Metadata = {
   metadataBase: new URL(env.SITE_URL),

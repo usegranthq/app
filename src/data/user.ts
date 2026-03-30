@@ -1,12 +1,10 @@
 import 'server-only';
-
 import { headers } from 'next/headers';
 
-import { Customer, Session, Subscription, User } from '@/types/app.types';
-
-import { PlanDetails } from '@/utils/billing';
 import { auth } from '@/lib/auth';
 import db from '@/lib/db';
+import { Customer, Session, Subscription, User } from '@/types/app.types';
+import { PlanDetails } from '@/utils/billing';
 
 import { verifySession } from './_verifySession';
 

@@ -1,6 +1,5 @@
-import GlowingCardBorder from '@/shadcn/components/external/glowing-border';
-
 import Codeblock from '@/components/Codeblock';
+import GlowingCardBorder from '@/shadcn/components/external/glowing-border';
 
 const code = `
 import { UseGrant } from '@usegranthq/sdk';

@@ -2,6 +2,7 @@
 
 import { PaletteIcon } from 'lucide-react';
 
+import { useColor } from '@/contexts/ColorProvider';
 import { Button } from '@/shadcn/components/ui/button';
 import {
   DropdownMenu,
@@ -12,8 +13,6 @@ import {
   DropdownMenuTrigger,
 } from '@/shadcn/components/ui/dropdown-menu';
 import { cn } from '@/shadcn/lib/utils';
-
-import { useColor } from '@/contexts/ColorProvider';
 
 interface ColorPickerProps {
   className?: string;

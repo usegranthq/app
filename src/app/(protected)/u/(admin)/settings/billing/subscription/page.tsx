@@ -1,9 +1,9 @@
 import { setTimeout } from 'node:timers/promises';
+
 import Link from 'next/link';
 
-import { Button } from '@/shadcn/components/ui/button';
-
 import { getSubscription } from '@/data/user';
+import { Button } from '@/shadcn/components/ui/button';
 
 const getSubscriptionWithRetries = async (attempts: number = 1) => {
   const subscription = await getSubscription();

@@ -1,10 +1,12 @@
 'use client';
 
-import { useTransition } from 'react';
-import { useRouter } from 'next/navigation';
 import { DotsHorizontalIcon } from '@radix-ui/react-icons';
+import { useRouter } from 'next/navigation';
+import { useTransition } from 'react';
 import { toast } from 'sonner';
 
+import { deleteTenantProvider } from '@/actions';
+import { useProgressBar } from '@/components/NavProgress';
 import {
   AlertDialog,
   AlertDialogAction,
@@ -24,11 +26,7 @@ import {
   DropdownMenuLabel,
   DropdownMenuTrigger,
 } from '@/shadcn/components/ui/dropdown-menu';
-
 import { TenantProvider } from '@/types/app.types';
-
-import { deleteTenantProvider } from '@/actions';
-import { useProgressBar } from '@/components/NavProgress';
 
 interface TenantOptionsProps {
   tenantId: string;

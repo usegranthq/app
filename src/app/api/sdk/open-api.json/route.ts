@@ -1,6 +1,6 @@
-import { NextResponse } from 'next/server';
 import { OpenAPIGenerator } from '@orpc/openapi';
 import { ZodToJsonSchemaConverter } from '@orpc/zod/zod4';
+import { NextResponse } from 'next/server';
 
 import contract from '../[...all]/procedures/utils/contract';
 

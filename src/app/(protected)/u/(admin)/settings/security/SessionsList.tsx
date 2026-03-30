@@ -4,7 +4,6 @@ import { ColumnDef, flexRender, getCoreRowModel, useReactTable } from '@tanstack
 import { formatDate, formatDistanceToNow } from 'date-fns';
 
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/shadcn/components/ui/table';
-
 import { Session } from '@/types/app.types';
 
 import SessionOptions from './SessionOptions';

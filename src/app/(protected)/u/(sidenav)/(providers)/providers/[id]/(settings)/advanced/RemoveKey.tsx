@@ -4,10 +4,9 @@ import { startTransition } from 'react';
 import { useFormStatus } from 'react-dom';
 import { toast } from 'sonner';
 
-import { Button } from '@/shadcn/components/ui/button';
-
 import { removeKey } from '@/actions';
 import { useProgressBar } from '@/components/NavProgress';
+import { Button } from '@/shadcn/components/ui/button';
 
 interface RemoveKeyProps {
   id: string;

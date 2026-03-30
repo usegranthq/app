@@ -4,6 +4,7 @@ import { ComponentProps, FC, useRef, useState } from 'react';
 import { useFormStatus } from 'react-dom';
 import { toast } from 'sonner';
 
+import { deleteAccount } from '@/actions/settings';
 import {
   AlertDialog,
   AlertDialogAction,
@@ -18,8 +19,6 @@ import {
 import { Button } from '@/shadcn/components/ui/button';
 import { Input } from '@/shadcn/components/ui/input';
 import { Label } from '@/shadcn/components/ui/label';
-
-import { deleteAccount } from '@/actions/settings';
 
 type DeleteButtonProps = ComponentProps<typeof Button>;
 

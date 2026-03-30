@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 
-import { STATUS_CODES } from '@/utils/rest';
 import mockAuth from '@/lib/__mocks__/auth';
+import { STATUS_CODES } from '@/utils/rest';
 
 import { fakeDbApiKey } from './procedures/test-utils/fake-data';
 import { createRequest } from './procedures/test-utils/request';

@@ -4,6 +4,8 @@ import { ComponentProps, FC, startTransition, useRef } from 'react';
 import { useFormStatus } from 'react-dom';
 import { toast } from 'sonner';
 
+import { deleteTenant } from '@/actions';
+import { useProgressBar } from '@/components/NavProgress';
 import {
   AlertDialog,
   AlertDialogAction,
@@ -16,11 +18,7 @@ import {
   AlertDialogTrigger,
 } from '@/shadcn/components/ui/alert-dialog';
 import { Button } from '@/shadcn/components/ui/button';
-
 import { Tenant } from '@/types/app.types';
-
-import { deleteTenant } from '@/actions';
-import { useProgressBar } from '@/components/NavProgress';
 
 type DeleteButtonProps = ComponentProps<typeof Button>;
 

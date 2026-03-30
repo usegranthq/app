@@ -1,14 +1,12 @@
 'use client';
 
-import { useMemo } from 'react';
 import { ColumnDef, flexRender, getCoreRowModel, useReactTable } from '@tanstack/react-table';
+import { useMemo } from 'react';
 
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/shadcn/components/ui/table';
-
-import { Client } from '@/types/app.types';
-
-import { formatDate } from '@/utils/date';
 import PaginationControls from '@/components/PaginationControls';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/shadcn/components/ui/table';
+import { Client } from '@/types/app.types';
+import { formatDate } from '@/utils/date';
 
 import ClientOptions from './ClientOptions';
 

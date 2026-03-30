@@ -1,5 +1,5 @@
-import { PropsWithChildren } from 'react';
 import { headers } from 'next/headers';
+import { PropsWithChildren } from 'react';
 
 import Providers from '../Providers';
 import NavHotkeys from './NavHotkeys';

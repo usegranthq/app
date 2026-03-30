@@ -2,11 +2,11 @@
 
 import { refresh } from 'next/cache';
 
-import { getApiErrorMessage, getZodErrorMessage } from '@/utils/error';
+import { verifySession } from '@/data/_verifySession';
 import db from '@/lib/db';
 import customDomain from '@/lib/domain';
-import { verifySession } from '@/data/_verifySession';
 import { domainSchema } from '@/schema';
+import { getApiErrorMessage, getZodErrorMessage } from '@/utils/error';
 
 export async function addDomain(providerId: string, formData: FormData): ActionResponse {
   const { plan, user } = await verifySession();

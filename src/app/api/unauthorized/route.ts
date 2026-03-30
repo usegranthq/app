@@ -1,8 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
 
+import constants from '@/constants';
 import ROUTES from '@/constants/routes';
 import { getSiteUrlFromRequest } from '@/lib/site';
-import constants from '@/constants';
 
 export const GET = async (request: NextRequest) => {
   const redirectTo = new URL(ROUTES.LOGIN, getSiteUrlFromRequest(request));

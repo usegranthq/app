@@ -1,10 +1,10 @@
-import { NextRequest, NextResponse } from 'next/server';
 import { JWK } from 'jose';
+import { NextRequest, NextResponse } from 'next/server';
 
-import { defaultJwk } from '@/utils/jwt';
-import { withProtocol } from '@/utils/url';
 import { getPlanByUserId } from '@/lib/billing';
 import db from '@/lib/db';
+import { defaultJwk } from '@/utils/jwt';
+import { withProtocol } from '@/utils/url';
 
 const getHostFromRequest = (request: NextRequest): string | null => {
   const ugHost = request.headers.get('x-forwarded-host');

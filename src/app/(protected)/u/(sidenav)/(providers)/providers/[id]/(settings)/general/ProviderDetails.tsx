@@ -1,19 +1,18 @@
 'use client';
 
-import { useTransition } from 'react';
-import { useRouter } from 'next/navigation';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { useRouter } from 'next/navigation';
+import { useTransition } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 import z from 'zod';
-
-import { Button } from '@/shadcn/components/ui/button';
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/shadcn/components/ui/card';
 
 import { updateProvider } from '@/actions';
 import HookForm from '@/components/HookForm';
 import { useProgressBar } from '@/components/NavProgress';
 import { providerSchema } from '@/schema';
+import { Button } from '@/shadcn/components/ui/button';
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/shadcn/components/ui/card';
 
 import { useProviderContext } from '../../_blocks/ProviderContext';
 

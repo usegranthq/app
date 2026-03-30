@@ -4,13 +4,12 @@ import { startTransition } from 'react';
 import { useFormStatus } from 'react-dom';
 import { toast } from 'sonner';
 
-import { Badge } from '@/shadcn/components/ui/badge';
-import { Button } from '@/shadcn/components/ui/button';
-
-import { PlanDetails } from '@/utils/billing';
 import { requestSigningKey } from '@/actions';
 import { useProgressBar } from '@/components/NavProgress';
+import { Badge } from '@/shadcn/components/ui/badge';
+import { Button } from '@/shadcn/components/ui/button';
 import { Provider } from '@/types';
+import { PlanDetails } from '@/utils/billing';
 
 interface RequestSigningKeyProps {
   provider: Provider;

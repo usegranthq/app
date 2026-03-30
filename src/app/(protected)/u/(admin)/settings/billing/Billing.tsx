@@ -1,8 +1,7 @@
-import Link from 'next/link';
 import { CheckIcon } from '@radix-ui/react-icons';
+import Link from 'next/link';
 
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/shadcn/components/ui/card';
-
 import { PLAN_FEATURES, PlanDetails, PLANS } from '@/utils/billing';
 
 import CustomerPortal from './CustomerPortal';

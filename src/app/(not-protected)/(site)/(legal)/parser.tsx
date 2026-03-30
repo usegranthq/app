@@ -1,8 +1,9 @@
 import fs from 'node:fs/promises';
-import React, { ReactNode } from 'react';
+
+import Markdoc, { Config, Node } from '@markdoc/markdoc';
 import { Route } from 'next';
 import Link from 'next/link';
-import Markdoc, { Config, Node } from '@markdoc/markdoc';
+import React, { ReactNode } from 'react';
 
 import { cn } from '@/shadcn/lib/utils';
 

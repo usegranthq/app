@@ -1,12 +1,14 @@
 'use client';
 
-import { MouseEvent, useState, useTransition } from 'react';
+import { DotsHorizontalIcon } from '@radix-ui/react-icons';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { DotsHorizontalIcon } from '@radix-ui/react-icons';
+import { MouseEvent, useState, useTransition } from 'react';
 import { toast } from 'sonner';
 import { useToggle } from 'usehooks-ts';
 
+import { deleteClient, generateAccessToken } from '@/actions';
+import { useProgressBar } from '@/components/NavProgress';
 import {
   AlertDialog,
   AlertDialogAction,
@@ -28,11 +30,7 @@ import {
   DropdownMenuTrigger,
 } from '@/shadcn/components/ui/dropdown-menu';
 import { Label } from '@/shadcn/components/ui/label';
-
 import { Client } from '@/types/app.types';
-
-import { deleteClient, generateAccessToken } from '@/actions';
-import { useProgressBar } from '@/components/NavProgress';
 
 export default function ClientOptions({ providerId, client }: { providerId: string; client: Client }) {
   const router = useRouter();

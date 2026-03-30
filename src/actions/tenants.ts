@@ -4,15 +4,14 @@ import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
 import z from 'zod';
 
-import { Tenant } from '@/types/app.types';
-
 import ROUTES, { DYNAMIC_ROUTES } from '@/constants/routes';
+import { verifySession } from '@/data/_verifySession';
+import db from '@/lib/db';
+import { tenantProviderPolicySchema, tenantProviderSchema, tenantSchema } from '@/schema';
+import { Tenant } from '@/types/app.types';
 import { getIssuerCertifcate } from '@/utils/ca';
 import { getApiErrorMessage, getZodErrorMessage } from '@/utils/error';
 import { isValidUrl } from '@/utils/url';
-import db from '@/lib/db';
-import { verifySession } from '@/data/_verifySession';
-import { tenantProviderPolicySchema, tenantProviderSchema, tenantSchema } from '@/schema';
 
 type TenantFormValues = z.infer<typeof tenantSchema>;
 type TenantPolicyFormValues = z.infer<typeof tenantProviderPolicySchema>;

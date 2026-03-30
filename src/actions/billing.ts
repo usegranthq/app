@@ -3,15 +3,15 @@
 import { refresh } from 'next/cache';
 
 import ROUTES from '@/constants/routes';
-import { PlanId, PLANS } from '@/utils/billing';
-import { generateHMACState } from '@/utils/callbacks';
-import { getApiErrorMessage } from '@/utils/error';
-import { getPlanProductId } from '@/lib/billing';
-import db from '@/lib/db';
-import polarClient from '@/lib/polar';
 import { verifySession } from '@/data/_verifySession';
 import { getCustomer, getSubscription } from '@/data/user';
 import env from '@/env';
+import { getPlanProductId } from '@/lib/billing';
+import db from '@/lib/db';
+import polarClient from '@/lib/polar';
+import { PlanId, PLANS } from '@/utils/billing';
+import { generateHMACState } from '@/utils/callbacks';
+import { getApiErrorMessage } from '@/utils/error';
 
 export const checkout = async (planId: PlanId): ActionResponse<string> => {
   const session = await verifySession();

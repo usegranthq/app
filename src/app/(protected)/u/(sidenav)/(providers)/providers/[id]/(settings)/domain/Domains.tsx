@@ -1,19 +1,17 @@
 'use client';
 
-import { useTransition } from 'react';
-import Link from 'next/link';
 import { ExternalLinkIcon } from 'lucide-react';
+import Link from 'next/link';
+import { useTransition } from 'react';
 import { useFormStatus } from 'react-dom';
 import { toast } from 'sonner';
 
+import { deleteDomain, verifyDomain } from '@/actions';
+import { useProgressBar } from '@/components/NavProgress';
 import { Badge } from '@/shadcn/components/ui/badge';
 import { Button } from '@/shadcn/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/shadcn/components/ui/card';
-
 import { Domain, Provider } from '@/types/app.types';
-
-import { deleteDomain, verifyDomain } from '@/actions';
-import { useProgressBar } from '@/components/NavProgress';
 
 interface CustomDomainsProps {
   provider: Provider;

@@ -1,18 +1,17 @@
 'use client';
 
-import { useTransition } from 'react';
-import { useRouter } from 'next/navigation';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { useRouter } from 'next/navigation';
+import { useTransition } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 import z from 'zod';
-
-import { Button } from '@/shadcn/components/ui/button';
 
 import { createTenant } from '@/actions';
 import HookForm from '@/components/HookForm';
 import { useProgressBar } from '@/components/NavProgress';
 import { tenantSchema } from '@/schema';
+import { Button } from '@/shadcn/components/ui/button';
 
 type TenantFormValues = z.infer<typeof tenantSchema>;
 

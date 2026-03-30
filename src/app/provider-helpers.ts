@@ -1,7 +1,6 @@
-import { Domain, Provider } from '@/types/app.types';
-
-import { withProtocol } from '@/utils/url';
 import env from '@/env';
+import { Domain, Provider } from '@/types/app.types';
+import { withProtocol } from '@/utils/url';
 
 export function getProviderDomain(provider: Provider, domains: Domain[]) {
   if (domains.length === 0) {

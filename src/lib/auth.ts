@@ -7,9 +7,9 @@ import { hoursToMilliseconds, hoursToSeconds, minutesToSeconds } from 'date-fns'
 import { PostHog } from 'posthog-node';
 
 import * as constants from '@/constants/cookies';
+import env, { isLive } from '@/env';
 import { daysToSeconds } from '@/utils/date';
 import { generateLoginToken } from '@/utils/random';
-import env, { isLive } from '@/env';
 
 import { getPlanByUserId } from './billing';
 import db from './db';

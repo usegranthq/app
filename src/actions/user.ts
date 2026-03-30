@@ -5,10 +5,10 @@ import { headers } from 'next/headers';
 import z from 'zod';
 
 import ROUTES from '@/constants/routes';
-import { getApiErrorMessage } from '@/utils/error';
-import { auth } from '@/lib/auth';
 import { verifySession } from '@/data/_verifySession';
+import { auth } from '@/lib/auth';
 import { profileSchema } from '@/schema';
+import { getApiErrorMessage } from '@/utils/error';
 
 type ProfileFormValues = z.infer<typeof profileSchema>;
 

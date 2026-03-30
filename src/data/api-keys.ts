@@ -1,10 +1,8 @@
 import 'server-only';
-
 import { headers } from 'next/headers';
 
-import { ApiKey } from '@/types/app.types';
-
 import { auth } from '@/lib/auth';
+import { ApiKey } from '@/types/app.types';
 
 import { verifySession } from './_verifySession';
 

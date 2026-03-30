@@ -1,10 +1,10 @@
 import { NextRequest, NextResponse } from 'next/server';
 
-import ROUTES from '@/constants/routes';
-import { safeCompare } from '@/utils/string';
-import { getSiteUrlFromRequest } from '@/lib/site';
 import constants from '@/constants';
+import ROUTES from '@/constants/routes';
 import env from '@/env';
+import { getSiteUrlFromRequest } from '@/lib/site';
+import { safeCompare } from '@/utils/string';
 
 export const GET = async (request: NextRequest) => {
   // get invite code from request query params

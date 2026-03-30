@@ -1,10 +1,12 @@
 'use client';
 
-import { useMemo } from 'react';
-import Link from 'next/link';
 import { ColumnDef, flexRender, getCoreRowModel, useReactTable } from '@tanstack/react-table';
 import { formatDate } from 'date-fns';
+import Link from 'next/link';
+import { useMemo } from 'react';
 
+import PaginationControls from '@/components/PaginationControls';
+import ROUTES, { DYNAMIC_ROUTES } from '@/constants/routes';
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -15,12 +17,8 @@ import {
 } from '@/shadcn/components/ui/breadcrumb';
 import { Button } from '@/shadcn/components/ui/button';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/shadcn/components/ui/table';
-
 import { TenantProvider, TenantProviderPolicy } from '@/types/app.types';
-
-import ROUTES, { DYNAMIC_ROUTES } from '@/constants/routes';
 import { withoutProtocol } from '@/utils/url';
-import PaginationControls from '@/components/PaginationControls';
 
 import PolicyOptions from './PolicyOptions';
 

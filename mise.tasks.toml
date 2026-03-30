@@ -1,8 +1,5 @@
 [setup]
-run = [
-  "mise install",
-  "npm install"
-]
+run = ["mise install", "npm install"]
 
 [dev]
 run = "npm run dev"
@@ -26,9 +23,7 @@ run = "npm run lint"
 run = "npm run format"
 
 [check]
-run = [
-  { tasks = ["lint", "format"] }
-]
+run = [{ tasks = ["lint", "format"] }]
 
 ["e2e:sdk"]
 run = "sh ./e2e/run.sh"

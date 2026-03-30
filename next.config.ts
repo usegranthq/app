@@ -1,5 +1,4 @@
 import './src/env';
-
 import { NextConfig } from 'next';
 
 const docsUrl = process.env.NODE_ENV === 'development' ? 'http://localhost:3500' : 'http://host.docker.internal:3500';
@@ -76,7 +75,10 @@ const nextConfig: NextConfig = {
           { key: 'X-Content-Type-Options', value: 'nosniff' },
           { key: 'X-XSS-Protection', value: '1; mode=block' },
           { key: 'Referrer-Policy', value: 'no-referrer' },
-          { key: 'Strict-Transport-Security', value: 'max-age=63072000; includeSubDomains; preload' },
+          {
+            key: 'Strict-Transport-Security',
+            value: 'max-age=63072000; includeSubDomains; preload',
+          },
         ],
       },
     ];

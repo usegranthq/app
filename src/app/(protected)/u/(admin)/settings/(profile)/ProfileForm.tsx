@@ -1,18 +1,17 @@
 'use client';
 
-import { startTransition } from 'react';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { startTransition } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 import z from 'zod';
-
-import { Button } from '@/shadcn/components/ui/button';
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/shadcn/components/ui/card';
 
 import { updateProfile } from '@/actions';
 import HookForm from '@/components/HookForm';
 import { useProgressBar } from '@/components/NavProgress';
 import { profileSchema } from '@/schema';
+import { Button } from '@/shadcn/components/ui/button';
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/shadcn/components/ui/card';
 import { User } from '@/types';
 
 type ProfileFormValues = z.infer<typeof profileSchema>;

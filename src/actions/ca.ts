@@ -2,8 +2,8 @@
 
 import { Certificate } from 'node:tls';
 
-import { getIssuerCertifcate } from '@/utils/ca';
 import { verifySession } from '@/data/_verifySession';
+import { getIssuerCertifcate } from '@/utils/ca';
 
 interface CaDetails {
   issuer: string;

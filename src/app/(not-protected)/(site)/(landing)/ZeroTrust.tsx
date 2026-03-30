@@ -1,5 +1,5 @@
-import { ReactNode } from 'react';
 import { GalleryHorizontalEndIcon, ShieldCheckIcon, ZapIcon } from 'lucide-react';
+import { ReactNode } from 'react';
 
 import { Card, CardContent, CardHeader } from '@/shadcn/components/ui/card';
 

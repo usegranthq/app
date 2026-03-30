@@ -1,9 +1,8 @@
-import { Suspense } from 'react';
 import Link from 'next/link';
-
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/shadcn/components/ui/card';
+import { Suspense } from 'react';
 
 import env from '@/env';
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/shadcn/components/ui/card';
 
 import LoginForm from '../login/LoginForm';
 import OauthButtons from '../login/OauthButtons';

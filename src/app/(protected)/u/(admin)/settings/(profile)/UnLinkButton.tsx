@@ -3,6 +3,8 @@
 import { useTransition } from 'react';
 import { toast } from 'sonner';
 
+import { useProgressBar } from '@/components/NavProgress';
+import { authClient } from '@/lib/auth-client';
 import {
   AlertDialog,
   AlertDialogAction,
@@ -15,9 +17,6 @@ import {
   AlertDialogTrigger,
 } from '@/shadcn/components/ui/alert-dialog';
 import { Button } from '@/shadcn/components/ui/button';
-
-import { authClient } from '@/lib/auth-client';
-import { useProgressBar } from '@/components/NavProgress';
 
 interface LinkButtonProps {
   provider: {

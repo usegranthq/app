@@ -3,11 +3,10 @@
 import { useTransition } from 'react';
 import { toast } from 'sonner';
 
-import { Button } from '@/shadcn/components/ui/button';
-
-import { PLAN, PLAN_FEATURES, PlanFeatures, PlanId } from '@/utils/billing';
 import { checkout, upgradePlan } from '@/actions';
 import { useProgressBar } from '@/components/NavProgress';
+import { Button } from '@/shadcn/components/ui/button';
+import { PLAN, PLAN_FEATURES, PlanFeatures, PlanId } from '@/utils/billing';
 
 import CancelPlanButton from './CancelPlanButton';
 

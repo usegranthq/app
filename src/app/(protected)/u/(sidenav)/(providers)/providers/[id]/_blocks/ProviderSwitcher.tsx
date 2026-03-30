@@ -1,7 +1,7 @@
 'use client';
 
-import Link from 'next/link';
 import { ChevronsUpDownIcon, KanbanIcon, PlusIcon } from 'lucide-react';
+import Link from 'next/link';
 
 import {
   DropdownMenu,
@@ -13,7 +13,6 @@ import {
   DropdownMenuTrigger,
 } from '@/shadcn/components/ui/dropdown-menu';
 import { SidebarMenu, SidebarMenuButton, SidebarMenuItem, useSidebar } from '@/shadcn/components/ui/sidebar';
-
 import { Provider } from '@/types/app.types';
 
 interface ProviderSwitcherProps {

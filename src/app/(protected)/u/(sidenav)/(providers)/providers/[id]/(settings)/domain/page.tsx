@@ -1,9 +1,9 @@
 import { notFound } from 'next/navigation';
 
-import { getDomains, getProvider } from '@/data/providers';
-import { getPlanDetails } from '@/data/user';
 import { getWellKnownHostname, getWellKnownURL } from '@/app/provider-helpers';
 import { FeatureUnavailable } from '@/components/FeatureUnavailable';
+import { getDomains, getProvider } from '@/data/providers';
+import { getPlanDetails } from '@/data/user';
 
 import CaDetails from './CaDetails';
 import DomainDetails from './DomainDetails';

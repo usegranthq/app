@@ -1,12 +1,11 @@
+import { getSessionCookie } from 'better-auth/cookies';
 import { headers } from 'next/headers';
 import Link from 'next/link';
-import { getSessionCookie } from 'better-auth/cookies';
 
+import * as constants from '@/constants';
+import ROUTES from '@/constants/routes';
 import { Button } from '@/shadcn/components/ui/button';
 import { Separator } from '@/shadcn/components/ui/separator';
-
-import ROUTES from '@/constants/routes';
-import * as constants from '@/constants';
 
 export default async function NotFound() {
   const headersList = new Headers(await headers());

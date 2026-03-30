@@ -1,6 +1,6 @@
+import { getSessionCookie } from 'better-auth/cookies';
 import type { NextRequest, ProxyConfig } from 'next/server';
 import { NextResponse } from 'next/server';
-import { getSessionCookie } from 'better-auth/cookies';
 
 import * as constants from '@/constants';
 

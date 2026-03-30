@@ -1,7 +1,7 @@
-import { getApiErrorMessage } from '@/utils/error';
 import { getPlanByUserId } from '@/lib/billing';
 import db from '@/lib/db';
 import customDomain from '@/lib/domain';
+import { getApiErrorMessage } from '@/utils/error';
 
 import { authRpcRouter } from '../rpc';
 import { domainFields } from './utils/return-fields';

@@ -1,7 +1,7 @@
 'use client';
 
-import { ComponentPropsWithoutRef } from 'react';
 import { LifeBuoyIcon, SendIcon } from 'lucide-react';
+import { ComponentPropsWithoutRef } from 'react';
 
 import {
   SidebarGroup,

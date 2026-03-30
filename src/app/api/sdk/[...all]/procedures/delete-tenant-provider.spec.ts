@@ -1,8 +1,8 @@
 import { describe, expect, it } from 'vitest';
 
+import mockDb from '@/lib/__mocks__/db';
 import ERRORS from '@/utils/error';
 import { STATUS_CODES } from '@/utils/rest';
-import mockDb from '@/lib/__mocks__/db';
 
 import { fakeDbTenant, fakeDbTenantProvider } from './test-utils/fake-data';
 import createAuthorizedRequest from './test-utils/request';

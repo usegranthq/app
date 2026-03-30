@@ -1,5 +1,4 @@
 import 'server-only';
-
 import { CompactJWSHeaderParameters, CompactSign, JWK, JWTPayload } from 'jose';
 import { nanoid } from 'nanoid';
 

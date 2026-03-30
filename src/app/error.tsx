@@ -1,7 +1,7 @@
 'use client';
 
-import Link from 'next/link';
 import { AlertOctagon } from 'lucide-react';
+import Link from 'next/link';
 
 import { Button } from '@/shadcn/components/ui/button';
 

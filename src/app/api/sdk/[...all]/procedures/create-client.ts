@@ -1,6 +1,6 @@
-import { getApiErrorMessage } from '@/utils/error';
 import { getPlanByUserId } from '@/lib/billing';
 import db from '@/lib/db';
+import { getApiErrorMessage } from '@/utils/error';
 
 import { authRpcRouter } from '../rpc';
 import { clientFields } from './utils/return-fields';

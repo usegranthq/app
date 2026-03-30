@@ -1,10 +1,12 @@
 'use client';
 
-import { useCallback, useRef, useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { useCallback, useRef, useState } from 'react';
 import { useFormStatus } from 'react-dom';
 import { toast } from 'sonner';
 
+import { createApiKey } from '@/actions';
+import CopyInput from '@/components/CopyInput';
 import {
   AlertDialog,
   AlertDialogAction,
@@ -19,9 +21,6 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Input } from '@/shadcn/components/ui/input';
 import { Label } from '@/shadcn/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/shadcn/components/ui/select';
-
-import { createApiKey } from '@/actions';
-import CopyInput from '@/components/CopyInput';
 
 const expirationOptions = [
   { label: '1 day', value: 1 },

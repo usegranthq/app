@@ -1,14 +1,13 @@
+import { CheckCircle2Icon } from 'lucide-react';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
-import { CheckCircle2Icon } from 'lucide-react';
 import z from 'zod';
 
-import { Button } from '@/shadcn/components/ui/button';
-
 import ROUTES from '@/constants/routes';
-import { verifyHMACState } from '@/utils/callbacks';
-import polarClient from '@/lib/polar';
 import env from '@/env';
+import polarClient from '@/lib/polar';
+import { Button } from '@/shadcn/components/ui/button';
+import { verifyHMACState } from '@/utils/callbacks';
 
 const redirectParamsSchema = z.object({
   checkout_id: z.string(),

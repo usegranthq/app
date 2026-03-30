@@ -1,10 +1,9 @@
-import Link from 'next/link';
 import { KanbanIcon, MenuIcon } from 'lucide-react';
-
-import { Button } from '@/shadcn/components/ui/button';
-import { Sheet, SheetContent, SheetTrigger } from '@/shadcn/components/ui/sheet';
+import Link from 'next/link';
 
 import NavLink from '@/components/NavLink';
+import { Button } from '@/shadcn/components/ui/button';
+import { Sheet, SheetContent, SheetTrigger } from '@/shadcn/components/ui/sheet';
 
 export default function Header() {
   return (

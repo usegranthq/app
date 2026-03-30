@@ -1,9 +1,8 @@
 'use client';
 
+import { useUser } from '@/contexts/User';
 import { Avatar, AvatarFallback, AvatarImage } from '@/shadcn/components/ui/avatar';
 import { cn } from '@/shadcn/lib/utils';
-
-import { useUser } from '@/contexts/User';
 
 interface UserAvatarProps {
   className?: string;

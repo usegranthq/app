@@ -1,12 +1,10 @@
-import Link from 'next/link';
 import { formatRelative } from 'date-fns';
-
-import { Button } from '@/shadcn/components/ui/button';
-import { Card, CardDescription, CardFooter, CardHeader, CardTitle } from '@/shadcn/components/ui/card';
-
-import { Tenant } from '@/types/app.types';
+import Link from 'next/link';
 
 import { getTenants } from '@/data/tenants';
+import { Button } from '@/shadcn/components/ui/button';
+import { Card, CardDescription, CardFooter, CardHeader, CardTitle } from '@/shadcn/components/ui/card';
+import { Tenant } from '@/types/app.types';
 
 import NoTenants from './NoTenants';
 

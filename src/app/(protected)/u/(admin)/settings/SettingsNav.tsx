@@ -1,5 +1,5 @@
-import ROUTES from '@/constants/routes';
 import NavLink from '@/components/NavLink';
+import ROUTES from '@/constants/routes';
 
 export default function SettingsNav() {
   return (

@@ -1,10 +1,10 @@
 import { describe, expect, it } from 'vitest';
 
+import mockDb from '@/lib/__mocks__/db';
+import mockCustomDomain from '@/lib/__mocks__/domain';
 import ERRORS from '@/utils/error';
 import { sillyClone } from '@/utils/object';
 import { STATUS_CODES } from '@/utils/rest';
-import mockDb from '@/lib/__mocks__/db';
-import mockCustomDomain from '@/lib/__mocks__/domain';
 
 import { fakeDbDomain, fakeDbDomainResposne, fakeDbProvider } from './test-utils/fake-data';
 import createAuthorizedRequest from './test-utils/request';

@@ -1,5 +1,4 @@
 import 'server-only';
-
 import Cloudflare from 'cloudflare';
 
 import env from '@/env';

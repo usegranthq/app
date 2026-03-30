@@ -1,22 +1,20 @@
 'use client';
 
-import { useRef, useTransition } from 'react';
-import { useRouter } from 'next/navigation';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { useRouter } from 'next/navigation';
+import { useRef, useTransition } from 'react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 import z from 'zod';
 
-import { Button } from '@/shadcn/components/ui/button';
-import { Label } from '@/shadcn/components/ui/label';
-
-import { TenantProvider } from '@/types/app.types';
-
-import { DYNAMIC_ROUTES } from '@/constants/routes';
 import { createTenantProviderPolicy } from '@/actions';
 import HookForm from '@/components/HookForm';
 import { useProgressBar } from '@/components/NavProgress';
+import { DYNAMIC_ROUTES } from '@/constants/routes';
 import { tenantProviderPolicySchema } from '@/schema';
+import { Button } from '@/shadcn/components/ui/button';
+import { Label } from '@/shadcn/components/ui/label';
+import { TenantProvider } from '@/types/app.types';
 
 interface AddPolicyFormProps {
   tenantId: string;

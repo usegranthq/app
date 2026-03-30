@@ -1,5 +1,5 @@
-import { getApiErrorMessage } from '@/utils/error';
 import db from '@/lib/db';
+import { getApiErrorMessage } from '@/utils/error';
 
 import { authRpcRouter } from '../rpc';
 

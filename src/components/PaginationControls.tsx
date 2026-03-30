@@ -1,8 +1,8 @@
 'use client';
 
-import { MouseEvent, useCallback, useEffect } from 'react';
 import { Route } from 'next';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
+import { MouseEvent, useCallback, useEffect } from 'react';
 
 import {
   Pagination,

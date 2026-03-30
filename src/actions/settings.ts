@@ -5,11 +5,11 @@ import { headers } from 'next/headers';
 import { redirect } from 'next/navigation';
 
 import ROUTES from '@/constants/routes';
-import { getApiErrorMessage } from '@/utils/error';
+import { verifySession } from '@/data/_verifySession';
 import { auth } from '@/lib/auth';
 import db from '@/lib/db';
 import customDomain from '@/lib/domain';
-import { verifySession } from '@/data/_verifySession';
+import { getApiErrorMessage } from '@/utils/error';
 
 export async function deleteOtherSessions(): ActionResponse {
   await verifySession();
