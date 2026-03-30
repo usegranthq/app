@@ -1,5 +1,4 @@
 [settings]
-experimental = true # for lockfile
 lockfile = true
 
 [tools]
