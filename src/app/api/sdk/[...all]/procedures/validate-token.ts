@@ -102,7 +102,8 @@ const validateToken = authRpcRouter.tenants.tokens.validate.handler(async ({ con
 
   // validate if audience is configured and matches the token audience
   const audience = tenantProviderPolicy.audience ?? tenantProvider.audience;
-  if (claims.aud !== audience) {
+  const audienceMatches = Array.isArray(claims.aud) ? claims.aud.includes(audience) : claims.aud === audience;
+  if (!audienceMatches) {
     throw errors.INVALID_TOKEN();
   }
 
