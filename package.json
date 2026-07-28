@@ -101,7 +101,7 @@
     "lint-staged": "^16.4.0",
     "oxfmt": "^0.42.0",
     "oxlint": "^1.57.0",
-    "postcss": "^8.5.8",
+    "postcss": "^8.5.18",
     "prisma": "7.6.0",
     "tailwindcss": "^4.2.2",
     "tsx": "^4.21.0",
