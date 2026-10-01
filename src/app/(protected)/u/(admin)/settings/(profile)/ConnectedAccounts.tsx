@@ -6,7 +6,7 @@ import LinkButton from './LinkButton';
 import UnLinkButton from './UnLinkButton';
 
 interface ConnectedAccountProps {
-  accounts: string[];
+  accounts: { id: string; providerId: string }[];
 }
 
 const supportedProviders = [
@@ -31,6 +31,8 @@ export default function ConnectedAccounts({ accounts }: ConnectedAccountProps) {
       </CardHeader>
       <CardContent className="grid gap-2">
         {supportedProviders.map((provider) => {
+          const account = accounts.find((account) => account.providerId === provider.provider);
+
           return (
             <Card key={provider.provider} className="rounded-lg p-3 text-sm">
               <CardContent className="flex items-center p-0 px-2">
@@ -39,8 +41,8 @@ export default function ConnectedAccounts({ accounts }: ConnectedAccountProps) {
                   <span className="font-medium">{provider.label}</span>
                 </div>
                 <div className="ml-auto">
-                  {accounts.includes(provider.provider) ? (
-                    <UnLinkButton provider={provider} />
+                  {account ? (
+                    <UnLinkButton provider={provider} accountId={account.id} />
                   ) : (
                     <LinkButton provider={provider} />
                   )}

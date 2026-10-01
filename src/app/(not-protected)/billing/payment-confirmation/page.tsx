@@ -37,7 +37,7 @@ export default async function PaymentConfirmation({ searchParams }: PaymentConfi
 
   try {
     // just checking if its a valid checkout
-    const checkout = await polarClient.checkouts.get({ id: params.checkout_id });
+    const checkout = await polarClient.checkouts.get(params.checkout_id);
     if (checkout.status !== 'succeeded') {
       throw new Error('Unsucessfull payment');
     }

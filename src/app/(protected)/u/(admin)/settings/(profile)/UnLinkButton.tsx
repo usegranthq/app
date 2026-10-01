@@ -23,9 +23,10 @@ interface LinkButtonProps {
     provider: string;
     label: string;
   };
+  accountId: string;
 }
 
-export default function UnLinkButton({ provider }: LinkButtonProps) {
+export default function UnLinkButton({ provider, accountId }: LinkButtonProps) {
   const [isPending, startTransition] = useTransition();
   const progress = useProgressBar();
 
@@ -34,7 +35,7 @@ export default function UnLinkButton({ provider }: LinkButtonProps) {
       progress.start();
 
       await authClient.unlinkAccount({
-        providerId: provider.provider,
+        accountId,
         fetchOptions: {
           onError: ({ error }) => {
             if (typeof error === 'object' && 'message' in error) {

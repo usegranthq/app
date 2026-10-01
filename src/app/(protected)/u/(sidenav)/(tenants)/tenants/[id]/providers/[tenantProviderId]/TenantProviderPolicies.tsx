@@ -1,6 +1,13 @@
 'use client';
 
-import { ColumnDef, flexRender, getCoreRowModel, useReactTable } from '@tanstack/react-table';
+import {
+  ColumnDef,
+  columnVisibilityFeature,
+  flexRender,
+  rowSelectionFeature,
+  tableFeatures,
+  useTable,
+} from '@tanstack/react-table';
 import { formatDate } from 'date-fns';
 import Link from 'next/link';
 import { useMemo } from 'react';
@@ -22,6 +29,8 @@ import { withoutProtocol } from '@/utils/url';
 
 import PolicyOptions from './PolicyOptions';
 
+const features = tableFeatures({ columnVisibilityFeature, rowSelectionFeature });
+
 interface TenantProviderPoliciesProps {
   id: string;
   tenantProvider: TenantProvider;
@@ -29,8 +38,8 @@ interface TenantProviderPoliciesProps {
   pagination: Pagination;
 }
 
-function getColumns(tenantId: string, tenantProviderId: string): ColumnDef<TenantProviderPolicy>[] {
-  const columns: ColumnDef<TenantProviderPolicy>[] = [
+function getColumns(tenantId: string, tenantProviderId: string): ColumnDef<typeof features, TenantProviderPolicy>[] {
+  const columns: ColumnDef<typeof features, TenantProviderPolicy>[] = [
     {
       header: 'Name',
       cell: ({ row }) => {
@@ -76,10 +85,10 @@ export default function TenantProviderPolicies({
 }: TenantProviderPoliciesProps) {
   const columns = useMemo(() => getColumns(id, tenantProvider.id), [id, tenantProvider.id]);
 
-  const table = useReactTable({
+  const table = useTable({
+    features,
     data: policies,
     columns,
-    getCoreRowModel: getCoreRowModel(),
   });
 
   return (

@@ -49,7 +49,7 @@ const sdk = new NodeSDK({
   ],
 
   // send logs
-  logRecordProcessors: [new logs.BatchLogRecordProcessor(logExporter)],
+  logRecordProcessors: [new logs.BatchLogRecordProcessor({ exporter: logExporter })],
 
   // instrumentations to patch pino
   instrumentations: [

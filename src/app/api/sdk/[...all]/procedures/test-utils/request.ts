@@ -2,7 +2,7 @@ import { NextRequest } from 'next/server';
 
 import mockAuth from '@/lib/__mocks__/auth';
 
-import { handleRequest } from '../../route';
+import { handleRequest } from '../../handle-request';
 import { fakeDbApiKey } from './fake-data';
 
 interface ModifiedRequestInit extends Omit<RequestInit, 'body'> {

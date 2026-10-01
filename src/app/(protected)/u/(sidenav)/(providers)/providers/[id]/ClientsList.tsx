@@ -1,6 +1,13 @@
 'use client';
 
-import { ColumnDef, flexRender, getCoreRowModel, useReactTable } from '@tanstack/react-table';
+import {
+  ColumnDef,
+  columnVisibilityFeature,
+  flexRender,
+  rowSelectionFeature,
+  tableFeatures,
+  useTable,
+} from '@tanstack/react-table';
 import { useMemo } from 'react';
 
 import PaginationControls from '@/components/PaginationControls';
@@ -10,8 +17,10 @@ import { formatDate } from '@/utils/date';
 
 import ClientOptions from './ClientOptions';
 
-function getColumns(providerId: string): ColumnDef<Client>[] {
-  const columns: ColumnDef<Client>[] = [
+const features = tableFeatures({ columnVisibilityFeature, rowSelectionFeature });
+
+function getColumns(providerId: string): ColumnDef<typeof features, Client>[] {
+  const columns: ColumnDef<typeof features, Client>[] = [
     {
       header: 'Name',
       cell: ({ row }) => {
@@ -58,10 +67,10 @@ interface ClientsListProps {
 export default function ClientsList({ clients, id, pagination }: ClientsListProps) {
   const columns = useMemo(() => getColumns(id), [id]);
 
-  const table = useReactTable({
+  const table = useTable({
+    features,
     data: clients,
     columns,
-    getCoreRowModel: getCoreRowModel(),
   });
 
   return (

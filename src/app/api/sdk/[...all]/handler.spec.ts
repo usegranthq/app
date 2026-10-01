@@ -3,9 +3,9 @@ import { describe, expect, it } from 'vitest';
 import mockAuth from '@/lib/__mocks__/auth';
 import { STATUS_CODES } from '@/utils/rest';
 
+import { handleRequest } from './handle-request';
 import { fakeDbApiKey } from './procedures/test-utils/fake-data';
 import { createRequest } from './procedures/test-utils/request';
-import { handleRequest } from './route';
 
 describe('SDK: Router', () => {
   it('return 401 if the request doesnt have an api key', async () => {

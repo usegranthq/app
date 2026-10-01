@@ -36,7 +36,7 @@ export const getSocialAccounts = async () => {
 
   return accounts
     .filter((account) => socialProviders.includes(account.providerId))
-    .map((account) => account.providerId);
+    .map((account) => ({ id: account.id, providerId: account.providerId }));
 };
 
 export const getCustomer = async (): Promise<Customer | null> => {

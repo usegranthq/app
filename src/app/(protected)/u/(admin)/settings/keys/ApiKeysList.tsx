@@ -1,6 +1,13 @@
 'use client';
 
-import { ColumnDef, flexRender, getCoreRowModel, useReactTable } from '@tanstack/react-table';
+import {
+  ColumnDef,
+  columnVisibilityFeature,
+  flexRender,
+  rowSelectionFeature,
+  tableFeatures,
+  useTable,
+} from '@tanstack/react-table';
 import { formatRelative } from 'date-fns';
 
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/shadcn/components/ui/table';
@@ -10,7 +17,9 @@ import { isNullOrUndefined } from '@/utils/validators';
 
 import ApiKeyOptions from './ApiKeyOptions';
 
-const columns: ColumnDef<ApiKey>[] = [
+const features = tableFeatures({ columnVisibilityFeature, rowSelectionFeature });
+
+const columns: ColumnDef<typeof features, ApiKey>[] = [
   {
     header: 'Name',
     cell: ({ row }) => {
@@ -56,10 +65,10 @@ interface ApiKeysListProps {
 }
 
 export default function ApiKeysList({ apiKeys }: ApiKeysListProps) {
-  const table = useReactTable({
+  const table = useTable({
+    features,
     data: apiKeys,
     columns,
-    getCoreRowModel: getCoreRowModel(),
   });
 
   return (

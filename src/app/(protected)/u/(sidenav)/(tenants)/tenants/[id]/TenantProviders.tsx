@@ -1,6 +1,13 @@
 'use client';
 
-import { ColumnDef, flexRender, getCoreRowModel, useReactTable } from '@tanstack/react-table';
+import {
+  ColumnDef,
+  columnVisibilityFeature,
+  flexRender,
+  rowSelectionFeature,
+  tableFeatures,
+  useTable,
+} from '@tanstack/react-table';
 import { formatDate } from 'date-fns';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
@@ -23,6 +30,8 @@ import { withoutProtocol } from '@/utils/url';
 
 import TenantOptions from './TenantOptions';
 
+const features = tableFeatures({ columnVisibilityFeature, rowSelectionFeature });
+
 interface TenantProvidersProps {
   id: string;
   tenant: Tenant;
@@ -30,8 +39,8 @@ interface TenantProvidersProps {
   pagination: Pagination;
 }
 
-function getColumns(tenantId: string): ColumnDef<TenantProvider>[] {
-  const columns: ColumnDef<TenantProvider>[] = [
+function getColumns(tenantId: string): ColumnDef<typeof features, TenantProvider>[] {
+  const columns: ColumnDef<typeof features, TenantProvider>[] = [
     {
       header: 'Name',
       cell: ({ row }) => {
@@ -74,10 +83,10 @@ export default function TenantProviders({ id, providers, pagination, tenant }: T
   const columns = useMemo(() => getColumns(id), [id]);
   const router = useRouter();
 
-  const table = useReactTable({
+  const table = useTable({
+    features,
     data: providers,
     columns,
-    getCoreRowModel: getCoreRowModel(),
   });
 
   const handleRowClick = (row: TenantProvider) => {

@@ -40,11 +40,11 @@ export const checkout = async (planId: PlanId): ActionResponse<string> => {
 
   try {
     const checkoutSession = await polarClient.checkouts.create({
-      externalCustomerId: session.user.id,
+      external_customer_id: session.user.id,
       products: [planProductId],
-      customerId: customer?.customerRefId,
-      customerEmail: session.user.email,
-      successUrl: successUrl.toString(),
+      customer_id: customer?.customerRefId,
+      customer_email: session.user.email,
+      success_url: successUrl.toString(),
     });
     sessionURL = checkoutSession.url;
   } catch (error) {
@@ -80,18 +80,15 @@ export const upgradePlan = async (planId: PlanId): ActionResponse => {
   }
 
   try {
-    const subscription = await polarClient.subscriptions.update({
-      id: activeSubscription.subscriptionRefId,
-      subscriptionUpdate: {
-        productId: planProductId,
-        prorationBehavior: 'prorate',
-      },
+    const subscription = await polarClient.subscriptions.update(activeSubscription.subscriptionRefId, {
+      product_id: planProductId,
+      proration_behavior: 'prorate',
     });
 
     // update subscription
     await db.subscription.update({
       where: { id: activeSubscription.id, Customer: { userId: session.user.id } },
-      data: { status: subscription.status, productId: subscription.productId },
+      data: { status: subscription.status, productId: subscription.product_id },
     });
   } catch (error) {
     const errorMessage = getApiErrorMessage(error, 'Failed to create a checkout session');
@@ -133,9 +130,7 @@ export const cancelSubscription = async (): ActionResponse => {
 
   // cancel subscription
   try {
-    const polarSubscription = await polarClient.subscriptions.revoke({
-      id: subscription.subscriptionRefId,
-    });
+    const polarSubscription = await polarClient.subscriptions.revoke(subscription.subscriptionRefId);
 
     // update subscription
     await db.subscription.update({
@@ -159,9 +154,9 @@ export const redirectToCustomerPortal = async (): ActionResponse<string | null> 
 
   try {
     const url = await polarClient.customerSessions.create({
-      customerId: customer.customerRefId,
+      customer_id: customer.customerRefId,
     });
-    return [null, url.customerPortalUrl];
+    return [null, url.customer_portal_url];
   } catch (error) {
     const errorMessage = getApiErrorMessage(error, 'Failed to redirect to customer portal');
     return [errorMessage, null];

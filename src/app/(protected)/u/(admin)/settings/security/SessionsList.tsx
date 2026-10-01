@@ -1,6 +1,13 @@
 'use client';
 
-import { ColumnDef, flexRender, getCoreRowModel, useReactTable } from '@tanstack/react-table';
+import {
+  ColumnDef,
+  columnVisibilityFeature,
+  flexRender,
+  rowSelectionFeature,
+  tableFeatures,
+  useTable,
+} from '@tanstack/react-table';
 import { formatDate, formatDistanceToNow } from 'date-fns';
 
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/shadcn/components/ui/table';
@@ -8,7 +15,9 @@ import { Session } from '@/types/app.types';
 
 import SessionOptions from './SessionOptions';
 
-const columns: ColumnDef<Session>[] = [
+const features = tableFeatures({ columnVisibilityFeature, rowSelectionFeature });
+
+const columns: ColumnDef<typeof features, Session>[] = [
   {
     header: 'IP Address',
     cell: ({ row }) => {
@@ -49,10 +58,10 @@ interface SessionsListProps {
 }
 
 export default function SessionsList({ sessions }: SessionsListProps) {
-  const table = useReactTable({
+  const table = useTable({
+    features,
     data: sessions,
     columns,
-    getCoreRowModel: getCoreRowModel(),
   });
 
   return (

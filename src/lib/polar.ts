@@ -1,10 +1,10 @@
-import { Polar } from '@polar-sh/sdk';
+import { createPolar } from '@polar-sh/sdk/2026-10';
 
 import env from '@/env';
 
-const polarClient = new Polar({
+const polarClient = createPolar({
   accessToken: env.POLAR_ACCESS_TOKEN,
-  server: process.env.NODE_ENV === 'production' ? 'production' : 'sandbox',
+  environment: process.env.NODE_ENV === 'production' ? 'production' : 'sandbox',
 });
 
 export default polarClient;
