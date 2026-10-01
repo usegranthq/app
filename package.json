@@ -33,7 +33,7 @@
     "@opentelemetry/semantic-conventions": "^1.40.0",
     "@orpc/contract": "^1.13.13",
     "@orpc/openapi": "^1.13.13",
-    "@orpc/server": "^1.14.8",
+    "@orpc/server": "^1.14.9",
     "@orpc/zod": "^1.13.13",
     "@polar-sh/nextjs": "0.9.5",
     "@polar-sh/sdk": "0.46.7",
