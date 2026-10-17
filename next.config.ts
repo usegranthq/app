@@ -1,7 +1,9 @@
-import './src/env';
 import { NextConfig } from 'next';
 
-const docsUrl = process.env.NODE_ENV === 'development' ? 'http://localhost:3500' : 'http://host.docker.internal:3500';
+import env from './src/env';
+
+// /docs is proxied to the docs service only when DOCS_URL is set
+const docsUrl = env.DOCS_URL;
 
 const nextConfig: NextConfig = {
   reactStrictMode: true,
@@ -49,20 +51,22 @@ const nextConfig: NextConfig = {
           destination: '/api/sdk/:path*',
         },
       ],
-      afterFiles: [
-        {
-          source: '/docs',
-          destination: `${docsUrl}/docs`,
-        },
-        {
-          source: '/docs/:path+',
-          destination: `${docsUrl}/docs/:path+`,
-        },
-        {
-          source: '/docs-static/_next/:path+',
-          destination: `${docsUrl}/docs-static/_next/:path+`,
-        },
-      ],
+      afterFiles: docsUrl
+        ? [
+            {
+              source: '/docs',
+              destination: `${docsUrl}/docs`,
+            },
+            {
+              source: '/docs/:path+',
+              destination: `${docsUrl}/docs/:path+`,
+            },
+            {
+              source: '/docs-static/_next/:path+',
+              destination: `${docsUrl}/docs-static/_next/:path+`,
+            },
+          ]
+        : [],
       fallback: [],
     };
   },

@@ -1,14 +1,14 @@
-name: Deploy
+name: Hetzner Deploy
 
 on:
   workflow_dispatch:
-  push:
-    branches:
-      - master
-    paths-ignore:
-      - .vscode/**
-      - .husky/**
-      - scripts/**
+  # push:
+  #   branches:
+  #     - master
+  #   paths-ignore:
+  #     - .vscode/**
+  #     - .husky/**
+  #     - scripts/**
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
