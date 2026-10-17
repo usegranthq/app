@@ -1,0 +1,148 @@
+name: Deploy
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - master
+    paths-ignore:
+      - .vscode/**
+      - .husky/**
+      - scripts/**
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+
+env:
+  NEXT_TELEMETRY_DISABLED: 1
+
+permissions:
+  contents: read
+  id-token: write
+
+jobs:
+  deploy:
+    runs-on: blacksmith-2vcpu-ubuntu-2404
+
+    environment:
+      name: production
+      url: ${{ vars.SITE_URL }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6
+
+      - name: Setup docker
+        uses: docker/setup-docker-action@v4
+
+      - name: Set up docker buildx
+        id: buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Configure Tailscale
+        uses: tailscale/github-action@v4
+        with:
+          oauth-client-id: ${{ secrets.TAILSCALE_CLIENT_ID }}
+          audience: ${{ secrets.TAILSCALE_AUDIENCE }}
+          tags: tag:ci-actions-deploy
+
+      - name: Configure SSH
+        run: |
+          mkdir -p ~/.ssh
+          chmod 700 ~/.ssh
+          ssh-keyscan -H ${{ secrets.TAILSCALE_HETZNER_HOST }} >> ~/.ssh/known_hosts
+          chmod 644 ~/.ssh/known_hosts
+
+      - name: Test SSH connection
+        run: ssh ${{ secrets.REMOTE_DOCKER_HOST }} exit
+
+      - name: Prepare image tag
+        run: echo "DOCKER_IMAGE_TAG=sha-${GITHUB_SHA::7}" >> $GITHUB_ENV
+
+      - name: Write environment variables
+        uses: sibiraj-s/action-toenv@v1
+        with:
+          env: |
+            DOCKER_REPOSITORY=${{ secrets.DOCKER_REPOSITORY }}
+            IMAGE_TAG=${{ env.DOCKER_IMAGE_TAG }}
+            POSTGRES_USER=${{ secrets.POSTGRES_USER }}
+            POSTGRES_PASSWORD=${{ secrets.POSTGRES_PASSWORD }}
+            POSTGRES_DB=${{ secrets.POSTGRES_DB }}
+            DATABASE_URL=${{ secrets.DATABASE_URL }}
+            SITE_URL=${{ secrets.SITE_URL }}
+            INVITE_TOKEN=${{ secrets.INVITE_TOKEN }}
+            JWT_SIGNING_SECRET=${{ secrets.JWT_SIGNING_SECRET }}
+            TURNSTILE_SITE_KEY=${{ secrets.TURNSTILE_SITE_KEY }}
+            TURNSTILE_SECRET_KEY=${{ secrets.TURNSTILE_SECRET_KEY }}
+            OAUTH_GITHUB_APP_CLIENT_ID=${{ secrets.OAUTH_GITHUB_APP_CLIENT_ID }}
+            OAUTH_GITHUB_APP_CLIENT_SECRET=${{ secrets.OAUTH_GITHUB_APP_CLIENT_SECRET }}
+            OAUTH_GOOGLE_APP_CLIENT_ID=${{ secrets.OAUTH_GOOGLE_APP_CLIENT_ID }}
+            OAUTH_GOOGLE_APP_CLIENT_SECRET=${{ secrets.OAUTH_GOOGLE_APP_CLIENT_SECRET }}
+            BETTER_AUTH_SECRET=${{ secrets.BETTER_AUTH_SECRET }}
+            PROVIDER_DOMAIN=${{ secrets.PROVIDER_DOMAIN }}
+            NODEMAILER_SMTP_URL=${{ secrets.NODEMAILER_SMTP_URL }}
+            EMAIL_FROM=${{ secrets.EMAIL_FROM }}
+            RESEND_API_KEY=${{ secrets.RESEND_API_KEY }}
+            CLOUDFLARE_API_TOKEN=${{ secrets.CLOUDFLARE_API_TOKEN }}
+            CLOUDFLARE_ZONE_ID=${{ secrets.CLOUDFLARE_ZONE_ID }}
+            CRON_SECRET=${{ secrets.CRON_SECRET }}
+            POSTHOG_API_KEY=${{ secrets.POSTHOG_API_KEY }}
+            STATE_HMAC_SECRET_KEY=${{ secrets.STATE_HMAC_SECRET_KEY }}
+            POLAR_ACCESS_TOKEN=${{ secrets.POLAR_ACCESS_TOKEN }}
+            POLAR_WEBHOOK_SECRET=${{ secrets.POLAR_WEBHOOK_SECRET }}
+            POLAR_PRO_PLAN_PRODUCT_ID=${{ secrets.POLAR_PRO_PLAN_PRODUCT_ID }}
+            POLAR_ULTIMATE_PLAN_PRODUCT_ID=${{ secrets.POLAR_ULTIMATE_PLAN_PRODUCT_ID }}
+            OTEL_DOMAIN=${{ secrets.OTEL_DOMAIN }}
+            OTEL_API_TOKEN=${{ secrets.OTEL_API_TOKEN }}
+            OTEL_AXIOM_DATASET=${{ secrets.OTEL_AXIOM_DATASET }}
+
+      - name: Log in to Docker Registry
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Cache
+        uses: actions/cache@v4
+        id: cache
+        with:
+          path: cache-mount
+          key: cache-mount-${{ hashFiles('Dockerfile') }}
+
+      - name: Inject docker mount cache
+        uses: reproducible-containers/buildkit-cache-dance@v3
+        with:
+          builder: ${{ steps.buildx.outputs.name }}
+          cache-dir: cache-mount
+          skip-extraction: ${{ steps.cache.outputs.cache-hit }}
+
+      - name: Build and push app image
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: ./Dockerfile
+          push: true
+          tags: |
+            ${{ secrets.DOCKER_REPOSITORY }}:${{ env.DOCKER_IMAGE_TAG }}
+            ${{ secrets.DOCKER_REPOSITORY }}:latest
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+      - name: Deploy
+        run: |
+          echo "${{ secrets.DOCKERHUB_TOKEN }}" | docker login -u ${{ secrets.DOCKERHUB_USERNAME }} --password-stdin
+          docker compose -f compose.yml up -d --remove-orphans
+        env:
+          DOCKER_HOST: ssh://${{ secrets.REMOTE_DOCKER_HOST }}
+
+      - name: Cleanup docker
+        run: |
+          # Remove unused containers, networks, images (both dangling and unreferenced)
+          docker system prune -f
+          # Remove images not associated with any containers
+          docker image prune -a
+        env:
+          DOCKER_HOST: ssh://${{ secrets.REMOTE_DOCKER_HOST }}
+
+      - name: Remove environment variables file
+        run: rm -f .env
