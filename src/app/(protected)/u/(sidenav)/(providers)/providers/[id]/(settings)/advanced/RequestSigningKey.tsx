@@ -6,29 +6,22 @@ import { toast } from 'sonner';
 
 import { requestSigningKey } from '@/actions';
 import { useProgressBar } from '@/components/NavProgress';
-import { Badge } from '@/shadcn/components/ui/badge';
 import { Button } from '@/shadcn/components/ui/button';
 import { Provider } from '@/types';
-import { PlanDetails } from '@/utils/billing';
 
 interface RequestSigningKeyProps {
   provider: Provider;
   isLoading: boolean;
-  plan: PlanDetails;
 }
 
 const RequestButton = (props: RequestSigningKeyProps) => {
-  const { provider, isLoading, plan } = props;
+  const { provider, isLoading } = props;
   const { pending } = useFormStatus();
 
-  return (
-    <Button disabled={pending || isLoading || provider.rotateJwks || !plan.features.signingKeys.request}>
-      Request new key
-    </Button>
-  );
+  return <Button disabled={pending || isLoading || provider.rotateJwks}>Request new key</Button>;
 };
 
-export default function RequestSigningKey({ provider, isLoading, plan }: RequestSigningKeyProps) {
+export default function RequestSigningKey({ provider, isLoading }: RequestSigningKeyProps) {
   const progress = useProgressBar();
 
   const handleSubmit = async () => {
@@ -47,14 +40,7 @@ export default function RequestSigningKey({ provider, isLoading, plan }: Request
 
   return (
     <form action={handleSubmit} className="flex items-center gap-2">
-      <RequestButton provider={provider} isLoading={isLoading} plan={plan} />
-      {!plan.features.signingKeys.request && (
-        <div>
-          <Badge variant="outline" className="">
-            Upgrade to request new keys
-          </Badge>
-        </div>
-      )}
+      <RequestButton provider={provider} isLoading={isLoading} />
     </form>
   );
 }

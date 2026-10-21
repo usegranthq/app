@@ -17,30 +17,12 @@ type TenantFormValues = z.infer<typeof tenantSchema>;
 type TenantPolicyFormValues = z.infer<typeof tenantProviderPolicySchema>;
 
 export async function createTenant(data: TenantFormValues): ActionResponse<Tenant> {
-  const { user, plan } = await verifySession();
+  const { user } = await verifySession();
 
   const validation = tenantSchema.safeParse(data);
 
   if (!validation.success) {
     return [getZodErrorMessage(validation.error), null];
-  }
-
-  // check if the user has reached the limit for providers
-  const tenantsCount = await db.tenant.count({
-    where: {
-      userId: user.id,
-    },
-  });
-
-  if (!plan.features.tenants.available) {
-    return ['Tenants are not available for your plan. Upgrade your plan or contact support to enable tenants.', null];
-  }
-
-  if (tenantsCount >= plan.features.tenants.limit) {
-    return [
-      'You have reached the limit for tenants. Upgrade your plan or contact support to increase the limit.',
-      null,
-    ];
   }
 
   try {

@@ -10,9 +10,6 @@ export default function SettingsNav() {
       <NavLink href={ROUTES.SETTINGS_APIKEYS} className="font-semibold">
         API Keys
       </NavLink>
-      <NavLink href={ROUTES.SETTINGS_BILLING} className="font-semibold">
-        Billing
-      </NavLink>
       <NavLink href={ROUTES.SETTINGS_SECURITY} className="font-semibold">
         Security
       </NavLink>

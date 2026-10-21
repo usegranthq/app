@@ -1,7 +1,6 @@
 import { describe, expect, it } from 'vitest';
 
 import mockDb from '@/lib/__mocks__/db';
-import { PLANS } from '@/utils/billing';
 import ERRORS from '@/utils/error';
 import { sillyClone } from '@/utils/object';
 import { STATUS_CODES } from '@/utils/rest';
@@ -28,20 +27,6 @@ describe('SDK: Create Client', () => {
     const response = await request.post();
     expect(response.status).toBe(STATUS_CODES.NOT_FOUND);
     await expect(response.json()).resolves.toMatchObject(ERRORS.PROVIDER_NOT_FOUND);
-  });
-
-  it('throw forbidden if max clients limit is reached', async () => {
-    mockDb.provider.findUnique.mockResolvedValue(fakeDbProvider);
-    mockDb.client.count.mockResolvedValue(PLANS.free.features.providerClients.limit);
-
-    const request = createAuthorizedRequest('v1/providers/1/clients', {
-      name: 'test-client',
-      audience: 'test-audience',
-    });
-
-    const response = await request.post();
-    expect(response.status).toBe(STATUS_CODES.FORBIDDEN);
-    await expect(response.json()).resolves.toMatchObject(ERRORS.MAX_CLIENTS_LIMIT_REACHED);
   });
 
   it('throw if client already exists', async () => {

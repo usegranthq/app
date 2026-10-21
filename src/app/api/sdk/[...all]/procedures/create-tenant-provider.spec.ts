@@ -1,7 +1,6 @@
 import { describe, expect, it } from 'vitest';
 
 import mockDb from '@/lib/__mocks__/db';
-import { PLANS } from '@/utils/billing';
 import ERRORS from '@/utils/error';
 import { sillyClone } from '@/utils/object';
 import { STATUS_CODES } from '@/utils/rest';
@@ -30,22 +29,6 @@ describe('SDK: Create Tenant Provider', () => {
     const response = await request.post();
     expect(response.status).toBe(STATUS_CODES.NOT_FOUND);
     await expect(response.json()).resolves.toMatchObject(ERRORS.TENANT_NOT_FOUND);
-  });
-
-  it('throw if plan does not allow more tenant providers', async () => {
-    mockDb.tenant.findUnique.mockResolvedValue(fakeDbTenant);
-    mockDb.tenantProvider.count.mockResolvedValue(PLANS.free.features.tenantProviders.limit);
-
-    const request = createAuthorizedRequest('v1/tenants/1/providers', {
-      url: 'https://example.com',
-      audience: 'test-audience',
-      earliestIssuanceTimeAllowed: 1,
-      fingerprints: ['1234567890123456789012345678901234567890'],
-    });
-
-    const response = await request.post();
-    expect(response.status).toBe(STATUS_CODES.FORBIDDEN);
-    await expect(response.json()).resolves.toMatchObject(ERRORS.MAX_TENANT_PROVIDERS_LIMIT_REACHED);
   });
 
   it('throw if tenant provider already exists', async () => {

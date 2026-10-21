@@ -1,6 +1,6 @@
 'use client';
 
-import { BadgeCheckIcon, CreditCardIcon, LockIcon, LogOutIcon } from 'lucide-react';
+import { BadgeCheckIcon, LockIcon, LogOutIcon } from 'lucide-react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { ComponentPropsWithoutRef } from 'react';
@@ -77,13 +77,6 @@ export default function UserNavDropdown(props: UserNavDropdownProps) {
               <BadgeCheckIcon className="text-muted-foreground" />
               Account
               <DropdownMenuShortcut>⇧⌘A</DropdownMenuShortcut>
-            </Link>
-          </DropdownMenuItem>
-          <DropdownMenuItem asChild>
-            <Link href="/u/settings/billing">
-              <CreditCardIcon className="text-muted-foreground" />
-              Billing
-              <DropdownMenuShortcut>⇧⌘B</DropdownMenuShortcut>
             </Link>
           </DropdownMenuItem>
           <DropdownMenuItem asChild>

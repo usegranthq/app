@@ -1,73 +1,60 @@
-import Link from 'next/link';
+import { cn } from '@/shadcn/lib/utils';
+
+import Logo from './Logo';
+import { frame, LINKS, mono } from './styles';
+
+const COLUMNS = [
+  {
+    title: 'Packages',
+    links: [
+      { label: 'Javascript SDK', href: 'https://npmjs.com/package/@usegrant/sdk' },
+      { label: 'MCP Server', href: 'https://npmjs.com/package/@usegrant/mcp' },
+      { label: 'AI SDK Tools', href: 'https://npmjs.com/package/@usegrant/ai-sdk-tools' },
+    ],
+  },
+  {
+    title: 'Infrastructure',
+    links: [{ label: 'Docs', href: LINKS.DOCS }],
+  },
+  {
+    title: 'Open source',
+    links: [
+      { label: 'GitHub', href: LINKS.GITHUB },
+      { label: 'Apache-2.0 License', href: LINKS.LICENSE },
+    ],
+  },
+];
 
 export default function Footer() {
   const currentYear = new Date().getFullYear();
 
   return (
-    <footer className="border-t px-4 py-8 lg:px-0">
-      <div className="mx-auto flex max-w-7xl max-sm:flex-col">
-        <div className="flex flex-col gap-1">
-          <p className="font-mono text-sm font-medium">© {currentYear} useGrant. All rights reserved.</p>
-          <p className="font-mono text-sm font-medium text-muted-foreground">support@usegrant.com</p>
+    <footer>
+      <div className={cn(frame, 'grid grid-cols-[repeat(auto-fit,minmax(min(100%,180px),1fr))] gap-10 pt-14 pb-10')}>
+        <div className="col-span-2 flex min-w-0 flex-col gap-4 max-sm:col-span-1">
+          <Logo />
+          <a
+            href={`mailto:${LINKS.SUPPORT_EMAIL}`}
+            className={cn(mono, 'text-[13px] text-[#a3a3a3] hover:text-(--accent)')}
+          >
+            {LINKS.SUPPORT_EMAIL}
+          </a>
         </div>
-        <div className="mt-14 flex gap-6 max-md:flex-col md:mt-0 md:ml-auto md:gap-16">
-          <div>
-            <p className="font-medium">Packages</p>
-            <div className="mt-3 flex flex-col gap-2 text-sm md:gap-4">
-              <Link
-                href="https://npmjs.com/package/@usegrant/sdk"
-                target="_blank"
-                className="text-muted-foreground hover:underline"
-              >
-                Javascript SDK
-              </Link>
-              <Link
-                href="https://npmjs.com/package/@usegrant/mcp"
-                target="_blank"
-                className="text-muted-foreground hover:underline"
-              >
-                MCP Server
-              </Link>
-              <Link
-                href="https://npmjs.com/package/@usegrant/ai-sdk-tools"
-                target="_blank"
-                className="text-muted-foreground hover:underline"
-              >
-                AI SDK Tools
-              </Link>
-            </div>
+        {COLUMNS.map((column) => (
+          <div key={column.title} className="flex flex-col gap-3 text-[15px]">
+            <span className={cn(mono, 'mb-1 text-[11px] tracking-[.06em] text-[#6f6f6f] uppercase')}>
+              {column.title}
+            </span>
+            {column.links.map((link) => (
+              <a key={link.label} href={link.href} className="text-[#a3a3a3] hover:text-(--accent)">
+                {link.label}
+              </a>
+            ))}
           </div>
-          <div>
-            <p className="font-medium">Infrastructure</p>
-            <div className="mt-3 flex flex-col gap-2 text-sm md:gap-4">
-              <Link
-                href="https://status.usegrant.dev"
-                target="_blank"
-                className="text-muted-foreground hover:underline"
-              >
-                Status
-              </Link>
-              <Link
-                href="https://github.com/usegranthq"
-                target="_blank"
-                className="text-muted-foreground hover:underline"
-              >
-                Github
-              </Link>
-            </div>
-          </div>
-          <div>
-            <p className="font-medium">Legal</p>
-            <div className="mt-3 flex flex-col gap-2 text-sm md:gap-4">
-              <Link href="/privacy" className="text-muted-foreground hover:underline">
-                Privacy Policy
-              </Link>
-              <Link href="/terms" className="text-muted-foreground hover:underline">
-                Terms of Service
-              </Link>
-            </div>
-          </div>
-        </div>
+        ))}
+      </div>
+      <div className={cn(frame, mono, 'border-t border-white/8 pt-5 pb-8 text-xs text-[#6f6f6f]')}>
+        © {currentYear} useGrant. Released under the Apache-2.0 License.
       </div>
     </footer>
   );

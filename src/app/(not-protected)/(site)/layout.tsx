@@ -1,22 +1,19 @@
-import { cn } from '@/shadcn/lib/utils';
+import { CSSProperties } from 'react';
 
 import Footer from './Footer';
-import Navbar from './Navbar';
+import Header from './Header';
+
+const accentStyle = { '--accent': '#c6f432' } as CSSProperties;
 
 export default function PageLayout({ children }: { children: React.ReactNode }) {
   return (
-    <section className="relative">
-      <div
-        className={cn(
-          'absolute inset-0 -z-10 opacity-50',
-          '[background-size:20px_20px]',
-          '[background-image:radial-gradient(#e8e8e8_1px,transparent_1px)]',
-          'dark:[background-image:radial-gradient(#202020_1px,transparent_1px)]',
-        )}
-      />
-      <Navbar />
-      <div className="px-4">{children}</div>
+    <div
+      style={accentStyle}
+      className="min-h-screen bg-[#0a0a0a] font-(family-name:--font-instrument-sans) text-[#ededed] antialiased selection:bg-(--accent) selection:text-[#0a0a0a]"
+    >
+      <Header />
+      {children}
       <Footer />
-    </section>
+    </div>
   );
 }

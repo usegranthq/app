@@ -11,7 +11,6 @@ export default function Hotkeys() {
   const router = useRouter();
 
   useHotkeys('shift+meta+A', () => router.push('/u/settings'), hotkeyOptions);
-  useHotkeys('shift+meta+B', () => router.push('/u/settings/billing'), hotkeyOptions);
   useHotkeys('shift+meta+S', () => router.push('/u/settings/security'), hotkeyOptions);
 
   return null;

@@ -76,6 +76,11 @@ export const fakeDbProviderWithDomain: Provider & { Domain: Domain[] } = {
   Domain: [fakeDbDomain],
 };
 
+export const fakeDbProviderWithoutDomain: Provider & { Domain: Domain[] } = {
+  ...fakeDbProvider,
+  Domain: [],
+};
+
 export const fakeDbClient: Client = {
   id: '1',
   name: 'test-client',

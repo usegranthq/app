@@ -1,4 +1,3 @@
-import { getPlanByUserId } from '@/lib/billing';
 import db from '@/lib/db';
 import customDomain from '@/lib/domain';
 import { getApiErrorMessage } from '@/utils/error';
@@ -8,12 +7,6 @@ import { domainFields } from './utils/return-fields';
 
 const verifyDomain = authRpcRouter.providers.domains.verify.handler(async ({ context, input, errors }) => {
   const { providerId, domainId } = input;
-
-  const plan = await getPlanByUserId(context.userId);
-
-  if (!plan.features.customDomain.available) {
-    throw errors.CUSTOM_DOMAINS_NOT_AVAILABLE();
-  }
 
   // Check if provider exists
   const provider = await db.provider.findUnique({

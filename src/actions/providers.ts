@@ -21,27 +21,12 @@ type ProviderFormValues = z.infer<typeof providerSchema>;
 type ClientFormValues = z.infer<typeof clientSchema>;
 
 export async function createProvider(data: ProviderFormValues): ActionResponse<Provider> {
-  const { user, plan } = await verifySession();
+  const { user } = await verifySession();
 
   const validation = providerSchema.safeParse(data);
 
   if (!validation.success) {
     return [getZodErrorMessage(validation.error), null];
-  }
-
-  // check if the user has reached the limit for providers
-  const providersCount = await db.provider.count({
-    where: {
-      userId: user.id,
-    },
-  });
-
-  if (!plan.features.providers.available) {
-    return [ERRORS.PROVIDERS_NOT_AVAILABLE.message, null];
-  }
-
-  if (providersCount >= plan.features.providers.limit) {
-    return [ERRORS.MAX_PROVIDERS_LIMIT_REACHED.message, null];
   }
 
   try {
@@ -115,25 +100,12 @@ export async function deleteProvider(providerId: string): ActionResponse {
 }
 
 export async function createClient(providerId: string, data: ClientFormValues): ActionResponse {
-  const { plan, user } = await verifySession();
+  await verifySession();
 
   const validation = clientSchema.safeParse(data);
 
   if (!validation.success) {
     return [getZodErrorMessage(validation.error), null];
-  }
-
-  const clientsCount = await db.client.count({
-    where: {
-      providerId,
-      Provider: {
-        userId: user.id,
-      },
-    },
-  });
-
-  if (clientsCount >= plan.features.providerClients.limit) {
-    return [ERRORS.MAX_CLIENTS_LIMIT_REACHED.message, null];
   }
 
   try {
@@ -181,7 +153,7 @@ export async function generateAccessToken(
   clientId: string,
   options = defaultGenerateAccessTokenOptions,
 ): ActionResponse<string> {
-  const { plan, user } = await verifySession();
+  const { user } = await verifySession();
 
   const opts = {
     ...defaultGenerateAccessTokenOptions,
@@ -216,7 +188,7 @@ export async function generateAccessToken(
   const customDomain = client.Provider.Domain[0];
 
   const claims = {
-    iss: getIssuer(client.Provider.urlId, plan, customDomain),
+    iss: getIssuer(client.Provider.urlId, customDomain),
     aud: opts.audienceAsArray ? [client.audience] : client.audience,
     sub: client.subject,
   };
@@ -250,11 +222,7 @@ export async function generateAccessToken(
 }
 
 export async function requestSigningKey(providerId: string): ActionResponse<string> {
-  const { user, plan } = await verifySession();
-
-  if (!plan.features.signingKeys.request) {
-    return [ERRORS.GENERIC_FEATURE_NOT_AVAILABLE.message, null];
-  }
+  const { user } = await verifySession();
 
   const provider = await db.provider.findUnique({
     where: {
@@ -342,11 +310,7 @@ export async function removeKey(providerId: string, id: string): ActionResponse 
 }
 
 export async function toggleRotateJwks(providerId: string, rotateJwks: boolean): ActionResponse {
-  const { plan, user } = await verifySession();
-
-  if (!plan.features.signingKeys.autoRotate) {
-    return [ERRORS.GENERIC_FEATURE_NOT_AVAILABLE.message, null];
-  }
+  const { user } = await verifySession();
 
   try {
     await db.provider.update({

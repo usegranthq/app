@@ -5,9 +5,13 @@ import mockDb from '@/lib/__mocks__/db';
 import ERRORS from '@/utils/error';
 import { STATUS_CODES } from '@/utils/rest';
 
-import { fakeDbClient, fakeDbProvider, fakeDbProviderWithDomain } from './test-utils/fake-data';
+import {
+  fakeDbClient,
+  fakeDbProvider,
+  fakeDbProviderWithDomain,
+  fakeDbProviderWithoutDomain,
+} from './test-utils/fake-data';
 import createAuthorizedRequest from './test-utils/request';
-import { mockProPlanSubscription } from './test-utils/subscription';
 
 describe('SDK: Create Access Token', () => {
   it('throw if the request is not valid', async () => {
@@ -49,7 +53,7 @@ describe('SDK: Create Access Token', () => {
     const fixedDate = new Date('2025-03-25T12:00:00Z');
     vi.setSystemTime(fixedDate);
 
-    mockDb.provider.findUnique.mockResolvedValue(fakeDbProviderWithDomain);
+    mockDb.provider.findUnique.mockResolvedValue(fakeDbProviderWithoutDomain);
     mockDb.client.findUnique.mockResolvedValue(fakeDbClient);
     const request = createAuthorizedRequest('v1/providers/1/clients/1_1/tokens', {
       expiresIn: 1020,
@@ -62,7 +66,7 @@ describe('SDK: Create Access Token', () => {
     expect(body.expiresAt).toBeDefined();
 
     const claims = jose.decodeJwt(body.accessToken);
-    expect(claims.iss).toBe(`https://mockauth.usegrant.local/${fakeDbProviderWithDomain.urlId}`);
+    expect(claims.iss).toBe(`https://mockauth.usegrant.local/${fakeDbProvider.urlId}`);
     expect(claims.aud).toBe(fakeDbClient.audience);
     expect(claims.sub).toBe(fakeDbClient.subject);
     expect(claims.exp).toBe(Date.now() / 1000 + 1020);
@@ -70,8 +74,6 @@ describe('SDK: Create Access Token', () => {
   });
 
   it('create a new access token using custom domain', async () => {
-    mockProPlanSubscription();
-
     mockDb.provider.findUnique.mockResolvedValue(fakeDbProviderWithDomain);
     mockDb.client.findUnique.mockResolvedValue(fakeDbClient);
 

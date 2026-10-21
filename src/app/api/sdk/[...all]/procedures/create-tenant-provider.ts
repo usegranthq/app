@@ -1,4 +1,3 @@
-import { getPlanByUserId } from '@/lib/billing';
 import db from '@/lib/db';
 
 import { authRpcRouter } from '../rpc';
@@ -17,20 +16,6 @@ const createTenantProvider = authRpcRouter.tenants.providers.create.handler(asyn
 
   if (!tenant) {
     throw errors.TENANT_NOT_FOUND();
-  }
-
-  const plan = await getPlanByUserId(context.userId);
-  const tenantsCount = await db.tenantProvider.count({
-    where: {
-      tenantId,
-      Tenant: {
-        userId: context.userId,
-      },
-    },
-  });
-
-  if (tenantsCount >= plan.features.tenantProviders.limit) {
-    throw errors.MAX_TENANT_PROVIDERS_LIMIT_REACHED();
   }
 
   // check if tenant already exists

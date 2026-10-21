@@ -1,7 +1,6 @@
 import type { NextRequest } from 'next/server';
 
 import env from '@/env';
-import { getPlanByUserId } from '@/lib/billing';
 import db from '@/lib/db';
 import logger from '@/lib/log';
 import { Prisma } from '@/types/db.types';
@@ -35,36 +34,11 @@ const processCron = async () => {
       where: {
         rotateJwks: true,
       },
-      include: {
-        User: true,
-      },
     });
 
     // get all jwks for the providers, and keep the last 1 key and delete the rest and add the new one
     for (const provider of providers) {
       await db.$transaction(async (tx) => {
-        const jwks = await tx.jwks.findMany({
-          where: {
-            providerId: provider.id,
-          },
-          orderBy: {
-            createdAt: 'desc',
-          },
-          select: {
-            id: true,
-          },
-        });
-
-        // get the plan of the user
-        const plan = await getPlanByUserId(provider.User.id);
-
-        // if there is only 1 key, we don't need to delete anything
-        // but delete if the plan doesn't support rotating signing keys
-        const excludeQuery: Prisma.JwksWhereInput = {};
-        if (jwks.length > 1 && !plan.features.signingKeys.autoRotate) {
-          excludeQuery.id = jwks[0].id;
-        }
-
         // keep the last 1 key and delete the rest, also createdAt should be greater than a 24 hours ago
         await tx.jwks.deleteMany({
           where: {
@@ -72,7 +46,6 @@ const processCron = async () => {
             createdAt: {
               lt: new Date(Date.now() - 24 * 60 * 60 * 1000),
             },
-            NOT: excludeQuery,
           },
         });
 

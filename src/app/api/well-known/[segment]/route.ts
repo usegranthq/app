@@ -1,7 +1,6 @@
 import { JWK } from 'jose';
 import { NextRequest, NextResponse } from 'next/server';
 
-import { getPlanByUserId } from '@/lib/billing';
 import db from '@/lib/db';
 import { defaultJwk } from '@/utils/jwt';
 import { withProtocol } from '@/utils/url';
@@ -58,11 +57,6 @@ const getProviderDomain = async (hostname: string, urlId: string | null): Promis
   });
 
   if (!domain) {
-    return null;
-  }
-
-  const plan = await getPlanByUserId(domain.Provider.User.id);
-  if (plan.id === 'free') {
     return null;
   }
 

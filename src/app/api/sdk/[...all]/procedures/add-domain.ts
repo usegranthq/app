@@ -1,4 +1,3 @@
-import { getPlanByUserId } from '@/lib/billing';
 import db from '@/lib/db';
 import customDomain from '@/lib/domain';
 import { getApiErrorMessage } from '@/utils/error';
@@ -7,12 +6,6 @@ import { authRpcRouter } from '../rpc';
 import { domainFields } from './utils/return-fields';
 
 const addDomain = authRpcRouter.providers.domains.add.handler(async ({ context, input, errors }) => {
-  const plan = await getPlanByUserId(context.userId);
-
-  if (!plan.features.customDomain.available) {
-    throw errors.CUSTOM_DOMAINS_NOT_AVAILABLE();
-  }
-
   // Check if provider exists
   const provider = await db.provider.findUnique({
     where: {
@@ -40,8 +33,8 @@ const addDomain = authRpcRouter.providers.domains.add.handler(async ({ context, 
     throw errors.DOMAIN_ALREADY_ADDED();
   }
 
-  // get existing domains, don't allow more than plan limit
-  if (existingDomains.length >= plan.features.customDomain.limit) {
+  // only one custom domain is allowed per provider
+  if (existingDomains.length >= 1) {
     throw errors.MAX_DOMAINS_LIMIT_REACHED();
   }
 

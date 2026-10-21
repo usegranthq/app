@@ -9,12 +9,7 @@ import { domainSchema } from '@/schema';
 import { getApiErrorMessage, getZodErrorMessage } from '@/utils/error';
 
 export async function addDomain(providerId: string, formData: FormData): ActionResponse {
-  const { plan, user } = await verifySession();
-
-  // allow based on plan
-  if (!plan.features.customDomain.available) {
-    return ['Custom domains are not available on your current plan. Please upgrade.', null];
-  }
+  const { user } = await verifySession();
 
   const validation = domainSchema.safeParse(formData.get('domain'));
 
@@ -32,8 +27,8 @@ export async function addDomain(providerId: string, formData: FormData): ActionR
     },
   });
 
-  if (existingDomains.length >= plan.features.customDomain.limit) {
-    return ['You have reached the limit for custom domains. Please upgrade.', null];
+  if (existingDomains.length >= 1) {
+    return ['Only one custom domain is allowed per provider.', null];
   }
 
   const domain = validation.data;

@@ -2,6 +2,8 @@
 
 > Effortless and dynmaic client credentials grant implementation.
 
+useGrant is open source under the [Apache License 2.0](./LICENSE).
+
 ## Prerequisites
 
 - [mise](https://mise.jdx.dev)
@@ -50,18 +52,6 @@ To learn more about Next.js, take a look at the following resources:
 - [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
 - [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
 
-## Testing webhooks
-
-To test webhooks locally, you can use [smee.io](https://smee.io) to forward webhook events from
-external services to your local development server.
-
-```bash
-# run smee client
-smee -u https://smee.io/YOUR_CHANNEL_ID --target http://localhost:7500/api/webhooks/polar
-```
-
-Replace `YOUR_CHANNEL_ID` with your actual Smee channel ID.
-
 ## Deployment
 
 This project is automatically deployed to a VPS on Hetzner on every push to the `master` branch.
@@ -87,3 +77,7 @@ export DOCKER_HOST=unix:///run/user/1000/docker.sock
 
 Make sure the above environment variables are at the top of the `~/.bashrc` file so SSH works via
 remote host
+
+## License
+
+Licensed under the [Apache License, Version 2.0](./LICENSE). See [NOTICE](./NOTICE).

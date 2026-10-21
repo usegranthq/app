@@ -20,7 +20,6 @@ model User {
 
   Provider Provider[]
   Tenant   Tenant[]
-  Customer Customer?
 
   @@unique([email])
   @@map("user")

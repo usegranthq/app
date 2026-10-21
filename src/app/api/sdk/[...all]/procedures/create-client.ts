@@ -1,4 +1,3 @@
-import { getPlanByUserId } from '@/lib/billing';
 import db from '@/lib/db';
 import { getApiErrorMessage } from '@/utils/error';
 
@@ -18,20 +17,6 @@ const createClient = authRpcRouter.providers.clients.create.handler(async ({ con
 
   if (!provider) {
     throw errors.PROVIDER_NOT_FOUND();
-  }
-
-  const plan = await getPlanByUserId(context.userId);
-  const clientsCount = await db.client.count({
-    where: {
-      providerId: input.providerId,
-      Provider: {
-        userId: context.userId,
-      },
-    },
-  });
-
-  if (clientsCount >= plan.features.providerClients.limit) {
-    throw errors.MAX_CLIENTS_LIMIT_REACHED();
   }
 
   // check if client already exists

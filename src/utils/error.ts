@@ -56,16 +56,6 @@ const ERRORS = {
     message: 'Input validation failed',
     status: STATUS_CODES.UNPROCESSABLE_ENTITY,
   },
-  PROVIDERS_NOT_AVAILABLE: {
-    code: 'PROVIDERS_NOT_AVAILABLE',
-    message: 'Providers are not available under your current plan. Please upgrade to access this feature',
-    status: STATUS_CODES.FORBIDDEN,
-  },
-  MAX_PROVIDERS_LIMIT_REACHED: {
-    code: 'MAX_PROVIDERS_LIMIT_REACHED',
-    message: 'You have reached the limit for providers. Upgrade your plan or contact support to increase the limit',
-    status: STATUS_CODES.FORBIDDEN,
-  },
   PROVIDER_NOT_FOUND: {
     code: 'PROVIDER_NOT_FOUND',
     message: 'The specified provider could not be found. Please check the provider ID and try again',
@@ -80,31 +70,6 @@ const ERRORS = {
     code: 'CLIENT_ALREADY_EXISTS',
     message: 'A client with this name already exists',
     status: STATUS_CODES.CONFLICT,
-  },
-  MAX_CLIENTS_LIMIT_REACHED: {
-    code: 'MAX_CLIENTS_LIMIT_REACHED',
-    message: 'You have reached the maximum number of clients allowed by your current plan',
-    status: STATUS_CODES.FORBIDDEN,
-  },
-  TENANTS_NOT_AVAILABLE: {
-    code: 'TENANTS_NOT_AVAILABLE',
-    message: 'Tenants are not available under your current plan',
-    status: STATUS_CODES.FORBIDDEN,
-  },
-  MAX_TENANTS_LIMIT_REACHED: {
-    code: 'MAX_TENANTS_LIMIT_REACHED',
-    message: 'You have reached the maximum number of tenants allowed by your current plan',
-    status: STATUS_CODES.FORBIDDEN,
-  },
-  MAX_TENANT_PROVIDERS_LIMIT_REACHED: {
-    code: 'MAX_TENANT_PROVIDERS_LIMIT_REACHED',
-    message: 'You have reached the maximum number of tenant providers allowed by your current plan',
-    status: STATUS_CODES.FORBIDDEN,
-  },
-  MAX_TENANT_PROVIDER_POLICIES_LIMIT_REACHED: {
-    code: 'MAX_TENANT_PROVIDER_POLICIES_LIMIT_REACHED',
-    message: 'You have reached the maximum number of tenant provider policies allowed by your current plan',
-    status: STATUS_CODES.FORBIDDEN,
   },
   TENANT_ALREADY_EXISTS: {
     code: 'TENANT_ALREADY_EXISTS',
@@ -158,10 +123,6 @@ const ERRORS = {
     code: 'EXPIRED_TOKEN',
     message: 'The provided token has expired and is no longer valid',
   },
-  GENERIC_FEATURE_NOT_AVAILABLE: {
-    code: 'GENERIC_FEATURE_NOT_AVAILABLE',
-    message: 'This feature is not available in your current plan. Please upgrade to access this feature',
-  },
   AUTOMATIC_ROTATION_ENABLED: {
     code: 'AUTOMATIC_ROTATION_ENABLED',
     message: 'Unable to rotate JWKS. Automatic rotation is enabled for this provider',
@@ -177,11 +138,6 @@ const ERRORS = {
   CANNOT_REMOVE_LATEST_KEY: {
     code: 'CANNOT_REMOVE_LATEST_KEY',
     message: 'Cannot remove the latest key',
-  },
-  CUSTOM_DOMAINS_NOT_AVAILABLE: {
-    code: 'CUSTOM_DOMAINS_NOT_AVAILABLE',
-    status: STATUS_CODES.FORBIDDEN,
-    message: 'Custom domains are not available on your current plan. Please upgrade to access this feature',
   },
   MAX_DOMAINS_LIMIT_REACHED: {
     code: 'MAX_DOMAINS_LIMIT_REACHED',

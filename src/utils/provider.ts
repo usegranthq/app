@@ -4,7 +4,6 @@ import Sqids from 'sqids';
 import env from '@/env';
 import { Domain } from '@/types/app.types';
 
-import { PlanDetails } from './billing';
 import { withProtocol } from './url';
 
 const sqids = new Sqids({
@@ -16,13 +15,8 @@ export const createUrlId = (name: string) => {
   return slugify(name, { lower: true, strict: true }) + '-' + urlSuffix;
 };
 
-export const getIssuer = (
-  urlId: string,
-  planDetails: PlanDetails,
-  customDomain?: Domain | null,
-  forceDefaultDomain: boolean = false,
-) => {
-  if (customDomain && planDetails.features.customDomain.available && !forceDefaultDomain) {
+export const getIssuer = (urlId: string, customDomain?: Domain | null, forceDefaultDomain: boolean = false) => {
+  if (customDomain && !forceDefaultDomain) {
     return `https://${customDomain.domain}`;
   }
 

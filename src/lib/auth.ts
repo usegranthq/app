@@ -3,23 +3,16 @@ import { prismaAdapter } from 'better-auth/adapters/prisma';
 import { APIError } from 'better-auth/api';
 import { betterAuth } from 'better-auth/minimal';
 import { nextCookies } from 'better-auth/next-js';
-import { customSession, magicLink } from 'better-auth/plugins';
+import { magicLink } from 'better-auth/plugins';
 import { hoursToMilliseconds, hoursToSeconds, minutesToSeconds } from 'date-fns';
-import { PostHog } from 'posthog-node';
 
 import * as constants from '@/constants/cookies';
-import env, { isLive } from '@/env';
+import env from '@/env';
 import { daysToSeconds } from '@/utils/date';
 import { generateLoginToken } from '@/utils/random';
 
-import { getPlanByUserId } from './billing';
 import db from './db';
 import { sendChangeEmailConfirmation, sendEmailVerification, sendLoginEmail } from './email';
-
-const posthog = new PostHog(env.POSTHOG_API_KEY, {
-  host: 'https://us.i.posthog.com',
-  flushAt: 1,
-});
 
 const database = prismaAdapter(db, {
   provider: 'postgresql',
@@ -71,15 +64,6 @@ export const auth = betterAuth({
         await sendLoginEmail(data);
       },
     }),
-    customSession(async ({ user, session }) => {
-      const plan = await getPlanByUserId(user.id);
-
-      return {
-        session,
-        user,
-        plan,
-      };
-    }),
     apiKey({
       apiKeyHeaders: [],
       rateLimit: {
@@ -94,25 +78,6 @@ export const auth = betterAuth({
     }),
     nextCookies(), // must be last
   ],
-  databaseHooks: {
-    user: {
-      create: {
-        after: async (user) => {
-          if (!isLive) return;
-
-          posthog.capture({
-            distinctId: user.id,
-            event: 'user_signed_up',
-            properties: {
-              $set: {
-                email: user.email,
-              },
-            },
-          });
-        },
-      },
-    },
-  },
   advanced: {
     cookiePrefix: constants.COOKIE_PREFIX,
     defaultCookieAttributes: {

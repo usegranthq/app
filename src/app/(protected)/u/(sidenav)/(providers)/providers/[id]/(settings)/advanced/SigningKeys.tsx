@@ -1,6 +1,5 @@
 import { getWellKnownURL } from '@/app/provider-helpers';
 import { getSigningKeys } from '@/data/providers';
-import { getPlanDetails } from '@/data/user';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/shadcn/components/ui/card';
 import { Provider } from '@/types';
 
@@ -13,7 +12,6 @@ interface SigningKeysProps {
 export default async function SigningKeys({ provider }: SigningKeysProps) {
   const jwksUrl = getWellKnownURL(provider.urlId, '/.well-known/jwks');
   const signingKeys = await getSigningKeys(provider.id);
-  const plan = await getPlanDetails();
 
   return (
     <Card>
@@ -33,7 +31,7 @@ export default async function SigningKeys({ provider }: SigningKeysProps) {
           </a>
         </div>
 
-        <KeysList provider={provider} signingKeys={signingKeys} plan={plan} />
+        <KeysList provider={provider} signingKeys={signingKeys} />
       </CardContent>
     </Card>
   );

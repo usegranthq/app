@@ -10,7 +10,6 @@ import { Badge } from '@/shadcn/components/ui/badge';
 import { Label } from '@/shadcn/components/ui/label';
 import { Switch } from '@/shadcn/components/ui/switch';
 import { Provider } from '@/types';
-import { PlanDetails } from '@/utils/billing';
 import { formatDate } from '@/utils/date';
 
 import RemoveKey from './RemoveKey';
@@ -19,14 +18,13 @@ import RequestSigningKey from './RequestSigningKey';
 interface KeysListProps {
   provider: Provider;
   signingKeys: SigningKey[];
-  plan: PlanDetails;
 }
 
 const updateProvider = (provider: Provider, update: Partial<Provider>) => {
   return { ...provider, ...update };
 };
 
-export default function KeysList({ signingKeys, provider, plan }: KeysListProps) {
+export default function KeysList({ signingKeys, provider }: KeysListProps) {
   const [isPending, startTransition] = useTransition();
   const progress = useProgressBar();
   const [optimisticProvider, setOptimisticProvider] = useOptimistic(provider, updateProvider);
@@ -50,19 +48,10 @@ export default function KeysList({ signingKeys, provider, plan }: KeysListProps)
           id="rotate-jwks"
           checked={optimisticProvider.rotateJwks}
           onCheckedChange={handleRotateJwks}
-          disabled={isPending || !plan.features.signingKeys.autoRotate}
-          title={
-            plan.features.signingKeys.autoRotate ? 'Automatically rotate keys' : 'Upgrade to rotate keys automatically'
-          }
+          disabled={isPending}
+          title="Automatically rotate keys"
         />
         <Label htmlFor="rotate-jwks">Automatically rotate keys</Label>
-        {!plan.features.signingKeys.autoRotate && (
-          <div>
-            <Badge variant="outline" className="">
-              Upgrade to rotate keys automatically
-            </Badge>
-          </div>
-        )}
       </div>
       <p className="mt-4 text-sm text-muted-foreground">
         When automatic rotation is enabled, a new key is generated daily. The most recent old key is retained in the
@@ -98,7 +87,7 @@ export default function KeysList({ signingKeys, provider, plan }: KeysListProps)
           You can request a new key to rotate the signing keys. The newly generated key will be used for signing the
           tokens.
         </p>
-        <RequestSigningKey provider={optimisticProvider} isLoading={isPending} plan={plan} />
+        <RequestSigningKey provider={optimisticProvider} isLoading={isPending} />
       </div>
     </>
   );

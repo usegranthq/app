@@ -18,7 +18,10 @@ const specFromContract = await openAPIGenerator.generate(contract, {
       url: 'https://usegrant.dev',
       email: 'support@usegrant.dev',
     },
-    termsOfService: 'https://usegrant.dev/terms',
+    license: {
+      name: 'Apache-2.0',
+      url: 'https://www.apache.org/licenses/LICENSE-2.0',
+    },
   },
   servers: [
     {

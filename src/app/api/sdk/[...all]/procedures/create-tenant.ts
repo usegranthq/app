@@ -1,4 +1,3 @@
-import { getPlanByUserId } from '@/lib/billing';
 import db from '@/lib/db';
 import { getApiErrorMessage } from '@/utils/error';
 
@@ -7,21 +6,6 @@ import { tenantFields } from './utils/return-fields';
 
 const createTenant = authRpcRouter.tenants.create.handler(async ({ context, input, errors }) => {
   const { name, description } = input;
-
-  const plan = await getPlanByUserId(context.userId);
-  const tenantsCount = await db.tenant.count({
-    where: {
-      userId: context.userId,
-    },
-  });
-
-  if (!plan.features.tenants.available) {
-    throw errors.TENANTS_NOT_AVAILABLE();
-  }
-
-  if (tenantsCount >= plan.features.tenants.limit) {
-    throw errors.MAX_TENANTS_LIMIT_REACHED();
-  }
 
   // check if tenant already exists
   const tenantExists = await db.tenant

@@ -7,7 +7,6 @@ const ROUTES = {
   LOGIN_CALLBACK: '/login-callback',
   DASHBOARD: '/u/providers',
   SETTINGS: '/u/settings',
-  SETTINGS_BILLING: '/u/settings/billing',
   SETTINGS_APIKEYS: '/u/settings/keys',
   SETTINGS_SECURITY: '/u/settings/security',
   SETTINGS_SUPPORT: '/u/settings/support',
@@ -15,8 +14,6 @@ const ROUTES = {
   API_UNAUTHORIZED: '/api/unauthorized',
   PROVIDERS: '/u/providers',
   TENANTS: '/u/tenants',
-
-  API_BILLING_SUCCESS_URL: `/billing/payment-confirmation`,
 } as const;
 
 export const DYNAMIC_ROUTES = {

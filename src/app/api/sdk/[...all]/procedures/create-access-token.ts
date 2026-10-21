@@ -1,6 +1,5 @@
 import { JWK } from 'jose';
 
-import { getPlanByUserId } from '@/lib/billing';
 import db from '@/lib/db';
 import { createJwt, defaultJwk } from '@/utils/jwt';
 import { getIssuer } from '@/utils/provider';
@@ -43,11 +42,10 @@ const createAccessToken = authRpcRouter.providers.clients.tokens.create.handler(
     throw errors.CLIENT_NOT_FOUND();
   }
 
-  const plan = await getPlanByUserId(context.userId);
   const customDomain = provider.Domain[0];
 
   const claims = {
-    iss: getIssuer(provider.urlId, plan, customDomain, forceDefaultDomain),
+    iss: getIssuer(provider.urlId, customDomain, forceDefaultDomain),
     aud: input.audienceAsArray ? [client.audience] : client.audience,
     sub: client.subject,
   };

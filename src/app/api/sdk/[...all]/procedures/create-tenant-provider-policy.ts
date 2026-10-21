@@ -1,6 +1,5 @@
 import z from 'zod';
 
-import { getPlanByUserId } from '@/lib/billing';
 import db from '@/lib/db';
 import { conditionsSchema } from '@/schema';
 import { getApiErrorMessage } from '@/utils/error';
@@ -37,24 +36,6 @@ const createTenantProviderPolicy = authRpcRouter.tenants.providers.policies.crea
 
     if (!tenantProvider) {
       throw errors.TENANT_PROVIDER_NOT_FOUND();
-    }
-
-    const plan = await getPlanByUserId(context.userId);
-    // get tenant provider count
-    const tenantProviderPoliciesCount = await db.tenantProviderPolicy.count({
-      where: {
-        tenantProviderId,
-        TenantProvider: {
-          tenantId,
-          Tenant: {
-            userId: context.userId,
-          },
-        },
-      },
-    });
-
-    if (tenantProviderPoliciesCount >= plan.features.tenantProviderPolicies.limit) {
-      throw errors.MAX_TENANT_PROVIDER_POLICIES_LIMIT_REACHED();
     }
 
     // check if tenant already exists

@@ -8,13 +8,9 @@ import { STATUS_CODES } from '@/utils/rest';
 
 import { fakeDbDomain, fakeDbDomainResponse, fakeDbProvider } from './test-utils/fake-data';
 import createAuthorizedRequest from './test-utils/request';
-import { mockProPlanSubscription } from './test-utils/subscription';
 
 describe('SDK: Add Domain', () => {
   it('throw if the domain is not valid', async () => {
-    // Mock the auth to return a valid user
-    mockDb.customer.findUnique.mockResolvedValue(null);
-
     const request = createAuthorizedRequest('v1/providers/1/domains', {
       domain: '123',
     });
@@ -29,21 +25,7 @@ describe('SDK: Add Domain', () => {
     });
   });
 
-  it('not allow to add domain if the user does not have a plan', async () => {
-    mockDb.customer.findUnique.mockResolvedValue(null);
-
-    const request = createAuthorizedRequest('v1/providers/1/domains', {
-      domain: 'test.com',
-    });
-
-    const response = await request.post();
-
-    expect(response.status).toBe(STATUS_CODES.FORBIDDEN);
-    await expect(response.json()).resolves.toMatchObject(ERRORS.CUSTOM_DOMAINS_NOT_AVAILABLE);
-  });
-
   it('throw if the provider does not exist', async () => {
-    mockProPlanSubscription();
     mockDb.provider.findUnique.mockResolvedValue(null);
 
     const request = createAuthorizedRequest('v1/providers/1/domains', {
@@ -56,8 +38,6 @@ describe('SDK: Add Domain', () => {
   });
 
   it('add the domain if the domain is already added', async () => {
-    mockProPlanSubscription();
-
     mockDb.provider.findUnique.mockResolvedValue(fakeDbProvider);
     mockDb.domain.findMany.mockResolvedValue([fakeDbDomain]);
 
@@ -71,8 +51,6 @@ describe('SDK: Add Domain', () => {
   });
 
   it('throw if the user has reached the max domains limit', async () => {
-    mockProPlanSubscription();
-
     mockDb.provider.findUnique.mockResolvedValue(fakeDbProvider);
     mockDb.domain.findMany.mockResolvedValue([fakeDbDomain]);
 
@@ -86,8 +64,6 @@ describe('SDK: Add Domain', () => {
   });
 
   it('add the domain if the domain is not added', async () => {
-    mockProPlanSubscription();
-
     mockDb.provider.findUnique.mockResolvedValue(fakeDbProvider);
     mockDb.domain.findMany.mockResolvedValue([]);
     mockCustomDomain.add.mockResolvedValue({ id: '123', verified: true });

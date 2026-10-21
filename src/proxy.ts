@@ -28,9 +28,12 @@ const next = (request: NextRequest) => {
   const nonce = generateHash();
   const isProtectedRoute = matchesUserRoute(request.nextUrl.pathname);
 
+  // React uses eval() in development for debugging features, it never does in production
+  const devScriptSrc = process.env.NODE_ENV === 'development' ? ` 'unsafe-eval'` : '';
+
   // see https://web.dev/strict-csp for strict CSP reference
   const cspHeader = `
-      script-src ${isProtectedRoute ? `'nonce-${nonce}' 'strict-dynamic'` : `http: https: 'unsafe-inline'`};
+      script-src ${isProtectedRoute ? `'nonce-${nonce}' 'strict-dynamic'` : `http: https: 'unsafe-inline'`}${devScriptSrc};
       object-src 'none';
       base-uri 'none';
       upgrade-insecure-requests;

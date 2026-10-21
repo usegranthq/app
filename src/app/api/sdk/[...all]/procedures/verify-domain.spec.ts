@@ -8,18 +8,9 @@ import { STATUS_CODES } from '@/utils/rest';
 
 import { fakeDbDomain, fakeDbDomainResposne, fakeDbProvider } from './test-utils/fake-data';
 import createAuthorizedRequest from './test-utils/request';
-import { mockProPlanSubscription } from './test-utils/subscription';
 
 describe('SDK: Verify Domain', () => {
-  it('throw if the plan does not have custom domains available', async () => {
-    const request = createAuthorizedRequest('v1/providers/1/domains/1/verify');
-    const response = await request.post();
-    expect(response.status).toBe(STATUS_CODES.FORBIDDEN);
-    await expect(response.json()).resolves.toMatchObject(ERRORS.CUSTOM_DOMAINS_NOT_AVAILABLE);
-  });
-
   it('throw if the provider does not exist', async () => {
-    mockProPlanSubscription();
     const request = createAuthorizedRequest('v1/providers/1/domains/1/verify');
     const response = await request.post();
     expect(response.status).toBe(STATUS_CODES.NOT_FOUND);
@@ -27,7 +18,6 @@ describe('SDK: Verify Domain', () => {
   });
 
   it('throw if the domain does not exist', async () => {
-    mockProPlanSubscription();
     mockDb.provider.findUnique.mockResolvedValue(fakeDbProvider);
     const request = createAuthorizedRequest('v1/providers/1/domains/1/verify');
     const response = await request.post();
@@ -36,7 +26,6 @@ describe('SDK: Verify Domain', () => {
   });
 
   it('throw if the domain is not verified', async () => {
-    mockProPlanSubscription();
     mockDb.provider.findUnique.mockResolvedValue(fakeDbProvider);
     mockDb.domain.findUnique.mockResolvedValue(fakeDbDomain);
     mockCustomDomain.verify.mockResolvedValue(false);
@@ -52,7 +41,6 @@ describe('SDK: Verify Domain', () => {
   });
 
   it('verify the domain', async () => {
-    mockProPlanSubscription();
     mockDb.provider.findUnique.mockResolvedValue(fakeDbProvider);
     mockDb.domain.findUnique.mockResolvedValue(fakeDbDomain);
     mockCustomDomain.verify.mockResolvedValue(true);

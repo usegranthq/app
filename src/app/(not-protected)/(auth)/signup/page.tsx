@@ -2,13 +2,12 @@ import Link from 'next/link';
 import { Suspense } from 'react';
 
 import env from '@/env';
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/shadcn/components/ui/card';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/shadcn/components/ui/card';
 
 import LoginForm from '../login/LoginForm';
 import OauthButtons from '../login/OauthButtons';
 import RedirectErrorRenderer from '../login/RedirectErrorRenderer';
 import Seperator from '../login/Seperator';
-import Terms from '../login/Terms';
 
 const TURNSTILE_SITE_KEY = env.TURNSTILE_SITE_KEY;
 
@@ -33,9 +32,6 @@ export default function Signup() {
           <Seperator />
           <LoginForm turnstileSiteKey={TURNSTILE_SITE_KEY} submitButtonText="Sign up" />
         </CardContent>
-        <CardFooter>
-          <Terms />
-        </CardFooter>
       </Card>
       <Suspense>
         <RedirectErrorRenderer />

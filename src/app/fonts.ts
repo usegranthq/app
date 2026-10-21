@@ -1,6 +1,6 @@
 import { GeistMono } from 'geist/font/mono';
 import { GeistSans } from 'geist/font/sans';
-import { Fira_Code, Inter, JetBrains_Mono, Oxanium } from 'next/font/google';
+import { Fira_Code, Fragment_Mono, Instrument_Sans, Inter, JetBrains_Mono, Oxanium } from 'next/font/google';
 
 const oxanium = Oxanium({
   subsets: ['latin'],
@@ -28,6 +28,20 @@ const inter = Inter({
   variable: '--font-inter',
 });
 
+const instrumentSans = Instrument_Sans({
+  subsets: ['latin'],
+  display: 'swap',
+  variable: '--font-instrument-sans',
+  weight: ['400', '500', '600', '700'],
+});
+
+const fragmentMono = Fragment_Mono({
+  subsets: ['latin'],
+  display: 'swap',
+  variable: '--font-fragment-mono',
+  weight: ['400'],
+});
+
 const fonts = [
   GeistSans.variable,
   GeistMono.variable,
@@ -35,6 +49,8 @@ const fonts = [
   firaCode.variable,
   jetBrainsMono.variable,
   inter.variable,
+  instrumentSans.variable,
+  fragmentMono.variable,
 ];
 
 export default fonts;
