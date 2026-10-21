@@ -1,9 +1,13 @@
 import { NextConfig } from 'next';
 
 import env from './src/env';
+import { withProtocol } from './src/utils/url';
 
 // /docs is proxied to the docs service only when DOCS_URL is set
 const docsUrl = env.DOCS_URL;
+
+// provider issuer urls are served as https://<PROVIDER_DOMAIN>/<urlId>
+const providerHost = new URL(withProtocol(env.PROVIDER_DOMAIN)).host;
 
 const nextConfig: NextConfig = {
   reactStrictMode: true,
@@ -29,7 +33,7 @@ const nextConfig: NextConfig = {
             {
               type: 'header',
               key: 'x-forwarded-host',
-              value: 'tokens.usegrant.dev',
+              value: providerHost,
             },
           ],
           source: '/:providerUrlId/.well-known/:segment',
