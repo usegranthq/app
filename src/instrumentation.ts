@@ -1,12 +1,16 @@
+import { diag, DiagConsoleLogger, DiagLogLevel } from '@opentelemetry/api';
 import { OTLPLogExporter } from '@opentelemetry/exporter-logs-otlp-http';
 import { OTLPTraceExporter } from '@opentelemetry/exporter-trace-otlp-http';
 import { WinstonInstrumentation } from '@opentelemetry/instrumentation-winston';
-import { api, logs, NodeSDK, resources, tracing } from '@opentelemetry/sdk-node';
+import { resourceFromAttributes } from '@opentelemetry/resources';
+import { BatchLogRecordProcessor } from '@opentelemetry/sdk-logs';
+import { NodeSDK } from '@opentelemetry/sdk-node';
+import { BatchSpanProcessor } from '@opentelemetry/sdk-trace';
 import { ATTR_SERVICE_NAME } from '@opentelemetry/semantic-conventions';
 
 import env from './env';
 
-const resource = resources.resourceFromAttributes(
+const resource = resourceFromAttributes(
   {
     [ATTR_SERVICE_NAME]: 'usegrant-app',
   },
@@ -34,7 +38,7 @@ const logExporter = new OTLPLogExporter({
 });
 
 if (process.env.ENABLE_OTEL_LOGS === 'true') {
-  api.diag.setLogger(new api.DiagConsoleLogger(), api.DiagLogLevel.DEBUG);
+  diag.setLogger(new DiagConsoleLogger(), DiagLogLevel.DEBUG);
 }
 
 const sdk = new NodeSDK({
@@ -43,13 +47,13 @@ const sdk = new NodeSDK({
 
   // batch and send traces
   spanProcessors: [
-    new tracing.BatchSpanProcessor(traceExporter),
+    new BatchSpanProcessor({ exporter: traceExporter }),
     // print logs to console
-    // new tracing.SimpleSpanProcessor(new tracing.ConsoleSpanExporter()), // for dev
+    // new SimpleSpanProcessor({ exporter: new ConsoleSpanExporter() }), // for dev
   ],
 
   // send logs
-  logRecordProcessors: [new logs.BatchLogRecordProcessor({ exporter: logExporter })],
+  logRecordProcessors: [new BatchLogRecordProcessor({ exporter: logExporter })],
 
   // instrumentations to patch pino
   instrumentations: [
