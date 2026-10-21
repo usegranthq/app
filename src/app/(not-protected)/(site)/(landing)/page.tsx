@@ -11,23 +11,14 @@ import { cn } from '@/shadcn/lib/utils';
 
 import CopyButton from '../CopyButton';
 import { body, eyebrow, frame, LINKS, mono, outlineButton, primaryButton, SDK_PACKAGE, sectionTitle } from '../styles';
+import CodeCard, { type CodeLine } from './CodeCard';
 import TokenFlow from './TokenFlow';
 
-type Token = [kind: 'k' | 's' | 'f' | 'c' | 'p', text: string];
-
-const tokenClasses: Record<Token[0], string> = {
-  k: 'text-(--accent)',
-  s: 'text-[#e9c98b]',
-  f: 'text-white',
-  c: 'text-[#858585]',
-  p: '',
-};
-
-const CODE_LINES: { indent?: boolean; tokens: Token[] }[] = [
+const ASSUME_ROLE_LINES: CodeLine[] = [
   {
     tokens: [
       ['k', 'import'],
-      ['p', ' { UseGrant } '],
+      ['p', ' UseGrant '],
       ['k', 'from'],
       ['s', ` '${SDK_PACKAGE}'`],
       ['p', ';'],
@@ -123,9 +114,82 @@ const CODE_LINES: { indent?: boolean; tokens: Token[] }[] = [
   },
 ];
 
-const CODE_TEXT = CODE_LINES.map(
-  (line) => (line.indent ? '  ' : '') + line.tokens.map(([, text]) => text).join(''),
-).join('\n');
+const VALIDATE_LINES: CodeLine[] = [
+  {
+    tokens: [
+      ['k', 'import'],
+      ['p', ' UseGrant '],
+      ['k', 'from'],
+      ['s', ` '${SDK_PACKAGE}'`],
+      ['p', ';'],
+    ],
+  },
+  { tokens: [] },
+  {
+    tokens: [
+      ['k', 'const'],
+      ['p', ' sdk = '],
+      ['k', 'new'],
+      ['f', ' UseGrant'],
+      ['p', '('],
+      ['s', "'YOUR_API_KEY'"],
+      ['p', ');'],
+    ],
+  },
+  { tokens: [] },
+  { tokens: [['c', '// OIDC token sent by a GitHub Actions job']] },
+  {
+    tokens: [
+      ['k', 'const'],
+      ['p', ' token = req.headers.authorization.'],
+      ['f', 'slice'],
+      ['p', '(7);'],
+    ],
+  },
+  { tokens: [] },
+  { tokens: [['c', '// checks signature, issuer, audience, expiry and claims']] },
+  {
+    tokens: [
+      ['k', 'const'],
+      ['p', ' { exp } = '],
+      ['k', 'await'],
+      ['p', ' sdk.'],
+      ['f', 'validateToken'],
+      ['p', '('],
+    ],
+  },
+  {
+    indent: true,
+    tokens: [
+      ['s', "'tenantId'"],
+      ['p', ','],
+    ],
+  },
+  {
+    indent: true,
+    tokens: [
+      ['s', "'policyId'"],
+      ['p', ','],
+    ],
+  },
+  { indent: true, tokens: [['p', 'token,']] },
+  { tokens: [['p', ');']] },
+];
+
+const POLICY_ROWS = [
+  { key: 'issuer', value: 'token.actions.githubusercontent.com' },
+  { key: 'audience', value: 'api.example.com' },
+  { key: 'sub', operator: 'stringLike', value: 'repo:octo-org/octo-repo:*' },
+];
+
+const SELF_HOST_COMMANDS = [
+  'git clone https://github.com/usegranthq/app.git usegrant',
+  'cd usegrant',
+  'cp .env.example .env',
+  'docker compose up -d --build',
+];
+
+const SELF_HOST_FACTS = ['Apache-2.0', 'Docker + Postgres', 'Every feature included'];
 
 const PRINCIPLES = [
   {
@@ -251,45 +315,49 @@ export default function Home() {
               authorization.
             </p>
           </div>
-          <div className="min-w-0 overflow-hidden rounded border border-white/10 bg-[#0e0e0e]">
-            <div className="flex items-center justify-between border-b border-white/8">
-              <span
-                className={cn(
-                  mono,
-                  'border-r border-white/8 px-4 py-3 text-xs text-[#ededed] shadow-[inset_0_-1px_0_var(--accent)]',
-                )}
-              >
-                assume-role.ts
-              </span>
-              <CopyButton
-                text={CODE_TEXT}
-                label="Copy"
-                copiedLabel="Copied"
-                className={cn(
-                  mono,
-                  'mr-2.5 cursor-pointer rounded-[2px] border border-white/12 bg-transparent px-2.5 py-1.5 text-[11px] tracking-[.06em] text-[#a3a3a3] uppercase hover:border-white/30 hover:text-[#ededed]',
-                )}
-              />
+          <CodeCard filename="assume-role.ts" lines={ASSUME_ROLE_LINES} />
+        </div>
+      </section>
+
+      <section className="border-b border-white/8">
+        <div
+          className={cn(
+            frame,
+            'grid grid-cols-[repeat(auto-fit,minmax(min(100%,400px),1fr))] items-start gap-[clamp(40px,6vw,80px)] py-[clamp(64px,9vw,120px)]',
+          )}
+        >
+          <div className="flex min-w-0 flex-col gap-6">
+            <div className={eyebrow}>
+              <span className="text-(--accent)">02</span> — Verify
             </div>
-            <div className={cn(mono, 'overflow-x-auto py-5 text-xs leading-[1.75] text-[#d4d4d4]')}>
-              <div className="grid grid-cols-[36px_max-content] whitespace-pre">
-                {CODE_LINES.map((line, i) => (
-                  <div key={i} className="contents">
-                    <span className="pr-3 text-right text-[#4a4a4a]">{i + 1}</span>
-                    <div className={cn({ 'pl-[2ch]': line.indent })}>
-                      {line.tokens.length === 0
-                        ? ' '
-                        : line.tokens.map(([kind, text], j) => (
-                            <span key={j} className={tokenClasses[kind]}>
-                              {text}
-                            </span>
-                          ))}
-                    </div>
+            <h2 className={sectionTitle}>Validate tokens from any issuer</h2>
+            <p className={body}>
+              Tenants act as an identity broker. Trust external OIDC issuers like GitHub Actions and write policies that
+              match claims with exact values or wildcards.
+            </p>
+            <p className="m-0 border-t border-white/8 pt-6 text-[15px] leading-[1.6] text-pretty text-[#8a8a8a]">
+              One call checks the signature, issuer, audience, expiry and token age before your service accepts the
+              request. Give each customer their own tenant so their trust settings never mix.
+            </p>
+          </div>
+          <CodeCard
+            filename="validate.ts"
+            lines={VALIDATE_LINES}
+            footer={
+              <div className={cn(mono, 'border-t border-white/8 px-5 py-4 text-xs leading-[1.9]')}>
+                <div className="mb-1 text-[11px] tracking-[.06em] text-[#8a8a8a] uppercase">policy · main-branch</div>
+                {POLICY_ROWS.map((row) => (
+                  <div key={row.key} className="grid grid-cols-[72px_1fr] gap-3">
+                    <span className="text-[#6f6f6f]">{row.key}</span>
+                    <span className="wrap-anywhere text-[#d4d4d4]">
+                      {row.operator && <span className="mr-2 text-(--accent)">{row.operator}</span>}
+                      {row.value}
+                    </span>
                   </div>
                 ))}
               </div>
-            </div>
-          </div>
+            }
+          />
         </div>
       </section>
 
@@ -298,7 +366,7 @@ export default function Home() {
           <div className="grid grid-cols-[repeat(auto-fit,minmax(min(100%,400px),1fr))] items-end gap-x-20 gap-y-6 px-[clamp(20px,4vw,48px)] pt-[clamp(64px,9vw,120px)] pb-[clamp(40px,5vw,64px)]">
             <div className="flex flex-col gap-6">
               <div className={eyebrow}>
-                <span className="text-(--accent)">02</span> — Architecture
+                <span className="text-(--accent)">03</span> — Architecture
               </div>
               <h2 className={sectionTitle}>Built to scale, built for security</h2>
             </div>
@@ -330,7 +398,7 @@ export default function Home() {
         >
           <div className="flex min-w-0 flex-col gap-6">
             <div className={eyebrow}>
-              <span className="text-(--accent)">03</span> — Infrastructure
+              <span className="text-(--accent)">04</span> — Infrastructure
             </div>
             <h2 className="m-0 text-[clamp(44px,6vw,80px)] leading-[.95] font-semibold tracking-[-0.045em]">
               It&apos;s all virtual
@@ -374,7 +442,7 @@ export default function Home() {
         <div className="mx-auto max-w-[1240px] border-x border-white/8">
           <div className="flex max-w-[760px] flex-col gap-6 px-[clamp(20px,4vw,48px)] pt-[clamp(64px,9vw,120px)] pb-[clamp(40px,5vw,64px)]">
             <div className={eyebrow}>
-              <span className="text-(--accent)">04</span> — Integrations
+              <span className="text-(--accent)">05</span> — Integrations
             </div>
             <h2 className={sectionTitle}>Authenticate with any provider</h2>
             <p className={body}>
@@ -420,6 +488,68 @@ export default function Home() {
                 </div>
               </div>
             ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="border-b border-white/8">
+        <div
+          className={cn(
+            frame,
+            'grid grid-cols-[repeat(auto-fit,minmax(min(100%,400px),1fr))] items-center gap-[clamp(40px,6vw,80px)] py-[clamp(64px,9vw,120px)]',
+          )}
+        >
+          <div className="flex min-w-0 flex-col gap-6">
+            <div className={eyebrow}>
+              <span className="text-(--accent)">06</span> — Open source
+            </div>
+            <h2 className={sectionTitle}>Self-host it. It&apos;s yours.</h2>
+            <p className={body}>
+              useGrant is open source under the Apache-2.0 license. Run it on your own infrastructure with Docker and
+              Postgres, keep your signing keys in your own database, and use every feature without limits.
+            </p>
+            <div className="flex flex-wrap gap-3">
+              <a href={LINKS.GITHUB} className={primaryButton}>
+                View on GitHub <span>→</span>
+              </a>
+              <a href={LINKS.DOCS} className={outlineButton}>
+                Read the docs
+              </a>
+            </div>
+          </div>
+          <div className="min-w-0 overflow-hidden rounded border border-white/10 bg-[#0e0e0e]">
+            <div
+              className={cn(
+                mono,
+                'flex items-center justify-between border-b border-white/8 px-4 py-3 text-[11px] tracking-[.06em] text-[#8a8a8a] uppercase',
+              )}
+            >
+              <span>terminal</span>
+              <CopyButton
+                text={SELF_HOST_COMMANDS.join('\n')}
+                label="Copy"
+                copiedLabel="Copied"
+                className="cursor-pointer rounded-[2px] border border-white/12 bg-transparent px-2.5 py-1.5 text-[11px] tracking-[.06em] text-[#a3a3a3] uppercase hover:border-white/30 hover:text-[#ededed]"
+              />
+            </div>
+            <div className={cn(mono, 'overflow-x-auto px-5 py-5 text-xs leading-[2] text-[#d4d4d4]')}>
+              {SELF_HOST_COMMANDS.map((command) => (
+                <div key={command} className="whitespace-pre">
+                  <span className="mr-3 text-[#6f6f6f]">$</span>
+                  {command}
+                </div>
+              ))}
+            </div>
+            <div
+              className={cn(
+                mono,
+                'flex flex-wrap gap-x-6 gap-y-2 border-t border-white/8 px-5 py-4 text-xs leading-normal text-[#8a8a8a]',
+              )}
+            >
+              {SELF_HOST_FACTS.map((fact) => (
+                <span key={fact}>{fact}</span>
+              ))}
+            </div>
           </div>
         </div>
       </section>
