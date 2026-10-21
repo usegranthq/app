@@ -186,7 +186,8 @@ const SELF_HOST_COMMANDS = [
   'git clone https://github.com/usegranthq/app.git usegrant',
   'cd usegrant',
   'cp .env.example .env',
-  'docker compose up -d --build',
+  'docker build -t usegrant .',
+  'DOCKER_REPOSITORY=usegrant docker compose up -d',
 ];
 
 const SELF_HOST_FACTS = ['Apache-2.0', 'Docker + Postgres', 'Every feature included'];
