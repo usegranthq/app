@@ -1,7 +1,8 @@
 import { JWK } from 'jose';
 
 import db from '@/lib/db';
-import { createJwt, defaultJwk } from '@/utils/jwt';
+import { createSigningKey } from '@/lib/signing-key';
+import { createJwt } from '@/utils/jwt';
 import { getIssuer } from '@/utils/provider';
 
 import { authRpcRouter } from '../rpc';
@@ -67,7 +68,7 @@ const createAccessToken = authRpcRouter.providers.clients.tokens.create.handler(
     jwtType: input.useJwtType,
   };
 
-  const signingKey: JWK = jwk ? (jwk.key as unknown as JWK) : defaultJwk;
+  const signingKey: JWK = jwk ? (jwk.key as unknown as JWK) : await createSigningKey(providerId);
   const expiresAt = new Date(Date.now() + input.expiresIn);
 
   const token = await createJwt(claims, signingKey, jwtOptions);

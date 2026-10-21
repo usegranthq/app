@@ -1,7 +1,6 @@
 import 'server-only';
 import db from '@/lib/db';
 import { Client, Domain, Provider } from '@/types/app.types';
-import { defaultJwk } from '@/utils/jwt';
 import { toPaginatedResponse } from '@/utils/pagination';
 
 import { verifySession } from './_verifySession';
@@ -83,8 +82,7 @@ export const getClients = async (
 export interface SigningKey {
   id: string;
   kid: string;
-  isDefault: boolean;
-  createdAt: Date | null;
+  createdAt: Date;
 }
 
 export const getSigningKeys = async (providerId: string): Promise<SigningKey[]> => {
@@ -99,11 +97,6 @@ export const getSigningKeys = async (providerId: string): Promise<SigningKey[]> 
       createdAt: true,
     },
   });
-  const allKeys = [...keys, { ...defaultJwk, id: defaultJwk.kid, createdAt: null }];
 
-  return allKeys.map((key) => ({
-    ...key,
-    isDefault: key.kid === defaultJwk.kid,
-    createdAt: key.createdAt ?? null,
-  }));
+  return keys;
 };

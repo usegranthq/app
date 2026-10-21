@@ -47,7 +47,7 @@ describe('SDK: Create Access Token', () => {
     await expect(response.json()).resolves.toMatchObject(ERRORS.CLIENT_NOT_FOUND);
   });
 
-  it('create a new access token using default jwt', async () => {
+  it('create a new access token with a newly generated signing key', async () => {
     vi.useFakeTimers();
 
     const fixedDate = new Date('2025-03-25T12:00:00Z');
@@ -70,6 +70,12 @@ describe('SDK: Create Access Token', () => {
     expect(claims.aud).toBe(fakeDbClient.audience);
     expect(claims.sub).toBe(fakeDbClient.subject);
     expect(claims.exp).toBe(Date.now() / 1000 + 1020);
+
+    // the provider had no key, so one is generated, stored and used for signing
+    expect(mockDb.jwks.create).toHaveBeenCalledOnce();
+    const [{ data: createdKey }] = mockDb.jwks.create.mock.calls[0];
+    expect(createdKey.providerId).toBe('1');
+    expect(jose.decodeProtectedHeader(body.accessToken).kid).toBe(createdKey.kid);
     vi.useRealTimers();
   });
 

@@ -9,12 +9,13 @@ import ROUTES from '@/constants/routes';
 import { verifySession } from '@/data/_verifySession';
 import db from '@/lib/db';
 import customDomain from '@/lib/domain';
+import { createSigningKey } from '@/lib/signing-key';
 import { clientSchema, providerSchema } from '@/schema';
 import { Provider } from '@/types/app.types';
 import { Prisma } from '@/types/db.types';
 import ERRORS, { getApiErrorMessage, getZodErrorMessage } from '@/utils/error';
 import { generateJwk } from '@/utils/jwk';
-import { createJwt, defaultJwk } from '@/utils/jwt';
+import { createJwt } from '@/utils/jwt';
 import { createUrlId, getIssuer } from '@/utils/provider';
 
 type ProviderFormValues = z.infer<typeof providerSchema>;
@@ -205,7 +206,7 @@ export async function generateAccessToken(
     },
   });
 
-  const signingKey: JWK = jwk ? (jwk.key as unknown as JWK) : defaultJwk;
+  const signingKey: JWK = jwk ? (jwk.key as unknown as JWK) : await createSigningKey(providerId);
 
   const jwtOptions = {
     jwtType: opts.useJwtType,

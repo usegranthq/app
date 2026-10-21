@@ -2,7 +2,6 @@ import { JWK } from 'jose';
 import { NextRequest, NextResponse } from 'next/server';
 
 import db from '@/lib/db';
-import { defaultJwk } from '@/utils/jwt';
 import { withProtocol } from '@/utils/url';
 
 const getHostFromRequest = (request: NextRequest): string | null => {
@@ -89,8 +88,7 @@ const jwksResponse = async (providerId: string): Promise<NextResponse> => {
     },
   });
 
-  const dbJwks = keys.map((key) => extractPublicJwk(key.key as unknown as JWK));
-  const publicJwks = [...dbJwks, extractPublicJwk(defaultJwk)];
+  const publicJwks = keys.map((key) => extractPublicJwk(key.key as unknown as JWK));
 
   const response = NextResponse.json({ keys: publicJwks });
   response.headers.set('Content-Type', 'application/jwk-set+json; charset=utf-8');

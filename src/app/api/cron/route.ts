@@ -5,7 +5,12 @@ import db from '@/lib/db';
 import logger from '@/lib/log';
 import { Prisma } from '@/types/db.types';
 import { generateJwk } from '@/utils/jwk';
+import { MAX_EXPIRY } from '@/utils/jwt';
 import { validateBearerToken } from '@/utils/rest';
+
+// rotate signing keys at most once a day, however often the cron runs,
+// with an hour of slack so a daily cron that fires slightly early still rotates
+const ROTATION_INTERVAL_MS = 23 * 60 * 60 * 1000;
 
 const processCron = async () => {
   const now = new Date();
@@ -36,15 +41,37 @@ const processCron = async () => {
       },
     });
 
-    // get all jwks for the providers, and keep the last 1 key and delete the rest and add the new one
     for (const provider of providers) {
       await db.$transaction(async (tx) => {
-        // keep the last 1 key and delete the rest, also createdAt should be greater than a 24 hours ago
-        await tx.jwks.deleteMany({
+        const keys = await tx.jwks.findMany({
           where: {
             providerId: provider.id,
-            createdAt: {
-              lt: new Date(Date.now() - 24 * 60 * 60 * 1000),
+          },
+          orderBy: {
+            createdAt: 'desc',
+          },
+          select: {
+            id: true,
+            createdAt: true,
+          },
+        });
+
+        const [currentKey] = keys;
+        if (currentKey && now.getTime() - currentKey.createdAt.getTime() < ROTATION_INTERVAL_MS) {
+          return;
+        }
+
+        // a key signs tokens until the next key is created, and those tokens stay valid for up to MAX_EXPIRY,
+        // so delete a key only once it was replaced more than MAX_EXPIRY ago
+        const retiredBefore = now.getTime() - MAX_EXPIRY * 1000;
+        const expiredKeyIds = keys
+          .filter((_, index) => index > 0 && keys[index - 1].createdAt.getTime() < retiredBefore)
+          .map((key) => key.id);
+
+        await tx.jwks.deleteMany({
+          where: {
+            id: {
+              in: expiredKeyIds,
             },
           },
         });
