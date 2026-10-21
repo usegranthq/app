@@ -100,7 +100,7 @@ export async function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
   const inviteEnabled = await inviteFlag();
 
-  if (pathname.startsWith('/login') && !inviteEnabled) {
+  if ((pathname.startsWith('/login') || pathname.startsWith('/signup')) && !inviteEnabled) {
     return redirectToPage(ROUTES.ROOT, request);
   }
 

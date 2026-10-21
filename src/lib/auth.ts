@@ -10,6 +10,7 @@ import * as constants from '@/constants/cookies';
 import env from '@/env';
 import { daysToSeconds } from '@/utils/date';
 import { generateLoginToken } from '@/utils/random';
+import { safeCompare } from '@/utils/string';
 
 import db from './db';
 import { sendChangeEmailConfirmation, sendEmailVerification, sendLoginEmail } from './email';
@@ -47,6 +48,21 @@ export const auth = betterAuth({
     },
     deleteUser: {
       enabled: true,
+    },
+  },
+  databaseHooks: {
+    user: {
+      create: {
+        // when invite-only, new accounts require the invite cookie, whichever sign-in method is used
+        async before(_user, context) {
+          if (!env.INVITE_TOKEN) return;
+
+          const inviteCode = context?.getCookie(constants.INVITE_COOKIE) ?? '';
+          if (!safeCompare(inviteCode, env.INVITE_TOKEN)) {
+            throw new APIError('FORBIDDEN', { message: 'Sign-ups are invite-only.' });
+          }
+        },
+      },
     },
   },
   session: {
